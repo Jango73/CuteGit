@@ -7,7 +7,8 @@ import "../components"
 Item {
     id: root
 
-    property variant model: null
+    property variant fileModel: null
+    property variant repositoryModel: null
 
     MenuBar {
         id: menu
@@ -50,22 +51,31 @@ Item {
         Pane {
             id: repositoryView
             anchors.top: parent.top
-            anchors.bottom: logView.top
+            anchors.bottom: graphView.top
             width: parent.width * 0.15
             anchors.margins: Const.paneMargins
 
             Material.elevation: Const.paneElevation
 
-            StandardText {
+            ListView {
                 anchors.fill: parent
-                text: "REPOS"
+                clip: true
+                interactive: true
+
+                model: root.repositoryModel
+
+                delegate: StandardText {
+                    width: parent.width
+                    height: Const.elementHeight
+                    text: display.split("/").slice(-1)[0]
+                }
             }
         }
 
         Item {
             id: centralPart
             anchors.top: parent.top
-            anchors.bottom: logView.top
+            anchors.bottom: graphView.top
             anchors.left: repositoryView.right
             anchors.right: parent.right
 
@@ -77,7 +87,7 @@ Item {
                 width: parent.width * 0.5
                 anchors.margins: Const.paneMargins
 
-                model: root.model
+                fileModel: root.fileModel
             }
 
             Pane {
@@ -98,7 +108,7 @@ Item {
         }
 
         Pane {
-            id: logView
+            id: graphView
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -107,9 +117,18 @@ Item {
 
             Material.elevation: Const.paneElevation
 
-            StandardText {
+            ListView {
                 anchors.fill: parent
-                text: "LOG"
+                clip: true
+                interactive: true
+
+                model: root.fileModel != null ? root.fileModel.graphModel : undefined
+
+                delegate: StandardText {
+                    width: parent.width
+                    height: Const.elementHeight
+                    text: display
+                }
             }
         }
     }

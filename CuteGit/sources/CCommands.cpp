@@ -43,3 +43,13 @@ QVector<CRepoFile*> CCommands::getAllFileStatus(const QString& sPath)
     Q_UNUSED(sPath);
     return QVector<CRepoFile*>();
 }
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CCommands::getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(from);
+    Q_UNUSED(to);
+    return QStringList();
+}

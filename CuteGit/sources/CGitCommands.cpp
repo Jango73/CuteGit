@@ -8,7 +8,8 @@
 
 //-------------------------------------------------------------------------------------------------
 
-const QString sCommandStatus = "git status -s";
+static const char* sCommandStatus = "git status -s";
+static const char* sCommandGraph = "git log --graph --decorate --after=\"%1\" --before=\"%2\"";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
@@ -66,4 +67,22 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
     }
 
     return vReturnValue;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CGitCommands::getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to)
+{
+    QStringList lReturnValue;
+
+    QString sFrom = from.toString(Qt::ISODate);
+    QString sTo = to.toString(Qt::ISODate);
+
+//    sFrom.replace("T", " ");
+//    sTo.replace("T", " ");
+
+    QString sCommand = QString(sCommandGraph).arg(sFrom).arg(sTo);
+    QString sOutput = exec(sPath, sCommand);
+
+    return sOutput.split("\n");
 }

@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QFileInfo>
+#include <QStringListModel>
 
 // qt-plus
 #include <Macros.h>
@@ -16,7 +17,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-#define CONFIG_FILE_NAME    "config.xml"
+#define CONFIG_FILE_NAME    "configuration.xml"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -24,8 +25,9 @@ class CController : public QObject
 {
     Q_OBJECT
 
-    Q_FAST_PROPERTY(CFileModel*, p, fileModel, FileModel)
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
+    Q_FAST_PROPERTY(CFileModel*, p, fileModel, FileModel)
+    Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
 
 public:
 
@@ -52,7 +54,10 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //
-    void loadRepositories();
+    void saveConfiguration();
+
+    //
+    void loadConfiguration();
 
     //-------------------------------------------------------------------------------------------------
     // Invokables

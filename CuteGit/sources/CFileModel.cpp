@@ -22,6 +22,7 @@ static inline QString sizeString(const QFileInfo &fi)
 CFileModel::CFileModel(CController* pController, QObject* parent)
     : QFileSystemModel(parent)
     , m_pController(pController)
+    , m_pGraphModel(new QStringListModel())
 {
     setRootPath(QDir::homePath());
     setResolveSymlinks(true);
@@ -33,7 +34,7 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
 
 CFileModel::~CFileModel()
 {
-    qDeleteAll(m_RepoFiles);
+    qDeleteAll(m_vRepoFiles);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -47,7 +48,7 @@ QModelIndex CFileModel::rootPathIndex() const
 
 CRepoFile* CFileModel::fileByFullName(const QString& sFullName) const
 {
-    for (CRepoFile* pFile : m_RepoFiles)
+    for (CRepoFile* pFile : m_vRepoFiles)
     {
         if (pFile->fullName() == sFullName)
             return pFile;
@@ -112,11 +113,16 @@ void CFileModel::onRootPathChanged(const QString& newPath)
 {
     QVector<CRepoFile*> repoFiles = m_pController->commands()->getAllFileStatus(newPath);
 
-    qDeleteAll(m_RepoFiles);
-    m_RepoFiles.clear();
+    qDeleteAll(m_vRepoFiles);
+    m_vRepoFiles.clear();
 
     for (CRepoFile* pFile : repoFiles)
     {
-        m_RepoFiles << pFile;
+        m_vRepoFiles << pFile;
     }
+
+    QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
+    QDateTime dTo = QDateTime::currentDateTime().addDays(2);
+
+    m_pGraphModel->setStringList(m_pController->commands()->getGraph(newPath, dFrom, dTo));
 }

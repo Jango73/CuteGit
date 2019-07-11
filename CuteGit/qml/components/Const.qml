@@ -15,6 +15,8 @@ Item {
     property int paneMargins: 8
     property int paneElevation: 4
 
+    property int elementHeight: 30
+
     // Animations
     property int menuAnimationDuration: 500
 

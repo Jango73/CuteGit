@@ -29,4 +29,7 @@ public:
 
     //!
     virtual QVector<CRepoFile*> getAllFileStatus(const QString& sPath) override;
+
+    //!
+    virtual QStringList getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
 };

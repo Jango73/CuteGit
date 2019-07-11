@@ -3,6 +3,7 @@
 
 // Qt
 #include <QObject>
+#include <QDateTime>
 
 // Application
 #include "CRepoFile.h"
@@ -32,4 +33,7 @@ public:
 
     //!
     virtual QVector<CRepoFile*> getAllFileStatus(const QString& sPath);
+
+    //!
+    virtual QStringList getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to);
 };

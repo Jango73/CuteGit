@@ -8,20 +8,18 @@ import CuteGit 1.0
 import "components"
 import "pages"
 
-// Main application window
 ApplicationWindow {
     id: app
     width: 1024
     height: 768
+    visible: true
 
     Material.primary: Material.Teal
     Material.accent: Material.Green
 
-    // Set visible
-    visible: true
-
     MainPage {
         anchors.fill: parent
-        model: controller.fileModel
+        fileModel: controller.fileModel
+        repositoryModel: controller.repositoryModel
     }
 }

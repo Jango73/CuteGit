@@ -3,6 +3,7 @@
 
 // Qt
 #include <QFileSystemModel>
+#include <QStringListModel>
 
 // qt-plus
 #include <Macros.h>
@@ -36,6 +37,7 @@ public:
     Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
 
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
+    Q_FAST_PROPERTY(QStringListModel*, p, graphModel, GraphModel)
 
 //    Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, rootPath, RootPath)
 
@@ -103,5 +105,5 @@ protected slots:
 
 protected:
 
-    QVector<CRepoFile*>     m_RepoFiles;
+    QVector<CRepoFile*>     m_vRepoFiles;
 };
