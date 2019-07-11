@@ -11,6 +11,7 @@ CController::CController(QObject *parent)
     : QObject(parent)
     , m_pFileModel(new CFileModel(parent))
 {
+    loadRepositories();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -21,7 +22,6 @@ CController::~CController()
 
 //-------------------------------------------------------------------------------------------------
 
-CFileModel* CController::fileModel() const
+void CController::loadRepositories()
 {
-    return m_pFileModel;
 }

@@ -13,10 +13,12 @@ class CFileModel : public QFileSystemModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
+
 public:
     enum ERoles
     {
-        eSizeRole = Qt::UserRole + 1,
+        eSizeRole = Qt::UserRole + 10,
         eStateRole
     };
 
@@ -31,6 +33,12 @@ public:
     virtual ~CFileModel() Q_DECL_OVERRIDE;
 
     //-------------------------------------------------------------------------------------------------
+    // Getters
+    //-------------------------------------------------------------------------------------------------
+
+    QModelIndex rootPathIndex() const;
+
+    //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
@@ -39,4 +47,18 @@ public:
 
     //! Returns data
     virtual QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
+
+    //!
+    void stageSelection();
+
+    //!
+    void unstageSelection();
+
+    //-------------------------------------------------------------------------------------------------
+    // Signals
+    //-------------------------------------------------------------------------------------------------
+
+signals:
+
+    void rootPathIndexChanged();
 };

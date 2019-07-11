@@ -1,6 +1,10 @@
 
 // Qt
 #include <QDebug>
+#include <QQuickStyle>
+
+// qt-plus
+#include <CXMLNode.h>
 
 // Application
 #include "CuteGit.h"
@@ -14,15 +18,14 @@ CuteGit::CuteGit()
 {
     // Register types
     // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
-    // qRegisterMetaType<CXMLNode>();
+    qRegisterMetaType<CXMLNode>();
 
-    qmlRegisterUncreatableType<CFileModel>("io.qt.examples.quick.controls.filesystembrowser", 1, 0,
-                                                       "FileSystemModel", "Cannot create a FileSystemModel instance.");
+    qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "FileSystemModel", "Cannot create a FileSystemModel instance.");
 
     // Update context
     m_pEngine->rootContext()->setContextProperty("controller", m_pController);
-    m_pEngine->rootContext()->setContextProperty("fileSystemModel", m_pController->fileModel());
-    m_pEngine->rootContext()->setContextProperty("rootPathIndex", m_pController->fileModel()->index(m_pController->fileModel()->rootPath()));
+
+    QQuickStyle::setStyle("Material");
 
     // Load UI
     m_pEngine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

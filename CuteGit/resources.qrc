@@ -3,6 +3,9 @@
         <file>qml/main.qml</file>
         <file>qml/components/Const.qml</file>
         <file>qml/components/FileView.qml</file>
+        <file>qml/components/StandardTextField.qml</file>
+        <file>qml/components/StandardText.qml</file>
+        <file>qml/components/StandardTextEdit.qml</file>
         <file>qml/pages/MainPage.qml</file>
     </qresource>
 </RCC>
