@@ -1,7 +1,6 @@
 pragma Singleton
 import QtQuick 2.12
 import QtQuick.Controls.Material 2.12
-import CurrentDevice 1.0
 
 Item {
     // Constants
@@ -9,10 +8,12 @@ Item {
 
     // Main font
     property string mainFontFamily: "Calibri"
-    property int mainFontSize: 25
+    property int mainFontSize: 18
 
     // Margins and padding
     property int mainPadding: 15
+    property int paneMargins: 8
+    property int paneElevation: 4
 
     // Animations
     property int menuAnimationDuration: 500

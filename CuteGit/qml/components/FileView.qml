@@ -11,7 +11,7 @@ Pane {
     id: root
     padding: 2
 
-    Material.elevation: 4
+    Material.elevation: Const.paneElevation
 
     property variant model: null
 
@@ -25,8 +25,15 @@ Pane {
         anchors.fill: parent
 
         model: root.model
-        rootIndex: model.rootPathIndex
+        rootIndex: root.model !== null ? root.model.rootPathIndex : undefined
         selection: sel
+
+        TableViewColumn {
+            title: "Status"
+            role: "status"
+            resizable: true
+            width: 100
+        }
 
         TableViewColumn {
             title: "Name"
@@ -40,13 +47,6 @@ Pane {
             resizable: true
             horizontalAlignment : Text.AlignRight
             width: 80
-        }
-
-        TableViewColumn {
-            title: "Status"
-            role: "status"
-            resizable: true
-            width: 100
         }
 
 //        style: TreeViewStyle {

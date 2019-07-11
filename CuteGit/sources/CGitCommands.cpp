@@ -61,9 +61,6 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
             pFile->setStatus(eStatus);
             pFile->setFullName(sFullName);
 
-            qDebug() << sStatus;
-            qDebug() << sFullName;
-
             vReturnValue << pFile;
         }
     }
