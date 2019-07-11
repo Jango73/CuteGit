@@ -3,28 +3,35 @@
 #include <QDebug>
 
 // Application
-#include "CController.h"
-#include "CGitCommands.h"
+#include "CRepoFile.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CController::CController(QObject *parent)
-    : QObject(parent)
-    , m_pFileModel(new CFileModel(this, this))
-    , m_pCommands(new CGitCommands())
-{
-    loadRepositories();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-CController::~CController()
+CRepoFile::CRepoFile()
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CController::loadRepositories()
+CRepoFile::~CRepoFile()
 {
-    m_pFileModel->setRootPath("D:/Work/Projects/various/AGL32");
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CRepoFile::statusToString() const
+{
+    switch (m_eStatus)
+    {
+    case eClean:
+        return "";
+    case eAdded:
+        return "+";
+    case eModified:
+        return "*";
+    case eDeleted:
+        return "-";
+    case eUntracked:
+        return "?";
+    }
 }

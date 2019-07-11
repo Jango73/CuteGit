@@ -52,6 +52,11 @@ Item {
         anchors.bottom: logView.top
         anchors.right: parent.right
         width: parent.width * 0.5
+
+        StandardText {
+            anchors.fill: parent
+            text: "TOOLS"
+        }
     }
 
     Pane {
@@ -60,5 +65,10 @@ Item {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         height: parent.height * 0.33
+
+        StandardText {
+            anchors.fill: parent
+            text: "LOG"
+        }
     }
 }

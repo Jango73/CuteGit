@@ -1,6 +1,7 @@
 
 // Application
 #include "CFileModel.h"
+#include "CController.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -18,17 +19,21 @@ static inline QString sizeString(const QFileInfo &fi)
 
 //-------------------------------------------------------------------------------------------------
 
-CFileModel::CFileModel(QObject* parent)
+CFileModel::CFileModel(CController* pController, QObject* parent)
     : QFileSystemModel(parent)
+    , m_pController(pController)
 {
     setRootPath(QDir::homePath());
     setResolveSymlinks(true);
+
+    connect(this, &QFileSystemModel::rootPathChanged, this, &CFileModel::onRootPathChanged);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 CFileModel::~CFileModel()
 {
+    qDeleteAll(m_RepoFiles);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -40,11 +45,24 @@ QModelIndex CFileModel::rootPathIndex() const
 
 //-------------------------------------------------------------------------------------------------
 
+CRepoFile* CFileModel::fileByFullName(const QString& sFullName) const
+{
+    for (CRepoFile* pFile : m_RepoFiles)
+    {
+        if (pFile->fullName() == sFullName)
+            return pFile;
+    }
+
+    return nullptr;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QHash<int, QByteArray> CFileModel::roleNames() const
 {
     QHash<int, QByteArray> hRoleNames = QFileSystemModel::roleNames();
     hRoleNames[eSizeRole] = "size";
-    hRoleNames[eStateRole] = "state";
+    hRoleNames[eStatusRole] = "status";
     return hRoleNames;
 }
 
@@ -52,12 +70,22 @@ QHash<int, QByteArray> CFileModel::roleNames() const
 
 QVariant CFileModel::data(const QModelIndex &index, int role) const
 {
-    if (index.isValid() && role >= eSizeRole) {
-        switch (role) {
+    if (index.isValid() && role >= eSizeRole)
+    {
+        switch (role)
+        {
         case eSizeRole:
+        {
             return QVariant(sizeString(fileInfo(index)));
-        case eStateRole:
+        }
+        case eStatusRole:
+        {
+            QString sFileFullName = fileInfo(index).absoluteFilePath();
+            CRepoFile* pFile = fileByFullName(sFileFullName);
+            if (pFile != nullptr)
+                return pFile->statusToString();
             return "";
+        }
         default:
             break;
         }
@@ -76,4 +104,19 @@ void CFileModel::stageSelection()
 
 void CFileModel::unstageSelection()
 {
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::onRootPathChanged(const QString& newPath)
+{
+    QVector<CRepoFile*> repoFiles = m_pController->commands()->getAllFileStatus(newPath);
+
+    qDeleteAll(m_RepoFiles);
+    m_RepoFiles.clear();
+
+    for (CRepoFile* pFile : repoFiles)
+    {
+        m_RepoFiles << pFile;
+    }
 }

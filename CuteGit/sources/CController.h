@@ -12,6 +12,7 @@
 
 // Application
 #include "CFileModel.h"
+#include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -24,6 +25,7 @@ class CController : public QObject
     Q_OBJECT
 
     Q_FAST_PROPERTY(CFileModel*, p, fileModel, FileModel)
+    Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
 
 public:
 

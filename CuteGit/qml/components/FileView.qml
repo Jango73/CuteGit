@@ -43,8 +43,8 @@ Pane {
         }
 
         TableViewColumn {
-            title: "State"
-            role: "state"
+            title: "Status"
+            role: "status"
             resizable: true
             width: 100
         }
