@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/components/Const.qml</file>
+        <file>qml/components/FileView.qml</file>
+        <file>qml/pages/MainPage.qml</file>
+    </qresource>
+</RCC>
