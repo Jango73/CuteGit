@@ -17,7 +17,7 @@ const QString sParamPath = "Path";
 CController::CController(QObject *parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
-    , m_pFileModel(new CFileModel(this, this))
+    , m_pFileModel(nullptr)
     , m_pRepositoryModel(new QStringListModel())
 {
     loadConfiguration();
@@ -34,7 +34,12 @@ CController::~CController()
 
 QString CController::repositoryPath() const
 {
-    return m_pFileModel->rootPath();
+    if (m_pFileModel != nullptr)
+    {
+        return m_pFileModel->rootPath();
+    }
+
+    return "";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -62,16 +67,22 @@ void CController::loadConfiguration()
     m_pRepositoryModel->setStringList(lRepositoryPaths);
 
     if (lRepositoryPaths.count() > 0)
-        m_pFileModel->setRootPath(lRepositoryPaths[0]);
+    {
+        setRepository(lRepositoryPaths[0]);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CController::setRepository(QString sPath)
 {
-    if (m_pFileModel->rootPath() != sPath)
+    if (m_pFileModel != nullptr)
     {
-        m_pFileModel->setRootPath(sPath);
-        emit repositoryPathChanged();
+        delete m_pFileModel;
     }
+
+    m_pFileModel = new CFileModel(this, this);
+    m_pFileModel->setRootPath(sPath);
+    emit fileModelChanged();
+    emit repositoryPathChanged();
 }
