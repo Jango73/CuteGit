@@ -9,7 +9,8 @@
 //-------------------------------------------------------------------------------------------------
 
 static const char* sCommandStatus = "git status -s";
-static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
+// static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
+static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";

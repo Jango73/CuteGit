@@ -21,5 +21,10 @@ ApplicationWindow {
         anchors.fill: parent
         fileModel: controller.fileModel
         repositoryModel: controller.repositoryModel
+        repositoryPath: controller.repositoryPath
+
+        onRepositorySelected: {
+            controller.setRepository(path)
+        }
     }
 }

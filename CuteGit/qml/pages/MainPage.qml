@@ -9,6 +9,9 @@ Item {
 
     property variant fileModel: null
     property variant repositoryModel: null
+    property string repositoryPath: ""
+
+    signal repositorySelected(string path)
 
     MenuBar {
         id: menu
@@ -48,28 +51,17 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        Pane {
+        RepoPane {
             id: repositoryView
             anchors.top: parent.top
             anchors.bottom: graphView.top
             anchors.right: parent.right
             width: parent.width * 0.15
-            anchors.margins: Const.paneMargins
+            repositoryModel: root.repositoryModel
+            repositoryPath: root.repositoryPath
 
-            Material.elevation: Const.paneElevation
-
-            ListView {
-                anchors.fill: parent
-                clip: true
-                interactive: true
-
-                model: root.repositoryModel
-
-                delegate: StandardText {
-                    width: parent.width
-                    height: Const.elementHeight
-                    text: display.split("/").slice(-1)[0]
-                }
+            onClicked: {
+                root.repositorySelected(path)
             }
         }
 

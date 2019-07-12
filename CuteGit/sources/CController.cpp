@@ -32,6 +32,13 @@ CController::~CController()
 
 //-------------------------------------------------------------------------------------------------
 
+QString CController::repositoryPath() const
+{
+    return m_pFileModel->rootPath();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::saveConfiguration()
 {
 }
@@ -56,4 +63,15 @@ void CController::loadConfiguration()
 
     if (lRepositoryPaths.count() > 0)
         m_pFileModel->setRootPath(lRepositoryPaths[0]);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setRepository(QString sPath)
+{
+    if (m_pFileModel->rootPath() != sPath)
+    {
+        m_pFileModel->setRootPath(sPath);
+        emit repositoryPathChanged();
+    }
 }

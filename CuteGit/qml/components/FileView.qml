@@ -29,37 +29,37 @@ Pane {
         selection: sel
 
         TableViewColumn {
-            title: "Status"
-            role: "status"
-            // resizable: true
-            width: view.width * 0.1
-        }
-
-        TableViewColumn {
             title: "Name"
             role: "fileName"
-            // resizable: true
-            width: view.width * 0.7
+            width: view.width * 0.8
         }
 
         TableViewColumn {
-            title: "Size"
-            role: "size"
-            // resizable: true
-            horizontalAlignment : Text.AlignRight
+            title: "Status"
+            role: "status"
             width: view.width * 0.2
         }
 
-//        style: TreeViewStyle {
-//            rowDelegate: Rectangle {
-//                color: "blue"
-//            }
+        style: TreeViewStyle {
+            rowDelegate: Rectangle {
+                height: Const.mainFontSize * 1.3
+            }
 
-//            itemDelegate: StandardText {
-//                width: 50
-//                height: 30
-//                text: styleData.value
-//            }
-//        }
+            itemDelegate: Item {
+                Selection {
+                    id: selection
+                    targetWidth: text.width
+                    targetHeight: text.height
+                    anchors.centerIn: text
+                    visible: styleData.selected && styleData.value !== ""
+                }
+
+                StandardText {
+                    id: text
+                    text: styleData.value
+                    color: selection.visible ? Material.background : Material.foreground
+                }
+            }
+        }
     }
 }

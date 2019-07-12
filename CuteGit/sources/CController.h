@@ -25,6 +25,8 @@ class CController : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString repositoryPath READ repositoryPath NOTIFY repositoryPathChanged)
+
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CFileModel*, p, fileModel, FileModel)
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
@@ -49,25 +51,33 @@ public:
     // Getters
     //-------------------------------------------------------------------------------------------------
 
+    //!
+    QString repositoryPath() const;
+
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
-    //
+    //!
     void saveConfiguration();
 
-    //
+    //!
     void loadConfiguration();
 
     //-------------------------------------------------------------------------------------------------
     // Invokables
     //-------------------------------------------------------------------------------------------------
 
+    //!
+    Q_INVOKABLE void setRepository(QString sPath);
+
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------
 
 signals:
+
+    void repositoryPathChanged();
 
     //-------------------------------------------------------------------------------------------------
     // Slots
