@@ -3,12 +3,12 @@
         <file>qml/main.qml</file>
         <file>qml/components/qmldir</file>
         <file>qml/components/Const.qml</file>
-        <file>qml/components/FileView.qml</file>
         <file>qml/components/StandardTextField.qml</file>
         <file>qml/components/StandardText.qml</file>
         <file>qml/components/StandardTextEdit.qml</file>
         <file>qml/components/Selection.qml</file>
         <file>qml/pages/MainPage.qml</file>
+        <file>qml/pages/FilePane.qml</file>
         <file>qml/pages/RepoPane.qml</file>
     </qresource>
 </RCC>

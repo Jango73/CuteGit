@@ -14,6 +14,7 @@ ApplicationWindow {
     height: 768
     visible: true
 
+    Material.theme: Material.Dark
     Material.primary: Material.Teal
     Material.accent: Material.Green
 

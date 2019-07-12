@@ -92,7 +92,7 @@ Item {
             anchors.left: parent.left
             anchors.right: repositoryView.left
 
-            FileView {
+            FilePane {
                 id: fileView
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom

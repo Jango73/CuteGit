@@ -41,7 +41,22 @@ Pane {
         }
 
         style: TreeViewStyle {
+            headerDelegate: Item {
+                height: Const.mainFontSize * 1.3
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: Material.background
+                    height: Const.mainFontSize * 1.3
+                }
+
+                StandardText {
+                    text: styleData.value
+                }
+            }
+
             rowDelegate: Rectangle {
+                color: Material.background
                 height: Const.mainFontSize * 1.3
             }
 

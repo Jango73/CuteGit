@@ -8,4 +8,5 @@ Text {
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignTop
     wrapMode: Text.WordWrap
+    color: Material.foreground
 }
