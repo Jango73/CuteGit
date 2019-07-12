@@ -18,10 +18,6 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-//        height: Const.mainFontSize
-
-//        Font.family: Const.mainFontFamily
-//        Font.pixelSize: Const.mainFontSize
 
         Material.elevation: 6
 
@@ -33,14 +29,38 @@ Item {
         }
 
         Menu {
+            title: qsTr("&Files")
+            MenuItem {
+                text: qsTr("View unchanged");
+                checkable: true
+                checked: true
+            }
+
+            MenuItem {
+                text: qsTr("View added");
+                checkable: true
+            }
+
+            MenuItem {
+                text: qsTr("View modified");
+                checkable: true
+            }
+
+            MenuItem {
+                text: qsTr("View deleted");
+                checkable: true
+            }
+        }
+
+        Menu {
             title: qsTr("&Local")
             Action { text: qsTr("&Commit...") }
         }
 
         Menu {
-            title: qsTr("&Remote")
+            title: qsTr("Re&mote")
             Action { text: qsTr("&Pull...") }
-            Action { text: qsTr("&Push...") }
+            Action { text: qsTr("Pus&h...") }
         }
     }
 
