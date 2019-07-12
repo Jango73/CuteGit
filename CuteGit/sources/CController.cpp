@@ -18,7 +18,8 @@ CController::CController(QObject *parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
     , m_pFileModel(nullptr)
-    , m_pRepositoryModel(new QStringListModel())
+    , m_pFileModelProxy(new CFileModelProxy(this))
+    , m_pRepositoryModel(new QStringListModel(this))
 {
     loadConfiguration();
 }
@@ -83,6 +84,8 @@ void CController::setRepository(QString sPath)
 
     m_pFileModel = new CFileModel(this, this);
     m_pFileModel->setRootPath(sPath);
+    m_pFileModelProxy->setSourceModel(m_pFileModel);
     emit fileModelChanged();
+    emit fileModelProxyChanged();
     emit repositoryPathChanged();
 }

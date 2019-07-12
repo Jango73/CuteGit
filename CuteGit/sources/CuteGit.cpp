@@ -9,6 +9,7 @@
 // Application
 #include "CuteGit.h"
 #include "CFileModel.h"
+#include "CFileModelProxy.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -20,7 +21,8 @@ CuteGit::CuteGit()
     // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
     qRegisterMetaType<CXMLNode>();
 
-    qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "FileSystemModel", "Cannot create a FileSystemModel instance.");
+    qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "CFileModel", "Cannot create a FileSystemModel instance.");
+    qmlRegisterUncreatableType<CFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
 
     // Update context
     m_pEngine->rootContext()->setContextProperty("controller", m_pController);
