@@ -31,22 +31,23 @@ Pane {
         TableViewColumn {
             title: "Status"
             role: "status"
-            resizable: true
-            width: 100
+            // resizable: true
+            width: view.width * 0.1
         }
 
         TableViewColumn {
             title: "Name"
             role: "fileName"
-            resizable: true
+            // resizable: true
+            width: view.width * 0.7
         }
 
         TableViewColumn {
             title: "Size"
             role: "size"
-            resizable: true
+            // resizable: true
             horizontalAlignment : Text.AlignRight
-            width: 80
+            width: view.width * 0.2
         }
 
 //        style: TreeViewStyle {

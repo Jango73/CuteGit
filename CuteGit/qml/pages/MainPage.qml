@@ -52,6 +52,7 @@ Item {
             id: repositoryView
             anchors.top: parent.top
             anchors.bottom: graphView.top
+            anchors.right: parent.right
             width: parent.width * 0.15
             anchors.margins: Const.paneMargins
 
@@ -76,8 +77,8 @@ Item {
             id: centralPart
             anchors.top: parent.top
             anchors.bottom: graphView.top
-            anchors.left: repositoryView.right
-            anchors.right: parent.right
+            anchors.left: parent.left
+            anchors.right: repositoryView.left
 
             FileView {
                 id: fileView

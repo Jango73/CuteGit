@@ -8,7 +8,7 @@ Item {
 
     // Main font
     property string mainFontFamily: "Calibri"
-    property int mainFontSize: 18
+    property int mainFontSize: 16
 
     // Margins and padding
     property int mainPadding: 15
