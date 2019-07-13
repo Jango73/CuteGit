@@ -7,11 +7,7 @@ import "../components"
 Item {
     id: root
 
-    property variant fileModel: null
-    property variant repositoryModel: null
-    property string repositoryPath: ""
-
-    signal repositorySelected(string path)
+    property variant controller: null
 
     MenuBar {
         id: menu
@@ -77,12 +73,7 @@ Item {
             anchors.bottom: graphView.top
             anchors.right: parent.right
             width: parent.width * 0.15
-            repositoryModel: root.repositoryModel
-            repositoryPath: root.repositoryPath
-
-            onClicked: {
-                root.repositorySelected(path)
-            }
+            controller: root.controller
         }
 
         Item {
@@ -100,7 +91,7 @@ Item {
                 width: parent.width * 0.5
                 anchors.margins: Const.paneMargins
 
-                fileModel: root.fileModel
+                controller: root.controller
             }
 
             Pane {
@@ -135,7 +126,7 @@ Item {
                 clip: true
                 interactive: true
 
-                model: root.fileModel != null ? root.fileModel.graphModel : undefined
+                model: root.controller.fileModel !== null ? root.controller.fileModel.graphModel : undefined
 
                 delegate: StandardText {
                     width: parent.width

@@ -4,10 +4,12 @@ import QtQuick.Controls.Material 2.12
 import "pages"
 
 ApplicationWindow {
-    id: app
+    id: root
     width: 1024
     height: 768
     visible: true
+
+    property var ctrl: controller
 
     Material.theme: Material.Dark
     Material.primary: Material.Teal
@@ -15,12 +17,6 @@ ApplicationWindow {
 
     MainPage {
         anchors.fill: parent
-        fileModel: controller.fileModel
-        repositoryModel: controller.repositoryModel
-        repositoryPath: controller.repositoryPath
-
-        onRepositorySelected: {
-            controller.repositoryPath = path
-        }
+        controller: root.ctrl
     }
 }

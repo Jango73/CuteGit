@@ -13,19 +13,19 @@ Pane {
 
     Material.elevation: Const.paneElevation
 
-    property variant fileModel: null
+    property variant controller: null
 
     ItemSelectionModel {
         id: sel
-        model: root.fileModel
+        model: root.controller.fileModel
     }
 
     TreeView {
         id: view
         anchors.fill: parent
 
-        model: root.fileModel
-        rootIndex: root.fileModel !== null ? root.fileModel.rootPathIndex : undefined
+        model: root.controller.fileModel
+        rootIndex: root.controller.fileModel !== null ? root.controller.fileModel.rootPathIndex : undefined
         selection: sel
 
         TableViewColumn {

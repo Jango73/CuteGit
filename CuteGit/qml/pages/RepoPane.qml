@@ -10,17 +10,14 @@ Pane {
 
     Material.elevation: Const.paneElevation
 
-    property variant repositoryModel: null
-    property string repositoryPath: ""
-
-    signal clicked(string path)
+    property variant controller: null
 
     ListView {
         anchors.fill: parent
         clip: true
         interactive: true
 
-        model: root.repositoryModel
+        model: root.controller.repositoryModel
 
         delegate: Item {
             width: parent.width
@@ -28,7 +25,9 @@ Pane {
 
             MouseArea {
                 anchors.fill: parent
-                onDoubleClicked: root.clicked(display)
+                onDoubleClicked: {
+                    controller.repositoryPath = display
+                }
             }
 
             Selection {
@@ -36,7 +35,7 @@ Pane {
                 targetWidth: text.width
                 targetHeight: text.height
                 anchors.centerIn: text
-                visible: display === repositoryPath
+                visible: display === root.controller.repositoryPath
             }
 
             StandardText {
