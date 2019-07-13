@@ -2,7 +2,10 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.12
+import QtQuick.Dialogs 1.2
 import QtQml.Models 2.2
+import Qt.labs.platform 1.1 as QLP
+import Qt.labs.folderlistmodel 2.1
 import "../components"
 
 Item {
@@ -21,38 +24,54 @@ Item {
         Menu {
             title: qsTr("&Repository")
 
-            Action { text: qsTr("&Open...") }
+            Action {
+                text: qsTr("&Open...")
+                shortcut: "Ctrl+O"
 
-            Action { text: qsTr("&Remove...") }
+                onTriggered: {
+                    folderDialog.open()
+                }
+            }
+
+            Action {
+                text: qsTr("&Remove...")
+            }
 
             MenuSeparator { }
 
-            Action { text: qsTr("&Quit") }
+            Action {
+                text: qsTr("&Quit")
+                shortcut: "Ctrl+Q"
+
+                onTriggered: {
+                    root.controller.quit()
+                }
+            }
         }
 
         Menu {
             title: qsTr("&Files")
 
             MenuItem {
-                text: qsTr("View unchanged");
+                text: qsTr("View unchanged")
                 checkable: true
                 checked: true
             }
 
             MenuItem {
-                text: qsTr("View added");
+                text: qsTr("View added")
                 checkable: true
                 checked: true
             }
 
             MenuItem {
-                text: qsTr("View modified");
+                text: qsTr("View modified")
                 checkable: true
                 checked: true
             }
 
             MenuItem {
-                text: qsTr("View deleted");
+                text: qsTr("View deleted")
                 checkable: true
                 checked: true
             }
@@ -217,5 +236,13 @@ Item {
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
+    }
+
+    QLP.FolderDialog {
+        id: folderDialog
+
+        onAccepted: {
+            root.controller.repositoryPath = folder
+        }
     }
 }

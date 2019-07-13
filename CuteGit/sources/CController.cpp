@@ -1,6 +1,8 @@
 
 // Qt
 #include <QDebug>
+#include <QUrl>
+#include <QApplication>
 
 // Application
 #include "CController.h"
@@ -48,6 +50,11 @@ QString CController::repositoryPath() const
 
 void CController::setRepositoryPath(QString sPath)
 {
+    // sPath.replace("file:///", "");
+
+    if (sPath.startsWith("file:"))
+        sPath = QUrl(sPath).toLocalFile();
+
     if (m_pFileModel == nullptr || sPath != m_pFileModel->rootPath())
     {
         if (m_pFileModel != nullptr)
@@ -95,6 +102,14 @@ void CController::loadConfiguration()
     {
         setRepositoryPath(lRepositoryPaths[0]);
     }
+}
+
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::quit()
+{
+    QApplication::quit();
 }
 
 //-------------------------------------------------------------------------------------------------
