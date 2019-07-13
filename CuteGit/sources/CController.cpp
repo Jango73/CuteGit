@@ -45,6 +45,27 @@ QString CController::repositoryPath() const
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::setRepositoryPath(QString sPath)
+{
+    if (m_pFileModel == nullptr || sPath != m_pFileModel->rootPath())
+    {
+        if (m_pFileModel != nullptr)
+        {
+            delete m_pFileModel;
+        }
+
+        m_pFileModel = new CFileModel(this, this);
+        m_pFileModel->setRootPath(sPath);
+        m_pFileModelProxy->setSourceModel(m_pFileModel);
+
+        emit repositoryPathChanged();
+        emit fileModelChanged();
+        emit fileModelProxyChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::saveConfiguration()
 {
 }
@@ -69,23 +90,6 @@ void CController::loadConfiguration()
 
     if (lRepositoryPaths.count() > 0)
     {
-        setRepository(lRepositoryPaths[0]);
+        setRepositoryPath(lRepositoryPaths[0]);
     }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CController::setRepository(QString sPath)
-{
-    if (m_pFileModel != nullptr)
-    {
-        delete m_pFileModel;
-    }
-
-    m_pFileModel = new CFileModel(this, this);
-    m_pFileModel->setRootPath(sPath);
-    m_pFileModelProxy->setSourceModel(m_pFileModel);
-    emit fileModelChanged();
-    emit fileModelProxyChanged();
-    emit repositoryPathChanged();
 }

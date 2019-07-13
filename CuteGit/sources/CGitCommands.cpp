@@ -11,6 +11,8 @@
 static const char* sCommandStatus = "git status -s";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
+static const char* sCommandStage = "git add %1";
+static const char* sCommandUnstage = "git reset %1";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
@@ -85,4 +87,18 @@ QStringList CGitCommands::getGraph(const QString& sPath, const QDateTime& from, 
     lReturnValue = sOutput.split("\n");
 
     return lReturnValue;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CGitCommands::stageFile(const QString& sPath, const QString& sRelativeName, bool bStage)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sRelativeName);
+    Q_UNUSED(bStage);
+
+    QString sCommand = QString(bStage ? sCommandStage : sCommandUnstage).arg(sRelativeName);
+    QString sOutput = exec(sPath, sCommand);
+
+    return sOutput;
 }

@@ -26,12 +26,13 @@ class CController : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString repositoryPath READ repositoryPath NOTIFY repositoryPathChanged)
+    Q_PROPERTY(QString repositoryPath READ repositoryPath WRITE setRepositoryPath NOTIFY repositoryPathChanged)
 
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CFileModel*, p, fileModel, FileModel)
     Q_FAST_PROPERTY(CFileModelProxy*, p, fileModelProxy, FileModelProxy)
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
+    Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
 
 public:
 
@@ -48,6 +49,9 @@ public:
     //-------------------------------------------------------------------------------------------------
     // Setters
     //-------------------------------------------------------------------------------------------------
+
+    //!
+    void setRepositoryPath(QString sPath);
 
     //-------------------------------------------------------------------------------------------------
     // Getters
@@ -69,9 +73,6 @@ public:
     //-------------------------------------------------------------------------------------------------
     // Invokables
     //-------------------------------------------------------------------------------------------------
-
-    //!
-    Q_INVOKABLE void setRepository(QString sPath);
 
     //-------------------------------------------------------------------------------------------------
     // Signals

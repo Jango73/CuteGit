@@ -53,3 +53,13 @@ QStringList CCommands::getGraph(const QString& sPath, const QDateTime& from, con
     Q_UNUSED(to);
     return QStringList();
 }
+
+//-------------------------------------------------------------------------------------------------
+
+QString CCommands::stageFile(const QString& sPath, const QString& sRelativeName, bool bStage)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sRelativeName);
+    Q_UNUSED(bStage);
+    return "";
+}

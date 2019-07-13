@@ -20,7 +20,7 @@ ApplicationWindow {
         repositoryPath: controller.repositoryPath
 
         onRepositorySelected: {
-            controller.setRepository(path)
+            controller.repositoryPath = path
         }
     }
 }
