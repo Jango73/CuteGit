@@ -117,8 +117,10 @@ void CFileModel::checkAllFileStatus(QString sPath)
         sPath = m_pController->repositoryPath();
     }
 
+    qDeleteAll(m_vRepoFiles);
+    m_vRepoFiles.clear();
+
     QVector<CRepoFile*> repoFiles = m_pController->commands()->getAllFileStatus(sPath);
-    QVector<CRepoFile*> mergedRepoFiles;
 
     for (CRepoFile* pFile : repoFiles)
     {
@@ -133,15 +135,6 @@ void CFileModel::checkAllFileStatus(QString sPath)
             }
         }
 
-        mergedRepoFiles << pFile;
-    }
-
-    // Assigned merged files
-    qDeleteAll(m_vRepoFiles);
-    m_vRepoFiles.clear();
-
-    for (CRepoFile* pFile : mergedRepoFiles)
-    {
         m_vRepoFiles << pFile;
     }
 }

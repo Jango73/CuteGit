@@ -11,7 +11,7 @@
 static const char* sCommandStatus = "git status -s";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
-static const char* sCommandStage = "git add %1";
+static const char* sCommandStage = "git add -f %1";
 static const char* sCommandUnstage = "git reset %1";
 
 const QString sStatusAdded = "A";

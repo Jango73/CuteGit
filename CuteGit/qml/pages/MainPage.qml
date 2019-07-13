@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.12
 import QtQml.Models 2.2
+import Qt.labs.platform 1.1
 import "../components"
 
 Item {
@@ -12,20 +13,20 @@ Item {
 
     MenuBar {
         id: menu
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
+//        anchors.left: parent.left
+//        anchors.right: parent.right
+//        anchors.top: parent.top
 
         Material.elevation: 4
 
         Menu {
             title: qsTr("&Repository")
 
-            MenuItem { text: qsTr("&Add...") }
+            Action { text: qsTr("&Add...") }
 
             MenuSeparator { }
 
-            MenuItem { text: qsTr("&Quit") }
+            Action { text: qsTr("&Quit") }
         }
 
         Menu {
@@ -56,16 +57,18 @@ Item {
         Menu {
             title: qsTr("&Local")
 
-            MenuItem {
+            Action {
                 text: qsTr("&Stage")
+                shortcut: "Ctrl++"
 
                 onTriggered: {
                     root.controller.fileModel.stageSelection(fileSelection.selectedIndexes)
                 }
             }
 
-            MenuItem {
+            Action {
                 text: qsTr("&Unstage")
+                shortcut: "Ctrl+-"
 
                 onTriggered: {
                     root.controller.fileModel.unstageSelection(fileSelection.selectedIndexes)
@@ -86,7 +89,7 @@ Item {
 
     Item {
         id: container
-        anchors.top: menu.bottom
+        anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
