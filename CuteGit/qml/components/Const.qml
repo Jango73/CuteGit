@@ -12,13 +12,17 @@ Item {
 
     // Colors
     property color foregroundLighter: "gray"
+    property color transparent: "transparent"
 
     // Margins and padding
-    property int mainPadding: 15
+    property int mainPadding: 16
     property int paneMargins: 8
     property int paneElevation: 2
-
+    property int popupElevation: 8
     property int elementHeight: 30
+
+    property real popupWidthNorm: 0.50
+    property real popupHeightNorm: 0.75
 
     // Animations
     property int menuAnimationDuration: 500
@@ -28,4 +32,7 @@ Item {
     // Text
     property string okText: qsTr("OK")
     property string cancelText: qsTr("Cancel")
+    property string expandAllText: qsTr("Expand all")
+    property string collapseAllText: qsTr("Collapse all")
+    property string enterMessageHereText: qsTr("Enter your message here...")
 }

@@ -14,5 +14,6 @@
         <file>qml/pages/MainPage.qml</file>
         <file>qml/pages/FilePane.qml</file>
         <file>qml/pages/RepoPane.qml</file>
+        <file>qml/pages/CommitPopup.qml</file>
     </qresource>
 </RCC>

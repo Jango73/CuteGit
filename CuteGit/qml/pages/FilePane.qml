@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.5
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Styles 1.4
@@ -15,9 +16,43 @@ Pane {
     property variant controller: null
     property variant selection: null
 
+    Item {
+        id: toolbar
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        height: expandAllButton.height * 1.2
+
+        RowLayout {
+            id: buttons
+            anchors.fill: parent
+
+            StandardButton {
+                id: expandAllButton
+                Layout.alignment: Qt.AlignCenter
+                text: Const.expandAllText
+
+                onClicked: {
+                }
+            }
+
+            StandardButton {
+                id: collapseAllButton
+                Layout.alignment: Qt.AlignCenter
+                text: Const.collapseAllText
+
+                onClicked: {
+                }
+            }
+        }
+    }
+
     TreeView {
         id: view
-        anchors.fill: parent
+        anchors.top: toolbar.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         model: root.controller.fileModel
         rootIndex: root.controller.fileModel !== null ? root.controller.fileModel.rootPathIndex : undefined

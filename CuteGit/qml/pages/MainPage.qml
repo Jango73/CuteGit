@@ -3,7 +3,6 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.12
 import QtQml.Models 2.2
-import Qt.labs.platform 1.1
 import "../components"
 
 Item {
@@ -13,16 +12,18 @@ Item {
 
     MenuBar {
         id: menu
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
 
         Material.elevation: 4
 
         Menu {
             title: qsTr("&Repository")
 
-            Action { text: qsTr("&Add...") }
+            Action { text: qsTr("&Open...") }
+
+            Action { text: qsTr("&Remove...") }
 
             MenuSeparator { }
 
@@ -41,16 +42,19 @@ Item {
             MenuItem {
                 text: qsTr("View added");
                 checkable: true
+                checked: true
             }
 
             MenuItem {
                 text: qsTr("View modified");
                 checkable: true
+                checked: true
             }
 
             MenuItem {
                 text: qsTr("View deleted");
                 checkable: true
+                checked: true
             }
         }
 
@@ -75,21 +79,32 @@ Item {
                 }
             }
 
-            MenuItem { text: qsTr("&Commit...") }
+            Action {
+                text: qsTr("&Commit...")
+                shortcut: "Ctrl+C"
+
+                onTriggered: {
+                    commit.open()
+                }
+            }
         }
 
         Menu {
             title: qsTr("Re&mote")
 
-            MenuItem { text: qsTr("&Pull...") }
+            Action {
+                text: qsTr("&Pull...")
+            }
 
-            MenuItem { text: qsTr("Pus&h...") }
+            Action {
+                text: qsTr("Pus&h...")
+            }
         }
     }
 
     Item {
         id: container
-        anchors.top: parent.top
+        anchors.top: menu.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
@@ -195,5 +210,12 @@ Item {
                 }
             }
         }
+    }
+
+    CommitPopup {
+        id: commit
+        width: root.width * Const.popupWidthNorm
+        height: root.height * Const.popupHeightNorm
+        anchors.centerIn: parent
     }
 }
