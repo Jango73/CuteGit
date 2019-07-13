@@ -10,6 +10,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
+const QString sParamConfiguration = "Configuration";
 const QString sParamRepositories = "Repositories";
 const QString sParamRepository = "Repository";
 const QString sParamPath = "Path";
@@ -50,8 +51,6 @@ QString CController::repositoryPath() const
 
 void CController::setRepositoryPath(QString sPath)
 {
-    // sPath.replace("file:///", "");
-
     if (sPath.startsWith("file:"))
         sPath = QUrl(sPath).toLocalFile();
 
@@ -71,6 +70,14 @@ void CController::setRepositoryPath(QString sPath)
         emit fileModelProxyChanged();
 
         connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
+
+        // Add repository to model
+        QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+
+        if (lRepositoryPaths.contains(sPath) == false)
+            lRepositoryPaths << sPath;
+
+        m_pRepositoryModel->setStringList(lRepositoryPaths);
     }
 }
 
@@ -78,6 +85,23 @@ void CController::setRepositoryPath(QString sPath)
 
 void CController::saveConfiguration()
 {
+    CXMLNode xConfig(sParamConfiguration);
+
+    CXMLNode xRepositories(sParamRepositories);
+
+    // Add repository to model
+    QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+
+    for (QString sPath : lRepositoryPaths)
+    {
+        CXMLNode xRepository(sParamRepository);
+        xRepository.attributes()[sParamPath] = sPath;
+        xRepositories << xRepository;
+    }
+
+    xConfig << xRepositories;
+
+    xConfig.saveXMLToFile(CONFIG_FILE_NAME);
 }
 
 //-------------------------------------------------------------------------------------------------
