@@ -3,7 +3,6 @@ import QtQuick.Controls 1.5
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
-import QtQml.Models 2.2
 import CuteGit 1.0
 import "../components"
 
@@ -14,11 +13,7 @@ Pane {
     Material.elevation: Const.paneElevation
 
     property variant controller: null
-
-    ItemSelectionModel {
-        id: sel
-        model: root.controller.fileModel
-    }
+    property variant selection: null
 
     TreeView {
         id: view
@@ -26,18 +21,26 @@ Pane {
 
         model: root.controller.fileModel
         rootIndex: root.controller.fileModel !== null ? root.controller.fileModel.rootPathIndex : undefined
-        selection: sel
+        selection: root.selection
+        selectionMode: 2
+        // "None", "Single", "Extended", "Multi", "Contig."
 
         TableViewColumn {
             title: "Name"
             role: "fileName"
-            width: view.width * 0.8
+            width: view.width * 0.7
         }
 
         TableViewColumn {
             title: "Status"
             role: "status"
             width: view.width * 0.2
+        }
+
+        TableViewColumn {
+            title: "Staged"
+            role: "staged"
+            width: view.width * 0.1
         }
 
         style: TreeViewStyle {

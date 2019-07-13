@@ -6,6 +6,10 @@
         <file>qml/components/StandardTextField.qml</file>
         <file>qml/components/StandardText.qml</file>
         <file>qml/components/StandardTextEdit.qml</file>
+        <file>qml/components/StandardLabel.qml</file>
+        <file>qml/components/StandardButton.qml</file>
+        <file>qml/components/Calendar.qml</file>
+        <file>qml/components/DatePicker.qml</file>
         <file>qml/components/Selection.qml</file>
         <file>qml/pages/MainPage.qml</file>
         <file>qml/pages/FilePane.qml</file>

@@ -64,6 +64,7 @@ QHash<int, QByteArray> CFileModel::roleNames() const
     QHash<int, QByteArray> hRoleNames = QFileSystemModel::roleNames();
     hRoleNames[eSizeRole] = "size";
     hRoleNames[eStatusRole] = "status";
+    hRoleNames[eStagedRole] = "staged";
     return hRoleNames;
 }
 
@@ -83,8 +84,20 @@ QVariant CFileModel::data(const QModelIndex &index, int role) const
         {
             QString sFileFullName = fileInfo(index).absoluteFilePath();
             CRepoFile* pFile = fileByFullName(sFileFullName);
+
             if (pFile != nullptr)
                 return pFile->statusToString();
+
+            return "";
+        }
+        case eStagedRole:
+        {
+            QString sFileFullName = fileInfo(index).absoluteFilePath();
+            CRepoFile* pFile = fileByFullName(sFileFullName);
+
+            if (pFile != nullptr)
+                return pFile->stagedToString();
+
             return "";
         }
         default:
@@ -97,32 +110,80 @@ QVariant CFileModel::data(const QModelIndex &index, int role) const
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::stageSelection()
+void CFileModel::checkAllFileStatus(QString sPath)
 {
-}
+    if (sPath.isEmpty())
+    {
+        sPath = m_pController->repositoryPath();
+    }
 
-//-------------------------------------------------------------------------------------------------
-
-void CFileModel::unstageSelection()
-{
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CFileModel::onRootPathChanged(const QString& newPath)
-{
-    QVector<CRepoFile*> repoFiles = m_pController->commands()->getAllFileStatus(newPath);
-
-    qDeleteAll(m_vRepoFiles);
-    m_vRepoFiles.clear();
+    QVector<CRepoFile*> repoFiles = m_pController->commands()->getAllFileStatus(sPath);
+    QVector<CRepoFile*> mergedRepoFiles;
 
     for (CRepoFile* pFile : repoFiles)
     {
+        CRepoFile* pExistingFile = fileByFullName(pFile->fullName());
+
+        if (pExistingFile != nullptr)
+        {
+            if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
+            {
+                QModelIndex qIndex = index(pExistingFile->fullName());
+                emit dataChanged(qIndex, qIndex);
+            }
+        }
+
+        mergedRepoFiles << pFile;
+    }
+
+    // Assigned merged files
+    qDeleteAll(m_vRepoFiles);
+    m_vRepoFiles.clear();
+
+    for (CRepoFile* pFile : mergedRepoFiles)
+    {
         m_vRepoFiles << pFile;
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::stageSelection(QModelIndexList lIndices)
+{
+    for (QModelIndex qIndex : lIndices)
+    {
+        QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
+        QString sOutput = m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, true);
+
+        emit newOutput(sOutput);
+    }
+
+    checkAllFileStatus();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::unstageSelection(QModelIndexList lIndices)
+{
+    for (QModelIndex qIndex : lIndices)
+    {
+        QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
+        QString sOutput = m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, false);
+
+        emit newOutput(sOutput);
+    }
+
+    checkAllFileStatus();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::onRootPathChanged(const QString& sNewPath)
+{
+    checkAllFileStatus();
 
     QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
     QDateTime dTo = QDateTime::currentDateTime().addDays(2);
 
-    m_pGraphModel->setStringList(m_pController->commands()->getGraph(newPath, dFrom, dTo));
+    m_pGraphModel->setStringList(m_pController->commands()->getGraph(sNewPath, dFrom, dTo));
 }

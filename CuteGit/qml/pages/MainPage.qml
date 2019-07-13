@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.12
+import QtQml.Models 2.2
 import "../components"
 
 Item {
@@ -15,17 +16,21 @@ Item {
         anchors.right: parent.right
         anchors.top: parent.top
 
-        Material.elevation: 6
+        Material.elevation: 4
 
         Menu {
             title: qsTr("&Repository")
-            Action { text: qsTr("&Add...") }
+
+            MenuItem { text: qsTr("&Add...") }
+
             MenuSeparator { }
-            Action { text: qsTr("&Quit") }
+
+            MenuItem { text: qsTr("&Quit") }
         }
 
         Menu {
             title: qsTr("&Files")
+
             MenuItem {
                 text: qsTr("View unchanged");
                 checkable: true
@@ -50,13 +55,32 @@ Item {
 
         Menu {
             title: qsTr("&Local")
-            Action { text: qsTr("&Commit...") }
+
+            MenuItem {
+                text: qsTr("&Stage")
+
+                onTriggered: {
+                    root.controller.fileModel.stageSelection(fileSelection.selectedIndexes)
+                }
+            }
+
+            MenuItem {
+                text: qsTr("&Unstage")
+
+                onTriggered: {
+                    root.controller.fileModel.unstageSelection(fileSelection.selectedIndexes)
+                }
+            }
+
+            MenuItem { text: qsTr("&Commit...") }
         }
 
         Menu {
             title: qsTr("Re&mote")
-            Action { text: qsTr("&Pull...") }
-            Action { text: qsTr("Pus&h...") }
+
+            MenuItem { text: qsTr("&Pull...") }
+
+            MenuItem { text: qsTr("Pus&h...") }
         }
     }
 
@@ -70,18 +94,25 @@ Item {
         RepoPane {
             id: repositoryView
             anchors.top: parent.top
-            anchors.bottom: graphView.top
+            anchors.bottom: outputView.top
             anchors.right: parent.right
             width: parent.width * 0.15
+            anchors.margins: Const.paneMargins
+
             controller: root.controller
         }
 
         Item {
             id: centralPart
             anchors.top: parent.top
-            anchors.bottom: graphView.top
+            anchors.bottom: outputView.top
             anchors.left: parent.left
             anchors.right: repositoryView.left
+
+            ItemSelectionModel {
+                id: fileSelection
+                model: root.controller.fileModel
+            }
 
             FilePane {
                 id: fileView
@@ -92,6 +123,7 @@ Item {
                 anchors.margins: Const.paneMargins
 
                 controller: root.controller
+                selection: fileSelection
             }
 
             Pane {
@@ -107,6 +139,31 @@ Item {
                 StandardText {
                     anchors.fill: parent
                     text: "TOOLS"
+                }
+            }
+        }
+
+        Pane {
+            id: outputView
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: graphView.top
+            height: parent.height * 0.05
+            anchors.margins: Const.paneMargins
+
+            Material.elevation: Const.paneElevation
+
+            ListView {
+                anchors.fill: parent
+                clip: true
+                interactive: true
+
+                model: root.controller.commandOutputModel
+
+                delegate: StandardText {
+                    width: parent.width
+                    height: Const.elementHeight
+                    text: display
                 }
             }
         }

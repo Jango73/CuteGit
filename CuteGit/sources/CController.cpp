@@ -20,6 +20,7 @@ CController::CController(QObject *parent)
     , m_pFileModel(nullptr)
     , m_pFileModelProxy(new CFileModelProxy(this))
     , m_pRepositoryModel(new QStringListModel(this))
+    , m_pCommandOutputModel(new QStringListModel(this))
 {
     loadConfiguration();
 }
@@ -61,6 +62,8 @@ void CController::setRepositoryPath(QString sPath)
         emit repositoryPathChanged();
         emit fileModelChanged();
         emit fileModelProxyChanged();
+
+        connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
     }
 }
 
@@ -92,4 +95,19 @@ void CController::loadConfiguration()
     {
         setRepositoryPath(lRepositoryPaths[0]);
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::onNewOutput(QString sOutput)
+{
+    QStringList lNewList = sOutput.split("\n");
+    QStringList lData = m_pCommandOutputModel->stringList();
+
+    lData.append(lNewList);
+
+    while (lData.count() > 50)
+        lData.removeFirst();
+
+    m_pCommandOutputModel->setStringList(lData);
 }

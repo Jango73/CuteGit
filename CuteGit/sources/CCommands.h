@@ -38,5 +38,11 @@ public:
     virtual QStringList getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to);
 
     //!
-    virtual QString stageFile(const QString& sPath, const QString& sRelativeName, bool bStage);
+    virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage);
+
+    //-------------------------------------------------------------------------------------------------
+    // Signals
+    //-------------------------------------------------------------------------------------------------
+
+signals:
 };

@@ -56,10 +56,10 @@ QStringList CCommands::getGraph(const QString& sPath, const QDateTime& from, con
 
 //-------------------------------------------------------------------------------------------------
 
-QString CCommands::stageFile(const QString& sPath, const QString& sRelativeName, bool bStage)
+QString CCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
 {
     Q_UNUSED(sPath);
-    Q_UNUSED(sRelativeName);
+    Q_UNUSED(sFullName);
     Q_UNUSED(bStage);
     return "";
 }

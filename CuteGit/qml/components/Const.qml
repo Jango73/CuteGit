@@ -10,10 +10,13 @@ Item {
     property string mainFontFamily: "Calibri"
     property int mainFontSize: 16
 
+    // Colors
+    property color foregroundLighter: "gray"
+
     // Margins and padding
     property int mainPadding: 15
     property int paneMargins: 8
-    property int paneElevation: 4
+    property int paneElevation: 2
 
     property int elementHeight: 30
 

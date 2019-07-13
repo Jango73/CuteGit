@@ -34,5 +34,5 @@ public:
     virtual QStringList getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
 
     //!
-    virtual QString stageFile(const QString& sPath, const QString& sRelativeName, bool bStage) override;
+    virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
 };

@@ -27,7 +27,8 @@ public:
     enum ERoles
     {
         eSizeRole = Qt::UserRole + 10,
-        eStatusRole
+        eStatusRole,
+        eStagedRole
     };
 
     //-------------------------------------------------------------------------------------------------
@@ -78,10 +79,23 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
 
     //!
-    void stageSelection();
+    void checkAllFileStatus(QString sPath = "");
+
+    //-------------------------------------------------------------------------------------------------
+    // Invokables
+    //-------------------------------------------------------------------------------------------------
 
     //!
-    void unstageSelection();
+    Q_INVOKABLE void stageSelection(QModelIndexList lIndices);
+
+    //!
+    Q_INVOKABLE void unstageSelection(QModelIndexList lIndices);
+
+    //-------------------------------------------------------------------------------------------------
+    // Protected control methods
+    //-------------------------------------------------------------------------------------------------
+
+protected:
 
     //-------------------------------------------------------------------------------------------------
     // Signals
@@ -90,6 +104,7 @@ public:
 signals:
 
     void rootPathIndexChanged();
+    void newOutput(QString sText);
 
     //-------------------------------------------------------------------------------------------------
     // Slots
@@ -97,7 +112,7 @@ signals:
 
 protected slots:
 
-    void onRootPathChanged(const QString& newPath);
+    void onRootPathChanged(const QString& sNewPath);
 
     //-------------------------------------------------------------------------------------------------
     // Properties

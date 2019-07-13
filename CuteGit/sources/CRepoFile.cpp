@@ -8,6 +8,8 @@
 //-------------------------------------------------------------------------------------------------
 
 CRepoFile::CRepoFile()
+    : m_eStatus(eUntracked)
+    , m_bStaged(false)
 {
 }
 
@@ -34,4 +36,11 @@ QString CRepoFile::statusToString() const
     case eUntracked:
         return "?";
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CRepoFile::stagedToString() const
+{
+    return m_bStaged ? "O" : "";
 }

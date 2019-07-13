@@ -17,7 +17,7 @@ static const char* sCommandUnstage = "git reset %1";
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
 const QString sStatusDeleted = "D";
-const QString sStatusUntracked = "??";
+const QString sStatusUntracked = "?";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -41,29 +41,55 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
 
     QStringList lStrings = sOutput.split("\n");
 
-    QRegExp tRegExp("\\s*(.*)\\s+(.*)");
+    QRegExp tRegExp("([a-zA-Z?\\s])([a-zA-Z?\\s])\\s(.*)");
 
     for (QString sLine : lStrings)
     {
         if (tRegExp.indexIn(sLine) != -1)
         {
-            QString sStatus = tRegExp.cap(1).trimmed();
-            QString sFullName = sPath + "/" + tRegExp.cap(2).trimmed();
+            QString sStaged = tRegExp.cap(1).trimmed();
+            QString sUnstaged = tRegExp.cap(2).trimmed();
+            QString sFullName = sPath + "/" + tRegExp.cap(3).trimmed();
+            bool bStaged = false;
 
             CRepoFile::ERepoFileStatus eStatus = CRepoFile::eClean;
 
-            if (sStatus == sStatusAdded)
-                eStatus = CRepoFile::eAdded;
-            else if (sStatus == sStatusModified)
-                eStatus = CRepoFile::eModified;
-            else if (sStatus == sStatusDeleted)
-                eStatus = CRepoFile::eDeleted;
-            else if (sStatus == sStatusUntracked)
-                eStatus = CRepoFile::eUntracked;
+            if (sStaged.isEmpty() == false)
+            {
+                bStaged = true;
+
+                if (sStaged == sStatusAdded)
+                    eStatus = CRepoFile::eAdded;
+                else if (sStaged == sStatusModified)
+                    eStatus = CRepoFile::eModified;
+                else if (sStaged == sStatusDeleted)
+                    eStatus = CRepoFile::eDeleted;
+                else if (sStaged == sStatusUntracked)
+                {
+                    bStaged = false;
+                    eStatus = CRepoFile::eUntracked;
+                }
+            }
+
+            if (sUnstaged.isEmpty() == false)
+            {
+                if (sUnstaged == sStatusAdded)
+                    eStatus = CRepoFile::eAdded;
+                else if (sUnstaged == sStatusModified)
+                    eStatus = CRepoFile::eModified;
+                else if (sUnstaged == sStatusDeleted)
+                    eStatus = CRepoFile::eDeleted;
+                else if (sUnstaged == sStatusUntracked)
+                {
+                    bStaged = false;
+                    eStatus = CRepoFile::eUntracked;
+                }
+            }
 
             CRepoFile* pFile = new CRepoFile();
             pFile->setStatus(eStatus);
             pFile->setFullName(sFullName);
+            pFile->setStaged(bStaged);
 
             vReturnValue << pFile;
         }
@@ -91,13 +117,9 @@ QStringList CGitCommands::getGraph(const QString& sPath, const QDateTime& from, 
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::stageFile(const QString& sPath, const QString& sRelativeName, bool bStage)
+QString CGitCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
 {
-    Q_UNUSED(sPath);
-    Q_UNUSED(sRelativeName);
-    Q_UNUSED(bStage);
-
-    QString sCommand = QString(bStage ? sCommandStage : sCommandUnstage).arg(sRelativeName);
+    QString sCommand = QString(bStage ? sCommandStage : sCommandUnstage).arg(sFullName);
     QString sOutput = exec(sPath, sCommand);
 
     return sOutput;
