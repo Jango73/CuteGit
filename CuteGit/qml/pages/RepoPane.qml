@@ -12,11 +12,8 @@ Pane {
 
     property variant controller: null
 
-    ListView {
+    StandardListView {
         anchors.fill: parent
-        clip: true
-        interactive: true
-
         model: root.controller.repositoryModel
 
         delegate: Item {

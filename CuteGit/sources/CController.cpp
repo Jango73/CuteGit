@@ -143,7 +143,13 @@ void CController::onNewOutput(QString sOutput)
     QStringList lNewList = sOutput.split("\n");
     QStringList lData = m_pCommandOutputModel->stringList();
 
-    lData.append(lNewList);
+//    lData.append(lNewList);
+
+    for (QString sLine : lNewList)
+    {
+        if (sLine.isEmpty() == false)
+            lData << sLine;
+    }
 
     while (lData.count() > 50)
         lData.removeFirst();

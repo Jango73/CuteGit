@@ -6,7 +6,7 @@ Rectangle {
     width: targetWidth + Const.paneMargins
     height: targetHeight + Const.paneMargins * 0.5
     color: Material.primary
-    radius: 2
+    radius: Const.mainRadius
 
     property int targetWidth: 100
     property int targetHeight: 100

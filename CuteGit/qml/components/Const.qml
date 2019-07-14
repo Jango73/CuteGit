@@ -16,10 +16,11 @@ Item {
 
     // Margins and padding
     property int mainPadding: 16
+    property int mainRadius: 2
     property int paneMargins: 8
     property int paneElevation: 2
     property int popupElevation: 8
-    property int elementHeight: 30
+    property int elementHeight: mainFontSize * 1.5
 
     property real popupWidthNorm: 0.50
     property real popupHeightNorm: 0.75

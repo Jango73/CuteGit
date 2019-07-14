@@ -110,6 +110,7 @@ Pane {
                 StandardText {
                     id: text
                     text: styleData.value
+                    elide: styleData.elideMode
                     color: selection.visible ? Material.background : Material.foreground
                 }
             }

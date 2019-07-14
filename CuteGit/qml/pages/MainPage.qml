@@ -163,7 +163,7 @@ Item {
                 selection: fileSelection
             }
 
-            Pane {
+            ToolPane {
                 id: toolView
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -172,11 +172,6 @@ Item {
                 anchors.margins: Const.paneMargins
 
                 Material.elevation: Const.paneElevation
-
-                StandardText {
-                    anchors.fill: parent
-                    text: "TOOLS"
-                }
             }
         }
 
@@ -185,23 +180,15 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: graphView.top
-            height: parent.height * 0.05
+            height: parent.height * 0.1
             anchors.margins: Const.paneMargins
 
             Material.elevation: Const.paneElevation
 
-            ListView {
+            StandardStringListView {
                 anchors.fill: parent
-                clip: true
-                interactive: true
-
+                autoScrollToEnd: true
                 model: root.controller.commandOutputModel
-
-                delegate: StandardText {
-                    width: parent.width
-                    height: Const.elementHeight
-                    text: display
-                }
             }
         }
 
@@ -215,18 +202,9 @@ Item {
 
             Material.elevation: Const.paneElevation
 
-            ListView {
+            StandardStringListView {
                 anchors.fill: parent
-                clip: true
-                interactive: true
-
                 model: root.controller.fileModel !== null ? root.controller.fileModel.graphModel : undefined
-
-                delegate: StandardText {
-                    width: parent.width
-                    height: Const.elementHeight
-                    text: display
-                }
             }
         }
     }

@@ -33,6 +33,7 @@ class CController : public QObject
     Q_FAST_PROPERTY(CFileModelProxy*, p, fileModelProxy, FileModelProxy)
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
+    Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
 
 public:
 
