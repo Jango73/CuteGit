@@ -10,7 +10,6 @@ Pane {
 
     StandardListView {
         anchors.fill: parent
-
         model: root.controller.diffModel
 
         delegate: StandardText {

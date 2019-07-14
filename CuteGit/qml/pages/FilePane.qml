@@ -80,12 +80,11 @@ Pane {
 
         style: TreeViewStyle {
             headerDelegate: Item {
-                height: Const.mainFontSize * 1.3
+                height: Const.treeElementHeight
 
                 Rectangle {
                     anchors.fill: parent
                     color: Material.background
-                    height: Const.mainFontSize * 1.3
                 }
 
                 StandardText {
@@ -95,7 +94,7 @@ Pane {
 
             rowDelegate: Rectangle {
                 color: Material.background
-                height: Const.mainFontSize * 1.3
+                height: Const.treeElementHeight
             }
 
             itemDelegate: Item {
@@ -109,6 +108,7 @@ Pane {
 
                 StandardText {
                     id: text
+                    height: Const.treeElementHeight
                     text: styleData.value
                     elide: styleData.elideMode
                     color: selection.visible ? Material.background : Material.foreground

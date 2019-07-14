@@ -20,8 +20,7 @@ Pane {
         QC14.Tab {
             title: "Diff"
 
-            DiffView
-            {
+            DiffView {
                 controller: root.controller
             }
         }

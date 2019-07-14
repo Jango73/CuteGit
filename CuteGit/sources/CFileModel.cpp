@@ -70,7 +70,7 @@ QHash<int, QByteArray> CFileModel::roleNames() const
 
 //-------------------------------------------------------------------------------------------------
 
-QVariant CFileModel::data(const QModelIndex &index, int role) const
+QVariant CFileModel::data(const QModelIndex& index, int role) const
 {
     if (index.isValid() && role >= eSizeRole)
     {

@@ -172,6 +172,8 @@ Item {
                 anchors.margins: Const.paneMargins
 
                 Material.elevation: Const.paneElevation
+
+//                controller: root.controller
             }
         }
 

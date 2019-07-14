@@ -107,7 +107,7 @@ QStringList CGitCommands::getGraph(const QString& sPath, const QDateTime& from, 
     QString sFrom = from.toString(Qt::ISODate);
     QString sTo = to.toString(Qt::ISODate);
 
-    QString sCommand = QString(sCommandGraph).arg(sFrom).arg(sTo);
+    QString sCommand = QString(sCommandGraph); // .arg(sFrom).arg(sTo);
     QString sOutput = exec(sPath, sCommand);
 
     lReturnValue = sOutput.split("\n");
