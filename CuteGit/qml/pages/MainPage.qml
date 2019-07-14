@@ -131,7 +131,7 @@ Item {
         RepoPane {
             id: repositoryView
             anchors.top: parent.top
-            anchors.bottom: outputView.top
+            anchors.bottom: bottomPart.top
             anchors.right: parent.right
             width: parent.width * 0.15
             anchors.margins: Const.paneMargins
@@ -142,7 +142,7 @@ Item {
         Item {
             id: centralPart
             anchors.top: parent.top
-            anchors.bottom: outputView.top
+            anchors.bottom: bottomPart.top
             anchors.left: parent.left
             anchors.right: repositoryView.left
 
@@ -175,36 +175,44 @@ Item {
             }
         }
 
-        Pane {
-            id: outputView
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: graphView.top
-            height: parent.height * 0.1
-            anchors.margins: Const.paneMargins
-
-            Material.elevation: Const.paneElevation
-
-            StandardStringListView {
-                anchors.fill: parent
-                autoScrollToEnd: true
-                model: root.controller.commandOutputModel
-            }
-        }
-
-        Pane {
-            id: graphView
+        Item {
+            id: bottomPart
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             height: parent.height * 0.33
-            anchors.margins: Const.paneMargins
 
-            Material.elevation: Const.paneElevation
+            Pane {
+                id: graphView
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                width: parent.width * 0.5
+                anchors.margins: Const.paneMargins
 
-            StandardStringListView {
-                anchors.fill: parent
-                model: root.controller.fileModel !== null ? root.controller.fileModel.graphModel : undefined
+                Material.elevation: Const.paneElevation
+
+                StandardStringListView {
+                    anchors.fill: parent
+                    model: root.controller.fileModel !== null ? root.controller.fileModel.graphModel : undefined
+                }
+            }
+
+            Pane {
+                id: outputView
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: graphView.right
+                anchors.right: parent.right
+                anchors.margins: Const.paneMargins
+
+                Material.elevation: Const.paneElevation
+
+                StandardStringListView {
+                    anchors.fill: parent
+                    autoScrollToEnd: true
+                    model: root.controller.commandOutputModel
+                }
             }
         }
     }

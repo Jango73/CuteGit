@@ -9,5 +9,6 @@ StandardListView {
         width: parent.width
         height: Const.elementHeight
         text: display
+        elide: Text.ElideRight
     }
 }

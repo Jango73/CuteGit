@@ -11,7 +11,7 @@ ListView {
 
     Timer {
         id: positionTimer
-        interval: 200
+        interval: 100
         repeat: false
         onTriggered: root.positionViewAtIndex(root.count - 1, ListView.Visible)
     }
