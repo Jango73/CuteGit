@@ -40,6 +40,9 @@ public:
     //!
     virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage);
 
+    //!
+    virtual QString commit(const QString& sPath, const QString& sMessage);
+
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------

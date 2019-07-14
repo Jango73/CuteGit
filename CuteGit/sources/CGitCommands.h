@@ -35,4 +35,7 @@ public:
 
     //!
     virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
+
+    //!
+    virtual QString commit(const QString& sPath, const QString& sMessage) override;
 };

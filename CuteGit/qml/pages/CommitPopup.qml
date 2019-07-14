@@ -12,6 +12,8 @@ Popup {
 
     Material.elevation: Const.popupElevation
 
+    property variant controller: null
+
     contentItem: Item {
         anchors.fill: parent
 
@@ -59,6 +61,10 @@ Popup {
                 text: Const.okText
 
                 onClicked: {
+                    if (message.text != "") {
+                        root.close()
+                        root.controller.fileModel.commit(message.text)
+                    }
                 }
             }
 

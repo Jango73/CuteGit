@@ -224,6 +224,7 @@ Item {
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
+        controller: root.controller
     }
 
     QLP.FolderDialog {

@@ -63,3 +63,12 @@ QString CCommands::stageFile(const QString& sPath, const QString& sFullName, boo
     Q_UNUSED(bStage);
     return "";
 }
+
+//-------------------------------------------------------------------------------------------------
+
+QString CCommands::commit(const QString& sPath, const QString& sMessage)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sMessage);
+    return "";
+}

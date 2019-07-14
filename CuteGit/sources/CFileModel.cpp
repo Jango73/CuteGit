@@ -180,12 +180,37 @@ void CFileModel::unstageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onRootPathChanged(const QString& sNewPath)
+void CFileModel::commit(const QString& sMessage)
 {
+    QString sOutput = m_pController->commands()->commit(m_pController->repositoryPath(), sMessage);
+
+    emit newOutput(sOutput);
+
     checkAllFileStatus();
+    getGraph();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::getGraph(QString sPath)
+{
+    if (sPath.isEmpty())
+    {
+        sPath = m_pController->repositoryPath();
+    }
 
     QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
     QDateTime dTo = QDateTime::currentDateTime().addDays(2);
 
-    m_pGraphModel->setStringList(m_pController->commands()->getGraph(sNewPath, dFrom, dTo));
+    m_pGraphModel->setStringList(m_pController->commands()->getGraph(sPath, dFrom, dTo));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::onRootPathChanged(const QString& sNewPath)
+{
+    Q_UNUSED(sNewPath);
+
+    checkAllFileStatus();
+    getGraph();
 }

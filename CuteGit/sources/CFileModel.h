@@ -91,9 +91,14 @@ public:
     //!
     Q_INVOKABLE void unstageSelection(QModelIndexList lIndices);
 
+    //!
+    Q_INVOKABLE void commit(const QString& sMessage);
+
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
     //-------------------------------------------------------------------------------------------------
+
+    void getGraph(QString sPath = "");
 
 protected:
 
