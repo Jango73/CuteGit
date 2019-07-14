@@ -117,10 +117,8 @@ void CFileModel::checkAllFileStatus(QString sPath)
         sPath = m_pController->repositoryPath();
     }
 
-    qDeleteAll(m_vRepoFiles);
-    m_vRepoFiles.clear();
-
     QVector<CRepoFile*> repoFiles = m_pController->commands()->getAllFileStatus(sPath);
+    QVector<QModelIndex> changedIndices;
 
     for (CRepoFile* pFile : repoFiles)
     {
@@ -131,11 +129,22 @@ void CFileModel::checkAllFileStatus(QString sPath)
             if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
             {
                 QModelIndex qIndex = index(pExistingFile->fullName());
-                emit dataChanged(qIndex, qIndex);
+                changedIndices << qIndex;
             }
         }
+    }
 
+    qDeleteAll(m_vRepoFiles);
+    m_vRepoFiles.clear();
+
+    for (CRepoFile* pFile : repoFiles)
+    {
         m_vRepoFiles << pFile;
+    }
+
+    for (QModelIndex qIndex : changedIndices)
+    {
+        emit dataChanged(qIndex, qIndex);
     }
 }
 
