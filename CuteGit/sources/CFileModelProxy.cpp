@@ -4,6 +4,7 @@
 
 // Application
 #include "CFileModelProxy.h"
+#include "CFileModel.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -14,10 +15,66 @@ CFileModelProxy::CFileModelProxy(QObject *parent)
 
 //-------------------------------------------------------------------------------------------------
 
+QModelIndex CFileModelProxy::rootPathIndex() const
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        return mapFromSource(pModel->rootPathIndex());
+    }
+
+    return QModelIndex();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 bool CFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    return hasToBeDisplayed(index);
+
+    if (hasToBeDisplayed(index))
+        return true;
+
+    return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModelProxy::stageSelection(QModelIndexList lIndices)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->stageSelection(indexListToSource(lIndices));
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModelProxy::unstageSelection(QModelIndexList lIndices)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->unstageSelection(indexListToSource(lIndices));
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QModelIndexList CFileModelProxy::indexListToSource(QModelIndexList lIndices) const
+{
+    QModelIndexList targetIndices;
+
+    for (QModelIndex qIndex : lIndices)
+    {
+        targetIndices << mapToSource(qIndex);
+    }
+
+    return targetIndices;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -31,7 +88,7 @@ bool CFileModelProxy::hasToBeDisplayed(const QModelIndex index) const
         for (int ii = 0; ii < sourceModel()->rowCount(index); ii++)
         {
             QModelIndex childIndex = sourceModel()->index(ii, 0, index);
-            if ( ! childIndex.isValid() )
+            if (! childIndex.isValid())
                 break;
 
             result = hasToBeDisplayed(childIndex);

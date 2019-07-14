@@ -54,8 +54,8 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        model: root.controller.fileModel
-        rootIndex: root.controller.fileModel !== null ? root.controller.fileModel.rootPathIndex : undefined
+        model: root.controller.fileModelProxy
+        rootIndex: root.controller.fileModelProxy !== null ? root.controller.fileModelProxy.rootPathIndex : undefined
         selection: root.selection
         selectionMode: 2
         // "None", "Single", "Extended", "Multi", "Contig."

@@ -85,7 +85,7 @@ Item {
                 shortcut: "Ctrl++"
 
                 onTriggered: {
-                    root.controller.fileModel.stageSelection(fileSelection.selectedIndexes)
+                    root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
                 }
             }
 
@@ -94,7 +94,7 @@ Item {
                 shortcut: "Ctrl+-"
 
                 onTriggered: {
-                    root.controller.fileModel.unstageSelection(fileSelection.selectedIndexes)
+                    root.controller.fileModelProxy.unstageSelection(fileSelection.selectedIndexes)
                 }
             }
 
@@ -148,7 +148,7 @@ Item {
 
             ItemSelectionModel {
                 id: fileSelection
-                model: root.controller.fileModel
+                model: root.controller.fileModelProxy
             }
 
             FilePane {
