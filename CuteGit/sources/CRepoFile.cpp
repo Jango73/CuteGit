@@ -7,6 +7,16 @@
 
 //-------------------------------------------------------------------------------------------------
 
+const QString CRepoFile::sTokenClean = " ";
+const QString CRepoFile::sTokenAdded = "+";
+const QString CRepoFile::sTokenModify = "*";
+const QString CRepoFile::sTokenDeleted = "-";
+const QString CRepoFile::sTokenUntracked = "?";
+const QString CRepoFile::sTokenStaged = "O";
+const QString CRepoFile::sTokenUnstaged = " ";
+
+//-------------------------------------------------------------------------------------------------
+
 CRepoFile::CRepoFile()
     : m_eStatus(eUntracked)
     , m_bStaged(false)
@@ -26,21 +36,23 @@ QString CRepoFile::statusToString() const
     switch (m_eStatus)
     {
     case eClean:
-        return "";
+        return sTokenClean;
     case eAdded:
-        return "+";
+        return sTokenAdded;
     case eModified:
-        return "*";
+        return sTokenModify;
     case eDeleted:
-        return "-";
+        return sTokenDeleted;
     case eUntracked:
-        return "?";
+        return sTokenUntracked;
     }
+
+    return sTokenUntracked;
 }
 
 //-------------------------------------------------------------------------------------------------
 
 QString CRepoFile::stagedToString() const
 {
-    return m_bStaged ? "O" : "";
+    return m_bStaged ? sTokenStaged : sTokenUnstaged;
 }

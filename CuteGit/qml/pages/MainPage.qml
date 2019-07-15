@@ -53,27 +53,48 @@ Item {
             title: qsTr("&Files")
 
             MenuItem {
-                text: qsTr("View unchanged")
+                text: qsTr("Show clean")
                 checkable: true
-                checked: true
+                checked: root.controller.fileModelProxy.showClean
+                onClicked: {
+                    root.controller.fileModelProxy.showClean = !root.controller.fileModelProxy.showClean
+                }
             }
 
             MenuItem {
-                text: qsTr("View added")
+                text: qsTr("Show added")
                 checkable: true
-                checked: true
+                checked: root.controller.fileModelProxy.showAdded
+                onClicked: {
+                    root.controller.fileModelProxy.showAdded = !root.controller.fileModelProxy.showAdded
+                }
             }
 
             MenuItem {
-                text: qsTr("View modified")
+                text: qsTr("Show modified")
                 checkable: true
-                checked: true
+                checked: root.controller.fileModelProxy.showModified
+                onClicked: {
+                    root.controller.fileModelProxy.showModified = !root.controller.fileModelProxy.showModified
+                }
             }
 
             MenuItem {
-                text: qsTr("View deleted")
+                text: qsTr("Show deleted")
                 checkable: true
-                checked: true
+                checked: root.controller.fileModelProxy.showDeleted
+                onClicked: {
+                    root.controller.fileModelProxy.showDeleted = !root.controller.fileModelProxy.showDeleted
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Show untracked")
+                checkable: true
+                checked: root.controller.fileModelProxy.showUntracked
+                onClicked: {
+                    root.controller.fileModelProxy.showUntracked = !root.controller.fileModelProxy.showUntracked
+                }
             }
         }
 

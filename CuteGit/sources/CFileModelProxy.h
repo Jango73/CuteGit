@@ -4,6 +4,9 @@
 // Qt
 #include <QSortFilterProxyModel>
 
+// qt-plus
+#include <Macros.h>
+
 class CFileModelProxy : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -13,6 +16,12 @@ class CFileModelProxy : public QSortFilterProxyModel
     //-------------------------------------------------------------------------------------------------
 
     Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
+
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showAdded, ShowAdded)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showModified, ShowModified)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showDeleted, ShowDeleted)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showUntracked, ShowUntracked)
 
 public:
 
@@ -29,6 +38,7 @@ public:
     //!
     QModelIndex rootPathIndex() const;
 
+    //!
     bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
 
     //-------------------------------------------------------------------------------------------------
@@ -59,5 +69,5 @@ protected:
     QModelIndexList indexListToSource(QModelIndexList lIndices) const;
 
     //!
-    bool hasToBeDisplayed(const QModelIndex index) const;
+    bool hasToBeDisplayed(const QModelIndex qIndex) const;
 };

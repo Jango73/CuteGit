@@ -33,6 +33,7 @@ Pane {
                 text: Const.expandAllText
 
                 onClicked: {
+                    view.expandAll()
                 }
             }
 
@@ -112,6 +113,16 @@ Pane {
                     text: styleData.value
                     elide: styleData.elideMode
                     color: selection.visible ? Material.background : Material.foreground
+                }
+            }
+        }
+
+        function expandAll() {
+            for(var i = 0; i < view.model.rowCount(); i++) {
+                var index = view.model.index(i, 0)
+
+                if(!view.isExpanded(index)) {
+                    view.expand(index)
                 }
             }
         }

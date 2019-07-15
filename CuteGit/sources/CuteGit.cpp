@@ -37,6 +37,6 @@ CuteGit::CuteGit()
 
 CuteGit::~CuteGit()
 {
-    delete m_pController;
     delete m_pEngine;
+    delete m_pController;
 }

@@ -8,7 +8,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-static const char* sCommandStatus = "git status -s";
+static const char* sCommandStatus = "git status --ignored -s";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
 static const char* sCommandStage = "git add -f %1";
@@ -19,6 +19,7 @@ const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
 const QString sStatusDeleted = "D";
 const QString sStatusUntracked = "?";
+const QString sStatusUntracked2 = "!";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -65,7 +66,7 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
                     eStatus = CRepoFile::eModified;
                 else if (sStaged == sStatusDeleted)
                     eStatus = CRepoFile::eDeleted;
-                else if (sStaged == sStatusUntracked)
+                else if (sStaged == sStatusUntracked || sStaged == sStatusUntracked2)
                 {
                     bStaged = false;
                     eStatus = CRepoFile::eUntracked;
@@ -80,7 +81,7 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
                     eStatus = CRepoFile::eModified;
                 else if (sUnstaged == sStatusDeleted)
                     eStatus = CRepoFile::eDeleted;
-                else if (sUnstaged == sStatusUntracked)
+                else if (sUnstaged == sStatusUntracked || sStaged == sStatusUntracked2)
                 {
                     bStaged = false;
                     eStatus = CRepoFile::eUntracked;

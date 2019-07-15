@@ -53,4 +53,16 @@ public:
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
+
+    //-------------------------------------------------------------------------------------------------
+    // Coonstants
+    //-------------------------------------------------------------------------------------------------
+
+    static const QString sTokenClean;
+    static const QString sTokenAdded;
+    static const QString sTokenModify;
+    static const QString sTokenDeleted;
+    static const QString sTokenUntracked;
+    static const QString sTokenStaged;
+    static const QString sTokenUnstaged;
 };

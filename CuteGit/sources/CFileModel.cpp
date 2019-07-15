@@ -80,6 +80,7 @@ QVariant CFileModel::data(const QModelIndex& index, int role) const
         {
             return QVariant(sizeString(fileInfo(index)));
         }
+
         case eStatusRole:
         {
             QString sFileFullName = fileInfo(index).absoluteFilePath();
@@ -88,7 +89,7 @@ QVariant CFileModel::data(const QModelIndex& index, int role) const
             if (pFile != nullptr)
                 return pFile->statusToString();
 
-            return "";
+            return CRepoFile::sTokenClean;
         }
         case eStagedRole:
         {
@@ -98,7 +99,7 @@ QVariant CFileModel::data(const QModelIndex& index, int role) const
             if (pFile != nullptr)
                 return pFile->stagedToString();
 
-            return "";
+            return CRepoFile::sTokenUnstaged;
         }
         default:
             break;
