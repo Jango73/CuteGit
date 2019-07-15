@@ -163,7 +163,7 @@ bool CFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
     if (m_bShowAdded && sStatus == CRepoFile::sTokenAdded)
         result = true;
 
-    if (m_bShowModified && sStatus == CRepoFile::sTokenModify)
+    if (m_bShowModified && sStatus == CRepoFile::sTokenModified)
         result = true;
 
     if (m_bShowDeleted && sStatus == CRepoFile::sTokenDeleted)

@@ -60,7 +60,7 @@ public:
 
     static const QString sTokenClean;
     static const QString sTokenAdded;
-    static const QString sTokenModify;
+    static const QString sTokenModified;
     static const QString sTokenDeleted;
     static const QString sTokenUntracked;
     static const QString sTokenStaged;
