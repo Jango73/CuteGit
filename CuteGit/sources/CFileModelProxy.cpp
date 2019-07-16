@@ -25,7 +25,7 @@ void CFileModelProxy::setShowClean(bool bValue)
     if (m_bShowClean != bValue)
     {
         m_bShowClean = bValue;
-        invalidate();
+        invalidateFilter();
         emit showCleanChanged();
     }
 }
@@ -37,7 +37,7 @@ void CFileModelProxy::setShowAdded(bool bValue)
     if (m_bShowAdded != bValue)
     {
         m_bShowAdded = bValue;
-        invalidate();
+        invalidateFilter();
         emit showAddedChanged();
     }
 }
@@ -49,7 +49,7 @@ void CFileModelProxy::setShowModified(bool bValue)
     if (m_bShowModified != bValue)
     {
         m_bShowModified = bValue;
-        invalidate();
+        invalidateFilter();
         emit showModifiedChanged();
     }
 }
@@ -61,7 +61,7 @@ void CFileModelProxy::setShowDeleted(bool bValue)
     if (m_bShowDeleted != bValue)
     {
         m_bShowDeleted = bValue;
-        invalidate();
+        invalidateFilter();
         emit showDeletedChanged();
     }
 }
@@ -73,7 +73,7 @@ void CFileModelProxy::setShowUntracked(bool bValue)
     if (m_bShowUntracked != bValue)
     {
         m_bShowUntracked = bValue;
-        invalidate();
+        invalidateFilter();
         emit showUntrackedChanged();
     }
 }
