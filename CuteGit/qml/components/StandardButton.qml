@@ -4,4 +4,5 @@ import "."
 
 Button {
     flat: true
+    implicitHeight: Const.buttonHeight
 }

@@ -221,7 +221,7 @@ Item {
                 }
             }
 
-            Pane {
+            OutputPane {
                 id: outputView
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -229,13 +229,7 @@ Item {
                 anchors.right: parent.right
                 anchors.margins: Const.paneMargins
 
-                Material.elevation: Const.paneElevation
-
-                StandardStringListView {
-                    anchors.fill: parent
-                    autoScrollToEnd: true
-                    model: root.controller.commandOutputModel
-                }
+                controller: root.controller
             }
         }
     }

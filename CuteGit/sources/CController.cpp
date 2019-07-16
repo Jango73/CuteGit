@@ -56,28 +56,35 @@ void CController::setRepositoryPath(QString sPath)
 
     if (m_pFileModel == nullptr || sPath != m_pFileModel->rootPath())
     {
-        if (m_pFileModel != nullptr)
+        if (QDir(QString("%1/.git").arg(sPath)).exists())
         {
-            delete m_pFileModel;
+            if (m_pFileModel != nullptr)
+            {
+                delete m_pFileModel;
+            }
+
+            m_pFileModel = new CFileModel(this, this);
+            m_pFileModel->setRootPath(sPath);
+            m_pFileModelProxy->setSourceModel(m_pFileModel);
+
+            emit repositoryPathChanged();
+            emit fileModelChanged();
+            emit fileModelProxyChanged();
+
+            connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
+
+            // Add repository to model
+            QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+
+            if (lRepositoryPaths.contains(sPath) == false)
+                lRepositoryPaths << sPath;
+
+            m_pRepositoryModel->setStringList(lRepositoryPaths);
         }
-
-        m_pFileModel = new CFileModel(this, this);
-        m_pFileModel->setRootPath(sPath);
-        m_pFileModelProxy->setSourceModel(m_pFileModel);
-
-        emit repositoryPathChanged();
-        emit fileModelChanged();
-        emit fileModelProxyChanged();
-
-        connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
-
-        // Add repository to model
-        QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
-
-        if (lRepositoryPaths.contains(sPath) == false)
-            lRepositoryPaths << sPath;
-
-        m_pRepositoryModel->setStringList(lRepositoryPaths);
+        else
+        {
+            onNewOutput(QString(tr("%1 is not a GIT repository.\nPlease select a folder containing a GIT repository.")).arg(sPath));
+        }
     }
 }
 
@@ -133,6 +140,13 @@ void CController::loadConfiguration()
 void CController::quit()
 {
     QApplication::quit();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::clearOutput()
+{
+    m_pCommandOutputModel->setStringList(QStringList());
 }
 
 //-------------------------------------------------------------------------------------------------

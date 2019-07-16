@@ -52,7 +52,7 @@ Popup {
         RowLayout {
             id: buttons
             width: parent.width
-            height: cancelButton.height * 1.2
+            height: cancelButton.height * 1.1
             anchors.bottom: parent.bottom
 
             StandardButton {

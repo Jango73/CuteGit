@@ -12,8 +12,29 @@ Pane {
 
     property variant controller: null
 
+    StandardLabel {
+        id: title
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: Const.elementHeight
+        text: Const.repositoriesText
+    }
+
+    StandardLabel {
+        id: listPlaceHolder
+        anchors.fill: list
+        visible: !list.visible
+        text: "Open a repository..."
+    }
+
     StandardListView {
-        anchors.fill: parent
+        id: list
+        anchors.top: title.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        visible: count > 0
         model: root.controller.repositoryModel
 
         delegate: Item {

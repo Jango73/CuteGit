@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.5
+import QtQuick.Controls 1.5 as QQC15
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
@@ -21,7 +21,7 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        height: expandAllButton.height * 1.2
+        height: expandAllButton.height * 1.1
 
         RowLayout {
             id: buttons
@@ -48,7 +48,7 @@ Pane {
         }
     }
 
-    TreeView {
+    QQC15.TreeView {
         id: view
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
@@ -61,19 +61,19 @@ Pane {
         selectionMode: 2
         // "None", "Single", "Extended", "Multi", "Contig."
 
-        TableViewColumn {
+        QQC15.TableViewColumn {
             title: "Name"
             role: "fileName"
             width: view.width * 0.7
         }
 
-        TableViewColumn {
+        QQC15.TableViewColumn {
             title: "Status"
             role: "status"
             width: view.width * 0.2
         }
 
-        TableViewColumn {
+        QQC15.TableViewColumn {
             title: "Staged"
             role: "staged"
             width: view.width * 0.1
@@ -118,10 +118,10 @@ Pane {
         }
 
         function expandAll() {
-            for(var i = 0; i < view.model.rowCount(); i++) {
+            for (var i = 0; i < view.model.rowCount(); i++) {
                 var index = view.model.index(i, 0)
 
-                if(!view.isExpanded(index)) {
+                if (!view.isExpanded(index)) {
                     view.expand(index)
                 }
             }

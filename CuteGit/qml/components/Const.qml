@@ -21,6 +21,7 @@ Item {
     property int paneElevation: 2
     property int popupElevation: 8
     property int elementHeight: mainFontSize * 1.5
+    property int buttonHeight: mainFontSize * 2.5
     property int treeElementHeight: mainFontSize * 1.3
 
     property real popupWidthNorm: 0.50
@@ -33,9 +34,12 @@ Item {
 
     // Text
     property string okText: qsTr("OK")
+    property string clearText: qsTr("Clear")
     property string cancelText: qsTr("Cancel")
+    property string outputText: qsTr("Output")
     property string expandAllText: qsTr("Expand all")
     property string collapseAllText: qsTr("Collapse all")
+    property string repositoriesText: qsTr("Repositories")
     property string enterMessageHereText: qsTr("Enter your message here...")
 
     //
