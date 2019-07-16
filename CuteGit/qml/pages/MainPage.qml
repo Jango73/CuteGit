@@ -170,6 +170,10 @@ Item {
             ItemSelectionModel {
                 id: fileSelection
                 model: root.controller.fileModelProxy
+
+                onCurrentIndexChanged: {
+                    root.controller.fileModelProxy.handleCurrentIndex(currentIndex)
+                }
             }
 
             FilePane {
@@ -194,7 +198,7 @@ Item {
 
                 Material.elevation: Const.paneElevation
 
-//                controller: root.controller
+                controller: root.controller
             }
         }
 

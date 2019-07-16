@@ -14,6 +14,9 @@ static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | 
 static const char* sCommandStage = "git add -f %1";
 static const char* sCommandUnstage = "git reset %1";
 static const char* sCommandCommit = "git commit -m \"%1\"";
+static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
+
+static const char* sStatusRegExp = "([a-zA-Z?\\s])([a-zA-Z?\\s])\\s(.*)";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
@@ -43,7 +46,7 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
 
     QStringList lStrings = sOutput.split("\n");
 
-    QRegExp tRegExp("([a-zA-Z?\\s])([a-zA-Z?\\s])\\s(.*)");
+    QRegExp tRegExp(sStatusRegExp);
 
     for (QString sLine : lStrings)
     {
@@ -132,6 +135,16 @@ QString CGitCommands::stageFile(const QString& sPath, const QString& sFullName, 
 QString CGitCommands::commit(const QString& sPath, const QString& sMessage)
 {
     QString sCommand = QString(sCommandCommit).arg(sMessage);
+    QString sOutput = exec(sPath, sCommand);
+
+    return sOutput;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CGitCommands::unstagedDiff(const QString& sPath, const QString& sFullName)
+{
+    QString sCommand = QString(sCommandUnstagedDiff).arg(sFullName);
     QString sOutput = exec(sPath, sCommand);
 
     return sOutput;

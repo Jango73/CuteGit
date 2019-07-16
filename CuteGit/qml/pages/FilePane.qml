@@ -43,6 +43,7 @@ Pane {
                 text: Const.collapseAllText
 
                 onClicked: {
+                    view.collapseAll()
                 }
             }
         }
@@ -125,6 +126,9 @@ Pane {
                     view.expand(index)
                 }
             }
+        }
+
+        function collapseAll() {
         }
     }
 }

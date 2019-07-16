@@ -39,6 +39,7 @@ public:
 
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_FAST_PROPERTY(QStringListModel*, p, graphModel, GraphModel)
+    Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
 
 //    Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, rootPath, RootPath)
 
@@ -80,6 +81,9 @@ public:
 
     //!
     void checkAllFileStatus(QString sPath = "");
+
+    //!
+    void handleCurrentIndex(QModelIndex qIndex);
 
     //-------------------------------------------------------------------------------------------------
     // Invokables

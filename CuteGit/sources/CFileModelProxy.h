@@ -51,6 +51,9 @@ public:
     //!
     Q_INVOKABLE void unstageSelection(QModelIndexList lIndices);
 
+    //!
+    Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
+
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------

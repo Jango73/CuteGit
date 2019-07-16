@@ -43,9 +43,6 @@ public:
     //!
     virtual QString commit(const QString& sPath, const QString& sMessage);
 
-    //-------------------------------------------------------------------------------------------------
-    // Signals
-    //-------------------------------------------------------------------------------------------------
-
-signals:
+    //!
+    virtual QString unstagedDiff(const QString& sPath, const QString& sFullName);
 };

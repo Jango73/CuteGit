@@ -38,4 +38,7 @@ public:
 
     //!
     virtual QString commit(const QString& sPath, const QString& sMessage) override;
+
+    //!
+    virtual QString unstagedDiff(const QString& sPath, const QString& sFullName) override;
 };

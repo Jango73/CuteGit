@@ -72,3 +72,12 @@ QString CCommands::commit(const QString& sPath, const QString& sMessage)
     Q_UNUSED(sMessage);
     return "";
 }
+
+//-------------------------------------------------------------------------------------------------
+
+QString CCommands::unstagedDiff(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+    return "";
+}

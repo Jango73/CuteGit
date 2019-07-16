@@ -127,6 +127,18 @@ void CFileModelProxy::unstageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->handleCurrentIndex(mapToSource(qIndex));
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QModelIndexList CFileModelProxy::indexListToSource(QModelIndexList lIndices) const
 {
     QModelIndexList targetIndices;
