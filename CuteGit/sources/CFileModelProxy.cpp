@@ -103,6 +103,34 @@ bool CFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceP
 
 //-------------------------------------------------------------------------------------------------
 
+QString CFileModelProxy::statusForIndex(QModelIndex qIndex)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        return pModel->data(mapToSource(qIndex), CFileModel::eStatusRole).toString();
+    }
+
+    return "";
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CFileModelProxy::stagedForIndex(QModelIndex qIndex)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        return pModel->data(mapToSource(qIndex), CFileModel::eStagedRole).toString();
+    }
+
+    return "";
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModelProxy::stageSelection(QModelIndexList lIndices)
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());

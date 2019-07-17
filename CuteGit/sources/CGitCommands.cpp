@@ -42,11 +42,8 @@ CGitCommands::~CGitCommands()
 QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
 {
     QVector<CRepoFile*> vReturnValue;
-
     QString sOutput = exec(sPath, sCommandStatus);
-
     QStringList lStrings = sOutput.split("\n");
-
     QRegExp tRegExp(sStatusRegExp);
 
     for (QString sLine : lStrings)

@@ -100,12 +100,24 @@ Pane {
             }
 
             itemDelegate: Item {
+                property string status: view.model.statusForIndex(styleData.index)
+                property string staged: view.model.stagedForIndex(styleData.index)
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: if (staged === "O") "#080"
+                           else if (status === "*") "#800"
+                           else if (status === "+") "#008"
+                           else "transparent"
+                }
+
                 Selection {
                     id: selection
                     targetWidth: text.width
                     targetHeight: text.height
                     anchors.centerIn: text
                     visible: styleData.selected && styleData.value !== ""
+                    borderOnly: true
                 }
 
                 StandardText {
@@ -113,7 +125,7 @@ Pane {
                     height: Const.treeElementHeight
                     text: styleData.value
                     elide: styleData.elideMode
-                    color: selection.visible ? Material.background : Material.foreground
+                    color: Material.foreground
                 }
             }
         }
