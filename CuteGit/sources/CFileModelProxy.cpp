@@ -167,6 +167,18 @@ void CFileModelProxy::revertSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::push()
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->push();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());

@@ -231,6 +231,17 @@ void CFileModel::commit(const QString& sMessage)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModel::push()
+{
+    QString sOutput = m_pController->commands()->push(m_pController->repositoryPath());
+
+    emit newOutput(sOutput);
+
+    getGraph();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModel::getGraph(QString sPath)
 {
     if (sPath.isEmpty())

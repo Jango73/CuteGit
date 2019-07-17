@@ -15,6 +15,7 @@ static const char* sCommandStage = "git add -f %1";
 static const char* sCommandUnstage = "git reset %1";
 static const char* sCommandRevert = "git checkout %1";
 static const char* sCommandCommit = "git commit -m \"%1\"";
+static const char* sCommandPush = "git push";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 
 static const char* sStatusRegExp = "([a-zA-Z?\\s])([a-zA-Z?\\s])\\s(.*)";
@@ -143,6 +144,16 @@ QString CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 QString CGitCommands::commit(const QString& sPath, const QString& sMessage)
 {
     QString sCommand = QString(sCommandCommit).arg(sMessage);
+    QString sOutput = exec(sPath, sCommand);
+
+    return sOutput;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CGitCommands::push(const QString& sPath)
+{
+    QString sCommand = QString(sCommandPush);
     QString sOutput = exec(sPath, sCommand);
 
     return sOutput;

@@ -47,5 +47,8 @@ public:
     virtual QString commit(const QString& sPath, const QString& sMessage);
 
     //!
+    virtual QString push(const QString& sPath);
+
+    //!
     virtual QString unstagedDiff(const QString& sPath, const QString& sFullName);
 };

@@ -61,6 +61,9 @@ public:
     Q_INVOKABLE void revertSelection(QModelIndexList lIndices);
 
     //!
+    Q_INVOKABLE void push();
+
+    //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
 
     //-------------------------------------------------------------------------------------------------

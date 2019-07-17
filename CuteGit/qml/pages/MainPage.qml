@@ -147,6 +147,11 @@ Item {
 
             Action {
                 text: qsTr("Pus&h...")
+                shortcut: "Ctrl+P"
+
+                onTriggered: {
+                    root.controller.fileModelProxy.push()
+                }
             }
         }
     }
