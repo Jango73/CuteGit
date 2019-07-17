@@ -3,8 +3,8 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 
 Label {
-    font.family: Theme.mainFontFamily
-    font.pixelSize: Theme.mainFontSize
+    font.family: Const.mainFontFamily
+    font.pixelSize: Const.mainFontSize
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignTop
     wrapMode: Text.WordWrap
