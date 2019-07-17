@@ -13,6 +13,9 @@ Item {
     // Colors
     property color foregroundLighter: "gray"
     property color transparent: "transparent"
+    property color fileStagedColor: "#080"
+    property color fileModifiedColor: "#800"
+    property color fileAddedColor: "#008"
 
     // Margins and padding
     property int mainPadding: 16

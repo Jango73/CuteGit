@@ -105,10 +105,10 @@ Pane {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: if (staged === "O") "#080"
-                           else if (status === "*") "#800"
-                           else if (status === "+") "#008"
-                           else "transparent"
+                    color: if (staged === "O") Const.fileStagedColor
+                           else if (status === "*") Const.fileModifiedColor
+                           else if (status === "+") Const.fileAddedColor
+                           else Const.transparent
                 }
 
                 Selection {
