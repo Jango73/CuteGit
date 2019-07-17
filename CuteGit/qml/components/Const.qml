@@ -16,6 +16,7 @@ Item {
     property color fileStagedColor: "#080"
     property color fileModifiedColor: "#800"
     property color fileAddedColor: "#008"
+    property color fileDeletedColor: "#840"
 
     // Margins and padding
     property int mainPadding: 16

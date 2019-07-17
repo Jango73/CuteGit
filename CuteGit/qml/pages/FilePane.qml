@@ -108,6 +108,7 @@ Pane {
                     color: if (staged === "O") Const.fileStagedColor
                            else if (status === "*") Const.fileModifiedColor
                            else if (status === "+") Const.fileAddedColor
+                           else if (status === "-") Const.fileDeletedColor
                            else Const.transparent
                 }
 
