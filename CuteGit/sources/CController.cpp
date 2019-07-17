@@ -11,6 +11,7 @@
 //-------------------------------------------------------------------------------------------------
 
 const QString sParamConfiguration = "Configuration";
+const QString sParamCurrentRepository = "CurrentRepository";
 const QString sParamRepositories = "Repositories";
 const QString sParamRepository = "Repository";
 const QString sParamPath = "Path";
@@ -94,6 +95,10 @@ void CController::saveConfiguration()
 {
     CXMLNode xConfig(sParamConfiguration);
 
+    CXMLNode xCurrentRepository(sParamCurrentRepository);
+    xCurrentRepository.attributes()[sParamPath] = m_pFileModel->rootPath();
+    xConfig << xCurrentRepository;
+
     CXMLNode xRepositories(sParamRepositories);
 
     // Add repository to model
@@ -117,6 +122,9 @@ void CController::loadConfiguration()
 {
     CXMLNode xConfig = CXMLNode::load(CONFIG_FILE_NAME);
 
+    CXMLNode xCurrentRepository = xConfig.getNodeByTagName(sParamCurrentRepository);
+    QString sCurrentPath = xCurrentRepository.attributes()[sParamPath];
+
     CXMLNode xRepositories = xConfig.getNodeByTagName(sParamRepositories);
     QVector<CXMLNode> xRepositoryList = xRepositories.getNodesByTagName(sParamRepository);
 
@@ -129,7 +137,11 @@ void CController::loadConfiguration()
 
     m_pRepositoryModel->setStringList(lRepositoryPaths);
 
-    if (lRepositoryPaths.count() > 0)
+    if (sCurrentPath.isEmpty() == false)
+    {
+        setRepositoryPath(sCurrentPath);
+    }
+    else if (lRepositoryPaths.count() > 0)
     {
         setRepositoryPath(lRepositoryPaths[0]);
     }

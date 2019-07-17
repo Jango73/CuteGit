@@ -157,15 +157,16 @@ bool CFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
 {
     bool result = false;
 
+    QModelIndex qSubIndex = sourceModel()->index(qIndex.row(), 1, qIndex.parent());
+
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
-        if (pModel->isDir(qIndex))
+        if (pModel->isDir(qSubIndex))
             return true;
     }
 
-    QModelIndex qSubIndex = sourceModel()->index(qIndex.row(), 1, qIndex.parent());
     QString sName = sourceModel()->data(qSubIndex, CFileModel::FileNameRole).toString();
     QString sStatus = sourceModel()->data(qSubIndex, CFileModel::eStatusRole).toString();
 
