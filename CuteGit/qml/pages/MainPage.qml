@@ -120,6 +120,15 @@ Item {
             }
 
             Action {
+                text: qsTr("&Revert")
+                shortcut: "Ctrl+Z"
+
+                onTriggered: {
+                    root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
+                }
+            }
+
+            Action {
                 text: qsTr("&Commit...")
                 shortcut: "Ctrl+C"
 

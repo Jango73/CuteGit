@@ -41,6 +41,9 @@ public:
     virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage);
 
     //!
+    virtual QString revertFile(const QString& sPath, const QString& sFullName);
+
+    //!
     virtual QString commit(const QString& sPath, const QString& sMessage);
 
     //!

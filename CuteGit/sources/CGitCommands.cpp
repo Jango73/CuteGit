@@ -13,6 +13,7 @@ static const char* sCommandStatus = "git status --ignored -s";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
 static const char* sCommandStage = "git add -f %1";
 static const char* sCommandUnstage = "git reset %1";
+static const char* sCommandRevert = "git checkout %1";
 static const char* sCommandCommit = "git commit -m \"%1\"";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 
@@ -125,6 +126,16 @@ QStringList CGitCommands::getGraph(const QString& sPath, const QDateTime& from, 
 QString CGitCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
 {
     QString sCommand = QString(bStage ? sCommandStage : sCommandUnstage).arg(sFullName);
+    QString sOutput = exec(sPath, sCommand);
+
+    return sOutput;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
+{
+    QString sCommand = QString(sCommandRevert).arg(sFullName);
     QString sOutput = exec(sPath, sCommand);
 
     return sOutput;

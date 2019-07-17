@@ -66,6 +66,15 @@ QString CCommands::stageFile(const QString& sPath, const QString& sFullName, boo
 
 //-------------------------------------------------------------------------------------------------
 
+QString CCommands::revertFile(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+    return "";
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QString CCommands::commit(const QString& sPath, const QString& sMessage)
 {
     Q_UNUSED(sPath);

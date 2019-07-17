@@ -67,7 +67,7 @@ public:
     QModelIndex rootPathIndex() const;
 
     //!
-    CRepoFile* fileByFullName(const QString& sFullName) const;
+    CRepoFile* fileByFullName(const QVector<CRepoFile*>& vFiles, const QString& sFullName) const;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
@@ -85,15 +85,18 @@ public:
     //!
     void handleCurrentIndex(QModelIndex qIndex);
 
+    //!
+    void stageSelection(QModelIndexList lIndices);
+
+    //!
+    void unstageSelection(QModelIndexList lIndices);
+
+    //!
+    void revertSelection(QModelIndexList lIndices);
+
     //-------------------------------------------------------------------------------------------------
     // Invokables
     //-------------------------------------------------------------------------------------------------
-
-    //!
-    Q_INVOKABLE void stageSelection(QModelIndexList lIndices);
-
-    //!
-    Q_INVOKABLE void unstageSelection(QModelIndexList lIndices);
 
     //!
     Q_INVOKABLE void commit(const QString& sMessage);
@@ -104,7 +107,10 @@ public:
 
 protected:
 
+    //!
     void getGraph(QString sPath = "");
+
+    //!
 
     //-------------------------------------------------------------------------------------------------
     // Signals

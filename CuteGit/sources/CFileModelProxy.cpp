@@ -127,6 +127,18 @@ void CFileModelProxy::unstageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::revertSelection(QModelIndexList lIndices)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->revertSelection(indexListToSource(lIndices));
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
