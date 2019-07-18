@@ -59,5 +59,8 @@ public:
     virtual QString pull(const QString& sPath);
 
     //!
-    virtual QString unstagedDiff(const QString& sPath, const QString& sFullName);
+    virtual QString unstagedFileDiff(const QString& sPath, const QString& sFullName);
+
+    //!
+    virtual QStringList fileLog(const QString& sPath, const QString& sFullName);
 };

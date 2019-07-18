@@ -23,8 +23,9 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     : QFileSystemModel(parent)
     , m_pController(pController)
     , m_pBranchModel(new QStringListModel(this))
-    , m_pGraphModel(new QStringListModel())
-    , m_pDiffModel(new QStringListModel())
+    , m_pGraphModel(new QStringListModel(this))
+    , m_pDiffModel(new QStringListModel(this))
+    , m_pLogModel(new QStringListModel(this))
 {
     setRootPath(QDir::homePath());
     setResolveSymlinks(true);
@@ -167,10 +168,15 @@ void CFileModel::checkAllFileStatus(QString sPath)
 void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 {
     QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-    QString sOutput = m_pController->commands()->unstagedDiff(m_pController->repositoryPath(), sFileFullName);
-    QStringList lNewList = sOutput.split("\n");
+    QString sOutput;
+    QStringList lNewList;
 
+    sOutput = m_pController->commands()->unstagedFileDiff(m_pController->repositoryPath(), sFileFullName);
+    lNewList = sOutput.split("\n");
     m_pDiffModel->setStringList(lNewList);
+
+    lNewList = m_pController->commands()->fileLog(m_pController->repositoryPath(), sFileFullName);
+    m_pLogModel->setStringList(lNewList);
 }
 
 //-------------------------------------------------------------------------------------------------

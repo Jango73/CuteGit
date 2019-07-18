@@ -41,6 +41,7 @@ public:
     Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(QStringListModel*, p, graphModel, GraphModel)
     Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
+    Q_FAST_PROPERTY(QStringListModel*, p, logModel, LogModel)
 
 //    Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, rootPath, RootPath)
 

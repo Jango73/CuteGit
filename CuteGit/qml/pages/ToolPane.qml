@@ -26,7 +26,11 @@ Pane {
         }
 
         QC14.Tab {
-            title: "Tool B"
+            title: "Log"
+
+            LogView {
+                controller: root.controller
+            }
         }
 
         QC14.Tab {

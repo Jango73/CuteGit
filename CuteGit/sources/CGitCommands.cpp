@@ -12,11 +12,12 @@ static const char* sCommandStatus = "git status --ignored -s";
 static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
-static const char* sCommandStage = "git add -f %1";
-static const char* sCommandUnstage = "git reset %1";
+static const char* sCommandFileLog = "git log --max-count=20 \"%1\"";
+static const char* sCommandStage = "git add -f \"%1\"";
+static const char* sCommandUnstage = "git reset \"%1\"";
 static const char* sCommandStageAll = "git add -u";
 static const char* sCommandUnstageAll = "git reset .";
-static const char* sCommandRevert = "git checkout %1";
+static const char* sCommandRevert = "git checkout \"%1\"";
 static const char* sCommandCommit = "git commit -m \"%1\"";
 static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
@@ -215,10 +216,24 @@ QString CGitCommands::pull(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::unstagedDiff(const QString& sPath, const QString& sFullName)
+QString CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandUnstagedDiff).arg(sFullName);
     QString sOutput = exec(sPath, sCommand);
 
     return sOutput;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
+{
+    QStringList lReturnValue;
+
+    QString sCommand = QString(sCommandFileLog).arg(sFullName);
+    QString sOutput = exec(sPath, sCommand);
+
+    lReturnValue = sOutput.split("\n");
+
+    return lReturnValue;
 }

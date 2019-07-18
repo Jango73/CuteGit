@@ -117,9 +117,18 @@ QString CCommands::pull(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-QString CCommands::unstagedDiff(const QString& sPath, const QString& sFullName)
+QString CCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(sFullName);
     return "";
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CCommands::fileLog(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+    return QStringList();
 }
