@@ -41,6 +41,9 @@ public:
     virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage);
 
     //!
+    virtual QString stageAll(const QString& sPath, bool bStage);
+
+    //!
     virtual QString revertFile(const QString& sPath, const QString& sFullName);
 
     //!
@@ -48,6 +51,9 @@ public:
 
     //!
     virtual QString push(const QString& sPath);
+
+    //!
+    virtual QString pull(const QString& sPath);
 
     //!
     virtual QString unstagedDiff(const QString& sPath, const QString& sFullName);

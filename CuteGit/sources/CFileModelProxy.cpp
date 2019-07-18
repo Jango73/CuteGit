@@ -155,6 +155,18 @@ void CFileModelProxy::unstageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::stageAll()
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->stageAll();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModelProxy::revertSelection(QModelIndexList lIndices)
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
@@ -167,6 +179,18 @@ void CFileModelProxy::revertSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::commit(const QString& sMessage)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->commit(sMessage);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModelProxy::push()
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
@@ -174,6 +198,18 @@ void CFileModelProxy::push()
     if (pModel != nullptr)
     {
         pModel->push();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModelProxy::pull()
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->pull();
     }
 }
 

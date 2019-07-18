@@ -7,6 +7,4 @@ CONFIG += warn_off
 
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    qt-plus \
-    CuteGit
+SUBDIRS += CuteGit

@@ -1,5 +1,6 @@
 
 HEADERS += \
+    ../qt-plus/source/cpp/CXMLNode.h \
     sources/CCommands.h \
     sources/CGitCommands.h \
     sources/CFileModel.h \
@@ -9,6 +10,7 @@ HEADERS += \
     sources/CuteGit.h \
 
 SOURCES += \
+    ../qt-plus/source/cpp/CXMLNode.cpp \
     sources/CCommands.cpp \
     sources/CGitCommands.cpp \
     sources/CFileModel.cpp \

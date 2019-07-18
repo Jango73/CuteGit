@@ -65,19 +65,13 @@ Pane {
         QQC15.TableViewColumn {
             title: "Name"
             role: "fileName"
-            width: view.width * 0.7
+            width: view.width * 0.8
         }
 
         QQC15.TableViewColumn {
             title: "Status"
             role: "status"
             width: view.width * 0.2
-        }
-
-        QQC15.TableViewColumn {
-            title: "Staged"
-            role: "staged"
-            width: view.width * 0.1
         }
 
         style: TreeViewStyle {

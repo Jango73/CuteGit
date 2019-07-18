@@ -37,6 +37,9 @@ public:
     virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
 
     //!
+    virtual QString stageAll(const QString& sPath, bool bStage) override;
+
+    //!
     virtual QString revertFile(const QString& sPath, const QString& sFullName) override;
 
     //!
@@ -44,6 +47,9 @@ public:
 
     //!
     virtual QString push(const QString& sPath) override;
+
+    //!
+    virtual QString pull(const QString& sPath) override;
 
     //!
     virtual QString unstagedDiff(const QString& sPath, const QString& sFullName) override;

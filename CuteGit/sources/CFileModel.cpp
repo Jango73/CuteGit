@@ -204,6 +204,17 @@ void CFileModel::unstageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModel::stageAll()
+{
+    QString sOutput = m_pController->commands()->stageAll(m_pController->repositoryPath(), true);
+
+    emit newOutput(sOutput);
+
+    checkAllFileStatus();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModel::revertSelection(QModelIndexList lIndices)
 {
     for (QModelIndex qIndex : lIndices)
@@ -234,6 +245,17 @@ void CFileModel::commit(const QString& sMessage)
 void CFileModel::push()
 {
     QString sOutput = m_pController->commands()->push(m_pController->repositoryPath());
+
+    emit newOutput(sOutput);
+
+    getGraph();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::pull()
+{
+    QString sOutput = m_pController->commands()->pull(m_pController->repositoryPath());
 
     emit newOutput(sOutput);
 

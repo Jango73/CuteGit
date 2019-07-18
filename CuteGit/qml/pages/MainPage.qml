@@ -102,7 +102,7 @@ Item {
             title: qsTr("&Local")
 
             Action {
-                text: qsTr("&Stage")
+                text: qsTr("&Stage selection")
                 shortcut: "Ctrl++"
 
                 onTriggered: {
@@ -111,7 +111,7 @@ Item {
             }
 
             Action {
-                text: qsTr("&Unstage")
+                text: qsTr("&Unstage selection")
                 shortcut: "Ctrl+-"
 
                 onTriggered: {
@@ -120,11 +120,20 @@ Item {
             }
 
             Action {
-                text: qsTr("&Revert")
+                text: qsTr("&Revert selection")
                 shortcut: "Ctrl+Z"
 
                 onTriggered: {
                     root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
+                }
+            }
+
+            Action {
+                text: qsTr("Stage &all")
+                shortcut: "Ctrl+shift++"
+
+                onTriggered: {
+                    root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
                 }
             }
 
@@ -143,6 +152,11 @@ Item {
 
             Action {
                 text: qsTr("&Pull...")
+                shortcut: "Ctrl+L"
+
+                onTriggered: {
+                    root.controller.fileModelProxy.pull()
+                }
             }
 
             Action {

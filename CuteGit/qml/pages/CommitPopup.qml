@@ -63,7 +63,7 @@ Popup {
                 onClicked: {
                     if (message.text != "") {
                         root.close()
-                        root.controller.fileModel.commit(message.text)
+                        root.controller.fileModelProxy.commit(message.text)
                     }
                 }
             }

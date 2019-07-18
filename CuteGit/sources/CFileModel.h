@@ -92,17 +92,19 @@ public:
     void unstageSelection(QModelIndexList lIndices);
 
     //!
+    void stageAll();
+
+    //!
     void revertSelection(QModelIndexList lIndices);
 
-    //-------------------------------------------------------------------------------------------------
-    // Invokables
-    //-------------------------------------------------------------------------------------------------
+    //!
+    void commit(const QString& sMessage);
 
     //!
-    Q_INVOKABLE void commit(const QString& sMessage);
+    void push();
 
     //!
-    Q_INVOKABLE void push();
+    void pull();
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods

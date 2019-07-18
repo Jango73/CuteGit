@@ -13,9 +13,12 @@ static const char* sCommandStatus = "git status --ignored -s";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
 static const char* sCommandStage = "git add -f %1";
 static const char* sCommandUnstage = "git reset %1";
+static const char* sCommandStageAll = "git add -u";
+static const char* sCommandUnstageAll = "git reset .";
 static const char* sCommandRevert = "git checkout %1";
 static const char* sCommandCommit = "git commit -m \"%1\"";
 static const char* sCommandPush = "git push";
+static const char* sCommandPull = "git pull";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 
 static const char* sStatusRegExp = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
@@ -138,6 +141,16 @@ QString CGitCommands::stageFile(const QString& sPath, const QString& sFullName, 
 
 //-------------------------------------------------------------------------------------------------
 
+QString CGitCommands::stageAll(const QString& sPath, bool bStage)
+{
+    QString sCommand = QString(bStage ? sCommandStageAll : sCommandUnstageAll);
+    QString sOutput = exec(sPath, sCommand);
+
+    return sOutput;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QString CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandRevert).arg(sFullName);
@@ -161,6 +174,16 @@ QString CGitCommands::commit(const QString& sPath, const QString& sMessage)
 QString CGitCommands::push(const QString& sPath)
 {
     QString sCommand = QString(sCommandPush);
+    QString sOutput = exec(sPath, sCommand);
+
+    return sOutput;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CGitCommands::pull(const QString& sPath)
+{
+    QString sCommand = QString(sCommandPull);
     QString sOutput = exec(sPath, sCommand);
 
     return sOutput;
