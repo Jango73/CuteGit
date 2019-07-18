@@ -35,6 +35,9 @@ public:
     virtual QVector<CRepoFile*> getAllFileStatus(const QString& sPath);
 
     //!
+    virtual QStringList getBranches(const QString& sPath);
+
+    //!
     virtual QStringList getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to);
 
     //!

@@ -138,6 +138,7 @@ void CFileModelProxy::refresh()
     if (pModel != nullptr)
     {
         pModel->refresh();
+        invalidateFilter();
     }
 }
 
@@ -274,7 +275,6 @@ bool CFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
 
     return statusShown(sStatus);
 }
-
 
 //-------------------------------------------------------------------------------------------------
 

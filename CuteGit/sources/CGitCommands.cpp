@@ -9,6 +9,7 @@
 //-------------------------------------------------------------------------------------------------
 
 static const char* sCommandStatus = "git status --ignored -s";
+static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
 static const char* sCommandStage = "git add -f %1";
@@ -119,6 +120,20 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
     }
 
     return vReturnValue;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CGitCommands::getBranches(const QString& sPath)
+{
+    QStringList lReturnValue;
+
+    QString sCommand = QString(sCommandBranches);
+    QString sOutput = exec(sPath, sCommand);
+
+    lReturnValue = sOutput.split("\n");
+
+    return lReturnValue;
 }
 
 //-------------------------------------------------------------------------------------------------

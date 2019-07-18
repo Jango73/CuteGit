@@ -38,6 +38,7 @@ public:
     Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
 
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
+    Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(QStringListModel*, p, graphModel, GraphModel)
     Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
 
@@ -116,9 +117,10 @@ public:
 protected:
 
     //!
-    void getGraph(QString sPath = "");
+    void getBranches(QString sPath = "");
 
     //!
+    void getGraph(QString sPath = "");
 
     //-------------------------------------------------------------------------------------------------
     // Signals

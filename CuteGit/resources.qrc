@@ -16,9 +16,11 @@
         <file>qml/pages/MainPage.qml</file>
         <file>qml/pages/FilePane.qml</file>
         <file>qml/pages/RepoPane.qml</file>
+        <file>qml/pages/BranchPane.qml</file>
         <file>qml/pages/ToolPane.qml</file>
         <file>qml/pages/OutputPane.qml</file>
         <file>qml/pages/DiffView.qml</file>
+        <file>qml/pages/GraphPane.qml</file>
         <file>qml/pages/CommitPopup.qml</file>
     </qresource>
 </RCC>

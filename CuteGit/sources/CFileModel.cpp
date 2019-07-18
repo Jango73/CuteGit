@@ -22,6 +22,7 @@ static inline QString sizeString(const QFileInfo &fi)
 CFileModel::CFileModel(CController* pController, QObject* parent)
     : QFileSystemModel(parent)
     , m_pController(pController)
+    , m_pBranchModel(new QStringListModel(this))
     , m_pGraphModel(new QStringListModel())
     , m_pDiffModel(new QStringListModel())
 {
@@ -177,6 +178,7 @@ void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 void CFileModel::refresh()
 {
     checkAllFileStatus();
+    getBranches();
     getGraph();
 }
 
@@ -272,6 +274,18 @@ void CFileModel::pull()
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModel::getBranches(QString sPath)
+{
+    if (sPath.isEmpty())
+    {
+        sPath = m_pController->repositoryPath();
+    }
+
+    m_pBranchModel->setStringList(m_pController->commands()->getBranches(sPath));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModel::getGraph(QString sPath)
 {
     if (sPath.isEmpty())
@@ -292,5 +306,6 @@ void CFileModel::onRootPathChanged(const QString& sNewPath)
     Q_UNUSED(sNewPath);
 
     checkAllFileStatus();
+    getBranches();
     getGraph();
 }

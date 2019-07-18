@@ -39,8 +39,10 @@ Item {
     // Text
     property string okText: qsTr("OK")
     property string clearText: qsTr("Clear")
+    property string graphText: qsTr("Graph")
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
+    property string branchesText: qsTr("Branches")
     property string expandAllText: qsTr("Expand all")
     property string collapseAllText: qsTr("Collapse all")
     property string repositoriesText: qsTr("Repositories")
