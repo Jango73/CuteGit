@@ -63,6 +63,6 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Make a list view for a flat listing of changed files
   * With a button to switch between tree and flat views
 * Rename a commit (that has not been pushed)
-* Reset HEAD to a commmit
+* Reset HEAD to a commit
 * Amend
 * Rebase
