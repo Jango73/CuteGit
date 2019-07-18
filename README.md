@@ -34,7 +34,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 ### CFileModelProxy
 
 * Inherits QSortFilterProxyModel
-* Enables to show/hide the files using their GIT status property
+* Enables showing/hiding the files using their GIT status property
 * Exposes to QML/JS the versioning methods: stage, unstage, commit, push, ...
 
 ### CRepoFile
@@ -57,6 +57,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 
 ## Things to do
 
+* Add file sorting
 * Make the file system model refresh file status when changes occur outside the app
 * Show deleted files in the file system model (somehow)
 * Make a list view for a flat listing of changed files
