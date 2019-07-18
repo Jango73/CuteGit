@@ -8,6 +8,22 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 
 Please do not use shadow build because of the submoduled qt-plus library.
 
+## Things to fix
+
+* 'Expand all' and 'collapse all' buttons
+
+## Things to do
+
+* Add file sorting
+* Make the file system model refresh file status when changes occur outside the app
+* Show deleted files in the file system model (somehow)
+* Make a list view for a flat listing of changed files
+  * With a button to switch between tree and flat views
+* Rename a commit (that has not been pushed)
+* Reset HEAD to a commit
+* Amend
+* Rebase
+
 ## Classes
 
 ### CuteGit
@@ -50,19 +66,3 @@ Please do not use shadow build because of the submoduled qt-plus library.
 
 * Inherits CCommands
 * Implements GIT versioning commands
-
-## Things to fix
-
-* 'Expand all' and 'collapse all' buttons
-
-## Things to do
-
-* Add file sorting
-* Make the file system model refresh file status when changes occur outside the app
-* Show deleted files in the file system model (somehow)
-* Make a list view for a flat listing of changed files
-  * With a button to switch between tree and flat views
-* Rename a commit (that has not been pushed)
-* Reset HEAD to a commit
-* Amend
-* Rebase
