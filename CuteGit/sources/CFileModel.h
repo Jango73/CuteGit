@@ -86,6 +86,9 @@ public:
     void handleCurrentIndex(QModelIndex qIndex);
 
     //!
+    void refresh();
+
+    //!
     void stageSelection(QModelIndexList lIndices);
 
     //!

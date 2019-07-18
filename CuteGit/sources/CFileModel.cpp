@@ -174,6 +174,14 @@ void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModel::refresh()
+{
+    checkAllFileStatus();
+    getGraph();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModel::stageSelection(QModelIndexList lIndices)
 {
     for (QModelIndex qIndex : lIndices)

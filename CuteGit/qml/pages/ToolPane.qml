@@ -26,11 +26,11 @@ Pane {
         }
 
         QC14.Tab {
-            title: "???"
+            title: "Tool B"
         }
 
         QC14.Tab {
-            title: "???"
+            title: "Tool C"
         }
 
         style: TabViewStyle {

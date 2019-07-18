@@ -4,7 +4,7 @@ import "../components"
 
 Pane {
     id: root
-    padding: 0
+    padding: Const.mainPadding
 
     property variant controller: null
 

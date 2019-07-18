@@ -131,6 +131,18 @@ QString CFileModelProxy::stagedForIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::refresh()
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->refresh();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModelProxy::stageSelection(QModelIndexList lIndices)
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());

@@ -8,13 +8,26 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 
 Please do not use shadow build because of the submoduled qt-plus library.
 
+## Things it does
+
+* Open a GIT repository
+* Show repository files as a tree, colored according to status
+* Show the graph of the repository
+* Show the diffs in the selected item (folder or file)
+* Show the output of the executed GIT commands
+* Mark files as staged / unstaged
+* Revert files
+* Commit
+* Simple pull
+* Simple push
+
 ## Things to fix
 
 * 'Expand all' and 'collapse all' buttons
 
 ## Things to do
 
-* Add file sorting
+* File sorting
 * Make the file system model refresh file status when changes occur outside the app
 * Show deleted files in the file system model (somehow)
 * Make a list view for a flat listing of changed files
@@ -23,6 +36,8 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Reset HEAD to a commit
 * Amend
 * Rebase
+* File log
+* Blame
 
 ## Classes
 

@@ -52,46 +52,60 @@ Item {
         Menu {
             title: qsTr("&Files")
 
+            Action {
+                text: qsTr("&Refresh")
+                shortcut: "F5"
+
+                onTriggered: {
+                    root.controller.fileModelProxy.refresh()
+                }
+            }
+
             MenuItem {
-                text: qsTr("Show clean")
+                text: qsTr("Show &clean")
                 checkable: true
                 checked: root.controller.fileModelProxy.showClean
+
                 onClicked: {
                     root.controller.fileModelProxy.showClean = !root.controller.fileModelProxy.showClean
                 }
             }
 
             MenuItem {
-                text: qsTr("Show added")
+                text: qsTr("Show &added")
                 checkable: true
                 checked: root.controller.fileModelProxy.showAdded
+
                 onClicked: {
                     root.controller.fileModelProxy.showAdded = !root.controller.fileModelProxy.showAdded
                 }
             }
 
             MenuItem {
-                text: qsTr("Show modified")
+                text: qsTr("Show &modified")
                 checkable: true
                 checked: root.controller.fileModelProxy.showModified
+
                 onClicked: {
                     root.controller.fileModelProxy.showModified = !root.controller.fileModelProxy.showModified
                 }
             }
 
             MenuItem {
-                text: qsTr("Show deleted")
+                text: qsTr("Show &deleted")
                 checkable: true
                 checked: root.controller.fileModelProxy.showDeleted
+
                 onClicked: {
                     root.controller.fileModelProxy.showDeleted = !root.controller.fileModelProxy.showDeleted
                 }
             }
 
             MenuItem {
-                text: qsTr("Show untracked")
+                text: qsTr("Show &untracked")
                 checkable: true
                 checked: root.controller.fileModelProxy.showUntracked
+
                 onClicked: {
                     root.controller.fileModelProxy.showUntracked = !root.controller.fileModelProxy.showUntracked
                 }
@@ -100,6 +114,15 @@ Item {
 
         Menu {
             title: qsTr("&Local")
+
+            Action {
+                text: qsTr("Stage &all")
+                shortcut: "Ctrl+shift++"
+
+                onTriggered: {
+                    root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
+                }
+            }
 
             Action {
                 text: qsTr("&Stage selection")
@@ -125,15 +148,6 @@ Item {
 
                 onTriggered: {
                     root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
-                }
-            }
-
-            Action {
-                text: qsTr("Stage &all")
-                shortcut: "Ctrl+shift++"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
                 }
             }
 
@@ -165,6 +179,18 @@ Item {
 
                 onTriggered: {
                     root.controller.fileModelProxy.push()
+                }
+            }
+        }
+
+        Menu {
+            title: qsTr("&Help")
+
+            Action {
+                text: qsTr("&Shortcuts...")
+
+                onTriggered: {
+                    shortcuts.open()
                 }
             }
         }
@@ -272,6 +298,19 @@ Item {
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
         controller: root.controller
+    }
+
+    Popup {
+        id: shortcuts
+        width: root.width * Const.popupWidthNorm
+        height: root.height * Const.popupHeightNorm
+        anchors.centerIn: parent
+        closePolicy: Popup.CloseOnEscape
+        padding: Const.mainPadding
+        StandardText {
+            anchors.fill: parent
+            text: Const.shortcutsText
+        }
     }
 
     QLP.FolderDialog {

@@ -86,11 +86,20 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
             if (sUnstaged.isEmpty() == false)
             {
                 if (sUnstaged == sStatusAdded)
+                {
+                    bStaged = false;
                     eStatus = CRepoFile::eAdded;
+                }
                 else if (sUnstaged == sStatusModified)
+                {
+                    bStaged = false;
                     eStatus = CRepoFile::eModified;
+                }
                 else if (sUnstaged == sStatusDeleted)
+                {
+                    bStaged = false;
                     eStatus = CRepoFile::eDeleted;
+                }
                 else if (sUnstaged == sStatusIgnored)
                     eStatus = CRepoFile::eIgnored;
                 else if (sUnstaged == sStatusUntracked)

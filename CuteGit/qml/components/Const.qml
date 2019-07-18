@@ -46,6 +46,19 @@ Item {
     property string repositoriesText: qsTr("Repositories")
     property string enterMessageHereText: qsTr("Enter your message here...")
 
+    property string shortcutsText: qsTr(
+                                       "Shortcuts\n" +
+                                       "Open a repository\t\tControl + 'O'\n" +
+                                       "Quit\t\t\tControl + 'Q'\n" +
+                                       "Stage all\t\t\tControl + Shift + '+'\n" +
+                                       "Stage selection\t\tControl + '+'\n" +
+                                       "Unstage selection\t\tControl + '-'\n" +
+                                       "Revert selection\t\tControl + 'Z'\n" +
+                                       "Commit\t\t\tControl + 'C'\n" +
+                                       "Pull\t\t\tControl + 'L'\n" +
+                                       "Push\t\t\tControl + 'P'\n"
+                                       )
+
     //
     property string statusModified: "*"
     property string statusAdded: "+"
