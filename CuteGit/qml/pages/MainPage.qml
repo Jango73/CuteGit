@@ -203,15 +203,33 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        RepoPane {
-            id: repositoryView
+        Item {
+            id: rightPart
             anchors.top: parent.top
             anchors.bottom: bottomPart.top
             anchors.right: parent.right
             width: parent.width * 0.15
-            anchors.margins: Const.paneMargins
 
-            controller: root.controller
+            RepoPane {
+                id: repositoryView
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Const.paneMargins
+                height: parent.height * 0.5
+
+                controller: root.controller
+            }
+
+            BranchPane {
+                id: branchView
+                anchors.top: repositoryView.bottom
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                controller: root.controller
+            }
         }
 
         Item {
@@ -219,7 +237,7 @@ Item {
             anchors.top: parent.top
             anchors.bottom: bottomPart.top
             anchors.left: parent.left
-            anchors.right: repositoryView.left
+            anchors.right: rightPart.left
 
             ItemSelectionModel {
                 id: fileSelection
@@ -264,20 +282,14 @@ Item {
             anchors.bottom: parent.bottom
             height: parent.height * 0.33
 
-            Pane {
+            GraphPane {
                 id: graphView
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 width: parent.width * 0.5
-                anchors.margins: Const.paneMargins
 
-                Material.elevation: Const.paneElevation
-
-                StandardStringListView {
-                    anchors.fill: parent
-                    model: root.controller.fileModel !== null ? root.controller.fileModel.graphModel : undefined
-                }
+                controller: root.controller
             }
 
             OutputPane {

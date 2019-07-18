@@ -18,14 +18,7 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         height: Const.elementHeight
-        text: Const.repositoriesText
-    }
-
-    StandardLabel {
-        id: listPlaceHolder
-        anchors.fill: list
-        visible: !list.visible
-        text: "Open a repository..."
+        text: Const.branchesText
     }
 
     StandardListView {
@@ -35,7 +28,7 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         visible: count > 0
-        model: root.controller.repositoryModel
+        model: root.controller.fileModel.branchModel
 
         delegate: Item {
             width: parent.width
@@ -44,7 +37,7 @@ Pane {
             MouseArea {
                 anchors.fill: parent
                 onDoubleClicked: {
-                    controller.repositoryPath = display
+                    // controller.repositoryPath = display
                 }
             }
 
@@ -53,12 +46,13 @@ Pane {
                 targetWidth: text.width
                 targetHeight: text.height
                 anchors.centerIn: text
-                visible: display === root.controller.repositoryPath
+                // visible: display === root.controller.repositoryPath
+                visible: false
             }
 
             StandardText {
                 id: text
-                text: display.split("/").slice(-1)[0]
+                text: display
                 color: selection.visible ? Material.background : Material.foreground
             }
         }

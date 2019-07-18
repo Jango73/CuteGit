@@ -12,6 +12,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 
 * Open a GIT repository
 * Show repository files as a tree, colored according to status
+* Show the branches of the repository
 * Show the graph of the repository
 * Show the diffs in the selected item (folder or file)
 * Show the output of the executed GIT commands
@@ -35,6 +36,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
   * With a button to switch between tree and flat views
 * Rename a commit (that has not been pushed)
 * Reset HEAD to a commit
+* Change current branch
 * Amend
 * Rebase
 * File log
