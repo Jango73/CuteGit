@@ -237,6 +237,7 @@ Item {
                 anchors.left: parent.left
                 width: parent.width * 0.5
                 anchors.margins: Const.paneMargins
+                focus: true
 
                 controller: root.controller
                 selection: fileSelection

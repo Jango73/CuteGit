@@ -20,6 +20,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Commit
 * Simple pull
 * Simple push
+* Refresh view
 
 ## Things to fix
 
@@ -38,6 +39,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Rebase
 * File log
 * Blame
+* Stash save and pop
 
 ## Classes
 

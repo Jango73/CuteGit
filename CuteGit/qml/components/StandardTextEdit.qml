@@ -28,6 +28,7 @@ Item {
         wrapMode: TextEdit.WordWrap
         color: Material.foreground
         selectByMouse: true
+        focus: true
     }
 
     StandardText {

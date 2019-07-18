@@ -14,6 +14,10 @@ Popup {
 
     property variant controller: null
 
+    Component.onCompleted: {
+        root.forceActiveFocus()
+    }
+
     contentItem: Item {
         anchors.fill: parent
 
@@ -35,6 +39,7 @@ Popup {
             anchors.right: parent.right
             height: parent.height * 0.4
             anchors.margins: Const.mainPadding
+            focus: true
         }
 
         StandardText {

@@ -55,6 +55,7 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        focus: true
 
         model: root.controller.fileModelProxy
         rootIndex: root.controller.fileModelProxy !== null ? root.controller.fileModelProxy.rootPathIndex : undefined
