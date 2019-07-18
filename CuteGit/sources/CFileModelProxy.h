@@ -85,4 +85,7 @@ protected:
 
     //!
     bool hasToBeDisplayed(const QModelIndex qIndex) const;
+
+    //!
+    bool statusShown(const QString& sStatus) const;
 };

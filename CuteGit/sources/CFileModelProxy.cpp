@@ -207,35 +207,45 @@ QModelIndexList CFileModelProxy::indexListToSource(QModelIndexList lIndices) con
 
 bool CFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
 {
-    bool result = false;
-
     QModelIndex qSubIndex = sourceModel()->index(qIndex.row(), 1, qIndex.parent());
+    QString sName = sourceModel()->data(qSubIndex, CFileModel::FileNameRole).toString();
+    QString sStatus = sourceModel()->data(qSubIndex, CFileModel::eStatusRole).toString();
 
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
         if (pModel->isDir(qSubIndex))
+        {
+            if (sStatus == CRepoFile::sTokenIgnored)
+                return false;
+
             return true;
+        }
     }
 
-    QString sName = sourceModel()->data(qSubIndex, CFileModel::FileNameRole).toString();
-    QString sStatus = sourceModel()->data(qSubIndex, CFileModel::eStatusRole).toString();
+    return statusShown(sStatus);
+}
 
+
+//-------------------------------------------------------------------------------------------------
+
+bool CFileModelProxy::statusShown(const QString& sStatus) const
+{
     if (m_bShowClean && sStatus == CRepoFile::sTokenClean)
-        result = true;
+        return true;
 
     if (m_bShowAdded && sStatus == CRepoFile::sTokenAdded)
-        result = true;
+        return true;
 
     if (m_bShowModified && sStatus == CRepoFile::sTokenModified)
-        result = true;
+        return true;
 
     if (m_bShowDeleted && sStatus == CRepoFile::sTokenDeleted)
-        result = true;
+        return true;
 
     if (m_bShowUntracked && sStatus == CRepoFile::sTokenUntracked)
-        result = true;
+        return true;
 
-    return result;
+    return false;
 }

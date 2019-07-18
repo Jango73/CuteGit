@@ -18,13 +18,13 @@ static const char* sCommandCommit = "git commit -m \"%1\"";
 static const char* sCommandPush = "git push";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 
-static const char* sStatusRegExp = "([a-zA-Z?\\s])([a-zA-Z?\\s])\\s(.*)";
+static const char* sStatusRegExp = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
 const QString sStatusDeleted = "D";
 const QString sStatusUntracked = "?";
-const QString sStatusUntracked2 = "!";
+const QString sStatusIgnored = "!";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -49,6 +49,9 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
 
     for (QString sLine : lStrings)
     {
+        if (sLine.isEmpty() == false && sLine.back() == '/')
+            sLine.chop(1);
+
         if (tRegExp.indexIn(sLine) != -1)
         {
             QString sStaged = tRegExp.cap(1).trimmed();
@@ -68,7 +71,9 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
                     eStatus = CRepoFile::eModified;
                 else if (sStaged == sStatusDeleted)
                     eStatus = CRepoFile::eDeleted;
-                else if (sStaged == sStatusUntracked || sStaged == sStatusUntracked2)
+                else if (sStaged == sStatusIgnored)
+                    eStatus = CRepoFile::eIgnored;
+                else if (sStaged == sStatusUntracked)
                 {
                     bStaged = false;
                     eStatus = CRepoFile::eUntracked;
@@ -83,7 +88,9 @@ QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
                     eStatus = CRepoFile::eModified;
                 else if (sUnstaged == sStatusDeleted)
                     eStatus = CRepoFile::eDeleted;
-                else if (sUnstaged == sStatusUntracked || sStaged == sStatusUntracked2)
+                else if (sUnstaged == sStatusIgnored)
+                    eStatus = CRepoFile::eIgnored;
+                else if (sUnstaged == sStatusUntracked)
                 {
                     bStaged = false;
                     eStatus = CRepoFile::eUntracked;
