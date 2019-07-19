@@ -105,11 +105,14 @@ bool CFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceP
 
 QString CFileModelProxy::statusForIndex(QModelIndex qIndex)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
-
-    if (pModel != nullptr)
+    if (qIndex.isValid())
     {
-        return pModel->data(mapToSource(qIndex), CFileModel::eStatusRole).toString();
+        CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+        if (pModel != nullptr)
+        {
+            return pModel->data(mapToSource(qIndex), CFileModel::eStatusRole).toString();
+        }
     }
 
     return "";
@@ -119,11 +122,14 @@ QString CFileModelProxy::statusForIndex(QModelIndex qIndex)
 
 QString CFileModelProxy::stagedForIndex(QModelIndex qIndex)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
-
-    if (pModel != nullptr)
+    if (qIndex.isValid())
     {
-        return pModel->data(mapToSource(qIndex), CFileModel::eStagedRole).toString();
+        CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+        if (pModel != nullptr)
+        {
+            return pModel->data(mapToSource(qIndex), CFileModel::eStagedRole).toString();
+        }
     }
 
     return "";
@@ -230,11 +236,14 @@ void CFileModelProxy::pull()
 
 void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
-
-    if (pModel != nullptr)
+    if (qIndex.isValid())
     {
-        pModel->handleCurrentIndex(mapToSource(qIndex));
+        CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+        if (pModel != nullptr)
+        {
+            pModel->handleCurrentIndex(mapToSource(qIndex));
+        }
     }
 }
 
@@ -246,7 +255,10 @@ QModelIndexList CFileModelProxy::indexListToSource(QModelIndexList lIndices) con
 
     for (QModelIndex qIndex : lIndices)
     {
-        targetIndices << mapToSource(qIndex);
+        if (qIndex.isValid())
+        {
+            targetIndices << mapToSource(qIndex);
+        }
     }
 
     return targetIndices;
