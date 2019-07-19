@@ -31,6 +31,10 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     setResolveSymlinks(true);
 
     connect(this, &QFileSystemModel::rootPathChanged, this, &CFileModel::onRootPathChanged);
+
+    connect(m_pController->commands(), &CCommands::execFinished_QString, this, &CFileModel::onCommandFinished_QString);
+    connect(m_pController->commands(), &CCommands::execFinished_QStringList, this, &CFileModel::onCommandFinished_QStringList);
+    connect(m_pController->commands(), &CCommands::execFinished_QList_CRepoFile, this, &CFileModel::onCommandFinished_QList_CRepoFile);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -49,7 +53,7 @@ QModelIndex CFileModel::rootPathIndex() const
 
 //-------------------------------------------------------------------------------------------------
 
-CRepoFile* CFileModel::fileByFullName(const QVector<CRepoFile*>& vFiles, const QString& sFullName) const
+CRepoFile* CFileModel::fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const
 {
     for (CRepoFile* pFile : vFiles)
     {
@@ -79,6 +83,7 @@ QVariant CFileModel::data(const QModelIndex& index, int role) const
     {
         switch (role)
         {
+
         case eSizeRole:
         {
             return QVariant(sizeString(fileInfo(index)));
@@ -94,6 +99,7 @@ QVariant CFileModel::data(const QModelIndex& index, int role) const
 
             return CRepoFile::sTokenClean;
         }
+
         case eStagedRole:
         {
             QString sFileFullName = fileInfo(index).absoluteFilePath();
@@ -104,9 +110,11 @@ QVariant CFileModel::data(const QModelIndex& index, int role) const
 
             return CRepoFile::sTokenUnstaged;
         }
+
         default:
             break;
         }
+
     }
 
     return QFileSystemModel::data(index, role);
@@ -121,46 +129,7 @@ void CFileModel::checkAllFileStatus(QString sPath)
         sPath = m_pController->repositoryPath();
     }
 
-    QVector<CRepoFile*> vNewRepoFiles = m_pController->commands()->getAllFileStatus(sPath);
-    QVector<QModelIndex> changedIndices;
-
-    for (CRepoFile* pExistingFile : m_vRepoFiles)
-    {
-        CRepoFile* pNewFile = fileByFullName(vNewRepoFiles, pExistingFile->fullName());
-
-        if (pNewFile == nullptr)
-        {
-            QModelIndex qIndex = index(pExistingFile->fullName());
-            changedIndices << qIndex;
-        }
-    }
-
-    for (CRepoFile* pFile : vNewRepoFiles)
-    {
-        CRepoFile* pExistingFile = fileByFullName(m_vRepoFiles, pFile->fullName());
-
-        if (pExistingFile != nullptr)
-        {
-            if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
-            {
-                QModelIndex qIndex = index(pExistingFile->fullName());
-                changedIndices << qIndex;
-            }
-        }
-    }
-
-    qDeleteAll(m_vRepoFiles);
-    m_vRepoFiles.clear();
-
-    for (CRepoFile* pFile : vNewRepoFiles)
-    {
-        m_vRepoFiles << pFile;
-    }
-
-    for (QModelIndex qIndex : changedIndices)
-    {
-        emit dataChanged(qIndex, qIndex);
-    }
+    m_pController->commands()->getAllFileStatus(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -168,15 +137,9 @@ void CFileModel::checkAllFileStatus(QString sPath)
 void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 {
     QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-    QString sOutput;
-    QStringList lNewList;
 
-    sOutput = m_pController->commands()->unstagedFileDiff(m_pController->repositoryPath(), sFileFullName);
-    lNewList = sOutput.split("\n");
-    m_pDiffModel->setStringList(lNewList);
-
-    lNewList = m_pController->commands()->fileLog(m_pController->repositoryPath(), sFileFullName);
-    m_pLogModel->setStringList(lNewList);
+    m_pController->commands()->unstagedFileDiff(m_pController->repositoryPath(), sFileFullName);
+    m_pController->commands()->fileLog(m_pController->repositoryPath(), sFileFullName);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -195,9 +158,7 @@ void CFileModel::stageSelection(QModelIndexList lIndices)
     for (QModelIndex qIndex : lIndices)
     {
         QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-        QString sOutput = m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, true);
-
-        emit newOutput(sOutput);
+        m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, true);
     }
 
     checkAllFileStatus();
@@ -210,9 +171,7 @@ void CFileModel::unstageSelection(QModelIndexList lIndices)
     for (QModelIndex qIndex : lIndices)
     {
         QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-        QString sOutput = m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, false);
-
-        emit newOutput(sOutput);
+        m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, false);
     }
 
     checkAllFileStatus();
@@ -222,9 +181,7 @@ void CFileModel::unstageSelection(QModelIndexList lIndices)
 
 void CFileModel::stageAll()
 {
-    QString sOutput = m_pController->commands()->stageAll(m_pController->repositoryPath(), true);
-
-    emit newOutput(sOutput);
+    m_pController->commands()->stageAll(m_pController->repositoryPath(), true);
 
     checkAllFileStatus();
 }
@@ -236,9 +193,7 @@ void CFileModel::revertSelection(QModelIndexList lIndices)
     for (QModelIndex qIndex : lIndices)
     {
         QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-        QString sOutput = m_pController->commands()->revertFile(m_pController->repositoryPath(), sFileFullName);
-
-        emit newOutput(sOutput);
+        m_pController->commands()->revertFile(m_pController->repositoryPath(), sFileFullName);
     }
 
     checkAllFileStatus();
@@ -248,9 +203,7 @@ void CFileModel::revertSelection(QModelIndexList lIndices)
 
 void CFileModel::commit(const QString& sMessage)
 {
-    QString sOutput = m_pController->commands()->commit(m_pController->repositoryPath(), sMessage);
-
-    emit newOutput(sOutput);
+    m_pController->commands()->commit(m_pController->repositoryPath(), sMessage);
 
     checkAllFileStatus();
     getGraph();
@@ -260,9 +213,7 @@ void CFileModel::commit(const QString& sMessage)
 
 void CFileModel::push()
 {
-    QString sOutput = m_pController->commands()->push(m_pController->repositoryPath());
-
-    emit newOutput(sOutput);
+    m_pController->commands()->push(m_pController->repositoryPath());
 
     getGraph();
 }
@@ -271,9 +222,7 @@ void CFileModel::push()
 
 void CFileModel::pull()
 {
-    QString sOutput = m_pController->commands()->pull(m_pController->repositoryPath());
-
-    emit newOutput(sOutput);
+    m_pController->commands()->pull(m_pController->repositoryPath());
 
     getGraph();
 }
@@ -287,7 +236,7 @@ void CFileModel::getBranches(QString sPath)
         sPath = m_pController->repositoryPath();
     }
 
-    m_pBranchModel->setStringList(m_pController->commands()->getBranches(sPath));
+    m_pController->commands()->getBranches(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -302,7 +251,7 @@ void CFileModel::getGraph(QString sPath)
     QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
     QDateTime dTo = QDateTime::currentDateTime().addDays(2);
 
-    m_pGraphModel->setStringList(m_pController->commands()->getGraph(sPath, dFrom, dTo));
+    m_pController->commands()->getGraph(sPath, dFrom, dTo);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -314,4 +263,129 @@ void CFileModel::onRootPathChanged(const QString& sNewPath)
     checkAllFileStatus();
     getBranches();
     getGraph();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::onCommandFinished_QString(CProcessCommand::EProcessCommand eCommand, QString sOutput)
+{
+    switch (eCommand)
+    {
+
+    case CProcessCommand::eStageFile:
+    case CProcessCommand::eStageAll:
+    case CProcessCommand::eRevertFile:
+    case CProcessCommand::eCommit:
+    case CProcessCommand::ePush:
+    case CProcessCommand::ePull:
+    {
+        emit newOutput(sOutput);
+        break;
+    }
+
+    default:
+    {
+        break;
+    }
+
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::onCommandFinished_QStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue)
+{
+    switch (eCommand)
+    {
+
+    case CProcessCommand::eGetBranches:
+    {
+        m_pBranchModel->setStringList(lValue);
+        break;
+    }
+
+    case CProcessCommand::eGetGraph:
+    {
+        m_pGraphModel->setStringList(lValue);
+        break;
+    }
+
+    case CProcessCommand::eUnstagedFileDiff:
+    {
+        m_pDiffModel->setStringList(lValue);
+        break;
+    }
+
+    case CProcessCommand::eFileLog:
+    {
+        m_pLogModel->setStringList(lValue);
+        break;
+    }
+
+    default:
+    {
+        break;
+    }
+
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::onCommandFinished_QList_CRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles)
+{
+    switch (eCommand)
+    {
+
+    case CProcessCommand::eGetAllFileStatus:
+    {
+        QVector<QModelIndex> changedIndices;
+
+        for (CRepoFile* pExistingFile : m_vRepoFiles)
+        {
+            CRepoFile* pNewFile = fileByFullName(vNewRepoFiles, pExistingFile->fullName());
+
+            if (pNewFile == nullptr)
+            {
+                QModelIndex qIndex = index(pExistingFile->fullName());
+                changedIndices << qIndex;
+            }
+        }
+
+        for (CRepoFile* pFile : vNewRepoFiles)
+        {
+            CRepoFile* pExistingFile = fileByFullName(m_vRepoFiles, pFile->fullName());
+
+            if (pExistingFile != nullptr)
+            {
+                if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
+                {
+                    QModelIndex qIndex = index(pExistingFile->fullName());
+                    changedIndices << qIndex;
+                }
+            }
+        }
+
+        qDeleteAll(m_vRepoFiles);
+        m_vRepoFiles.clear();
+
+        for (CRepoFile* pFile : vNewRepoFiles)
+        {
+            m_vRepoFiles << pFile;
+        }
+
+        for (QModelIndex qIndex : changedIndices)
+        {
+            emit dataChanged(qIndex, qIndex);
+        }
+
+        break;
+    }
+
+    default:
+    {
+        break;
+    }
+
+    }
 }

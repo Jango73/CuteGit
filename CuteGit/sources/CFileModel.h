@@ -11,6 +11,7 @@
 
 // Application
 #include "CRepoFile.h"
+#include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
@@ -55,7 +56,7 @@ public:
     CFileModel(CController* pController, QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CFileModel() Q_DECL_OVERRIDE;
+    virtual ~CFileModel() override;
 
     //-------------------------------------------------------------------------------------------------
     // Setters
@@ -69,17 +70,17 @@ public:
     QModelIndex rootPathIndex() const;
 
     //!
-    CRepoFile* fileByFullName(const QVector<CRepoFile*>& vFiles, const QString& sFullName) const;
+    CRepoFile* fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
     //! Returns role names
-    virtual QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
+    virtual QHash<int, QByteArray> roleNames() const override;
 
     //! Returns data
-    virtual QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
+    virtual QVariant data(const QModelIndex& index, int role) const override;
 
     //!
     void checkAllFileStatus(QString sPath = "");
@@ -138,7 +139,17 @@ signals:
 
 protected slots:
 
+    //!
     void onRootPathChanged(const QString& sNewPath);
+
+    //!
+    void onCommandFinished_QString(CProcessCommand::EProcessCommand eCommand, QString sValue);
+
+    //!
+    void onCommandFinished_QStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
+
+    //!
+    void onCommandFinished_QList_CRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
 
     //-------------------------------------------------------------------------------------------------
     // Properties
@@ -146,5 +157,5 @@ protected slots:
 
 protected:
 
-    QVector<CRepoFile*>     m_vRepoFiles;
+    QList<CRepoFile*>     m_vRepoFiles;
 };

@@ -4,14 +4,56 @@
 // Qt
 #include <QObject>
 #include <QDateTime>
+#include <QMap>
+#include <QThread>
+#include <QMutex>
 
 // Application
 #include "CRepoFile.h"
 
 //-------------------------------------------------------------------------------------------------
 
-class CCommands
+class CProcessCommand : public QObject
 {
+    Q_OBJECT
+
+public:
+
+    enum EProcessCommand
+    {
+        eGetAllFileStatus,
+        eGetBranches,
+        eGetGraph,
+        eStageFile,
+        eStageAll,
+        eRevertFile,
+        eCommit,
+        ePush,
+        ePull,
+        eUnstagedFileDiff,
+        eFileLog
+    };
+
+    Q_ENUMS(EProcessCommand)
+
+    CProcessCommand(EProcessCommand eCommand, QString sWorkPath, QString sCommand)
+        : m_eCommand(eCommand)
+        , m_sWorkPath(sWorkPath)
+        , m_sCommand(sCommand)
+    {
+    }
+
+    EProcessCommand m_eCommand;
+    QString m_sWorkPath;
+    QString m_sCommand;
+};
+
+//-------------------------------------------------------------------------------------------------
+
+class CCommands : public QThread
+{
+    Q_OBJECT
+
 public:
 
     //-------------------------------------------------------------------------------------------------
@@ -22,45 +64,68 @@ public:
     CCommands();
 
     //! Destructor
-    virtual ~CCommands();
+    virtual ~CCommands() override;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
     //!
-    QString exec(const QString& sWorkPath, const QString& sCommand);
+    virtual void run() override;
 
     //!
-    virtual QVector<CRepoFile*> getAllFileStatus(const QString& sPath);
+    void exec(CProcessCommand* pCommand);
 
     //!
-    virtual QStringList getBranches(const QString& sPath);
+    virtual void getAllFileStatus(const QString& sPath);
 
     //!
-    virtual QStringList getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to);
+    virtual void getBranches(const QString& sPath);
 
     //!
-    virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage);
+    virtual void getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to);
 
     //!
-    virtual QString stageAll(const QString& sPath, bool bStage);
+    virtual void fileLog(const QString& sPath, const QString& sFullName);
 
     //!
-    virtual QString revertFile(const QString& sPath, const QString& sFullName);
+    virtual void stageFile(const QString& sPath, const QString& sFullName, bool bStage);
 
     //!
-    virtual QString commit(const QString& sPath, const QString& sMessage);
+    virtual void stageAll(const QString& sPath, bool bStage);
 
     //!
-    virtual QString push(const QString& sPath);
+    virtual void revertFile(const QString& sPath, const QString& sFullName);
 
     //!
-    virtual QString pull(const QString& sPath);
+    virtual void commit(const QString& sPath, const QString& sMessage);
 
     //!
-    virtual QString unstagedFileDiff(const QString& sPath, const QString& sFullName);
+    virtual void push(const QString& sPath);
 
     //!
-    virtual QStringList fileLog(const QString& sPath, const QString& sFullName);
+    virtual void pull(const QString& sPath);
+
+    //!
+    virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);
+
+signals:
+
+    //!
+    void execFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue);
+
+    //!
+    void execFinished_QString(CProcessCommand::EProcessCommand eCommand, QString sValue);
+
+    //!
+    void execFinished_QStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
+
+    //!
+    void execFinished_QList_CRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
+
+private:
+
+    bool                    m_bStop;
+    QMutex                  m_mMutex;
+    QList<CProcessCommand*> m_lCommands;
 };

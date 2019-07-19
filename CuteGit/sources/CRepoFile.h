@@ -40,10 +40,10 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CRepoFile();
+    CRepoFile(QObject* parent = nullptr);
 
     //! Destructor
-    virtual ~CRepoFile();
+    virtual ~CRepoFile() override;
 
     //!
     QString statusToString() const;

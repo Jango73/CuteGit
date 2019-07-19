@@ -18,8 +18,9 @@ const QString CRepoFile::sTokenUnstaged = " ";
 
 //-------------------------------------------------------------------------------------------------
 
-CRepoFile::CRepoFile()
-    : m_eStatus(eUntracked)
+CRepoFile::CRepoFile(QObject* parent)
+    : QObject(parent)
+    , m_eStatus(eUntracked)
     , m_bStaged(false)
 {
 }

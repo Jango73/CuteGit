@@ -11,6 +11,8 @@
 
 class CGitCommands : public CCommands
 {
+    Q_OBJECT
+
 public:
 
     //-------------------------------------------------------------------------------------------------
@@ -28,35 +30,40 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    virtual QVector<CRepoFile*> getAllFileStatus(const QString& sPath) override;
+    virtual void getAllFileStatus(const QString& sPath) override;
 
     //!
-    virtual QStringList getBranches(const QString& sPath) override;
+    virtual void getBranches(const QString& sPath) override;
 
     //!
-    virtual QStringList getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
+    virtual void getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
 
     //!
-    virtual QString stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
+    virtual void fileLog(const QString& sPath, const QString& sFullName) override;
 
     //!
-    virtual QString stageAll(const QString& sPath, bool bStage) override;
+    virtual void stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
 
     //!
-    virtual QString revertFile(const QString& sPath, const QString& sFullName) override;
+    virtual void stageAll(const QString& sPath, bool bStage) override;
 
     //!
-    virtual QString commit(const QString& sPath, const QString& sMessage) override;
+    virtual void revertFile(const QString& sPath, const QString& sFullName) override;
 
     //!
-    virtual QString push(const QString& sPath) override;
+    virtual void commit(const QString& sPath, const QString& sMessage) override;
 
     //!
-    virtual QString pull(const QString& sPath) override;
+    virtual void push(const QString& sPath) override;
 
     //!
-    virtual QString unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
+    virtual void pull(const QString& sPath) override;
 
     //!
-    virtual QStringList fileLog(const QString& sPath, const QString& sFullName) override;
+    virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
+
+protected slots:
+
+    //!
+    void onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue);
 };

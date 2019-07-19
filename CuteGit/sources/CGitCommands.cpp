@@ -35,6 +35,7 @@ const QString sStatusIgnored = "!";
 
 CGitCommands::CGitCommands()
 {
+    connect(this, &CCommands::execFinished, this, &CGitCommands::onExecFinished);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -45,195 +46,200 @@ CGitCommands::~CGitCommands()
 
 //-------------------------------------------------------------------------------------------------
 
-QVector<CRepoFile*> CGitCommands::getAllFileStatus(const QString& sPath)
+void CGitCommands::getAllFileStatus(const QString& sPath)
 {
-    QVector<CRepoFile*> vReturnValue;
-    QString sOutput = exec(sPath, sCommandStatus);
-    QStringList lStrings = sOutput.split("\n");
-    QRegExp tRegExp(sStatusRegExp);
-
-    for (QString sLine : lStrings)
-    {
-        if (sLine.isEmpty() == false && sLine.back() == '/')
-            sLine.chop(1);
-
-        if (tRegExp.indexIn(sLine) != -1)
-        {
-            QString sStaged = tRegExp.cap(1).trimmed();
-            QString sUnstaged = tRegExp.cap(2).trimmed();
-            QString sFullName = sPath + "/" + tRegExp.cap(3).trimmed();
-            bool bStaged = false;
-
-            CRepoFile::ERepoFileStatus eStatus = CRepoFile::eClean;
-
-            if (sStaged.isEmpty() == false)
-            {
-                bStaged = true;
-
-                if (sStaged == sStatusAdded)
-                    eStatus = CRepoFile::eAdded;
-                else if (sStaged == sStatusModified)
-                    eStatus = CRepoFile::eModified;
-                else if (sStaged == sStatusDeleted)
-                    eStatus = CRepoFile::eDeleted;
-                else if (sStaged == sStatusIgnored)
-                    eStatus = CRepoFile::eIgnored;
-                else if (sStaged == sStatusUntracked)
-                {
-                    bStaged = false;
-                    eStatus = CRepoFile::eUntracked;
-                }
-            }
-
-            if (sUnstaged.isEmpty() == false)
-            {
-                if (sUnstaged == sStatusAdded)
-                {
-                    bStaged = false;
-                    eStatus = CRepoFile::eAdded;
-                }
-                else if (sUnstaged == sStatusModified)
-                {
-                    bStaged = false;
-                    eStatus = CRepoFile::eModified;
-                }
-                else if (sUnstaged == sStatusDeleted)
-                {
-                    bStaged = false;
-                    eStatus = CRepoFile::eDeleted;
-                }
-                else if (sUnstaged == sStatusIgnored)
-                    eStatus = CRepoFile::eIgnored;
-                else if (sUnstaged == sStatusUntracked)
-                {
-                    bStaged = false;
-                    eStatus = CRepoFile::eUntracked;
-                }
-            }
-
-            CRepoFile* pFile = new CRepoFile();
-            pFile->setStatus(eStatus);
-            pFile->setFullName(sFullName);
-            pFile->setStaged(bStaged);
-
-            vReturnValue << pFile;
-        }
-    }
-
-    return vReturnValue;
+    exec(new CProcessCommand(CProcessCommand::eGetAllFileStatus, sPath, sCommandStatus));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QStringList CGitCommands::getBranches(const QString& sPath)
+void CGitCommands::getBranches(const QString& sPath)
 {
-    QStringList lReturnValue;
-
-    QString sCommand = QString(sCommandBranches);
-    QString sOutput = exec(sPath, sCommand);
-
-    lReturnValue = sOutput.split("\n");
-
-    return lReturnValue;
+    exec(new CProcessCommand(CProcessCommand::eGetBranches, sPath, sCommandBranches));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QStringList CGitCommands::getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CGitCommands::getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to)
 {
-    QStringList lReturnValue;
-
     QString sFrom = from.toString(Qt::ISODate);
     QString sTo = to.toString(Qt::ISODate);
-
     QString sCommand = QString(sCommandGraph); // .arg(sFrom).arg(sTo);
-    QString sOutput = exec(sPath, sCommand);
-
-    lReturnValue = sOutput.split("\n");
-
-    return lReturnValue;
+    exec(new CProcessCommand(CProcessCommand::eGetGraph, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
+void CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
+{
+    QString sCommand = QString(sCommandFileLog).arg(sFullName);
+    exec(new CProcessCommand(CProcessCommand::eFileLog, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
 {
     QString sCommand = QString(bStage ? sCommandStage : sCommandUnstage).arg(sFullName);
-    QString sOutput = exec(sPath, sCommand);
-
-    return sOutput;
+    exec(new CProcessCommand(CProcessCommand::eStageFile, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::stageAll(const QString& sPath, bool bStage)
+void CGitCommands::stageAll(const QString& sPath, bool bStage)
 {
     QString sCommand = QString(bStage ? sCommandStageAll : sCommandUnstageAll);
-    QString sOutput = exec(sPath, sCommand);
-
-    return sOutput;
+    exec(new CProcessCommand(CProcessCommand::eStageAll, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
+void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandRevert).arg(sFullName);
-    QString sOutput = exec(sPath, sCommand);
-
-    return sOutput;
+    exec(new CProcessCommand(CProcessCommand::eRevertFile, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::commit(const QString& sPath, const QString& sMessage)
+void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 {
     QString sCommand = QString(sCommandCommit).arg(sMessage);
-    QString sOutput = exec(sPath, sCommand);
-
-    return sOutput;
+    exec(new CProcessCommand(CProcessCommand::eCommit, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::push(const QString& sPath)
+void CGitCommands::push(const QString& sPath)
 {
     QString sCommand = QString(sCommandPush);
-    QString sOutput = exec(sPath, sCommand);
-
-    return sOutput;
+    exec(new CProcessCommand(CProcessCommand::ePush, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::pull(const QString& sPath)
+void CGitCommands::pull(const QString& sPath)
 {
     QString sCommand = QString(sCommandPull);
-    QString sOutput = exec(sPath, sCommand);
-
-    return sOutput;
+    exec(new CProcessCommand(CProcessCommand::ePull, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
+void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandUnstagedDiff).arg(sFullName);
-    QString sOutput = exec(sPath, sCommand);
-
-    return sOutput;
+    exec(new CProcessCommand(CProcessCommand::eUnstagedFileDiff, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QStringList CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
+void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue)
 {
-    QStringList lReturnValue;
+    qDebug() << "onExecFinished" << eCommand << sValue;
 
-    QString sCommand = QString(sCommandFileLog).arg(sFullName);
-    QString sOutput = exec(sPath, sCommand);
+    switch (eCommand)
+    {
 
-    lReturnValue = sOutput.split("\n");
+    case CProcessCommand::eGetAllFileStatus:
+    {
+        QList<CRepoFile*> vReturnValue;
+        QStringList lStrings = sValue.split("\n");
+        QRegExp tRegExp(sStatusRegExp);
 
-    return lReturnValue;
+        for (QString sLine : lStrings)
+        {
+            if (sLine.isEmpty() == false && sLine.back() == '/')
+                sLine.chop(1);
+
+            if (tRegExp.indexIn(sLine) != -1)
+            {
+                QString sStaged = tRegExp.cap(1).trimmed();
+                QString sUnstaged = tRegExp.cap(2).trimmed();
+                QString sFullName = sPath + "/" + tRegExp.cap(3).trimmed();
+                bool bStaged = false;
+
+                CRepoFile::ERepoFileStatus eStatus = CRepoFile::eClean;
+
+                if (sStaged.isEmpty() == false)
+                {
+                    bStaged = true;
+
+                    if (sStaged == sStatusAdded)
+                        eStatus = CRepoFile::eAdded;
+                    else if (sStaged == sStatusModified)
+                        eStatus = CRepoFile::eModified;
+                    else if (sStaged == sStatusDeleted)
+                        eStatus = CRepoFile::eDeleted;
+                    else if (sStaged == sStatusIgnored)
+                        eStatus = CRepoFile::eIgnored;
+                    else if (sStaged == sStatusUntracked)
+                    {
+                        bStaged = false;
+                        eStatus = CRepoFile::eUntracked;
+                    }
+                }
+
+                if (sUnstaged.isEmpty() == false)
+                {
+                    if (sUnstaged == sStatusAdded)
+                    {
+                        bStaged = false;
+                        eStatus = CRepoFile::eAdded;
+                    }
+                    else if (sUnstaged == sStatusModified)
+                    {
+                        bStaged = false;
+                        eStatus = CRepoFile::eModified;
+                    }
+                    else if (sUnstaged == sStatusDeleted)
+                    {
+                        bStaged = false;
+                        eStatus = CRepoFile::eDeleted;
+                    }
+                    else if (sUnstaged == sStatusIgnored)
+                        eStatus = CRepoFile::eIgnored;
+                    else if (sUnstaged == sStatusUntracked)
+                    {
+                        bStaged = false;
+                        eStatus = CRepoFile::eUntracked;
+                    }
+                }
+
+                CRepoFile* pFile = new CRepoFile();
+                pFile->setStatus(eStatus);
+                pFile->setFullName(sFullName);
+                pFile->setStaged(bStaged);
+
+                vReturnValue << pFile;
+            }
+        }
+
+        emit execFinished_QList_CRepoFile(eCommand, vReturnValue);
+        break;
+    }
+
+    case CProcessCommand::eGetBranches:
+    case CProcessCommand::eGetGraph:
+    case CProcessCommand::eFileLog:
+    case CProcessCommand::eUnstagedFileDiff:
+    {
+        QStringList lReturnValue = sValue.split("\n");
+
+        emit execFinished_QStringList(eCommand, lReturnValue);
+        break;
+    }
+
+    case CProcessCommand::eStageFile:
+    case CProcessCommand::eStageAll:
+    case CProcessCommand::eRevertFile:
+    case CProcessCommand::eCommit:
+    case CProcessCommand::ePush:
+    case CProcessCommand::ePull:
+    {
+        emit execFinished_QString(eCommand, sValue);
+        break;
+    }
+
+    }
 }
