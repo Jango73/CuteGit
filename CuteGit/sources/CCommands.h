@@ -21,9 +21,9 @@ public:
 
     enum EProcessCommand
     {
-        eGetAllFileStatus,
-        eGetBranches,
-        eGetGraph,
+        eAllFileStatus,
+        eBranches,
+        eGraph,
         eStageFile,
         eStageAll,
         eRevertFile,
@@ -71,19 +71,13 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    virtual void run() override;
+    virtual void allFileStatus(const QString& sPath);
 
     //!
-    void exec(CProcessCommand* pCommand);
+    virtual void branches(const QString& sPath);
 
     //!
-    virtual void getAllFileStatus(const QString& sPath);
-
-    //!
-    virtual void getBranches(const QString& sPath);
-
-    //!
-    virtual void getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to);
+    virtual void graph(const QString& sPath, const QDateTime& from, const QDateTime& to);
 
     //!
     virtual void fileLog(const QString& sPath, const QString& sFullName);
@@ -108,6 +102,28 @@ public:
 
     //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);
+
+    //-------------------------------------------------------------------------------------------------
+    // Protected control methods
+    //-------------------------------------------------------------------------------------------------
+
+protected:
+
+    //!
+    void exec(CProcessCommand* pCommand);
+
+    //-------------------------------------------------------------------------------------------------
+    // Private control methods
+    //-------------------------------------------------------------------------------------------------
+
+private:
+
+    //!
+    virtual void run() override;
+
+    //-------------------------------------------------------------------------------------------------
+    // Signals
+    //-------------------------------------------------------------------------------------------------
 
 signals:
 

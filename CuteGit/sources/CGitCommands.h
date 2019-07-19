@@ -30,13 +30,13 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    virtual void getAllFileStatus(const QString& sPath) override;
+    virtual void allFileStatus(const QString& sPath) override;
 
     //!
-    virtual void getBranches(const QString& sPath) override;
+    virtual void branches(const QString& sPath) override;
 
     //!
-    virtual void getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
+    virtual void graph(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
 
     //!
     virtual void fileLog(const QString& sPath, const QString& sFullName) override;

@@ -75,21 +75,21 @@ void CCommands::exec(CProcessCommand* pCommand)
 
 //-------------------------------------------------------------------------------------------------
 
-void CCommands::getAllFileStatus(const QString& sPath)
+void CCommands::allFileStatus(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CCommands::getBranches(const QString& sPath)
+void CCommands::branches(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CCommands::getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CCommands::graph(const QString& sPath, const QDateTime& from, const QDateTime& to)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(from);

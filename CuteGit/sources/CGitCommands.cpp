@@ -46,26 +46,26 @@ CGitCommands::~CGitCommands()
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::getAllFileStatus(const QString& sPath)
+void CGitCommands::allFileStatus(const QString& sPath)
 {
-    exec(new CProcessCommand(CProcessCommand::eGetAllFileStatus, sPath, sCommandStatus));
+    exec(new CProcessCommand(CProcessCommand::eAllFileStatus, sPath, sCommandStatus));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::getBranches(const QString& sPath)
+void CGitCommands::branches(const QString& sPath)
 {
-    exec(new CProcessCommand(CProcessCommand::eGetBranches, sPath, sCommandBranches));
+    exec(new CProcessCommand(CProcessCommand::eBranches, sPath, sCommandBranches));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::getGraph(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CGitCommands::graph(const QString& sPath, const QDateTime& from, const QDateTime& to)
 {
     QString sFrom = from.toString(Qt::ISODate);
     QString sTo = to.toString(Qt::ISODate);
     QString sCommand = QString(sCommandGraph); // .arg(sFrom).arg(sTo);
-    exec(new CProcessCommand(CProcessCommand::eGetGraph, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eGraph, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -136,12 +136,10 @@ void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullNa
 
 void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue)
 {
-    qDebug() << "onExecFinished" << eCommand << sValue;
-
     switch (eCommand)
     {
 
-    case CProcessCommand::eGetAllFileStatus:
+    case CProcessCommand::eAllFileStatus:
     {
         QList<CRepoFile*> vReturnValue;
         QStringList lStrings = sValue.split("\n");
@@ -219,8 +217,8 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eGetBranches:
-    case CProcessCommand::eGetGraph:
+    case CProcessCommand::eBranches:
+    case CProcessCommand::eGraph:
     case CProcessCommand::eFileLog:
     case CProcessCommand::eUnstagedFileDiff:
     {

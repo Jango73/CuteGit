@@ -129,7 +129,7 @@ void CFileModel::checkAllFileStatus(QString sPath)
         sPath = m_pController->repositoryPath();
     }
 
-    m_pController->commands()->getAllFileStatus(sPath);
+    m_pController->commands()->allFileStatus(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -236,7 +236,7 @@ void CFileModel::getBranches(QString sPath)
         sPath = m_pController->repositoryPath();
     }
 
-    m_pController->commands()->getBranches(sPath);
+    m_pController->commands()->branches(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -251,7 +251,7 @@ void CFileModel::getGraph(QString sPath)
     QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
     QDateTime dTo = QDateTime::currentDateTime().addDays(2);
 
-    m_pController->commands()->getGraph(sPath, dFrom, dTo);
+    m_pController->commands()->graph(sPath, dFrom, dTo);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -298,13 +298,13 @@ void CFileModel::onCommandFinished_QStringList(CProcessCommand::EProcessCommand 
     switch (eCommand)
     {
 
-    case CProcessCommand::eGetBranches:
+    case CProcessCommand::eBranches:
     {
         m_pBranchModel->setStringList(lValue);
         break;
     }
 
-    case CProcessCommand::eGetGraph:
+    case CProcessCommand::eGraph:
     {
         m_pGraphModel->setStringList(lValue);
         break;
@@ -337,7 +337,7 @@ void CFileModel::onCommandFinished_QList_CRepoFile(CProcessCommand::EProcessComm
     switch (eCommand)
     {
 
-    case CProcessCommand::eGetAllFileStatus:
+    case CProcessCommand::eAllFileStatus:
     {
         QVector<QModelIndex> changedIndices;
 
