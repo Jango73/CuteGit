@@ -62,6 +62,9 @@ public:
     //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
 
+    //!
+    virtual void setCurrentBranch(const QString& sPath, const QString& sBranch) override;
+
 protected slots:
 
     //!

@@ -81,6 +81,9 @@ void CController::setRepositoryPath(QString sPath)
                 lRepositoryPaths << sPath;
 
             m_pRepositoryModel->setStringList(lRepositoryPaths);
+
+            // Clear command output
+            m_pCommandOutputModel->setStringList(QStringList());
         }
         else
         {

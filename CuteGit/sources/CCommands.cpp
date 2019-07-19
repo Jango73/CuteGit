@@ -158,3 +158,11 @@ void CCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
     Q_UNUSED(sPath);
     Q_UNUSED(sFullName);
 }
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sBranch);
+}

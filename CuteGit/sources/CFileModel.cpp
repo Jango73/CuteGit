@@ -46,6 +46,16 @@ CFileModel::~CFileModel()
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModel::setCurrentBranch(QString sValue)
+{
+    if (m_sCurrentBranch != sValue)
+    {
+        m_pController->commands()->setCurrentBranch(m_pController->repositoryPath(), sValue);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QModelIndex CFileModel::rootPathIndex() const
 {
     return index(rootPath());
@@ -280,6 +290,21 @@ void CFileModel::onCommandFinished_QString(CProcessCommand::EProcessCommand eCom
     case CProcessCommand::ePull:
     {
         emit newOutput(sOutput);
+        break;
+    }
+
+    case CProcessCommand::eSetCurrentBranch:
+    {
+        emit newOutput(sOutput);
+        refresh();
+        break;
+    }
+
+    case CProcessCommand::eCurrentBranch:
+    {
+        m_sCurrentBranch = sOutput;
+
+        emit currentBranchChanged();
         break;
     }
 

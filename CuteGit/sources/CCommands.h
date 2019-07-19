@@ -24,6 +24,8 @@ public:
         eAllFileStatus,
         eBranches,
         eGraph,
+        eCurrentBranch,
+        eFileLog,
         eStageFile,
         eStageAll,
         eRevertFile,
@@ -31,7 +33,7 @@ public:
         ePush,
         ePull,
         eUnstagedFileDiff,
-        eFileLog
+        eSetCurrentBranch
     };
 
     Q_ENUMS(EProcessCommand)
@@ -102,6 +104,9 @@ public:
 
     //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);
+
+    //!
+    virtual void setCurrentBranch(const QString& sPath, const QString& sBranch);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods

@@ -35,31 +35,37 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         visible: count > 0
+
         model: root.controller.repositoryModel
 
         delegate: Item {
             width: parent.width
             height: Const.elementHeight
 
-            MouseArea {
+            Item {
                 anchors.fill: parent
-                onDoubleClicked: {
-                    controller.repositoryPath = display
+                anchors.margins: Const.mainPadding * 0.5
+
+                MouseArea {
+                    anchors.fill: selection
+                    onDoubleClicked: {
+                        root.controller.repositoryPath = display
+                    }
                 }
-            }
 
-            Selection {
-                id: selection
-                targetWidth: text.width
-                targetHeight: text.height
-                anchors.centerIn: text
-                visible: display === root.controller.repositoryPath
-            }
+                Selection {
+                    id: selection
+                    targetWidth: text.width
+                    targetHeight: text.height
+                    anchors.centerIn: text
+                    visible: display === root.controller.repositoryPath
+                }
 
-            StandardText {
-                id: text
-                text: display.split("/").slice(-1)[0]
-                color: selection.visible ? Material.background : Material.foreground
+                StandardText {
+                    id: text
+                    text: display.split("/").slice(-1)[0]
+                    color: selection.visible ? Material.background : Material.foreground
+                }
             }
         }
     }

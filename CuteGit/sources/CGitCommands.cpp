@@ -22,8 +22,10 @@ static const char* sCommandCommit = "git commit -m \"%1\"";
 static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
+static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
 
 static const char* sStatusRegExp = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
+static const char* sRemoteBranchPrefix = "remotes/origin/";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
@@ -134,10 +136,68 @@ void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullNa
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
+{
+    QString sFinalName = sBranch;
+    sFinalName.replace(sRemoteBranchPrefix, "");
+    exec(new CProcessCommand(CProcessCommand::eSetCurrentBranch, sPath, QString(sCommandSetCurrentBranch).arg(sFinalName)));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue)
 {
     switch (eCommand)
     {
+
+    case CProcessCommand::eStageFile:
+    case CProcessCommand::eStageAll:
+    case CProcessCommand::eRevertFile:
+    case CProcessCommand::eCommit:
+    case CProcessCommand::ePush:
+    case CProcessCommand::ePull:
+    case CProcessCommand::eSetCurrentBranch:
+    {
+        emit execFinished_QString(eCommand, sValue);
+        break;
+    }
+
+    case CProcessCommand::eGraph:
+    case CProcessCommand::eFileLog:
+    case CProcessCommand::eUnstagedFileDiff:
+    {
+        QStringList lReturnValue = sValue.split("\n");
+
+        emit execFinished_QStringList(eCommand, lReturnValue);
+        break;
+    }
+
+    case CProcessCommand::eBranches:
+    {
+        QStringList lLines = sValue.split("\n");
+        QStringList lReturnValue;
+
+        for (QString sLine : lLines)
+        {
+            sLine = sLine.split("->").first();
+
+            if (sLine.startsWith("*"))
+            {
+                sLine.remove(0, 2);
+                lReturnValue << sLine;
+
+                emit execFinished_QString(CProcessCommand::eCurrentBranch, sLine);
+            }
+            else
+            {
+                sLine.remove(0, 2);
+                lReturnValue << sLine;
+            }
+        }
+
+        emit execFinished_QStringList(eCommand, lReturnValue);
+        break;
+    }
 
     case CProcessCommand::eAllFileStatus:
     {
@@ -217,25 +277,8 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eBranches:
-    case CProcessCommand::eGraph:
-    case CProcessCommand::eFileLog:
-    case CProcessCommand::eUnstagedFileDiff:
+    default:
     {
-        QStringList lReturnValue = sValue.split("\n");
-
-        emit execFinished_QStringList(eCommand, lReturnValue);
-        break;
-    }
-
-    case CProcessCommand::eStageFile:
-    case CProcessCommand::eStageAll:
-    case CProcessCommand::eRevertFile:
-    case CProcessCommand::eCommit:
-    case CProcessCommand::ePush:
-    case CProcessCommand::ePull:
-    {
-        emit execFinished_QString(eCommand, sValue);
         break;
     }
 

@@ -34,26 +34,30 @@ Pane {
             width: parent.width
             height: Const.elementHeight
 
-            MouseArea {
+            Item {
                 anchors.fill: parent
-                onDoubleClicked: {
-                    // controller.repositoryPath = display
+                anchors.margins: Const.mainPadding * 0.5
+
+                MouseArea {
+                    anchors.fill: selection
+                    onDoubleClicked: {
+                        root.controller.fileModel.currentBranch = display
+                    }
                 }
-            }
 
-            Selection {
-                id: selection
-                targetWidth: text.width
-                targetHeight: text.height
-                anchors.centerIn: text
-                // visible: display === root.controller.repositoryPath
-                visible: false
-            }
+                Selection {
+                    id: selection
+                    targetWidth: text.width
+                    targetHeight: text.height
+                    anchors.centerIn: text
+                    visible: display === root.controller.fileModel.currentBranch
+                }
 
-            StandardText {
-                id: text
-                text: display
-                color: selection.visible ? Material.background : Material.foreground
+                StandardText {
+                    id: text
+                    text: display
+                    color: selection.visible ? Material.background : Material.foreground
+                }
             }
         }
     }
