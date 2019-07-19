@@ -17,11 +17,13 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Show the diffs in the selected item (folder or file)
 * Show the output of the executed GIT commands
 * Mark files as staged / unstaged
+* Change current branch
 * Revert files
 * Commit
 * Simple pull
 * Simple push
 * Refresh view
+* File log
 
 ## Things to fix
 
@@ -36,10 +38,8 @@ Please do not use shadow build because of the submoduled qt-plus library.
   * With a button to switch between tree and flat views
 * Rename a commit (that has not been pushed)
 * Reset HEAD to a commit
-* Change current branch
 * Amend
 * Rebase
-* File log
 * Blame
 * Stash save and pop
 
