@@ -8,7 +8,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-static const char* sCommandStatus = "git status --ignored -s";
+static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
