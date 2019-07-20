@@ -33,6 +33,9 @@ public:
     virtual void allFileStatus(const QString& sPath) override;
 
     //!
+    virtual void repositoryStatus(const QString& sPath) override;
+
+    //!
     virtual void branches(const QString& sPath) override;
 
     //!
@@ -52,6 +55,9 @@ public:
 
     //!
     virtual void commit(const QString& sPath, const QString& sMessage) override;
+
+    //!
+    virtual void amend(const QString& sPath) override;
 
     //!
     virtual void push(const QString& sPath) override;

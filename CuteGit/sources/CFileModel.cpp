@@ -32,6 +32,7 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
 
     connect(this, &QFileSystemModel::rootPathChanged, this, &CFileModel::onRootPathChanged);
 
+    // Command return values
     connect(m_pController->commands(), &CCommands::execFinished_QString, this, &CFileModel::onCommandFinished_QString);
     connect(m_pController->commands(), &CCommands::execFinished_QStringList, this, &CFileModel::onCommandFinished_QStringList);
     connect(m_pController->commands(), &CCommands::execFinished_QList_CRepoFile, this, &CFileModel::onCommandFinished_QList_CRepoFile);
@@ -144,6 +145,18 @@ void CFileModel::checkAllFileStatus(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModel::checkRepositoryStatus(QString sPath)
+{
+    if (sPath.isEmpty())
+    {
+        sPath = m_pController->repositoryPath();
+    }
+
+    m_pController->commands()->repositoryStatus(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 {
     QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
@@ -156,6 +169,7 @@ void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 
 void CFileModel::refresh()
 {
+    checkRepositoryStatus();
     checkAllFileStatus();
     getBranches();
     getGraph();
@@ -213,7 +227,14 @@ void CFileModel::revertSelection(QModelIndexList lIndices)
 
 void CFileModel::commit(const QString& sMessage)
 {
-    m_pController->commands()->commit(m_pController->repositoryPath(), sMessage);
+    if (m_eRepositoryStatus == NoMerge)
+    {
+        m_pController->commands()->commit(m_pController->repositoryPath(), sMessage);
+    }
+    else
+    {
+        m_pController->commands()->amend(m_pController->repositoryPath());
+    }
 
     checkAllFileStatus();
     getGraph();
@@ -234,6 +255,7 @@ void CFileModel::pull()
 {
     m_pController->commands()->pull(m_pController->repositoryPath());
 
+    checkAllFileStatus();
     getGraph();
 }
 
@@ -270,9 +292,7 @@ void CFileModel::onRootPathChanged(const QString& sNewPath)
 {
     Q_UNUSED(sNewPath);
 
-    checkAllFileStatus();
-    getBranches();
-    getGraph();
+    refresh();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -282,10 +302,24 @@ void CFileModel::onCommandFinished_QString(CProcessCommand::EProcessCommand eCom
     switch (eCommand)
     {
 
+    case CProcessCommand::eRepositoryStatus:
+    {
+        if (sOutput == CRepoFile::sRepositoryStatusClean)
+            setRepositoryStatus(NoMerge);
+        else if (sOutput == CRepoFile::sRepositoryStatusMerge)
+            setRepositoryStatus(Merge);
+        else if (sOutput == CRepoFile::sRepositoryStatusRebase)
+            setRepositoryStatus(Rebase);
+        else if (sOutput == CRepoFile::sRepositoryStatusInteractiveRebase)
+            setRepositoryStatus(InteractiveRebase);
+        break;
+    }
+
     case CProcessCommand::eStageFile:
     case CProcessCommand::eStageAll:
     case CProcessCommand::eRevertFile:
     case CProcessCommand::eCommit:
+    case CProcessCommand::eAmend:
     case CProcessCommand::ePush:
     case CProcessCommand::ePull:
     {

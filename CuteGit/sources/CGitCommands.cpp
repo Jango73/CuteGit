@@ -2,6 +2,7 @@
 // Qt
 #include <QDebug>
 #include <QRegExp>
+#include <QDir>
 
 // Application
 #include "CGitCommands.h"
@@ -19,10 +20,15 @@ static const char* sCommandStageAll = "git add -u";
 static const char* sCommandUnstageAll = "git reset .";
 static const char* sCommandRevert = "git checkout \"%1\"";
 static const char* sCommandCommit = "git commit -m \"%1\"";
+static const char* sCommandAmend = "git commit --amend";
 static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
+static const char* sCommandContinueRebase = "git rebase --continue";
+
+static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
+static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
 
 static const char* sStatusRegExp = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
 static const char* sRemoteBranchPrefix = "remotes/origin/";
@@ -51,6 +57,36 @@ CGitCommands::~CGitCommands()
 void CGitCommands::allFileStatus(const QString& sPath)
 {
     exec(new CProcessCommand(CProcessCommand::eAllFileStatus, sPath, sCommandStatus));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::repositoryStatus(const QString& sPath)
+{
+    QString sRebaseApplyPath = QString("%1/%2").arg(sPath).arg(execNow(sPath, sCommandGetRebaseApplyPath).trimmed());
+    QString sRebaseMergePath = QString("%1/%2").arg(sPath).arg(execNow(sPath, sCommandGetRebaseMergePath).trimmed());
+
+    if (QDir(sRebaseMergePath).exists())
+    {
+        emit execFinished_QString(
+                    CProcessCommand::eRepositoryStatus,
+                    CRepoFile::sRepositoryStatusInteractiveRebase
+                    );
+    }
+    else if (QDir(sRebaseApplyPath).exists())
+    {
+        emit execFinished_QString(
+                    CProcessCommand::eRepositoryStatus,
+                    CRepoFile::sRepositoryStatusRebase
+                    );
+    }
+    else
+    {
+        emit execFinished_QString(
+                    CProcessCommand::eRepositoryStatus,
+                    CRepoFile::sRepositoryStatusClean
+                    );
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -112,6 +148,14 @@ void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::amend(const QString& sPath)
+{
+    QString sCommand = QString(sCommandAmend);
+    exec(new CProcessCommand(CProcessCommand::eAmend, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::push(const QString& sPath)
 {
     QString sCommand = QString(sCommandPush);
@@ -154,6 +198,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::eStageAll:
     case CProcessCommand::eRevertFile:
     case CProcessCommand::eCommit:
+    case CProcessCommand::eAmend:
     case CProcessCommand::ePush:
     case CProcessCommand::ePull:
     case CProcessCommand::eSetCurrentBranch:

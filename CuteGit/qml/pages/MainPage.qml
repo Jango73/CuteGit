@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.2
 import QtQml.Models 2.2
 import Qt.labs.platform 1.1 as QLP
 import Qt.labs.folderlistmodel 2.1
+import CuteGit 1.0
 import "../components"
 
 Item {
@@ -232,9 +233,46 @@ Item {
             }
         }
 
+        Pane {
+            id: repositoryStatus
+            padding: 2
+            anchors.margins: Const.paneMargins
+            anchors.left: parent.left
+            anchors.right: rightPart.left
+            anchors.top: parent.top
+            height: Const.elementHeight * 1.5
+
+            Material.elevation: Const.paneElevation
+
+            Rectangle {
+                anchors.fill: parent
+                color: root.controller.fileModel.repositoryStatus === CFileModel.NoMerge
+                       ? Const.transparent
+                       : Material.accent
+            }
+
+            StandardText {
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+                color: root.controller.fileModel.repositoryStatus === CFileModel.NoMerge
+                       ? Material.foreground
+                       : Material.background
+                text: {
+                    if (root.controller.fileModel.repositoryStatus === CFileModel.InteractiveRebase)
+                        qsTr("Interactive rebase in progress...")
+                    else if (root.controller.fileModel.repositoryStatus === CFileModel.Rebase)
+                        qsTr("Rebase in progress...")
+                    else if (root.controller.fileModel.repositoryStatus === CFileModel.Merge)
+                        qsTr("Merge in progress...")
+                    else
+                        ""
+                }
+            }
+        }
+
         Item {
             id: centralPart
-            anchors.top: parent.top
+            anchors.top: repositoryStatus.bottom
             anchors.bottom: bottomPart.top
             anchors.left: parent.left
             anchors.right: rightPart.left

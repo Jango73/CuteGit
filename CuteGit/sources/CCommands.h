@@ -22,6 +22,7 @@ public:
     enum EProcessCommand
     {
         eAllFileStatus,
+        eRepositoryStatus,
         eBranches,
         eGraph,
         eCurrentBranch,
@@ -30,6 +31,7 @@ public:
         eStageAll,
         eRevertFile,
         eCommit,
+        eAmend,
         ePush,
         ePull,
         eUnstagedFileDiff,
@@ -76,6 +78,9 @@ public:
     virtual void allFileStatus(const QString& sPath);
 
     //!
+    virtual void repositoryStatus(const QString& sPath);
+
+    //!
     virtual void branches(const QString& sPath);
 
     //!
@@ -97,6 +102,9 @@ public:
     virtual void commit(const QString& sPath, const QString& sMessage);
 
     //!
+    virtual void amend(const QString& sPath);
+
+    //!
     virtual void push(const QString& sPath);
 
     //!
@@ -116,6 +124,9 @@ protected:
 
     //!
     void exec(CProcessCommand* pCommand);
+
+    //!
+    QString execNow(QString m_sWorkPath, QString m_sCommand);
 
     //-------------------------------------------------------------------------------------------------
     // Private control methods

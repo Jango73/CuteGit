@@ -16,6 +16,11 @@ const QString CRepoFile::sTokenIgnored = "!";
 const QString CRepoFile::sTokenStaged = "O";
 const QString CRepoFile::sTokenUnstaged = " ";
 
+const QString CRepoFile::sRepositoryStatusClean = "";
+const QString CRepoFile::sRepositoryStatusMerge = "Merge";
+const QString CRepoFile::sRepositoryStatusRebase = "Rebase";
+const QString CRepoFile::sRepositoryStatusInteractiveRebase = "Interactive rebase";
+
 //-------------------------------------------------------------------------------------------------
 
 CRepoFile::CRepoFile(QObject* parent)

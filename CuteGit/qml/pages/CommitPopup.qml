@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
+import CuteGit 1.0
 import "../components"
 
 Popup {
@@ -65,11 +66,11 @@ Popup {
                 Layout.alignment: Qt.AlignCenter
                 text: Const.okText
 
+                enabled: message.text != "" || root.controller.fileModel.repositoryStatus !== CFileModel.NoMerge
+
                 onClicked: {
-                    if (message.text != "") {
-                        root.close()
-                        root.controller.fileModelProxy.commit(message.text)
-                    }
+                    root.close()
+                    root.controller.fileModelProxy.commit(message.text)
                 }
             }
 

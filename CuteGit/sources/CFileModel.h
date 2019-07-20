@@ -32,18 +32,28 @@ public:
         eStagedRole
     };
 
+    enum ERepositoryStatus
+    {
+        NoMerge,
+        Merge,
+        Rebase,
+        InteractiveRebase
+    };
+
+    Q_ENUMS(ERepositoryStatus)
+
     //-------------------------------------------------------------------------------------------------
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
     Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
 
+    Q_FAST_PROPERTY(ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(QStringListModel*, p, graphModel, GraphModel)
     Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
     Q_FAST_PROPERTY(QStringListModel*, p, logModel, LogModel)
-
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
 
 public:
@@ -84,6 +94,9 @@ public:
 
     //!
     void checkAllFileStatus(QString sPath = "");
+
+    //!
+    void checkRepositoryStatus(QString sPath = "");
 
     //!
     void handleCurrentIndex(QModelIndex qIndex);

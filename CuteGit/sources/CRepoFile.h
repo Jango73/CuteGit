@@ -56,7 +56,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //-------------------------------------------------------------------------------------------------
-    // Coonstants
+    // Constants
     //-------------------------------------------------------------------------------------------------
 
     static const QString sTokenClean;
@@ -67,4 +67,9 @@ public:
     static const QString sTokenIgnored;
     static const QString sTokenStaged;
     static const QString sTokenUnstaged;
+
+    static const QString sRepositoryStatusClean;
+    static const QString sRepositoryStatusMerge;
+    static const QString sRepositoryStatusRebase;
+    static const QString sRepositoryStatusInteractiveRebase;
 };

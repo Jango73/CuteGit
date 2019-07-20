@@ -11,6 +11,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 ## Things it does
 
 * Open a GIT repository
+* Show repository status (clean, merge, rebase, ...)
 * Show repository files as a tree, colored according to status
 * Show the branches of the repository
 * Show the graph of the repository
@@ -20,6 +21,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Change current branch
 * Revert files
 * Commit
+* Amend on interactive rebase
 * Simple pull
 * Simple push
 * Refresh view
@@ -31,14 +33,13 @@ Please do not use shadow build because of the submoduled qt-plus library.
 
 ## Things to do
 
+* Make a list view for a flat listing of changed files
+  * With a button to switch between tree and flat views
 * File sorting
 * Make the file system model refresh file status when changes occur outside the app
 * Show deleted files in the file system model (somehow)
-* Make a list view for a flat listing of changed files
-  * With a button to switch between tree and flat views
-* Rename a commit (that has not been pushed)
+* Rename a commit
 * Reset HEAD to a commit
-* Amend
 * Rebase
 * Blame
 * Stash save and pop

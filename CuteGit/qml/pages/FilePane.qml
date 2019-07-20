@@ -10,7 +10,6 @@ import "../components"
 Pane {
     id: root
     padding: 2
-
     Material.elevation: Const.paneElevation
 
     property variant controller: null
