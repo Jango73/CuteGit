@@ -147,13 +147,13 @@ signals:
     void execFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue);
 
     //!
-    void execFinished_QString(CProcessCommand::EProcessCommand eCommand, QString sValue);
+    void newOutputString(CProcessCommand::EProcessCommand eCommand, QString sValue);
 
     //!
-    void execFinished_QStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
+    void newOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
 
     //!
-    void execFinished_QList_CRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
+    void newOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
 
 private:
 

@@ -33,9 +33,9 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     connect(this, &QFileSystemModel::rootPathChanged, this, &CFileModel::onRootPathChanged);
 
     // Command return values
-    connect(m_pController->commands(), &CCommands::execFinished_QString, this, &CFileModel::onCommandFinished_QString);
-    connect(m_pController->commands(), &CCommands::execFinished_QStringList, this, &CFileModel::onCommandFinished_QStringList);
-    connect(m_pController->commands(), &CCommands::execFinished_QList_CRepoFile, this, &CFileModel::onCommandFinished_QList_CRepoFile);
+    connect(m_pController->commands(), &CCommands::newOutputString, this, &CFileModel::onNewOutputString);
+    connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CFileModel::onNewOutputStringList);
+    connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CFileModel::onNewOutputListOfCRepoFile);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -297,7 +297,7 @@ void CFileModel::onRootPathChanged(const QString& sNewPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onCommandFinished_QString(CProcessCommand::EProcessCommand eCommand, QString sOutput)
+void CFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sOutput)
 {
     switch (eCommand)
     {
@@ -352,7 +352,7 @@ void CFileModel::onCommandFinished_QString(CProcessCommand::EProcessCommand eCom
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onCommandFinished_QStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue)
+void CFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue)
 {
     switch (eCommand)
     {
@@ -391,7 +391,7 @@ void CFileModel::onCommandFinished_QStringList(CProcessCommand::EProcessCommand 
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onCommandFinished_QList_CRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles)
+void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles)
 {
     switch (eCommand)
     {

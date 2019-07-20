@@ -68,21 +68,21 @@ void CGitCommands::repositoryStatus(const QString& sPath)
 
     if (QDir(sRebaseMergePath).exists())
     {
-        emit execFinished_QString(
+        emit newOutputString(
                     CProcessCommand::eRepositoryStatus,
                     CRepoFile::sRepositoryStatusInteractiveRebase
                     );
     }
     else if (QDir(sRebaseApplyPath).exists())
     {
-        emit execFinished_QString(
+        emit newOutputString(
                     CProcessCommand::eRepositoryStatus,
                     CRepoFile::sRepositoryStatusRebase
                     );
     }
     else
     {
-        emit execFinished_QString(
+        emit newOutputString(
                     CProcessCommand::eRepositoryStatus,
                     CRepoFile::sRepositoryStatusClean
                     );
@@ -203,7 +203,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::ePull:
     case CProcessCommand::eSetCurrentBranch:
     {
-        emit execFinished_QString(eCommand, sValue);
+        emit newOutputString(eCommand, sValue);
         break;
     }
 
@@ -213,7 +213,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     {
         QStringList lReturnValue = sValue.split("\n");
 
-        emit execFinished_QStringList(eCommand, lReturnValue);
+        emit newOutputStringList(eCommand, lReturnValue);
         break;
     }
 
@@ -231,7 +231,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
                 sLine.remove(0, 2);
                 lReturnValue << sLine;
 
-                emit execFinished_QString(CProcessCommand::eCurrentBranch, sLine);
+                emit newOutputString(CProcessCommand::eCurrentBranch, sLine);
             }
             else
             {
@@ -240,7 +240,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
             }
         }
 
-        emit execFinished_QStringList(eCommand, lReturnValue);
+        emit newOutputStringList(eCommand, lReturnValue);
         break;
     }
 
@@ -318,7 +318,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
             }
         }
 
-        emit execFinished_QList_CRepoFile(eCommand, vReturnValue);
+        emit newOutputListOfCRepoFile(eCommand, vReturnValue);
         break;
     }
 

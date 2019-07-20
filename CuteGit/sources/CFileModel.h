@@ -156,13 +156,13 @@ protected slots:
     void onRootPathChanged(const QString& sNewPath);
 
     //!
-    void onCommandFinished_QString(CProcessCommand::EProcessCommand eCommand, QString sValue);
+    void onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sValue);
 
     //!
-    void onCommandFinished_QStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
+    void onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
 
     //!
-    void onCommandFinished_QList_CRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
+    void onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
 
     //-------------------------------------------------------------------------------------------------
     // Properties
