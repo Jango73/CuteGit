@@ -21,8 +21,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Mark files as staged / unstaged
 * Change current branch
 * Revert files
-* Commit
-* Amend on interactive rebase
+* Commit / amend (auto on interactive rebase)
 * Simple pull
 * Simple push
 * Refresh view
@@ -41,6 +40,7 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Show deleted files in the file system model (somehow)
 * Modify a commit message
 * Reset HEAD to a commit
+* Create a branch
 * Rebase
 * Blame
 * Stash save and pop
