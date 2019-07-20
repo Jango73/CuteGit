@@ -158,6 +158,7 @@ void CGitCommands::amend(const QString& sPath)
 
 void CGitCommands::push(const QString& sPath)
 {
+    emit newOutputString(CProcessCommand::eNotification, tr("Pushing..."));
     QString sCommand = QString(sCommandPush);
     exec(new CProcessCommand(CProcessCommand::ePush, sPath, sCommand));
 }
@@ -166,6 +167,7 @@ void CGitCommands::push(const QString& sPath)
 
 void CGitCommands::pull(const QString& sPath)
 {
+    emit newOutputString(CProcessCommand::eNotification, tr("Pulling..."));
     QString sCommand = QString(sCommandPull);
     exec(new CProcessCommand(CProcessCommand::ePull, sPath, sCommand));
 }

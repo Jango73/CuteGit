@@ -8,6 +8,7 @@ import "../components"
 
 Popup {
     id: root
+    modal: true
     closePolicy: Popup.CloseOnEscape
     padding: Const.mainPadding
 

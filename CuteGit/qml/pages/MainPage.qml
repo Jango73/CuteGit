@@ -356,8 +356,10 @@ Item {
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
+        modal: true
         closePolicy: Popup.CloseOnEscape
         padding: Const.mainPadding
+
         StandardText {
             anchors.fill: parent
             text: Const.shortcutsText

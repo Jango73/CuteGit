@@ -21,6 +21,7 @@ public:
 
     enum EProcessCommand
     {
+        eNotification,
         eAllFileStatus,
         eRepositoryStatus,
         eBranches,

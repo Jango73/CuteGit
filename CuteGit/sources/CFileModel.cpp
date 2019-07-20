@@ -315,6 +315,7 @@ void CFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QS
         break;
     }
 
+    case CProcessCommand::eNotification:
     case CProcessCommand::eStageFile:
     case CProcessCommand::eStageAll:
     case CProcessCommand::eRevertFile:
