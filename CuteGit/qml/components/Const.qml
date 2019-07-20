@@ -38,8 +38,8 @@ Item {
 
     // Text
     property string okText: qsTr("OK")
+    property string logText: qsTr("Log")
     property string clearText: qsTr("Clear")
-    property string graphText: qsTr("Graph")
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
     property string branchesText: qsTr("Branches")

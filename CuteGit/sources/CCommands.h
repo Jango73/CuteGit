@@ -10,7 +10,7 @@
 
 // Application
 #include "CRepoFile.h"
-#include "CGraphLine.h"
+#include "CLogLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -158,7 +158,7 @@ signals:
     void newOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
 
     //!
-    void newOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> vNewGraphLines);
+    void newOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> vNewGraphLines);
 
 private:
 

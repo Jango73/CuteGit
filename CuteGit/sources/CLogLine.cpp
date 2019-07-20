@@ -1,15 +1,15 @@
 
 // Application
-#include "CGraphLine.h"
+#include "CLogLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CGraphLine::CGraphLine()
+CLogLine::CLogLine()
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 
-CGraphLine::~CGraphLine()
+CLogLine::~CLogLine()
 {
 }

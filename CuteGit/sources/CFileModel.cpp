@@ -23,9 +23,9 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     : QFileSystemModel(parent)
     , m_pController(pController)
     , m_pBranchModel(new QStringListModel(this))
-    , m_pGraphModel(new CGraphModel(this))
+    , m_pLogModel(new CLogModel(this))
     , m_pDiffModel(new QStringListModel(this))
-    , m_pLogModel(new QStringListModel(this))
+    , m_pFileLogModel(new QStringListModel(this))
 {
     setRootPath(QDir::homePath());
     setResolveSymlinks(true);
@@ -36,7 +36,7 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     connect(m_pController->commands(), &CCommands::newOutputString, this, &CFileModel::onNewOutputString);
     connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CFileModel::onNewOutputStringList);
     connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CFileModel::onNewOutputListOfCRepoFile);
-    connect(m_pController->commands(), &CCommands::newOutputListOfCGraphLine, this, &CFileModel::onNewOutputListOfCGraphLine);
+    connect(m_pController->commands(), &CCommands::newOutputListOfCLogLine, this, &CFileModel::onNewOutputListOfCLogLine);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -373,7 +373,7 @@ void CFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand
 
     case CProcessCommand::eFileLog:
     {
-        m_pLogModel->setStringList(lValue);
+        m_pFileLogModel->setStringList(lValue);
         break;
     }
 
@@ -447,14 +447,14 @@ void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCo
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onNewOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewGraphLines)
+void CFileModel::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewGraphLines)
 {
     switch (eCommand)
     {
 
     case CProcessCommand::eBranchLog:
     {
-        m_pGraphModel->setGraphLines(lNewGraphLines);
+        m_pLogModel->setGraphLines(lNewGraphLines);
         break;
     }
 

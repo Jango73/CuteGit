@@ -1,31 +1,31 @@
 
 // Application
-#include "CGraphModel.h"
+#include "CLogModel.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CGraphModel::CGraphModel(QObject* parent)
+CLogModel::CLogModel(QObject* parent)
     : QAbstractListModel(parent)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 
-CGraphModel::~CGraphModel()
+CLogModel::~CLogModel()
 {
     qDeleteAll(m_lGraphLines);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CGraphModel::setGraphLines(QList<CGraphLine*> lNewLines)
+void CLogModel::setGraphLines(QList<CLogLine*> lNewLines)
 {
     beginResetModel();
 
     qDeleteAll(m_lGraphLines);
     m_lGraphLines.clear();
 
-    for (CGraphLine* pLine : lNewLines)
+    for (CLogLine* pLine : lNewLines)
         m_lGraphLines << pLine;
 
     endResetModel();
@@ -33,7 +33,7 @@ void CGraphModel::setGraphLines(QList<CGraphLine*> lNewLines)
 
 //-------------------------------------------------------------------------------------------------
 
-QHash<int, QByteArray> CGraphModel::roleNames() const
+QHash<int, QByteArray> CLogModel::roleNames() const
 {
     QHash<int, QByteArray> hRoleNames;
     hRoleNames[eCommitIdRole] = "commitId";
@@ -45,7 +45,7 @@ QHash<int, QByteArray> CGraphModel::roleNames() const
 
 //-------------------------------------------------------------------------------------------------
 
-int CGraphModel::rowCount(const QModelIndex& parent) const
+int CLogModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
 
@@ -54,7 +54,7 @@ int CGraphModel::rowCount(const QModelIndex& parent) const
 
 //-------------------------------------------------------------------------------------------------
 
-QVariant CGraphModel::data(const QModelIndex& index, int role) const
+QVariant CLogModel::data(const QModelIndex& index, int role) const
 {
     int row = index.row();
 
@@ -93,7 +93,7 @@ QVariant CGraphModel::data(const QModelIndex& index, int role) const
 
 //-------------------------------------------------------------------------------------------------
 
-bool CGraphModel::isEmpty() const
+bool CLogModel::isEmpty() const
 {
     return m_lGraphLines.count() == 0;
 }

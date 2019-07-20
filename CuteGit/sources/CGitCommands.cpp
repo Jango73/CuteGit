@@ -333,7 +333,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
 
     case CProcessCommand::eBranchLog:
     {
-        QList<CGraphLine*> lReturnValue;
+        QList<CLogLine*> lReturnValue;
         QStringList lStrings = sValue.split("\n");
 
         for (QString sLine : lStrings)
@@ -342,7 +342,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
 
             if (sValues.count() == iLogFormatValueCount)
             {
-                CGraphLine* pLine = new CGraphLine();
+                CLogLine* pLine = new CLogLine();
 
                 pLine->setCommitId(sValues[0].trimmed());
                 pLine->setMessage(sValues[1].trimmed());
@@ -353,7 +353,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
             }
         }
 
-        emit newOutputListOfCGraphLine(eCommand, lReturnValue);
+        emit newOutputListOfCLogLine(eCommand, lReturnValue);
         break;
     }
 

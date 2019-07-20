@@ -5,11 +5,11 @@
 #include <QAbstractListModel>
 
 // qt-plus
-#include "CGraphLine.h"
+#include "CLogLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
-class CGraphModel : public QAbstractListModel
+class CLogModel : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -27,17 +27,17 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CGraphModel(QObject *parent = nullptr);
+    CLogModel(QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CGraphModel();
+    virtual ~CLogModel();
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
     //! Sets all lines
-    void setGraphLines(QList<CGraphLine*> lNewLines);
+    void setGraphLines(QList<CLogLine*> lNewLines);
 
     //! Returns role names
     virtual QHash<int, QByteArray> roleNames() const;
@@ -57,5 +57,5 @@ public:
 private:
 
     //! Chat object
-    QList<CGraphLine*>  m_lGraphLines;
+    QList<CLogLine*>  m_lGraphLines;
 };

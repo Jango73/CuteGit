@@ -11,7 +11,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-class CGraphLine : public QObject
+class CLogLine : public QObject
 {
     Q_OBJECT
 
@@ -31,8 +31,8 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CGraphLine();
+    CLogLine();
 
     //! Destructor
-    virtual ~CGraphLine();
+    virtual ~CLogLine();
 };

@@ -20,7 +20,7 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         height: Const.elementHeight
-        text: Const.graphText
+        text: Const.logText
     }
 
     StandardListView {
@@ -29,7 +29,7 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        model: root.controller.fileModel !== null ? root.controller.fileModel.graphModel : undefined
+        model: root.controller.fileModel !== null ? root.controller.fileModel.logModel : undefined
 
         delegate: Item {
             id: delegateItem
