@@ -174,6 +174,8 @@ void CController::onNewOutput(QString sOutput)
 
     for (QString sLine : lNewList)
     {
+        sLine = sLine.trimmed();
+
         if (sLine.isEmpty() == false)
         {
             bHasNewLine = true;
