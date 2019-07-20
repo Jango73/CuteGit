@@ -53,8 +53,9 @@ Pane {
 
             StandardText {
                 id: messageField
-                width: parent.width * 0.5
+                width: parent.width * 0.55
                 text: model.message
+                wrapMode: Text.NoWrap
                 elide: Text.ElideRight
                 color: selection.visible ? Material.background : Material.foreground
             }
@@ -64,15 +65,17 @@ Pane {
                 width: parent.width * 0.25
                 anchors.left: messageField.right
                 text: model.author
+                wrapMode: Text.NoWrap
                 elide: Text.ElideRight
                 color: selection.visible ? Material.background : Material.foreground
             }
 
             StandardText {
                 id: dateField
-                width: parent.width * 0.25
+                width: parent.width * 0.2
                 anchors.left: authorField.right
                 text: model.date
+                wrapMode: Text.NoWrap
                 elide: Text.ElideRight
                 color: selection.visible ? Material.background : Material.foreground
             }

@@ -226,9 +226,9 @@ void CFileModel::revertSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::commit(const QString& sMessage)
+void CFileModel::commit(const QString& sMessage, bool bAmend)
 {
-    if (m_eRepositoryStatus == NoMerge)
+    if (m_eRepositoryStatus == NoMerge && bAmend == false)
     {
         m_pController->commands()->commit(m_pController->repositoryPath(), sMessage);
     }

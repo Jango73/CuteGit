@@ -118,7 +118,7 @@ public:
     void revertSelection(QModelIndexList lIndices);
 
     //!
-    void commit(const QString& sMessage);
+    void commit(const QString& sMessage, bool bAmend);
 
     //!
     void push();

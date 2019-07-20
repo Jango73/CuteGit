@@ -121,7 +121,7 @@ Item {
                 shortcut: "Ctrl+shift++"
 
                 onTriggered: {
-                    root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
+                    root.controller.fileModelProxy.stageAll()
                 }
             }
 
@@ -157,6 +157,17 @@ Item {
                 shortcut: "Ctrl+C"
 
                 onTriggered: {
+                    commit.amend = false
+                    commit.open()
+                }
+            }
+
+            Action {
+                text: qsTr("&Amend...")
+                shortcut: "Ctrl+A"
+
+                onTriggered: {
+                    commit.amend = true
                     commit.open()
                 }
             }
@@ -320,8 +331,8 @@ Item {
             anchors.bottom: parent.bottom
             height: parent.height * 0.33
 
-            GraphPane {
-                id: graphView
+            BranchLogPane {
+                id: logView
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
@@ -334,7 +345,7 @@ Item {
                 id: outputView
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.left: graphView.right
+                anchors.left: logView.right
                 anchors.right: parent.right
                 anchors.margins: Const.paneMargins
 

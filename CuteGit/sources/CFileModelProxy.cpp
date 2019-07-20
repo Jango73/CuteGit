@@ -198,13 +198,13 @@ void CFileModelProxy::revertSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::commit(const QString& sMessage)
+void CFileModelProxy::commit(const QString& sMessage, bool bAmend)
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
-        pModel->commit(sMessage);
+        pModel->commit(sMessage, bAmend);
     }
 }
 

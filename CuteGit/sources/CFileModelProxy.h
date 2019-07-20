@@ -67,7 +67,7 @@ public:
     Q_INVOKABLE void revertSelection(QModelIndexList lIndices);
 
     //!
-    Q_INVOKABLE void commit(const QString& sMessage);
+    Q_INVOKABLE void commit(const QString& sMessage, bool bAmend);
 
     //!
     Q_INVOKABLE void push();

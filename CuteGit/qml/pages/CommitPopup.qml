@@ -15,6 +15,7 @@ Popup {
     Material.elevation: Const.popupElevation
 
     property variant controller: null
+    property bool amend: false
 
     Component.onCompleted: {
         root.forceActiveFocus()
@@ -31,7 +32,7 @@ Popup {
             anchors.margins: Const.mainPadding
 
             horizontalAlignment: Text.AlignHCenter
-            text: "Commit"
+            text: root.amend ? qsTr("Amend") : qsTr("Commit")
         }
 
         StandardTextEdit {
@@ -51,7 +52,7 @@ Popup {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: Const.mainPadding
-            text: "File list"
+            text: qsTr("File list")
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -71,7 +72,7 @@ Popup {
 
                 onClicked: {
                     root.close()
-                    root.controller.fileModelProxy.commit(message.text)
+                    root.controller.fileModelProxy.commit(message.text, root.amend)
                 }
             }
 
