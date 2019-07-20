@@ -21,6 +21,7 @@ CuteGit::CuteGit()
     // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
     qRegisterMetaType<CXMLNode>();
     qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
+    qRegisterMetaType<CFileModel::ERepositoryStatus>("CFileModel::ERepositoryStatus");
 
     qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "CFileModel", "Cannot create a FileSystemModel instance.");
     qmlRegisterUncreatableType<CFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");

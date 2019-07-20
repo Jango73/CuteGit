@@ -6,6 +6,8 @@ HEADERS += \
     sources/CFileModel.h \
     sources/CFileModelProxy.h \
     sources/CRepoFile.h \
+    sources/CGraphModel.h \
+    sources/CGraphLine.h \
     sources/CController.h \
     sources/CuteGit.h \
 
@@ -16,6 +18,8 @@ SOURCES += \
     sources/CFileModel.cpp \
     sources/CFileModelProxy.cpp \
     sources/CRepoFile.cpp \
+    sources/CGraphModel.cpp \
+    sources/CGraphLine.cpp \
     sources/CController.cpp \
     sources/main.cpp \
     sources/CuteGit.cpp \

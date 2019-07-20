@@ -9,10 +9,13 @@
 
 //-------------------------------------------------------------------------------------------------
 
+static int iLogFormatValueCount = 4;
+static const char* sLogFormatSplitter = "|";
+
 static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
-static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --max-count=20";
+static const char* sCommandGraph = "git log --pretty=format:\"%H | %s | %an | %aI\" --max-count=20";
 static const char* sCommandFileLog = "git log --max-count=20 \"%1\"";
 static const char* sCommandStage = "git add -f \"%1\"";
 static const char* sCommandUnstage = "git reset \"%1\"";
@@ -98,12 +101,12 @@ void CGitCommands::branches(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::graph(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CGitCommands::branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to)
 {
     QString sFrom = from.toString(Qt::ISODate);
     QString sTo = to.toString(Qt::ISODate);
     QString sCommand = QString(sCommandGraph); // .arg(sFrom).arg(sTo);
-    exec(new CProcessCommand(CProcessCommand::eGraph, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eBranchLog, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -196,6 +199,11 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     switch (eCommand)
     {
 
+    case CProcessCommand::eNotification:
+    case CProcessCommand::eCurrentBranch:
+    case CProcessCommand::eRepositoryStatus:
+        break;
+
     case CProcessCommand::eStageFile:
     case CProcessCommand::eStageAll:
     case CProcessCommand::eRevertFile:
@@ -209,7 +217,6 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eGraph:
     case CProcessCommand::eFileLog:
     case CProcessCommand::eUnstagedFileDiff:
     {
@@ -324,8 +331,29 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    default:
+    case CProcessCommand::eBranchLog:
     {
+        QList<CGraphLine*> lReturnValue;
+        QStringList lStrings = sValue.split("\n");
+
+        for (QString sLine : lStrings)
+        {
+            QStringList sValues = sLine.split(sLogFormatSplitter);
+
+            if (sValues.count() == iLogFormatValueCount)
+            {
+                CGraphLine* pLine = new CGraphLine();
+
+                pLine->setCommitId(sValues[0].trimmed());
+                pLine->setMessage(sValues[1].trimmed());
+                pLine->setAuthor(sValues[2].trimmed());
+                pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
+
+                lReturnValue << pLine;
+            }
+        }
+
+        emit newOutputListOfCGraphLine(eCommand, lReturnValue);
         break;
     }
 

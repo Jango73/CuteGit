@@ -5,7 +5,7 @@
 #include <QSortFilterProxyModel>
 
 // qt-plus
-#include <Macros.h>
+#include "Macros.h"
 
 class CFileModelProxy : public QSortFilterProxyModel
 {

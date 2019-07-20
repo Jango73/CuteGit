@@ -14,8 +14,9 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Show repository status (clean, merge, rebase, ...)
 * Show repository files as a tree, colored according to status
 * Show the branches of the repository
-* Show the graph of the repository
-* Show the diffs in the selected item (folder or file)
+* Show the branch log
+* Show the selected file log
+* Show the unstaged diffs in the selected item (folder or file)
 * Show the output of the executed GIT commands
 * Mark files as staged / unstaged
 * Change current branch
@@ -25,7 +26,6 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Simple pull
 * Simple push
 * Refresh view
-* File log
 
 ## Things to fix
 
@@ -37,8 +37,9 @@ Please do not use shadow build because of the submoduled qt-plus library.
   * With a button to switch between tree and flat views
 * File sorting
 * Make the file system model refresh file status when changes occur outside the app
+* Show the staged diffs
 * Show deleted files in the file system model (somehow)
-* Rename a commit
+* Modify a commit message
 * Reset HEAD to a commit
 * Rebase
 * Blame

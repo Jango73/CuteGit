@@ -125,7 +125,7 @@ void CCommands::branches(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CCommands::graph(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CCommands::branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(from);

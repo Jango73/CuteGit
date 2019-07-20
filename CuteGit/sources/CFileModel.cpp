@@ -23,7 +23,7 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     : QFileSystemModel(parent)
     , m_pController(pController)
     , m_pBranchModel(new QStringListModel(this))
-    , m_pGraphModel(new QStringListModel(this))
+    , m_pGraphModel(new CGraphModel(this))
     , m_pDiffModel(new QStringListModel(this))
     , m_pLogModel(new QStringListModel(this))
 {
@@ -36,6 +36,7 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     connect(m_pController->commands(), &CCommands::newOutputString, this, &CFileModel::onNewOutputString);
     connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CFileModel::onNewOutputStringList);
     connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CFileModel::onNewOutputListOfCRepoFile);
+    connect(m_pController->commands(), &CCommands::newOutputListOfCGraphLine, this, &CFileModel::onNewOutputListOfCGraphLine);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -172,7 +173,7 @@ void CFileModel::refresh()
     checkRepositoryStatus();
     checkAllFileStatus();
     getBranches();
-    getGraph();
+    getLog();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -237,7 +238,7 @@ void CFileModel::commit(const QString& sMessage)
     }
 
     checkAllFileStatus();
-    getGraph();
+    getLog();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -246,7 +247,7 @@ void CFileModel::push()
 {
     m_pController->commands()->push(m_pController->repositoryPath());
 
-    getGraph();
+    getLog();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -256,7 +257,7 @@ void CFileModel::pull()
     m_pController->commands()->pull(m_pController->repositoryPath());
 
     checkAllFileStatus();
-    getGraph();
+    getLog();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -273,7 +274,7 @@ void CFileModel::getBranches(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::getGraph(QString sPath)
+void CFileModel::getLog(QString sPath)
 {
     if (sPath.isEmpty())
     {
@@ -283,7 +284,7 @@ void CFileModel::getGraph(QString sPath)
     QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
     QDateTime dTo = QDateTime::currentDateTime().addDays(2);
 
-    m_pController->commands()->graph(sPath, dFrom, dTo);
+    m_pController->commands()->branchLog(sPath, dFrom, dTo);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -364,12 +365,6 @@ void CFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand
         break;
     }
 
-    case CProcessCommand::eGraph:
-    {
-        m_pGraphModel->setStringList(lValue);
-        break;
-    }
-
     case CProcessCommand::eUnstagedFileDiff:
     {
         m_pDiffModel->setStringList(lValue);
@@ -392,7 +387,7 @@ void CFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles)
+void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
 {
     switch (eCommand)
     {
@@ -403,7 +398,7 @@ void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCo
 
         for (CRepoFile* pExistingFile : m_vRepoFiles)
         {
-            CRepoFile* pNewFile = fileByFullName(vNewRepoFiles, pExistingFile->fullName());
+            CRepoFile* pNewFile = fileByFullName(lNewRepoFiles, pExistingFile->fullName());
 
             if (pNewFile == nullptr)
             {
@@ -412,7 +407,7 @@ void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCo
             }
         }
 
-        for (CRepoFile* pFile : vNewRepoFiles)
+        for (CRepoFile* pFile : lNewRepoFiles)
         {
             CRepoFile* pExistingFile = fileByFullName(m_vRepoFiles, pFile->fullName());
 
@@ -429,7 +424,7 @@ void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCo
         qDeleteAll(m_vRepoFiles);
         m_vRepoFiles.clear();
 
-        for (CRepoFile* pFile : vNewRepoFiles)
+        for (CRepoFile* pFile : lNewRepoFiles)
         {
             m_vRepoFiles << pFile;
         }
@@ -439,6 +434,27 @@ void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCo
             emit dataChanged(qIndex, qIndex);
         }
 
+        break;
+    }
+
+    default:
+    {
+        break;
+    }
+
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::onNewOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewGraphLines)
+{
+    switch (eCommand)
+    {
+
+    case CProcessCommand::eBranchLog:
+    {
+        m_pGraphModel->setGraphLines(lNewGraphLines);
         break;
     }
 

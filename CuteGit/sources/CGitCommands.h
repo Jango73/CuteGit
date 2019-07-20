@@ -39,7 +39,7 @@ public:
     virtual void branches(const QString& sPath) override;
 
     //!
-    virtual void graph(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
+    virtual void branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
 
     //!
     virtual void fileLog(const QString& sPath, const QString& sFullName) override;

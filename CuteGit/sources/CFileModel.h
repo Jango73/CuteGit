@@ -6,11 +6,12 @@
 #include <QStringListModel>
 
 // qt-plus
-#include <Macros.h>
+#include "Macros.h"
 #include "CXMLNode.h"
 
 // Application
 #include "CRepoFile.h"
+#include "CGraphModel.h"
 #include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -51,7 +52,7 @@ public:
     Q_FAST_PROPERTY(ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
-    Q_FAST_PROPERTY(QStringListModel*, p, graphModel, GraphModel)
+    Q_FAST_PROPERTY(CGraphModel*, p, graphModel, GraphModel)
     Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
     Q_FAST_PROPERTY(QStringListModel*, p, logModel, LogModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
@@ -135,7 +136,7 @@ protected:
     void getBranches(QString sPath = "");
 
     //!
-    void getGraph(QString sPath = "");
+    void getLog(QString sPath = "");
 
     //-------------------------------------------------------------------------------------------------
     // Signals
@@ -162,7 +163,10 @@ protected slots:
     void onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
 
     //!
-    void onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
+    void onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+
+    //!
+    void onNewOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewGraphLines);
 
     //-------------------------------------------------------------------------------------------------
     // Properties

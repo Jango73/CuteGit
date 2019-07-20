@@ -8,8 +8,8 @@
 #include <QStringListModel>
 
 // qt-plus
-#include <Macros.h>
-#include <CXMLNode.h>
+#include "Macros.h"
+#include "CXMLNode.h"
 
 // Application
 #include "CFileModel.h"

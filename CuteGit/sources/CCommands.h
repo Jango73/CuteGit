@@ -10,6 +10,7 @@
 
 // Application
 #include "CRepoFile.h"
+#include "CGraphLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -25,7 +26,7 @@ public:
         eAllFileStatus,
         eRepositoryStatus,
         eBranches,
-        eGraph,
+        eBranchLog,
         eCurrentBranch,
         eFileLog,
         eStageFile,
@@ -85,7 +86,7 @@ public:
     virtual void branches(const QString& sPath);
 
     //!
-    virtual void graph(const QString& sPath, const QDateTime& from, const QDateTime& to);
+    virtual void branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to);
 
     //!
     virtual void fileLog(const QString& sPath, const QString& sFullName);
@@ -155,6 +156,9 @@ signals:
 
     //!
     void newOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
+
+    //!
+    void newOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> vNewGraphLines);
 
 private:
 
