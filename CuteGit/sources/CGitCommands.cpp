@@ -204,9 +204,7 @@ void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCom
 
     QMap<QString, QString> mEnvironment;
     mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
-//    QString sOutput = execNow(sPath, sCommandInteractiveRebase, mEnvironment);
 
-//    emit newOutputString(CProcessCommand::eNotification, sOutput);
     exec(new CProcessCommand(CProcessCommand::eNotification, sPath, sCommandInteractiveRebase, mEnvironment));
 }
 

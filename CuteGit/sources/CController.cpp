@@ -10,6 +10,32 @@
 
 //-------------------------------------------------------------------------------------------------
 
+/*
+
+  Workflow of GIT interactive rebase:
+  * CuteGit-1-A runs (1 is first instance, A is main thread)
+  * CuteGit-1-A calls CCommands::exec with "git rebase --interactive" and "GIT_SEQUENCE_EDITOR=<path-to-cutegit>"
+  * CuteGit-1-B launches process (1 is first instance, B is process execution thread)
+  * GIT starts
+  * GIT launches process : <path-to-cutegit> <path-to-sequence-file>
+  * CuteGit-2 starts in slave mode (because it has one argument)
+  * CuteGit-2-A asks (via shared memory) for sequence file edition
+  * CuteGit-1-A edits the sequence file for slave and notifies it
+  * CuteGit-1-B is still waiting for GIT process to end
+  * CuteGit-2 quits
+  * if changing a commit:
+  ** GIT launches process : <path-to-cutegit> <path-to-commit-file>
+  ** CuteGit-2 starts in slave mode (because it has one argument)
+  ** CuteGit-2-A asks (via shared memory) for commit file edition
+  ** CuteGit-1-A edits the sequence file for slave and notifies it
+  ** CuteGit-2 quits
+  * GIT quits
+  * CuteGit-1-B returns
+
+ * */
+
+//-------------------------------------------------------------------------------------------------
+
 const QString sParamConfiguration = "Configuration";
 const QString sParamCurrentRepository = "CurrentRepository";
 const QString sParamRepositories = "Repositories";
