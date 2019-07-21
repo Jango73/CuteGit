@@ -14,201 +14,32 @@ Item {
 
     property variant controller: null
 
-    MenuBar {
+    MainMenu {
         id: menu
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
 
-        Material.elevation: 4
+        controller: root.controller
 
-        Menu {
-            title: qsTr("&Repository")
+        onRequestOpenRepository: folderDialog.open()
+        onRequestStageSelection: root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
+        onRequestUnstageSelection: root.controller.fileModelProxy.unstageSelection(fileSelection.selectedIndexes)
+        onRequestRevertSelection: root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
+        onRequestShortcuts: shortcuts.open()
 
-            Action {
-                text: qsTr("&Open...")
-                shortcut: "Ctrl+O"
-
-                onTriggered: {
-                    folderDialog.open()
-                }
-            }
-
-            Action {
-                text: qsTr("&Remove...")
-            }
-
-            MenuSeparator { }
-
-            Action {
-                text: qsTr("&Quit")
-                shortcut: "Ctrl+Q"
-
-                onTriggered: {
-                    root.controller.quit()
-                }
-            }
+        onRequestCommit: {
+            commit.messageText = ""
+            commit.showFileList = true
+            commit.amend = false
+            commit.open()
         }
 
-        Menu {
-            title: qsTr("&View")
-
-            Action {
-                text: qsTr("&Refresh")
-                shortcut: "F5"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.refresh()
-                }
-            }
-
-            MenuItem {
-                text: qsTr("Show &clean")
-                checkable: true
-                checked: root.controller.fileModelProxy.showClean
-
-                onClicked: {
-                    root.controller.fileModelProxy.showClean = !root.controller.fileModelProxy.showClean
-                }
-            }
-
-            MenuItem {
-                text: qsTr("Show &added")
-                checkable: true
-                checked: root.controller.fileModelProxy.showAdded
-
-                onClicked: {
-                    root.controller.fileModelProxy.showAdded = !root.controller.fileModelProxy.showAdded
-                }
-            }
-
-            MenuItem {
-                text: qsTr("Show &modified")
-                checkable: true
-                checked: root.controller.fileModelProxy.showModified
-
-                onClicked: {
-                    root.controller.fileModelProxy.showModified = !root.controller.fileModelProxy.showModified
-                }
-            }
-
-            MenuItem {
-                text: qsTr("Show &deleted")
-                checkable: true
-                checked: root.controller.fileModelProxy.showDeleted
-
-                onClicked: {
-                    root.controller.fileModelProxy.showDeleted = !root.controller.fileModelProxy.showDeleted
-                }
-            }
-
-            MenuItem {
-                text: qsTr("Show &untracked")
-                checkable: true
-                checked: root.controller.fileModelProxy.showUntracked
-
-                onClicked: {
-                    root.controller.fileModelProxy.showUntracked = !root.controller.fileModelProxy.showUntracked
-                }
-            }
-        }
-
-        Menu {
-            title: qsTr("&Local")
-
-            Action {
-                text: qsTr("Stage &all")
-                shortcut: "Ctrl+shift++"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.stageAll()
-                }
-            }
-
-            Action {
-                text: qsTr("&Stage selection")
-                shortcut: "Ctrl++"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
-                }
-            }
-
-            Action {
-                text: qsTr("&Unstage selection")
-                shortcut: "Ctrl+-"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.unstageSelection(fileSelection.selectedIndexes)
-                }
-            }
-
-            Action {
-                text: qsTr("&Revert selection")
-                shortcut: "Ctrl+Z"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
-                }
-            }
-
-            Action {
-                text: qsTr("&Commit...")
-                shortcut: "Ctrl+C"
-
-                onTriggered: {
-                    commit.messageText = ""
-                    commit.showFileList = true
-                    commit.amend = false
-                    commit.open()
-                }
-            }
-
-            Action {
-                text: qsTr("&Amend...")
-                shortcut: "Ctrl+A"
-
-                onTriggered: {
-                    commit.messageText = ""
-                    commit.showFileList = true
-                    commit.amend = true
-                    commit.open()
-                }
-            }
-        }
-
-        Menu {
-            title: qsTr("Re&mote")
-
-            Action {
-                text: qsTr("&Pull...")
-                shortcut: "Ctrl+L"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.pull()
-                }
-            }
-
-            Action {
-                text: qsTr("Pus&h...")
-                shortcut: "Ctrl+P"
-
-                onTriggered: {
-                    root.controller.fileModelProxy.push()
-                }
-            }
-        }
-
-        Menu {
-            title: qsTr("&Help")
-
-            Action {
-                text: qsTr("&Shortcuts...")
-
-                onTriggered: {
-                    shortcuts.open()
-                }
-            }
+        onRequestAmend: {
+            commit.messageText = ""
+            commit.showFileList = true
+            commit.amend = true
+            commit.open()
         }
     }
 

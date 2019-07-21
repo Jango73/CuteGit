@@ -14,6 +14,7 @@
         <file>qml/components/DatePicker.qml</file>
         <file>qml/components/Selection.qml</file>
         <file>qml/pages/MainPage.qml</file>
+        <file>qml/pages/MainMenu.qml</file>
         <file>qml/pages/FilePane.qml</file>
         <file>qml/pages/RepoPane.qml</file>
         <file>qml/pages/BranchPane.qml</file>
