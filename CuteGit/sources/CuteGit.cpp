@@ -13,7 +13,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-CuteGit::CuteGit(bool bMasterMode)
+CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
     : m_pController(nullptr)
     , m_pEngine(nullptr)
 {
@@ -29,8 +29,8 @@ CuteGit::CuteGit(bool bMasterMode)
         qmlRegisterUncreatableType<CFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
 
         // Create controller and QML engine
-        m_pController = new CController();
-        m_pEngine = new QQmlApplicationEngine();
+        m_pController = new CController(this);
+        m_pEngine = new QQmlApplicationEngine(this);
 
         // Set context properties
         m_pEngine->rootContext()->setContextProperty("controller", m_pController);
@@ -42,7 +42,7 @@ CuteGit::CuteGit(bool bMasterMode)
     }
     else
     {
-        m_pController = new CController();
+        m_pController = new CController(sSequenceFileName, this);
     }
 }
 

@@ -203,10 +203,11 @@ void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCom
     Q_UNUSED(sMessage)
 
     QMap<QString, QString> mEnvironment;
-    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationDirPath();
-    QString sOutput = execNow(sPath, sCommandInteractiveRebase, mEnvironment);
+    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
+//    QString sOutput = execNow(sPath, sCommandInteractiveRebase, mEnvironment);
 
-    emit newOutputString(CProcessCommand::eNotification, sOutput);
+//    emit newOutputString(CProcessCommand::eNotification, sOutput);
+    exec(new CProcessCommand(CProcessCommand::eNotification, sPath, sCommandInteractiveRebase, mEnvironment));
 }
 
 //-------------------------------------------------------------------------------------------------

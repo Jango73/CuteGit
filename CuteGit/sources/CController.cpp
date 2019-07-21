@@ -48,7 +48,7 @@ CController::CController(QObject* parent)
 
 //-------------------------------------------------------------------------------------------------
 
-CController::CController(bool bDummy, QObject* parent)
+CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
     , m_pFileModel(nullptr)
@@ -58,8 +58,9 @@ CController::CController(bool bDummy, QObject* parent)
     , m_bMasterMode(false)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
+    , m_sSequenceFileName(sSequenceFileName)
 {
-    Q_UNUSED(bDummy);
+    Q_UNUSED(sSequenceFileName);
 
     if (m_tShared.attach())
     {
@@ -160,12 +161,14 @@ QString CController::repositoryPath() const
 CController::ESharedOperation CController::sharedOperation()
 {
     ESharedOperation eReturnValue = eSONone;
+
     if (m_tShared.lock())
     {
         SMemoryStruct* pData = static_cast<SMemoryStruct*>(m_tShared.data());
         eReturnValue = pData->eOperation;
         m_tShared.unlock();
     }
+
     return eReturnValue;
 }
 
@@ -293,7 +296,7 @@ void CController::onSharedTimerTick()
         {
             qDebug() << "Master sees eSOSlaveRequestEdit";
 
-            setSharedOperation(eSONone);
+            setSharedOperation(eSOMasterFinishedEdit);
         }
     }
     else

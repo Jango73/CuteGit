@@ -5,6 +5,7 @@
 // Application
 #include "CuteGit.h"
 
+// Available arguments
 static const char* sSwitch_foo = "--foo";
 
 int main(int argc, char *argv[])
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 
         if (lArgList.contains(sSwitch_foo))
         {
+            // Do something...
         }
         else
         {

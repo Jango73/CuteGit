@@ -19,9 +19,10 @@
 
 //-------------------------------------------------------------------------------------------------
 
-#define CONFIG_FILE_NAME        "configuration.xml"
-#define SHARED_MEMORY_MAX       65536
-#define SHARED_MEMORY_TEXT_MAX  60000
+#define CONFIG_FILE_NAME            "configuration.xml"
+#define SHARED_MEMORY_MAX           65536
+#define SHARED_MEMORY_TEXT_MAX      60000
+#define SHARED_MEMORY_FILE_NAME_MAX 2000
 
 //-------------------------------------------------------------------------------------------------
 
@@ -52,6 +53,7 @@ public:
     {
         qint32              iMagic;
         ESharedOperation    eOperation;
+        char                sSequenceFileName[SHARED_MEMORY_FILE_NAME_MAX];
         char                sText[SHARED_MEMORY_TEXT_MAX];
     } SMemoryStruct;
 
@@ -60,10 +62,10 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CController(QObject *parent = nullptr);
+    CController(QObject* parent = nullptr);
 
     //! Slave constructor
-    CController(bool bDummy, QObject *parent = nullptr);
+    CController(QString sSequenceFileName, QObject* parent = nullptr);
 
     //! Destructor
     virtual ~CController();
@@ -138,6 +140,7 @@ protected:
     bool                    m_bMasterMode;
     QSharedMemory           m_tShared;
     QTimer                  m_tSharedTimer;
+    QString                 m_sSequenceFileName;
 
     static const QString    m_sSharedKey;
 };

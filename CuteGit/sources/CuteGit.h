@@ -11,12 +11,14 @@
 
 //-------------------------------------------------------------------------------------------------
 
-class CuteGit
+class CuteGit : public QObject
 {
+    Q_OBJECT
+
 public:
 
     //! Constructor
-    CuteGit(bool bMasterMode = true);
+    CuteGit(bool bMasterMode = true, const QString& sSequenceFileName = "");
 
     //! Destructor
     virtual ~CuteGit();

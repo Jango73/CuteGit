@@ -42,10 +42,11 @@ public:
 
     Q_ENUMS(EProcessCommand)
 
-    CProcessCommand(EProcessCommand eCommand, QString sWorkPath, QString sCommand)
+    CProcessCommand(EProcessCommand eCommand, QString sWorkPath, QString sCommand, QMap<QString, QString> mEnvironment = QMap<QString, QString>())
         : m_eCommand(eCommand)
         , m_sWorkPath(sWorkPath)
         , m_sCommand(sCommand)
+        , m_mEnvironment(mEnvironment)
     {
     }
 
