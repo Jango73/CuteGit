@@ -16,36 +16,75 @@ const QString sParamRepositories = "Repositories";
 const QString sParamRepository = "Repository";
 const QString sParamPath = "Path";
 
+const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
+
 //-------------------------------------------------------------------------------------------------
 
-CController::CController(QObject *parent)
+CController::CController(QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
     , m_pFileModel(nullptr)
     , m_pFileModelProxy(new CFileModelProxy(this))
     , m_pRepositoryModel(new QStringListModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
+    , m_bMasterMode(true)
+    , m_tShared(m_sSharedKey, this)
+    , m_tSharedTimer(this)
 {
     loadConfiguration();
+
+    if (m_tShared.create(SHARED_MEMORY_MAX))
+    {
+        clearSharedMemory();
+
+        connect(&m_tSharedTimer, &QTimer::timeout, this, &CController::onSharedTimerTick);
+        m_tSharedTimer.start(500);
+    }
+    else
+    {
+        qWarning() << "Could not create shared memory segment";
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+CController::CController(bool bDummy, QObject* parent)
+    : QObject(parent)
+    , m_pCommands(new CGitCommands())
+    , m_pFileModel(nullptr)
+    , m_pFileModelProxy(nullptr)
+    , m_pRepositoryModel(nullptr)
+    , m_pCommandOutputModel(nullptr)
+    , m_bMasterMode(false)
+    , m_tShared(m_sSharedKey, this)
+    , m_tSharedTimer(this)
+{
+    Q_UNUSED(bDummy);
+
+    if (m_tShared.attach())
+    {
+        connect(&m_tSharedTimer, &QTimer::timeout, this, &CController::onSharedTimerTick);
+        m_tSharedTimer.start(500);
+
+        setSharedOperation(eSOSlaveRequestEdit);
+    }
+    else
+    {
+        qWarning() << "Could not attach to shared memory segment";
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
 
 CController::~CController()
 {
-    saveConfiguration();
-}
+    if (m_bMasterMode)
+        saveConfiguration();
 
-//-------------------------------------------------------------------------------------------------
-
-QString CController::repositoryPath() const
-{
-    if (m_pFileModel != nullptr)
+    if (m_tShared.detach() == false)
     {
-        return m_pFileModel->rootPath();
+        qWarning() << "Could not detach from shared memory segment";
     }
-
-    return "";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -90,6 +129,44 @@ void CController::setRepositoryPath(QString sPath)
             onNewOutput(QString(tr("%1 is not a GIT repository.\nPlease select a folder containing a GIT repository.")).arg(sPath));
         }
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setSharedOperation(ESharedOperation eOperation)
+{
+    if (m_tShared.lock())
+    {
+        SMemoryStruct* pData = static_cast<SMemoryStruct*>(m_tShared.data());
+        pData->eOperation = eOperation;
+        m_tShared.unlock();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CController::repositoryPath() const
+{
+    if (m_pFileModel != nullptr)
+    {
+        return m_pFileModel->rootPath();
+    }
+
+    return "";
+}
+
+//-------------------------------------------------------------------------------------------------
+
+CController::ESharedOperation CController::sharedOperation()
+{
+    ESharedOperation eReturnValue = eSONone;
+    if (m_tShared.lock())
+    {
+        SMemoryStruct* pData = static_cast<SMemoryStruct*>(m_tShared.data());
+        eReturnValue = pData->eOperation;
+        m_tShared.unlock();
+    }
+    return eReturnValue;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -152,6 +229,18 @@ void CController::loadConfiguration()
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::clearSharedMemory()
+{
+    if (m_tShared.lock())
+    {
+        SMemoryStruct* pData = static_cast<SMemoryStruct*>(m_tShared.data());
+        memset(pData, 0, sizeof(SMemoryStruct));
+        m_tShared.unlock();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::quit()
 {
     QApplication::quit();
@@ -192,4 +281,30 @@ void CController::onNewOutput(QString sOutput)
         lData.removeFirst();
 
     m_pCommandOutputModel->setStringList(lData);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::onSharedTimerTick()
+{
+    if (m_bMasterMode)
+    {
+        if (sharedOperation() == eSOSlaveRequestEdit)
+        {
+            qDebug() << "Master sees eSOSlaveRequestEdit";
+
+            setSharedOperation(eSONone);
+        }
+    }
+    else
+    {
+        if (sharedOperation() == eSOMasterFinishedEdit)
+        {
+            qDebug() << "Slave sees eSOMasterFinishedEdit";
+
+            setSharedOperation(eSONone);
+
+            quit();
+        }
+    }
 }

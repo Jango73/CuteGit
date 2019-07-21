@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QRegExp>
 #include <QDir>
+#include <QCoreApplication>
 
 // Application
 #include "CGitCommands.h"
@@ -28,13 +29,15 @@ static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
-static const char* sCommandContinueRebase = "git rebase --continue";
+static const char* sCommandInteractiveRebase = "git rebase --interactive";
+// static const char* sCommandContinueRebase = "git rebase --continue";
 
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
 
 static const char* sStatusRegExp = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
 static const char* sRemoteBranchPrefix = "remotes/origin/";
+static const char* sSequenceEditorToken = "GIT_SEQUENCE_EDITOR";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
@@ -190,6 +193,20 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
     QString sFinalName = sBranch;
     sFinalName.replace(sRemoteBranchPrefix, "");
     exec(new CProcessCommand(CProcessCommand::eSetCurrentBranch, sPath, QString(sCommandSetCurrentBranch).arg(sFinalName)));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
+{
+    Q_UNUSED(sCommitId)
+    Q_UNUSED(sMessage)
+
+    QMap<QString, QString> mEnvironment;
+    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationDirPath();
+    QString sOutput = execNow(sPath, sCommandInteractiveRebase, mEnvironment);
+
+    emit newOutputString(CProcessCommand::eNotification, sOutput);
 }
 
 //-------------------------------------------------------------------------------------------------

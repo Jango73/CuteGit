@@ -262,6 +262,13 @@ void CFileModel::pull()
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModel::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
+{
+    m_pController->commands()->changeCommitMessage(m_pController->repositoryPath(), sCommitId, sMessage);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModel::getBranches(QString sPath)
 {
     if (sPath.isEmpty())

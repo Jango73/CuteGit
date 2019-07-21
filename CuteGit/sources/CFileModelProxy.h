@@ -79,7 +79,7 @@ public:
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
 
     //!
-    Q_INVOKABLE void changeCommitMessage(QString sCommitId, QString sMessage);
+    Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
 
     //-------------------------------------------------------------------------------------------------
     // Signals

@@ -49,9 +49,10 @@ public:
     {
     }
 
-    EProcessCommand m_eCommand;
-    QString m_sWorkPath;
-    QString m_sCommand;
+    EProcessCommand         m_eCommand;
+    QString                 m_sWorkPath;
+    QString                 m_sCommand;
+    QMap<QString, QString>  m_mEnvironment;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -118,6 +119,9 @@ public:
     //!
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch);
 
+    //!
+    virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage);
+
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
     //-------------------------------------------------------------------------------------------------
@@ -128,7 +132,7 @@ protected:
     void exec(CProcessCommand* pCommand);
 
     //!
-    QString execNow(QString m_sWorkPath, QString m_sCommand);
+    QString execNow(QString m_sWorkPath, QString m_sCommand, QMap<QString, QString> m_mEnvironment = QMap<QString, QString>());
 
     //-------------------------------------------------------------------------------------------------
     // Private control methods
@@ -164,5 +168,5 @@ private:
 
     bool                    m_bStop;
     QMutex                  m_mMutex;
-    QList<CProcessCommand*> m_lCommands;
+    QList<CProcessCommand*> m_lCommandStack;
 };

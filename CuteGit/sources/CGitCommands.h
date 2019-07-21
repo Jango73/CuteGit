@@ -71,6 +71,9 @@ public:
     //!
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch) override;
 
+    //!
+    virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage) override;
+
 protected slots:
 
     //!

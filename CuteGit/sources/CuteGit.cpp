@@ -13,29 +13,37 @@
 
 //-------------------------------------------------------------------------------------------------
 
-CuteGit::CuteGit()
+CuteGit::CuteGit(bool bMasterMode)
     : m_pController(nullptr)
     , m_pEngine(nullptr)
 {
-    // Register types
-    // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
-    qRegisterMetaType<CXMLNode>();
-    qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
-    qRegisterMetaType<CFileModel::ERepositoryStatus>("CFileModel::ERepositoryStatus");
+    if (bMasterMode)
+    {
+        // Register types
+        // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
+        qRegisterMetaType<CXMLNode>();
+        qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
+        qRegisterMetaType<CFileModel::ERepositoryStatus>("CFileModel::ERepositoryStatus");
 
-    qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "CFileModel", "Cannot create a FileSystemModel instance.");
-    qmlRegisterUncreatableType<CFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
+        qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "CFileModel", "Cannot create a FileSystemModel instance.");
+        qmlRegisterUncreatableType<CFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
 
-    m_pController = new CController();
-    m_pEngine = new QQmlApplicationEngine();
+        // Create controller and QML engine
+        m_pController = new CController();
+        m_pEngine = new QQmlApplicationEngine();
 
-    // Update context
-    m_pEngine->rootContext()->setContextProperty("controller", m_pController);
+        // Set context properties
+        m_pEngine->rootContext()->setContextProperty("controller", m_pController);
 
-    QQuickStyle::setStyle("Material");
+        QQuickStyle::setStyle("Material");
 
-    // Load UI
-    m_pEngine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+        // Load UI
+        m_pEngine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    }
+    else
+    {
+        m_pController = new CController();
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

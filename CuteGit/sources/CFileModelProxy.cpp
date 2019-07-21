@@ -249,8 +249,14 @@ void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::changeCommitMessage(QString sCommitId, QString sMessage)
+void CFileModelProxy::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
 {
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->changeCommitMessage(sCommitId, sMessage);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

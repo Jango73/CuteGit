@@ -16,7 +16,7 @@ class CuteGit
 public:
 
     //! Constructor
-    CuteGit();
+    CuteGit(bool bMasterMode = true);
 
     //! Destructor
     virtual ~CuteGit();

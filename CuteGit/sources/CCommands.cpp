@@ -26,6 +26,8 @@ CCommands::~CCommands()
 
 //-------------------------------------------------------------------------------------------------
 
+// This method does NOT run in the main thread
+// Watch out for data integrity protection
 void CCommands::run()
 {
     while (not m_bStop)
@@ -35,25 +37,16 @@ void CCommands::run()
         {
             QMutexLocker locker(&m_mMutex);
 
-            if (m_lCommands.count() > 0)
+            if (m_lCommandStack.count() > 0)
             {
-                pCommand = m_lCommands[0];
-                m_lCommands.removeAt(0);
+                pCommand = m_lCommandStack[0];
+                m_lCommandStack.removeAt(0);
             }
         }
 
         if (pCommand != nullptr)
         {
-            QProcess process;
-
-            if (not pCommand->m_sWorkPath.isEmpty())
-                process.setWorkingDirectory(pCommand->m_sWorkPath);
-
-            process.start(pCommand->m_sCommand);
-            process.waitForFinished();
-
-            QString sOutput = process.readAllStandardOutput();
-            sOutput += process.readAllStandardError();
+            QString sOutput = execNow(pCommand->m_sWorkPath, pCommand->m_sCommand, pCommand->m_mEnvironment);
 
             emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput);
 
@@ -70,28 +63,38 @@ void CCommands::exec(CProcessCommand* pCommand)
 {
     QMutexLocker locker(&m_mMutex);
 
-    // Use only latest command of a given type
-    for (int index = 0; index < m_lCommands.count(); index++)
+    // Leave only one command of a given type in the stack
+    for (int index = 0; index < m_lCommandStack.count(); index++)
     {
-        if (m_lCommands[index]->m_eCommand == pCommand->m_eCommand)
+        if (m_lCommandStack[index]->m_eCommand == pCommand->m_eCommand)
         {
-            m_lCommands[index]->deleteLater();
-            m_lCommands.removeAt(index);
+            m_lCommandStack[index]->deleteLater();
+            m_lCommandStack.removeAt(index);
             index--;
         }
     }
 
-    m_lCommands << pCommand;
+    m_lCommandStack << pCommand;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-QString CCommands::execNow(QString m_sWorkPath, QString m_sCommand)
+QString CCommands::execNow(QString m_sWorkPath, QString m_sCommand, QMap<QString, QString> m_mEnvironment)
 {
     QProcess process;
 
     if (not m_sWorkPath.isEmpty())
         process.setWorkingDirectory(m_sWorkPath);
+
+    if (not m_mEnvironment.isEmpty())
+    {
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+
+        for (QString sKey : m_mEnvironment.keys())
+            env.insert(sKey, m_mEnvironment[sKey]);
+
+        process.setProcessEnvironment(env);
+    }
 
     process.start(m_sCommand);
     process.waitForFinished();
@@ -208,4 +211,13 @@ void CCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(sBranch);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+    Q_UNUSED(sMessage);
 }
