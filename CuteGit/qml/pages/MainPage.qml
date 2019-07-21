@@ -51,7 +51,7 @@ Item {
         }
 
         Menu {
-            title: qsTr("&Files")
+            title: qsTr("&View")
 
             Action {
                 text: qsTr("&Refresh")
@@ -157,6 +157,8 @@ Item {
                 shortcut: "Ctrl+C"
 
                 onTriggered: {
+                    commit.messageText = ""
+                    commit.showFileList = true
                     commit.amend = false
                     commit.open()
                 }
@@ -167,6 +169,8 @@ Item {
                 shortcut: "Ctrl+A"
 
                 onTriggered: {
+                    commit.messageText = ""
+                    commit.showFileList = true
                     commit.amend = true
                     commit.open()
                 }
@@ -339,6 +343,14 @@ Item {
                 width: parent.width * 0.5
 
                 controller: root.controller
+
+                onRequestCommitMessageChange: {
+                    commit.messageText = commitMessage
+                    commit.showFileList = false
+                    commit.amend = false
+                    commit.commitId = commitId
+                    commit.open()
+                }
             }
 
             OutputPane {

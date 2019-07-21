@@ -15,7 +15,11 @@ Popup {
     Material.elevation: Const.popupElevation
 
     property variant controller: null
+    property string commitId: ""
+    property bool showFileList: true
     property bool amend: false
+
+    property alias messageText: message.text
 
     Component.onCompleted: {
         root.forceActiveFocus()
@@ -32,7 +36,7 @@ Popup {
             anchors.margins: Const.mainPadding
 
             horizontalAlignment: Text.AlignHCenter
-            text: root.amend ? qsTr("Amend") : qsTr("Commit")
+            text: root.showFileList ? root.amend ? qsTr("Amend") : qsTr("Commit") : qsTr("Change commit message")
         }
 
         StandardTextEdit {
@@ -55,6 +59,7 @@ Popup {
             text: qsTr("File list")
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            visible: root.showFileList
         }
 
         RowLayout {
@@ -72,7 +77,11 @@ Popup {
 
                 onClicked: {
                     root.close()
-                    root.controller.fileModelProxy.commit(message.text, root.amend)
+                    if (root.showFileList) {
+                        root.controller.fileModelProxy.commit(message.text, root.amend)
+                    } else {
+                        root.controller.fileModelProxy.changeCommitMessage(commitId, message.text)
+                    }
                 }
             }
 

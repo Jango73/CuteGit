@@ -14,8 +14,8 @@
 //-------------------------------------------------------------------------------------------------
 
 CuteGit::CuteGit()
-    : m_pController(new CController())
-    , m_pEngine(new QQmlApplicationEngine())
+    : m_pController(nullptr)
+    , m_pEngine(nullptr)
 {
     // Register types
     // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
@@ -25,6 +25,9 @@ CuteGit::CuteGit()
 
     qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "CFileModel", "Cannot create a FileSystemModel instance.");
     qmlRegisterUncreatableType<CFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
+
+    m_pController = new CController();
+    m_pEngine = new QQmlApplicationEngine();
 
     // Update context
     m_pEngine->rootContext()->setContextProperty("controller", m_pController);

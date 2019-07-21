@@ -249,6 +249,12 @@ void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::changeCommitMessage(QString sCommitId, QString sMessage)
+{
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QModelIndexList CFileModelProxy::indexListToSource(QModelIndexList lIndices) const
 {
     QModelIndexList targetIndices;

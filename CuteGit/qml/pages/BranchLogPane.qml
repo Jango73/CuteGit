@@ -14,6 +14,8 @@ Pane {
 
     property variant controller: null
 
+    signal requestCommitMessageChange(var commitId, var commitMessage)
+
     StandardLabel {
         id: title
         anchors.top: parent.top
@@ -38,8 +40,15 @@ Pane {
 
             MouseArea {
                 anchors.fill: parent
+                acceptedButtons: Qt.AllButtons
                 onClicked: {
                     list.currentIndex = index
+
+                    if (mouse.button === Qt.RightButton) {
+                        menu.commitId = model.commitId
+                        menu.commitMessage = model.message
+                        menu.popup()
+                    }
                 }
             }
 
@@ -79,11 +88,15 @@ Pane {
                 elide: Text.ElideRight
                 color: selection.visible ? Material.background : Material.foreground
             }
+        }
+    }
 
-//                StandardText {
-//                    text: commitId
-//                    elide: Text.ElideRight
-//                }
+    LogMenu {
+        id: menu
+        controller: root.controller
+
+        onRequestCommitMessageChange: {
+            root.requestCommitMessageChange(commitId, commitMessage)
         }
     }
 }
