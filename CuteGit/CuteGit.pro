@@ -13,7 +13,7 @@ INCLUDEPATH += $$PWD/../qt-plus/source/cpp
 include(CuteGit.pri)
 
 # Directories
-DESTDIR = $$PWD/bin
+DESTDIR = $$OUT_PWD/bin
 
 # Target
 CONFIG(debug, debug|release) {

@@ -6,7 +6,7 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 
 ## Building
 
-Please do not use shadow build because of the submoduled qt-plus library.
+Open /CuteGit.pro and build
 
 ## Things it does
 
@@ -67,18 +67,27 @@ Please do not use shadow build because of the submoduled qt-plus library.
 ### CFileModel
 
 * Inherits QFileSystemModel
-* Provides access to the repository files
+* Provides access to
+  * the name of the current branch
+  * the repository status (normal, rebasing, merging, ...)
+  * the repository files
+  * the model for the list of branches
+  * the model for the current branch log
+  * the model for the diff of the selected folder / file
+  * the model for the log of the selected folder / file
 * Exposes to C++ the versioning methods: stage, unstage, commit, push, ...
 
 ### CFileModelProxy
 
 * Inherits QSortFilterProxyModel
 * Enables showing/hiding the files using their GIT status property
-* Exposes to QML/JS the versioning methods: stage, unstage, commit, push, ...
+* Exposes to QML / JS the versioning methods: stage, unstage, commit, push, ...
 
 ### CRepoFile
 
-* Represents the status of a repository file
+* The properties of a repository file
+  * status
+  * staged / unstaged flag
 
 ### CCommands
 
@@ -89,3 +98,11 @@ Please do not use shadow build because of the submoduled qt-plus library.
 
 * Inherits CCommands
 * Implements GIT versioning commands
+
+### CLogModel
+
+* A collection of log lines
+
+### CLogLine
+
+* A line of log : commit id, date, author, message
