@@ -52,11 +52,15 @@ Item {
                                        "Shortcuts\n" +
                                        "Open a repository\t\tControl + 'O'\n" +
                                        "Quit\t\t\tControl + 'Q'\n" +
+                                       "\n" +
+                                       "Refresh\t\t\tF5\n" +
+                                       "\n" +
                                        "Stage all\t\t\tControl + Shift + '+'\n" +
                                        "Stage selection\t\tControl + '+'\n" +
                                        "Unstage selection\t\tControl + '-'\n" +
                                        "Revert selection\t\tControl + 'Z'\n" +
                                        "Commit\t\t\tControl + 'C'\n" +
+                                       "Amend\t\t\tControl + 'A'\n" +
                                        "Pull\t\t\tControl + 'L'\n" +
                                        "Push\t\t\tControl + 'P'\n"
                                        )

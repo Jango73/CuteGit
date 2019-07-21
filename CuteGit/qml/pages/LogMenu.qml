@@ -26,6 +26,7 @@ Menu {
 
     Action {
         text: qsTr("&Squash...")
+        enabled: false
 
         onTriggered: {
         }
