@@ -15,6 +15,12 @@ class CGitCommands : public CCommands
 
 public:
 
+    enum ERebaseStep
+    {
+        eChangeCommitEditSequence,
+        eChangeCommitEditMessage
+    };
+
     //-------------------------------------------------------------------------------------------------
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
@@ -74,8 +80,17 @@ public:
     //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage) override;
 
+    //!
+    virtual void editSequenceFile(const QString& sFileName) override;
+
 protected slots:
 
     //!
     void onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue);
+
+protected:
+
+    ERebaseStep     m_eRebaseStep;
+    QString         m_sCommitId;
+    QString         m_sCommitMessage;
 };

@@ -37,7 +37,8 @@ public:
         ePush,
         ePull,
         eUnstagedFileDiff,
-        eSetCurrentBranch
+        eSetCurrentBranch,
+        eChangeCommitMessage
     };
 
     Q_ENUMS(EProcessCommand)
@@ -122,6 +123,9 @@ public:
 
     //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage);
+
+    //!
+    virtual void editSequenceFile(const QString& sFileName);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods

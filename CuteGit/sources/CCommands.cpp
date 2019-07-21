@@ -221,3 +221,10 @@ void CCommands::changeCommitMessage(const QString& sPath, const QString& sCommit
     Q_UNUSED(sCommitId);
     Q_UNUSED(sMessage);
 }
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::editSequenceFile(const QString& sFileName)
+{
+    Q_UNUSED(sFileName);
+}

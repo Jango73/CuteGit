@@ -16,7 +16,7 @@ static const char* sLogFormatSplitter = "|";
 static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
-static const char* sCommandGraph = "git log --pretty=format:\"%H | %s | %an | %aI\" --max-count=20";
+static const char* sCommandGraph = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
 static const char* sCommandFileLog = "git log --max-count=20 \"%1\"";
 static const char* sCommandStage = "git add -f \"%1\"";
 static const char* sCommandUnstage = "git reset \"%1\"";
@@ -29,15 +29,24 @@ static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
-static const char* sCommandInteractiveRebase = "git rebase --interactive";
+// static const char* sCommandInteractiveRebase = "git rebase --interactive";
+static const char* sCommandRebaseChangeCommit = "git rebase --interactive %1~1";
 // static const char* sCommandContinueRebase = "git rebase --continue";
 
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
 
 static const char* sStatusRegExp = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
+static const char* sPickCommitRegExp = "(pick)\\s+([a-zA-Z0-9]+)\\s+(.*)";
+
 static const char* sRemoteBranchPrefix = "remotes/origin/";
+
 static const char* sSequenceEditorToken = "GIT_SEQUENCE_EDITOR";
+static const char* sTextEditorToken = "GIT_EDITOR";
+
+static const char* sRebaseRewordCommit = "reword %1 %2";
+
+static const char* sComment = "#";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
@@ -199,13 +208,92 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 
 void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
-    Q_UNUSED(sCommitId)
-    Q_UNUSED(sMessage)
+    m_eRebaseStep = eChangeCommitEditSequence;
+    m_sCommitId = sCommitId;
+    m_sCommitMessage = sMessage;
 
     QMap<QString, QString> mEnvironment;
     mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
+    mEnvironment[sTextEditorToken] = QCoreApplication::applicationFilePath();
 
-    exec(new CProcessCommand(CProcessCommand::eNotification, sPath, sCommandInteractiveRebase, mEnvironment));
+    QString sCommand = QString(sCommandRebaseChangeCommit).arg(sCommitId);
+
+    exec(new CProcessCommand(CProcessCommand::eChangeCommitMessage, sPath, sCommand, mEnvironment));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::editSequenceFile(const QString& sFileName)
+{
+    QFile file(sFileName);
+
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QTextStream stream(&file);
+        QString sInputText = stream.readAll();
+        QStringList lOutputLines;
+        file.close();
+
+        QStringList sLines = sInputText.split("\n");
+
+        switch (m_eRebaseStep)
+        {
+        case eChangeCommitEditSequence:
+        {
+            QRegExp tRegExp(sPickCommitRegExp);
+
+            for (QString sLine : sLines)
+            {
+                if (not sLine.startsWith(sComment))
+                {
+                    if (tRegExp.indexIn(sLine) != -1)
+                    {
+                        QString sWord = tRegExp.cap(1).trimmed();
+                        QString sCommitID = tRegExp.cap(2).trimmed();
+                        QString sMessage = tRegExp.cap(3).trimmed();
+
+                        if (sCommitID == m_sCommitId)
+                        {
+                            lOutputLines << QString(sRebaseRewordCommit).arg(sCommitID).arg(sMessage);
+                        }
+                        else
+                        {
+                            lOutputLines << sLine;
+                        }
+                    }
+                }
+            }
+
+            m_eRebaseStep = eChangeCommitEditMessage;
+            break;
+        }
+
+        case eChangeCommitEditMessage:
+        {
+            lOutputLines = m_sCommitMessage.split("\n");
+            break;
+        }
+        }
+
+        // Rebuild output text from lines
+        QString sOutputText;
+
+        for (QString sLine : lOutputLines)
+        {
+            sOutputText += sLine;
+            sOutputText += "\n";
+        }
+
+        qDebug() << sOutputText;
+
+        // Rewrite sequence file
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QTextStream stream(&file);
+            stream << sOutputText;
+            file.close();
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -218,6 +306,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::eNotification:
     case CProcessCommand::eCurrentBranch:
     case CProcessCommand::eRepositoryStatus:
+    case CProcessCommand::eChangeCommitMessage:
         break;
 
     case CProcessCommand::eStageFile:
