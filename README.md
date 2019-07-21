@@ -25,10 +25,13 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Simple pull
 * Simple push
 * Refresh view
+* Modify a commit message
 
 ## Things to fix
 
 * 'Expand all' and 'collapse all' buttons
+* Correctly view files at root folder
+* Prevent crashes in qabstractitemmodel.cpp
 
 ## Things to do
 
@@ -38,7 +41,6 @@ Please do not use shadow build because of the submoduled qt-plus library.
 * Make the file system model refresh file status when changes occur outside the app
 * Show the staged diffs
 * Show deleted files in the file system model (somehow)
-* Modify a commit message
 * Reset HEAD to a commit
 * Create a branch
 * Rebase
