@@ -95,15 +95,17 @@ void CController::setRepositoryPath(QString sPath)
     if (sPath.startsWith("file:"))
         sPath = QUrl(sPath).toLocalFile();
 
+    // If repo path valid and different from current
     if (m_pFileModel == nullptr || sPath != m_pFileModel->rootPath())
     {
+        // IF repo is a GIT repo
         if (QDir(QString("%1/.git").arg(sPath)).exists())
         {
+            // Delete any existing file model
             if (m_pFileModel != nullptr)
-            {
-                delete m_pFileModel;
-            }
+                m_pFileModel->deleteLater();
 
+            // Create a file model
             m_pFileModel = new CFileModel(this, this);
             m_pFileModel->setRootPath(sPath);
             m_pFileModelProxy->setSourceModel(m_pFileModel);
@@ -114,7 +116,7 @@ void CController::setRepositoryPath(QString sPath)
 
             connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
 
-            // Add repository to model
+            // Add this path to repository model
             QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
 
             if (lRepositoryPaths.contains(sPath) == false)
