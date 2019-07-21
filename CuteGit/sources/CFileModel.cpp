@@ -337,6 +337,7 @@ void CFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QS
     }
 
     case CProcessCommand::eSetCurrentBranch:
+    case CProcessCommand::eChangeCommitMessage:
     {
         emit newOutput(sOutput);
         refresh();

@@ -208,6 +208,8 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 
 void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
+    emit newOutputString(CProcessCommand::eNotification, tr("Doing rebase and commit message changes..."));
+
     m_eRebaseStep = eChangeCommitEditSequence;
     m_sCommitId = sCommitId;
     m_sCommitMessage = sMessage;
@@ -284,8 +286,6 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
             sOutputText += "\n";
         }
 
-        qDebug() << sOutputText;
-
         // Rewrite sequence file
         if (file.open(QIODevice::WriteOnly))
         {
@@ -306,7 +306,6 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::eNotification:
     case CProcessCommand::eCurrentBranch:
     case CProcessCommand::eRepositoryStatus:
-    case CProcessCommand::eChangeCommitMessage:
         break;
 
     case CProcessCommand::eStageFile:
@@ -317,6 +316,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::ePush:
     case CProcessCommand::ePull:
     case CProcessCommand::eSetCurrentBranch:
+    case CProcessCommand::eChangeCommitMessage:
     {
         emit newOutputString(eCommand, sValue);
         break;

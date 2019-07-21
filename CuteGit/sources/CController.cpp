@@ -350,8 +350,6 @@ void CController::onSharedTimerTick()
     {
         if (sharedOperation() == eSOSlaveRequestEdit)
         {
-            qDebug() << "Master sees eSOSlaveRequestEdit";
-
             QString sFileName = sequenceFileName();
 
             m_pCommands->editSequenceFile(sFileName);
@@ -363,8 +361,6 @@ void CController::onSharedTimerTick()
     {
         if (sharedOperation() == eSOMasterFinishedEdit)
         {
-            qDebug() << "Slave sees eSOMasterFinishedEdit";
-
             setSharedOperation(eSONone);
 
             quit();
