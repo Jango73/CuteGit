@@ -15,10 +15,20 @@ class CGitCommands : public CCommands
 
 public:
 
+    //-------------------------------------------------------------------------------------------------
+    // Enumerators
+    //-------------------------------------------------------------------------------------------------
+
+    enum ERebaseType
+    {
+        eRTReword,
+        eRTEdit
+    };
+
     enum ERebaseStep
     {
-        eChangeCommitEditSequence,
-        eChangeCommitEditMessage
+        eRSChangeCommitEditSequence,
+        eRSChangeCommitEditMessage
     };
 
     //-------------------------------------------------------------------------------------------------
@@ -78,7 +88,13 @@ public:
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch) override;
 
     //!
+    virtual void commitRebase(const QString& sPath, const QString& sCommitId) override;
+
+    //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage) override;
+
+    //!
+    virtual void continueRebase(const QString& sPath) override;
 
     //!
     virtual void editSequenceFile(const QString& sFileName) override;
@@ -90,6 +106,7 @@ protected slots:
 
 protected:
 
+    ERebaseType     m_eRebaseType;
     ERebaseStep     m_eRebaseStep;
     QString         m_sCommitId;
     QString         m_sCommitMessage;

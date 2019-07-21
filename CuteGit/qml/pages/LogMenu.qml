@@ -11,11 +11,34 @@ Menu {
     property string commitId: ""
     property string commitMessage: ""
 
+    signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitRebase(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
     signal requestCommitSquash(var commitId)
 
     Action {
-        text: qsTr("&Change commit message...")
+        text: qsTr("&View diff with previous commit")
+        enabled: false
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitDiffPrevious(root.commitId)
+            }
+        }
+    }
+
+    Action {
+        text: qsTr("&Rebase")
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitRebase(root.commitId)
+            }
+        }
+    }
+
+    Action {
+        text: qsTr("&Change message...")
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -25,7 +48,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("&Squash...")
+        text: qsTr("&Squash")
         enabled: false
 
         onTriggered: {

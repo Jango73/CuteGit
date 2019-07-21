@@ -70,6 +70,9 @@ public:
     Q_INVOKABLE void commit(const QString& sMessage, bool bAmend);
 
     //!
+    Q_INVOKABLE void continueRebase();
+
+    //!
     Q_INVOKABLE void push();
 
     //!
@@ -77,6 +80,9 @@ public:
 
     //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
+
+    //!
+    Q_INVOKABLE void commitRebase(const QString& sCommitId);
 
     //!
     Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);

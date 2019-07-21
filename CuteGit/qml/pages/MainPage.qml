@@ -41,6 +41,8 @@ Item {
             commit.amend = true
             commit.open()
         }
+
+        onRequestContinueRebase: root.controller.fileModelProxy.continueRebase()
     }
 
     Item {
@@ -175,6 +177,10 @@ Item {
 
                 controller: root.controller
 
+                onRequestCommitRebase: {
+                    root.controller.fileModelProxy.commitRebase(commitId)
+                }
+
                 onRequestCommitMessageChange: {
                     commit.messageText = commitMessage
                     commit.showFileList = false
@@ -202,6 +208,7 @@ Item {
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
+
         controller: root.controller
     }
 

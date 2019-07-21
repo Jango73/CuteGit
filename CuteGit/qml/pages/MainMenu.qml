@@ -17,6 +17,7 @@ MenuBar {
     signal requestRevertSelection()
     signal requestCommit()
     signal requestAmend()
+    signal requestContinueRebase()
     signal requestShortcuts()
 
     Menu {
@@ -141,6 +142,14 @@ MenuBar {
             text: qsTr("&Amend...")
             shortcut: "Ctrl+A"
             onTriggered: root.requestAmend()
+        }
+
+        Action {
+            text: qsTr("&Continue rebase")
+            shortcut: "Ctrl+R"
+            enabled: root.controller.fileModel.repositoryStatus === CFileModel.Rebase
+            || root.controller.fileModel.repositoryStatus === CFileModel.InteractiveRebase
+            onTriggered: root.requestContinueRebase()
         }
     }
 

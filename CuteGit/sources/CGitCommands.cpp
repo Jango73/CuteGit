@@ -30,8 +30,8 @@ static const char* sCommandPull = "git pull";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
 // static const char* sCommandInteractiveRebase = "git rebase --interactive";
-static const char* sCommandRebaseChangeCommit = "git rebase --interactive %1~1";
-// static const char* sCommandContinueRebase = "git rebase --continue";
+static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
+static const char* sCommandContinueRebase = "git rebase --continue";
 
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
@@ -44,6 +44,7 @@ static const char* sRemoteBranchPrefix = "remotes/origin/";
 static const char* sSequenceEditorToken = "GIT_SEQUENCE_EDITOR";
 static const char* sTextEditorToken = "GIT_EDITOR";
 
+static const char* sRebaseEditCommit = "edit %1 %2";
 static const char* sRebaseRewordCommit = "reword %1 %2";
 
 static const char* sComment = "#";
@@ -206,11 +207,31 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
+{
+    emit newOutputString(CProcessCommand::eNotification, tr("Doing rebase..."));
+
+    m_eRebaseType = eRTEdit;
+    m_eRebaseStep = eRSChangeCommitEditSequence;
+    m_sCommitId = sCommitId;
+    m_sCommitMessage = "";
+
+    QMap<QString, QString> mEnvironment;
+    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
+
+    QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
+
+    exec(new CProcessCommand(CProcessCommand::eCommitRebase, sPath, sCommand, mEnvironment));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
     emit newOutputString(CProcessCommand::eNotification, tr("Doing rebase and commit message changes..."));
 
-    m_eRebaseStep = eChangeCommitEditSequence;
+    m_eRebaseType = eRTReword;
+    m_eRebaseStep = eRSChangeCommitEditSequence;
     m_sCommitId = sCommitId;
     m_sCommitMessage = sMessage;
 
@@ -218,9 +239,18 @@ void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCom
     mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
     mEnvironment[sTextEditorToken] = QCoreApplication::applicationFilePath();
 
-    QString sCommand = QString(sCommandRebaseChangeCommit).arg(sCommitId);
+    QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
     exec(new CProcessCommand(CProcessCommand::eChangeCommitMessage, sPath, sCommand, mEnvironment));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::continueRebase(const QString& sPath)
+{
+    emit newOutputString(CProcessCommand::eNotification, tr("Continuing rebase..."));
+    QString sCommand = QString(sCommandContinueRebase);
+    exec(new CProcessCommand(CProcessCommand::eContinueRebase, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -231,21 +261,27 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
 
     if (file.open(QIODevice::ReadOnly))
     {
+        // Read in the file provided by GIT
         QTextStream stream(&file);
         QString sInputText = stream.readAll();
         QStringList lOutputLines;
         file.close();
 
+        // Get a list of lines
         QStringList sLines = sInputText.split("\n");
 
         switch (m_eRebaseStep)
         {
-        case eChangeCommitEditSequence:
+        // In case we're modifyng the sequence file
+        // Most often .git/rebase-merge/git-rebase-todo
+        case eRSChangeCommitEditSequence:
         {
+            // Setup a "pick nnnn aaaa" reg exp
             QRegExp tRegExp(sPickCommitRegExp);
 
             for (QString sLine : sLines)
             {
+                // Process only non-comment lines
                 if (not sLine.startsWith(sComment))
                 {
                     if (tRegExp.indexIn(sLine) != -1)
@@ -256,7 +292,22 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
 
                         if (sCommitID == m_sCommitId)
                         {
-                            lOutputLines << QString(sRebaseRewordCommit).arg(sCommitID).arg(sMessage);
+                            switch (m_eRebaseType)
+                            {
+
+                            case eRTEdit:
+                            {
+                                lOutputLines << QString(sRebaseEditCommit).arg(sCommitID).arg(sMessage);
+                                break;
+                            }
+
+                            case eRTReword:
+                            {
+                                lOutputLines << QString(sRebaseRewordCommit).arg(sCommitID).arg(sMessage);
+                                break;
+                            }
+
+                            }
                         }
                         else
                         {
@@ -266,11 +317,11 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
                 }
             }
 
-            m_eRebaseStep = eChangeCommitEditMessage;
+            m_eRebaseStep = eRSChangeCommitEditMessage;
             break;
         }
 
-        case eChangeCommitEditMessage:
+        case eRSChangeCommitEditMessage:
         {
             lOutputLines = m_sCommitMessage.split("\n");
             break;
@@ -316,7 +367,9 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::ePush:
     case CProcessCommand::ePull:
     case CProcessCommand::eSetCurrentBranch:
+    case CProcessCommand::eCommitRebase:
     case CProcessCommand::eChangeCommitMessage:
+    case CProcessCommand::eContinueRebase:
     {
         emit newOutputString(eCommand, sValue);
         break;

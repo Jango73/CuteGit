@@ -210,6 +210,18 @@ void CFileModelProxy::commit(const QString& sMessage, bool bAmend)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFileModelProxy::continueRebase()
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->continueRebase();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFileModelProxy::push()
 {
     CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
@@ -244,6 +256,18 @@ void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
         {
             pModel->handleCurrentIndex(mapToSource(qIndex));
         }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModelProxy::commitRebase(const QString& sCommitId)
+{
+    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        pModel->commitRebase(sCommitId);
     }
 }
 

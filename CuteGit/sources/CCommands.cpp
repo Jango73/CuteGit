@@ -215,11 +215,26 @@ void CCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::commitRebase(const QString& sPath, const QString& sCommitId)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(sCommitId);
     Q_UNUSED(sMessage);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::continueRebase(const QString& sPath)
+{
+    Q_UNUSED(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -121,10 +121,16 @@ public:
     void commit(const QString& sMessage, bool bAmend);
 
     //!
+    void continueRebase();
+
+    //!
     void push();
 
     //!
     void pull();
+
+    //!
+    void commitRebase(const QString& sCommitId);
 
     //!
     void changeCommitMessage(const QString& sCommitId, const QString& sMessage);

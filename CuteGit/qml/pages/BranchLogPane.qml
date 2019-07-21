@@ -14,6 +14,7 @@ Pane {
 
     property variant controller: null
 
+    signal requestCommitRebase(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
 
     StandardLabel {
@@ -94,6 +95,10 @@ Pane {
     LogMenu {
         id: menu
         controller: root.controller
+
+        onRequestCommitRebase: {
+            root.requestCommitRebase(commitId)
+        }
 
         onRequestCommitMessageChange: {
             root.requestCommitMessageChange(commitId, commitMessage)

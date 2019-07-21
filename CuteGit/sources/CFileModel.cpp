@@ -185,8 +185,6 @@ void CFileModel::stageSelection(QModelIndexList lIndices)
         QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
         m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, true);
     }
-
-    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -198,8 +196,6 @@ void CFileModel::unstageSelection(QModelIndexList lIndices)
         QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
         m_pController->commands()->stageFile(m_pController->repositoryPath(), sFileFullName, false);
     }
-
-    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -207,8 +203,6 @@ void CFileModel::unstageSelection(QModelIndexList lIndices)
 void CFileModel::stageAll()
 {
     m_pController->commands()->stageAll(m_pController->repositoryPath(), true);
-
-    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -220,8 +214,6 @@ void CFileModel::revertSelection(QModelIndexList lIndices)
         QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
         m_pController->commands()->revertFile(m_pController->repositoryPath(), sFileFullName);
     }
-
-    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -236,9 +228,13 @@ void CFileModel::commit(const QString& sMessage, bool bAmend)
     {
         m_pController->commands()->amend(m_pController->repositoryPath());
     }
+}
 
-    checkAllFileStatus();
-    getLog();
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::continueRebase()
+{
+    m_pController->commands()->continueRebase(m_pController->repositoryPath());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -246,8 +242,6 @@ void CFileModel::commit(const QString& sMessage, bool bAmend)
 void CFileModel::push()
 {
     m_pController->commands()->push(m_pController->repositoryPath());
-
-    getLog();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -255,9 +249,14 @@ void CFileModel::push()
 void CFileModel::pull()
 {
     m_pController->commands()->pull(m_pController->repositoryPath());
+}
 
-    checkAllFileStatus();
-    getLog();
+
+//-------------------------------------------------------------------------------------------------
+
+void CFileModel::commitRebase(const QString& sCommitId)
+{
+    m_pController->commands()->commitRebase(m_pController->repositoryPath(), sCommitId);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -333,11 +332,15 @@ void CFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QS
     case CProcessCommand::ePull:
     {
         emit newOutput(sOutput);
+        checkAllFileStatus();
+        getLog();
         break;
     }
 
     case CProcessCommand::eSetCurrentBranch:
+    case CProcessCommand::eCommitRebase:
     case CProcessCommand::eChangeCommitMessage:
+    case CProcessCommand::eContinueRebase:
     {
         emit newOutput(sOutput);
         refresh();

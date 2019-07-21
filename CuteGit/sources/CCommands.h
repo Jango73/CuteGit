@@ -38,7 +38,9 @@ public:
         ePull,
         eUnstagedFileDiff,
         eSetCurrentBranch,
-        eChangeCommitMessage
+        eCommitRebase,
+        eChangeCommitMessage,
+        eContinueRebase
     };
 
     Q_ENUMS(EProcessCommand)
@@ -122,7 +124,13 @@ public:
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch);
 
     //!
+    virtual void commitRebase(const QString& sPath, const QString& sCommitId);
+
+    //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage);
+
+    //!
+    virtual void continueRebase(const QString& sPath);
 
     //!
     virtual void editSequenceFile(const QString& sFileName);

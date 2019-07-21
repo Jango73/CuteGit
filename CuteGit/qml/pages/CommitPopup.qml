@@ -77,6 +77,7 @@ Popup {
 
                 onClicked: {
                     root.close()
+
                     if (root.showFileList) {
                         root.controller.fileModelProxy.commit(message.text, root.amend)
                     } else {

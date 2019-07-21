@@ -26,6 +26,7 @@ Open /CuteGit.pro and build
 * Simple push
 * Refresh view
 * Modify a commit message
+* Rebase
 
 ## Things to fix
 
@@ -43,7 +44,6 @@ Open /CuteGit.pro and build
 * Show deleted files in the file system model (somehow)
 * Reset HEAD to a commit
 * Create a branch
-* Rebase
 * Blame
 * Stash save and pop
 
