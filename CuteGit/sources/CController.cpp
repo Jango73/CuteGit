@@ -51,6 +51,7 @@ CController::CController(QObject* parent)
     , m_pCommands(new CGitCommands())
     , m_pFileModel(nullptr)
     , m_pFileModelProxy(new CFileModelProxy(this))
+    , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(new QStringListModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_bMasterMode(true)
@@ -79,6 +80,7 @@ CController::CController(QString sSequenceFileName, QObject* parent)
     , m_pCommands(new CGitCommands())
     , m_pFileModel(nullptr)
     , m_pFileModelProxy(nullptr)
+    , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(nullptr)
     , m_pCommandOutputModel(nullptr)
     , m_bMasterMode(false)
@@ -131,14 +133,20 @@ void CController::setRepositoryPath(QString sPath)
             if (m_pFileModel != nullptr)
                 m_pFileModel->deleteLater();
 
+            if (m_pFlatFileModel != nullptr)
+                m_pFlatFileModel->deleteLater();
+
             // Create a file model
             m_pFileModel = new CFileModel(this, this);
             m_pFileModel->setRootPath(sPath);
             m_pFileModelProxy->setSourceModel(m_pFileModel);
 
+            m_pFlatFileModel = new CFlatFileModel(this);
+
             emit repositoryPathChanged();
             emit fileModelChanged();
             emit fileModelProxyChanged();
+            emit flatFileModelChanged();
 
             connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
 

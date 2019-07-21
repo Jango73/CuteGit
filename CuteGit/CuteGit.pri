@@ -5,6 +5,7 @@ HEADERS += \
     sources/CGitCommands.h \
     sources/CFileModel.h \
     sources/CFileModelProxy.h \
+    sources/CFlatFileModel.h \
     sources/CRepoFile.h \
     sources/CLogModel.h \
     sources/CLogLine.h \
@@ -17,6 +18,7 @@ SOURCES += \
     sources/CGitCommands.cpp \
     sources/CFileModel.cpp \
     sources/CFileModelProxy.cpp \
+    sources/CFlatFileModel.cpp \
     sources/CRepoFile.cpp \
     sources/CLogModel.cpp \
     sources/CLogLine.cpp \

@@ -32,7 +32,7 @@ Pane {
                 text: Const.expandAllText
 
                 onClicked: {
-                    view.expandAll()
+                    treeView.expandAll()
                 }
             }
 
@@ -42,19 +42,73 @@ Pane {
                 text: Const.collapseAllText
 
                 onClicked: {
-                    view.collapseAll()
+                    treeView.collapseAll()
                 }
             }
         }
     }
 
+    ListView {
+        id: listView
+        anchors.top: toolbar.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        visible: true
+
+        model: root.controller.flatFileModel
+
+        delegate: Item {
+            width: parent.width
+            height: Const.treeElementHeight
+
+            property string status: treeView.model.statusForIndex(styleData.index)
+            property string staged: treeView.model.stagedForIndex(styleData.index)
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.AllButtons
+                onClicked: listView.currentIndex = index
+            }
+
+            Rectangle {
+                anchors.fill: parent
+                color: if (model.staged === "O") Const.fileStagedColor
+                       else if (model.status === "*") Const.fileModifiedColor
+                       else if (model.status === "+") Const.fileAddedColor
+                       else if (model.status === "-") Const.fileDeletedColor
+                       else Const.transparent
+            }
+
+            Selection {
+                id: selection
+                targetWidth: listViewText.width
+                targetHeight: listViewText.height
+                anchors.centerIn: listViewText
+                borderOnly: true
+                visible: index === listView.currentIndex
+            }
+
+            StandardText {
+                id: listViewText
+                anchors.fill: parent
+                height: Const.treeElementHeight
+                wrapMode: Text.NoWrap
+                elide: Text.ElideRight
+                color: Material.foreground
+                text: model.fileName
+            }
+        }
+    }
+
     QQC15.TreeView {
-        id: view
+        id: treeView
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         focus: true
+        visible: false
 
         model: root.controller.fileModelProxy
         rootIndex: root.controller.fileModelProxy !== null ? root.controller.fileModelProxy.rootPathIndex : undefined
@@ -65,13 +119,13 @@ Pane {
         QQC15.TableViewColumn {
             title: "Name"
             role: "fileName"
-            width: view.width * 0.8
+            width: treeView.width * 0.8
         }
 
         QQC15.TableViewColumn {
             title: "Status"
             role: "status"
-            width: view.width * 0.2
+            width: treeView.width * 0.2
         }
 
         style: TreeViewStyle {
@@ -94,8 +148,8 @@ Pane {
             }
 
             itemDelegate: Item {
-                property string status: view.model.statusForIndex(styleData.index)
-                property string staged: view.model.stagedForIndex(styleData.index)
+                property string status: treeView.model.statusForIndex(styleData.index)
+                property string staged: treeView.model.stagedForIndex(styleData.index)
 
                 Rectangle {
                     anchors.fill: parent
@@ -126,11 +180,11 @@ Pane {
         }
 
         function expandAll() {
-            for (var i = 0; i < view.model.rowCount(); i++) {
-                var index = view.model.index(i, 0)
+            for (var i = 0; i < treeView.model.rowCount(); i++) {
+                var index = treeView.model.index(i, 0)
 
-                if (!view.isExpanded(index)) {
-                    view.expand(index)
+                if (!treeView.isExpanded(index)) {
+                    treeView.expand(index)
                 }
             }
         }

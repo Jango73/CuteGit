@@ -15,6 +15,7 @@
 // Application
 #include "CFileModel.h"
 #include "CFileModelProxy.h"
+#include "CFlatFileModel.h"
 #include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -35,6 +36,7 @@ class CController : public QObject
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CFileModel*, p, fileModel, FileModel)
     Q_FAST_PROPERTY(CFileModelProxy*, p, fileModelProxy, FileModelProxy)
+    Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
 
