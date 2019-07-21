@@ -58,7 +58,6 @@ CController::CController(QString sSequenceFileName, QObject* parent)
     , m_bMasterMode(false)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
-    , m_sSequenceFileName(sSequenceFileName)
 {
     Q_UNUSED(sSequenceFileName);
 
@@ -67,6 +66,7 @@ CController::CController(QString sSequenceFileName, QObject* parent)
         connect(&m_tSharedTimer, &QTimer::timeout, this, &CController::onSharedTimerTick);
         m_tSharedTimer.start(500);
 
+        setSequenceFileName(sSequenceFileName);
         setSharedOperation(eSOSlaveRequestEdit);
     }
     else
@@ -146,6 +146,18 @@ void CController::setSharedOperation(ESharedOperation eOperation)
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::setSequenceFileName(const QString& sSequenceFileName)
+{
+    if (m_tShared.lock())
+    {
+        SMemoryStruct* pData = static_cast<SMemoryStruct*>(m_tShared.data());
+        strcpy(pData->sSequenceFileName, sSequenceFileName.toUtf8().constData());
+        m_tShared.unlock();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QString CController::repositoryPath() const
 {
     if (m_pFileModel != nullptr)
@@ -170,6 +182,22 @@ CController::ESharedOperation CController::sharedOperation()
     }
 
     return eReturnValue;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CController::sequenceFileName()
+{
+    QString sReturnValue;
+
+    if (m_tShared.lock())
+    {
+        SMemoryStruct* pData = static_cast<SMemoryStruct*>(m_tShared.data());
+        sReturnValue = QString::fromUtf8(pData->sSequenceFileName);
+        m_tShared.unlock();
+    }
+
+    return sReturnValue;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -295,6 +323,10 @@ void CController::onSharedTimerTick()
         if (sharedOperation() == eSOSlaveRequestEdit)
         {
             qDebug() << "Master sees eSOSlaveRequestEdit";
+
+            QString sSequenceFileName = sequenceFileName();
+
+            qDebug() << "File" << sSequenceFileName;
 
             setSharedOperation(eSOMasterFinishedEdit);
         }

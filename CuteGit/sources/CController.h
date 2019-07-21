@@ -61,7 +61,7 @@ public:
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
 
-    //! Constructor
+    //! Master constructor
     CController(QObject* parent = nullptr);
 
     //! Slave constructor
@@ -80,6 +80,9 @@ public:
     //!
     void setSharedOperation(ESharedOperation iOperation);
 
+    //!
+    void setSequenceFileName(const QString& sSequenceFileName);
+
     //-------------------------------------------------------------------------------------------------
     // Getters
     //-------------------------------------------------------------------------------------------------
@@ -89,6 +92,9 @@ public:
 
     //!
     ESharedOperation sharedOperation();
+
+    //!
+    QString sequenceFileName();
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
@@ -140,7 +146,6 @@ protected:
     bool                    m_bMasterMode;
     QSharedMemory           m_tShared;
     QTimer                  m_tSharedTimer;
-    QString                 m_sSequenceFileName;
 
     static const QString    m_sSharedKey;
 };

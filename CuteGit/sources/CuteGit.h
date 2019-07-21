@@ -17,13 +17,21 @@ class CuteGit : public QObject
 
 public:
 
+    //-------------------------------------------------------------------------------------------------
+    // Constructor & destructor
+    //-------------------------------------------------------------------------------------------------
+
     //! Constructor
     CuteGit(bool bMasterMode = true, const QString& sSequenceFileName = "");
 
     //! Destructor
     virtual ~CuteGit();
 
-private:
+    //-------------------------------------------------------------------------------------------------
+    // Properties
+    //-------------------------------------------------------------------------------------------------
+
+protected:
 
     //! Controller
     CController* m_pController;

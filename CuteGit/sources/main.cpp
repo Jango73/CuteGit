@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     }
 
     // Build CuteGit instance
-    CuteGit cuteGit(bMasterMode);
+    CuteGit cuteGit(bMasterMode, sSequenceFile);
 
     // Event loop
     return app.exec();
