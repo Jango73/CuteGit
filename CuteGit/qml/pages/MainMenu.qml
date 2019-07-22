@@ -68,50 +68,50 @@ MenuBar {
         MenuItem {
             text: qsTr("Show &clean")
             checkable: true
-            checked: root.controller.treeFileModelProxy.showClean
+            checked: root.controller.showClean
 
             onClicked: {
-                root.controller.treeFileModelProxy.showClean = !root.controller.treeFileModelProxy.showClean
+                root.controller.showClean = !root.controller.showClean
             }
         }
 
         MenuItem {
             text: qsTr("Show &added")
             checkable: true
-            checked: root.controller.treeFileModelProxy.showAdded
+            checked: root.controller.showAdded
 
             onClicked: {
-                root.controller.treeFileModelProxy.showAdded = !root.controller.treeFileModelProxy.showAdded
+                root.controller.showAdded = !root.controller.showAdded
             }
         }
 
         MenuItem {
             text: qsTr("Show &modified")
             checkable: true
-            checked: root.controller.treeFileModelProxy.showModified
+            checked: root.controller.showModified
 
             onClicked: {
-                root.controller.treeFileModelProxy.showModified = !root.controller.treeFileModelProxy.showModified
+                root.controller.showModified = !root.controller.showModified
             }
         }
 
         MenuItem {
             text: qsTr("Show &deleted")
             checkable: true
-            checked: root.controller.treeFileModelProxy.showDeleted
+            checked: root.controller.showDeleted
 
             onClicked: {
-                root.controller.treeFileModelProxy.showDeleted = !root.controller.treeFileModelProxy.showDeleted
+                root.controller.showDeleted = !root.controller.showDeleted
             }
         }
 
         MenuItem {
             text: qsTr("Show &untracked")
             checkable: true
-            checked: root.controller.treeFileModelProxy.showUntracked
+            checked: root.controller.showUntracked
 
             onClicked: {
-                root.controller.treeFileModelProxy.showUntracked = !root.controller.treeFileModelProxy.showUntracked
+                root.controller.showUntracked = !root.controller.showUntracked
             }
         }
     }

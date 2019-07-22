@@ -5,77 +5,14 @@
 // Application
 #include "CTreeFileModelProxy.h"
 #include "CTreeFileModel.h"
+#include "CController.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CTreeFileModelProxy::CTreeFileModelProxy(QObject *parent)
+CTreeFileModelProxy::CTreeFileModelProxy(CController* pController, QObject *parent)
     : QSortFilterProxyModel(parent)
-    , m_bShowClean(false)
-    , m_bShowAdded(true)
-    , m_bShowModified(true)
-    , m_bShowDeleted(true)
-    , m_bShowUntracked(false)
+    , m_pController(pController)
 {
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CTreeFileModelProxy::setShowClean(bool bValue)
-{
-    if (m_bShowClean != bValue)
-    {
-        m_bShowClean = bValue;
-        invalidateFilter();
-        emit showCleanChanged();
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CTreeFileModelProxy::setShowAdded(bool bValue)
-{
-    if (m_bShowAdded != bValue)
-    {
-        m_bShowAdded = bValue;
-        invalidateFilter();
-        emit showAddedChanged();
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CTreeFileModelProxy::setShowModified(bool bValue)
-{
-    if (m_bShowModified != bValue)
-    {
-        m_bShowModified = bValue;
-        invalidateFilter();
-        emit showModifiedChanged();
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CTreeFileModelProxy::setShowDeleted(bool bValue)
-{
-    if (m_bShowDeleted != bValue)
-    {
-        m_bShowDeleted = bValue;
-        invalidateFilter();
-        emit showDeletedChanged();
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CTreeFileModelProxy::setShowUntracked(bool bValue)
-{
-    if (m_bShowUntracked != bValue)
-    {
-        m_bShowUntracked = bValue;
-        invalidateFilter();
-        emit showUntrackedChanged();
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -99,6 +36,13 @@ bool CTreeFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
 
     return hasToBeDisplayed(index);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CTreeFileModelProxy::filterChanged()
+{
+    invalidateFilter();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -328,22 +272,22 @@ bool CTreeFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
 
 bool CTreeFileModelProxy::statusShown(const QString& sStatus) const
 {
-    if (m_bShowClean && sStatus == CRepoFile::sTokenClean)
+    if (m_pController->showClean() && sStatus == CRepoFile::sTokenClean)
         return true;
 
-    if (m_bShowAdded && sStatus == CRepoFile::sTokenAdded)
+    if (m_pController->showAdded() && sStatus == CRepoFile::sTokenAdded)
         return true;
 
-    if (m_bShowModified && sStatus == CRepoFile::sTokenModified)
+    if (m_pController->showModified() && sStatus == CRepoFile::sTokenModified)
         return true;
 
-    if (m_bShowModified && sStatus == CRepoFile::sTokenRenamed)
+    if (m_pController->showModified() && sStatus == CRepoFile::sTokenRenamed)
         return true;
 
-    if (m_bShowDeleted && sStatus == CRepoFile::sTokenDeleted)
+    if (m_pController->showDeleted() && sStatus == CRepoFile::sTokenDeleted)
         return true;
 
-    if (m_bShowUntracked && sStatus == CRepoFile::sTokenUntracked)
+    if (m_pController->showUntracked() && sStatus == CRepoFile::sTokenUntracked)
         return true;
 
     return false;

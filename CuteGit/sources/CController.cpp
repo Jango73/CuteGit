@@ -50,10 +50,15 @@ CController::CController(QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
     , m_pTreeFileModel(nullptr)
-    , m_pTreeFileModelProxy(new CTreeFileModelProxy(this))
+    , m_pTreeFileModelProxy(nullptr)
     , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(new QStringListModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
+    , m_bShowClean(false)
+    , m_bShowAdded(true)
+    , m_bShowModified(true)
+    , m_bShowDeleted(true)
+    , m_bShowUntracked(false)
     , m_bMasterMode(true)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
@@ -118,6 +123,71 @@ CController::~CController()
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::setShowClean(bool bValue)
+{
+    if (m_bShowClean != bValue)
+    {
+        m_bShowClean = bValue;
+        if (m_pTreeFileModelProxy != nullptr)
+            m_pTreeFileModelProxy->filterChanged();
+        emit showCleanChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setShowAdded(bool bValue)
+{
+    if (m_bShowAdded != bValue)
+    {
+        m_bShowAdded = bValue;
+        if (m_pTreeFileModelProxy != nullptr)
+            m_pTreeFileModelProxy->filterChanged();
+        emit showAddedChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setShowModified(bool bValue)
+{
+    if (m_bShowModified != bValue)
+    {
+        m_bShowModified = bValue;
+        if (m_pTreeFileModelProxy != nullptr)
+            m_pTreeFileModelProxy->filterChanged();
+        emit showModifiedChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setShowDeleted(bool bValue)
+{
+    if (m_bShowDeleted != bValue)
+    {
+        m_bShowDeleted = bValue;
+        if (m_pTreeFileModelProxy != nullptr)
+            m_pTreeFileModelProxy->filterChanged();
+        emit showDeletedChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setShowUntracked(bool bValue)
+{
+    if (m_bShowUntracked != bValue)
+    {
+        m_bShowUntracked = bValue;
+        if (m_pTreeFileModelProxy != nullptr)
+            m_pTreeFileModelProxy->filterChanged();
+        emit showUntrackedChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::setRepositoryPath(QString sPath)
 {
     if (sPath.startsWith("file:"))
@@ -133,12 +203,17 @@ void CController::setRepositoryPath(QString sPath)
             if (m_pTreeFileModel != nullptr)
                 m_pTreeFileModel->deleteLater();
 
+            if (m_pTreeFileModelProxy != nullptr)
+                m_pTreeFileModelProxy->deleteLater();
+
             if (m_pFlatFileModel != nullptr)
                 m_pFlatFileModel->deleteLater();
 
             // Create a file model
             m_pTreeFileModel = new CTreeFileModel(this, this);
             m_pTreeFileModel->setRootPath(sPath);
+
+            m_pTreeFileModelProxy = new CTreeFileModelProxy(this, this);
             m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
 
             m_pFlatFileModel = new CFlatFileModel(this, this);

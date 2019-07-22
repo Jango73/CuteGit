@@ -40,6 +40,12 @@ class CController : public QObject
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
 
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showAdded, ShowAdded)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showModified, ShowModified)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showDeleted, ShowDeleted)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showUntracked, ShowUntracked)
+
 public:
 
     //-------------------------------------------------------------------------------------------------

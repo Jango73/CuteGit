@@ -7,6 +7,13 @@
 // qt-plus
 #include "Macros.h"
 
+//-------------------------------------------------------------------------------------------------
+// Forward declarations
+
+class CController;
+
+//-------------------------------------------------------------------------------------------------
+
 class CTreeFileModelProxy : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -15,13 +22,8 @@ class CTreeFileModelProxy : public QSortFilterProxyModel
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
+    Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
-
-    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
-    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showAdded, ShowAdded)
-    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showModified, ShowModified)
-    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showDeleted, ShowDeleted)
-    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showUntracked, ShowUntracked)
 
 public:
 
@@ -29,7 +31,7 @@ public:
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
 
-    CTreeFileModelProxy(QObject* parent = nullptr);
+    CTreeFileModelProxy(CController* pController, QObject* parent = nullptr);
 
     //-------------------------------------------------------------------------------------------------
     // Getters
@@ -40,6 +42,13 @@ public:
 
     //!
     bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
+
+    //-------------------------------------------------------------------------------------------------
+    // Control methods
+    //-------------------------------------------------------------------------------------------------
+
+    //!
+    void filterChanged();
 
     //-------------------------------------------------------------------------------------------------
     // Invokables
