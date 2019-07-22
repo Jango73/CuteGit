@@ -162,8 +162,7 @@ void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 {
     QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
 
-    m_pController->commands()->unstagedFileDiff(m_pController->repositoryPath(), sFileFullName);
-    m_pController->commands()->fileLog(m_pController->repositoryPath(), sFileFullName);
+    emit currentFileFullName(sFileFullName);
 }
 
 //-------------------------------------------------------------------------------------------------

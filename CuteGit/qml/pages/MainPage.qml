@@ -23,9 +23,25 @@ Item {
         controller: root.controller
 
         onRequestOpenRepository: folderDialog.open()
-        onRequestStageSelection: root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
-        onRequestUnstageSelection: root.controller.fileModelProxy.unstageSelection(fileSelection.selectedIndexes)
-        onRequestRevertSelection: root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
+
+        onRequestStageSelection: {
+            if (fileView.filesAsTree) {
+                root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
+            }
+        }
+
+        onRequestUnstageSelection: {
+            if (fileView.filesAsTree) {
+                root.controller.fileModelProxy.unstageSelection(fileSelection.selectedIndexes)
+            }
+        }
+
+        onRequestRevertSelection: {
+            if (fileView.filesAsTree) {
+                root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
+            }
+        }
+
         onRequestShortcuts: shortcuts.open()
 
         onRequestCommit: {
@@ -134,6 +150,15 @@ Item {
                 }
             }
 
+//            ItemSelectionModel {
+//                id: flatFileSelection
+//                model: root.controller.flatFileModel
+
+//                onCurrentIndexChanged: {
+//                    root.controller.flatFileModel.handleCurrentIndex(currentIndex)
+//                }
+//            }
+
             FilePane {
                 id: fileView
                 anchors.top: parent.top
@@ -142,6 +167,7 @@ Item {
                 width: parent.width * 0.5
                 anchors.margins: Const.paneMargins
                 focus: true
+                filesAsTree: menu.filesAsTree
 
                 controller: root.controller
                 selection: fileSelection

@@ -20,7 +20,6 @@ CFlatFileModel::CFlatFileModel(CController* pController, QObject* parent)
 
 CFlatFileModel::~CFlatFileModel()
 {
-    qDeleteAll(m_vRepoFiles);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -29,11 +28,13 @@ void CFlatFileModel::setRepoFiles(QList<CRepoFile*> lNewFiles)
 {
     beginResetModel();
 
-    qDeleteAll(m_vRepoFiles);
     m_vRepoFiles.clear();
 
-    for (CRepoFile* pLine : lNewFiles)
-        m_vRepoFiles << pLine;
+    for (CRepoFile* pFile : lNewFiles)
+    {
+        if (pFile->status() != CRepoFile::eIgnored)
+            m_vRepoFiles << pFile;
+    }
 
     endResetModel();
 }
@@ -43,7 +44,9 @@ void CFlatFileModel::setRepoFiles(QList<CRepoFile*> lNewFiles)
 QHash<int, QByteArray> CFlatFileModel::roleNames() const
 {
     QHash<int, QByteArray> hRoleNames;
+    hRoleNames[eFullNameRole] = "fullName";
     hRoleNames[eFileNameRole] = "fileName";
+    hRoleNames[eRelativeNameRole] = "relativeName";
     hRoleNames[eSizeRole] = "size";
     hRoleNames[eStatusRole] = "status";
     hRoleNames[eStagedRole] = "staged";
@@ -61,29 +64,30 @@ int CFlatFileModel::rowCount(const QModelIndex& parent) const
 
 //-------------------------------------------------------------------------------------------------
 
-QVariant CFlatFileModel::data(const QModelIndex& index, int role) const
+QVariant CFlatFileModel::data(const QModelIndex& qIndex, int iRole) const
 {
-    int row = index.row();
-
-    if (!index.isValid())
-        return QVariant();
-
-    if ((row < 0) || (row > (rowCount() - 1)))
-        return QVariant();
-
-    switch (role)
+    if (qIndex.isValid())
     {
-    case eFileNameRole:
-        return m_vRepoFiles[row]->fileName();
+        switch (iRole)
+        {
+        case eFullNameRole:
+            return m_vRepoFiles[qIndex.row()]->fullName();
 
-    case eSizeRole:
-        return 0;
+        case eFileNameRole:
+            return m_vRepoFiles[qIndex.row()]->fileName();
 
-    case eStatusRole:
-        return m_vRepoFiles[row]->statusToString();
+        case eRelativeNameRole:
+            return m_vRepoFiles[qIndex.row()]->relativeName();
 
-    case eStagedRole:
-        return m_vRepoFiles[row]->stagedToString();
+        case eSizeRole:
+            return 0;
+
+        case eStatusRole:
+            return m_vRepoFiles[qIndex.row()]->statusToString();
+
+        case eStagedRole:
+            return m_vRepoFiles[qIndex.row()]->stagedToString();
+        }
     }
 
     return QVariant();
@@ -94,6 +98,16 @@ QVariant CFlatFileModel::data(const QModelIndex& index, int role) const
 bool CFlatFileModel::isEmpty() const
 {
     return m_vRepoFiles.count() == 0;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFlatFileModel::handleCurrentIndex(QModelIndex qIndex)
+{
+    if (qIndex.isValid())
+    {
+        emit currentFileFullName(m_vRepoFiles[qIndex.row()]->fullName());
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

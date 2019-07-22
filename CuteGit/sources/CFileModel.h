@@ -153,7 +153,13 @@ protected:
 
 signals:
 
+    //!
     void rootPathIndexChanged();
+
+    //!
+    void currentFileFullName(QString sFileFullName);
+
+    //!
     void newOutput(QString sText);
 
     //-------------------------------------------------------------------------------------------------

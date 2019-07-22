@@ -135,8 +135,13 @@ signals:
 
 protected slots:
 
+    //!
+    void onCurrentFileFullName(QString sFileFullName);
+
+    //!
     void onNewOutput(QString sOutput);
 
+    //!
     void onSharedTimerTick();
 
     //-------------------------------------------------------------------------------------------------

@@ -23,7 +23,9 @@ class CFlatFileModel : public QAbstractListModel
 public:
     enum ERoles
     {
-        eFileNameRole = Qt::UserRole + 1,
+        eFullNameRole = Qt::UserRole + 1,
+        eFileNameRole,
+        eRelativeNameRole,
         eSizeRole,
         eStatusRole,
         eStagedRole
@@ -61,10 +63,26 @@ public:
     virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 
     //! Returns data
-    virtual QVariant data(const QModelIndex& index, int role) const;
+    virtual QVariant data(const QModelIndex& qIndex, int iRole) const;
 
     //! Model empty?
     bool isEmpty() const;
+
+    //-------------------------------------------------------------------------------------------------
+    // Invokables
+    //-------------------------------------------------------------------------------------------------
+
+    //!
+    Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
+
+    //-------------------------------------------------------------------------------------------------
+    // Signals
+    //-------------------------------------------------------------------------------------------------
+
+signals:
+
+    //!
+    void currentFileFullName(QString sFileFullName);
 
     //-------------------------------------------------------------------------------------------------
     // Slots

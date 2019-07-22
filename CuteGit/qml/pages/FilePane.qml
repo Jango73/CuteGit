@@ -14,6 +14,7 @@ Pane {
 
     property variant controller: null
     property variant selection: null
+    property bool filesAsTree: false
 
     Item {
         id: toolbar
@@ -54,49 +55,72 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        visible: true
+        visible: !root.filesAsTree
+        enabled: visible
+        focus: visible
 
         model: root.controller.flatFileModel
 
+        onCurrentIndexChanged: root.controller.flatFileModel.handleCurrentIndex(listView.model.index(currentIndex, 0))
+
         delegate: Item {
             width: parent.width
-            height: Const.treeElementHeight
-
-            property string status: treeView.model.statusForIndex(styleData.index)
-            property string staged: treeView.model.stagedForIndex(styleData.index)
+            height: Const.treeElementHeight + Const.mainPadding * 0.25
 
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.AllButtons
-                onClicked: listView.currentIndex = index
+                onClicked: {
+                    listView.currentIndex = index
+                }
             }
 
             Rectangle {
                 anchors.fill: parent
-                color: if (model.staged === "O") Const.fileStagedColor
+                color: if (model.staged === "X") Const.fileStagedColor
                        else if (model.status === "*") Const.fileModifiedColor
                        else if (model.status === "+") Const.fileAddedColor
                        else if (model.status === "-") Const.fileDeletedColor
                        else Const.transparent
             }
 
-            Selection {
-                id: selection
-                targetWidth: listViewText.width
-                targetHeight: listViewText.height
-                anchors.centerIn: listViewText
-                borderOnly: true
-                visible: index === listView.currentIndex
+            Item {
+                id: listViewFileName
+                width: parent.width * 0.4
+                height: parent.height
+
+                Selection {
+                    id: listSelection
+                    targetWidth: listViewFileNameText.width
+                    targetHeight: listViewFileNameText.height
+                    anchors.centerIn: listViewFileNameText
+                    borderOnly: true
+                    visible: index === listView.currentIndex
+                }
+
+                StandardText {
+                    id: listViewFileNameText
+                    width: parent.width - Const.mainPadding * 0.5
+                    anchors.centerIn: parent
+                    wrapMode: Text.NoWrap
+                    elide: Text.ElideRight
+                    color: Material.foreground
+                    text: model.fileName
+                }
             }
 
-            StandardText {
-                id: listViewText
-                anchors.fill: parent
-                height: Const.treeElementHeight
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
-                color: Material.foreground
-                text: model.fileName
+            Item {
+                id: listViewRelativeName
+                width: parent.width * 0.6
+                height: parent.height
+                anchors.left: listViewFileName.right
+
+                StandardText {
+                    wrapMode: Text.NoWrap
+                    elide: Text.ElideRight
+                    color: Material.foreground
+                    text: model.relativeName
+                }
             }
         }
     }
@@ -107,8 +131,9 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        focus: true
-        visible: false
+        visible: root.filesAsTree
+        enabled: visible
+        focus: visible
 
         model: root.controller.fileModelProxy
         rootIndex: root.controller.fileModelProxy !== null ? root.controller.fileModelProxy.rootPathIndex : undefined
@@ -153,7 +178,7 @@ Pane {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: if (staged === "O") Const.fileStagedColor
+                    color: if (staged === "X") Const.fileStagedColor
                            else if (status === "*") Const.fileModifiedColor
                            else if (status === "+") Const.fileAddedColor
                            else if (status === "-") Const.fileDeletedColor
@@ -161,16 +186,16 @@ Pane {
                 }
 
                 Selection {
-                    id: selection
-                    targetWidth: text.width
-                    targetHeight: text.height
-                    anchors.centerIn: text
+                    id: treeSelection
+                    targetWidth: treeText.width
+                    targetHeight: treeText.height
+                    anchors.centerIn: treeText
                     visible: styleData.selected && styleData.value !== ""
                     borderOnly: true
                 }
 
                 StandardText {
-                    id: text
+                    id: treeText
                     height: Const.treeElementHeight
                     text: styleData.value
                     elide: styleData.elideMode

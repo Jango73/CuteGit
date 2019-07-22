@@ -10,6 +10,7 @@ MenuBar {
     Material.elevation: 4
 
     property variant controller: null
+    property bool filesAsTree: false
 
     signal requestOpenRepository()
     signal requestStageSelection()
@@ -51,6 +52,16 @@ MenuBar {
 
             onTriggered: {
                 root.controller.fileModelProxy.refresh()
+            }
+        }
+
+        MenuItem {
+            text: qsTr("Files as a tree")
+            checkable: true
+            checked: root.filesAsTree
+
+            onClicked: {
+                root.filesAsTree = !root.filesAsTree
             }
         }
 

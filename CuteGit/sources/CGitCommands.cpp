@@ -426,11 +426,10 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
             {
                 QString sStaged = tRegExp.cap(1).trimmed();
                 QString sUnstaged = tRegExp.cap(2).trimmed();
-                QString sFileName = tRegExp.cap(3).trimmed();
-                QString sFullName = sPath + "/" + sFileName;
+                QString sRelativeName = tRegExp.cap(3).trimmed();
+                QString sFullName = sPath + "/" + sRelativeName;
+                QString sFileName = QFileInfo(sFullName).fileName();
                 bool bStaged = false;
-
-                sFileName = QFileInfo(sFileName).fileName();
 
                 CRepoFile::ERepoFileStatus eStatus = CRepoFile::eClean;
 
@@ -482,6 +481,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
                 CRepoFile* pFile = new CRepoFile();
                 pFile->setFullName(sFullName);
                 pFile->setFileName(sFileName);
+                pFile->setRelativeName(sRelativeName);
                 pFile->setStatus(eStatus);
                 pFile->setStaged(bStaged);
 

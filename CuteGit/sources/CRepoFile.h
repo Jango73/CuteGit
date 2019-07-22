@@ -31,6 +31,7 @@ public:
 
     Q_FAST_PROPERTY(QString, s, fullName, FullName)
     Q_FAST_PROPERTY(QString, s, fileName, FileName)
+    Q_FAST_PROPERTY(QString, s, relativeName, RelativeName)
     Q_FAST_PROPERTY(ERepoFileStatus, e, status, Status)
     Q_FAST_PROPERTY(bool, b, staged, Staged)
 

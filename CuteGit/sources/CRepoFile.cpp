@@ -13,7 +13,7 @@ const QString CRepoFile::sTokenModified = "*";
 const QString CRepoFile::sTokenDeleted = "-";
 const QString CRepoFile::sTokenUntracked = "?";
 const QString CRepoFile::sTokenIgnored = "!";
-const QString CRepoFile::sTokenStaged = "O";
+const QString CRepoFile::sTokenStaged = "X";
 const QString CRepoFile::sTokenUnstaged = " ";
 
 const QString CRepoFile::sRepositoryStatusClean = "";

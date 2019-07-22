@@ -141,14 +141,16 @@ void CController::setRepositoryPath(QString sPath)
             m_pFileModel->setRootPath(sPath);
             m_pFileModelProxy->setSourceModel(m_pFileModel);
 
-            m_pFlatFileModel = new CFlatFileModel(this);
+            m_pFlatFileModel = new CFlatFileModel(this, this);
 
             emit repositoryPathChanged();
             emit fileModelChanged();
             emit fileModelProxyChanged();
             emit flatFileModelChanged();
 
+            connect(m_pFileModel, &CFileModel::currentFileFullName, this, &CController::onCurrentFileFullName);
             connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
+            connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CController::onCurrentFileFullName);
 
             // Add this path to repository model
             QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
@@ -318,6 +320,14 @@ void CController::quit()
 void CController::clearOutput()
 {
     m_pCommandOutputModel->setStringList(QStringList());
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::onCurrentFileFullName(QString sFileFullName)
+{
+    m_pCommands->unstagedFileDiff(repositoryPath(), sFileFullName);
+    m_pCommands->fileLog(repositoryPath(), sFileFullName);
 }
 
 //-------------------------------------------------------------------------------------------------
