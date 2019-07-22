@@ -32,7 +32,7 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        model: root.controller.fileModel !== null ? root.controller.fileModel.logModel : undefined
+        model: root.controller.treeFileModel !== null ? root.controller.treeFileModel.logModel : undefined
 
         delegate: Item {
             id: delegateItem

@@ -28,7 +28,7 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         visible: count > 0
-        model: root.controller.fileModel.branchModel
+        model: root.controller.treeFileModel.branchModel
 
         delegate: Item {
             width: parent.width
@@ -41,7 +41,7 @@ Pane {
                 MouseArea {
                     anchors.fill: selection
                     onDoubleClicked: {
-                        root.controller.fileModel.currentBranch = display
+                        root.controller.treeFileModel.currentBranch = display
                     }
                 }
 
@@ -50,7 +50,7 @@ Pane {
                     targetWidth: text.width
                     targetHeight: text.height
                     anchors.centerIn: text
-                    visible: display === root.controller.fileModel.currentBranch
+                    visible: display === root.controller.treeFileModel.currentBranch
                 }
 
                 StandardText {

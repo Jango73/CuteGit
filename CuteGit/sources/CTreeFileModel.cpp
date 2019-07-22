@@ -1,6 +1,6 @@
 
 // Application
-#include "CFileModel.h"
+#include "CTreeFileModel.h"
 #include "CController.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ static inline QString sizeString(const QFileInfo &fi)
 
 //-------------------------------------------------------------------------------------------------
 
-CFileModel::CFileModel(CController* pController, QObject* parent)
+CTreeFileModel::CTreeFileModel(CController* pController, QObject* parent)
     : QFileSystemModel(parent)
     , m_pController(pController)
     , m_pBranchModel(new QStringListModel(this))
@@ -30,25 +30,25 @@ CFileModel::CFileModel(CController* pController, QObject* parent)
     setRootPath(QDir::homePath());
     setResolveSymlinks(true);
 
-    connect(this, &QFileSystemModel::rootPathChanged, this, &CFileModel::onRootPathChanged);
+    connect(this, &QFileSystemModel::rootPathChanged, this, &CTreeFileModel::onRootPathChanged);
 
     // Command return values
-    connect(m_pController->commands(), &CCommands::newOutputString, this, &CFileModel::onNewOutputString);
-    connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CFileModel::onNewOutputStringList);
-    connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CFileModel::onNewOutputListOfCRepoFile);
-    connect(m_pController->commands(), &CCommands::newOutputListOfCLogLine, this, &CFileModel::onNewOutputListOfCLogLine);
+    connect(m_pController->commands(), &CCommands::newOutputString, this, &CTreeFileModel::onNewOutputString);
+    connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CTreeFileModel::onNewOutputStringList);
+    connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CTreeFileModel::onNewOutputListOfCRepoFile);
+    connect(m_pController->commands(), &CCommands::newOutputListOfCLogLine, this, &CTreeFileModel::onNewOutputListOfCLogLine);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-CFileModel::~CFileModel()
+CTreeFileModel::~CTreeFileModel()
 {
     qDeleteAll(m_vRepoFiles);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::setCurrentBranch(QString sValue)
+void CTreeFileModel::setCurrentBranch(QString sValue)
 {
     if (m_sCurrentBranch != sValue)
     {
@@ -58,14 +58,14 @@ void CFileModel::setCurrentBranch(QString sValue)
 
 //-------------------------------------------------------------------------------------------------
 
-QModelIndex CFileModel::rootPathIndex() const
+QModelIndex CTreeFileModel::rootPathIndex() const
 {
     return index(rootPath());
 }
 
 //-------------------------------------------------------------------------------------------------
 
-CRepoFile* CFileModel::fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const
+CRepoFile* CTreeFileModel::fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const
 {
     for (CRepoFile* pFile : vFiles)
     {
@@ -78,7 +78,7 @@ CRepoFile* CFileModel::fileByFullName(const QList<CRepoFile*>& vFiles, const QSt
 
 //-------------------------------------------------------------------------------------------------
 
-QHash<int, QByteArray> CFileModel::roleNames() const
+QHash<int, QByteArray> CTreeFileModel::roleNames() const
 {
     QHash<int, QByteArray> hRoleNames = QFileSystemModel::roleNames();
     hRoleNames[eSizeRole] = "size";
@@ -89,7 +89,7 @@ QHash<int, QByteArray> CFileModel::roleNames() const
 
 //-------------------------------------------------------------------------------------------------
 
-QVariant CFileModel::data(const QModelIndex& index, int role) const
+QVariant CTreeFileModel::data(const QModelIndex& index, int role) const
 {
     if (index.isValid() && role >= eSizeRole)
     {
@@ -134,7 +134,7 @@ QVariant CFileModel::data(const QModelIndex& index, int role) const
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::checkAllFileStatus(QString sPath)
+void CTreeFileModel::checkAllFileStatus(QString sPath)
 {
     if (sPath.isEmpty())
     {
@@ -146,7 +146,7 @@ void CFileModel::checkAllFileStatus(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::checkRepositoryStatus(QString sPath)
+void CTreeFileModel::checkRepositoryStatus(QString sPath)
 {
     if (sPath.isEmpty())
     {
@@ -158,7 +158,7 @@ void CFileModel::checkRepositoryStatus(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::handleCurrentIndex(QModelIndex qIndex)
+void CTreeFileModel::handleCurrentIndex(QModelIndex qIndex)
 {
     QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
 
@@ -167,7 +167,7 @@ void CFileModel::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::refresh()
+void CTreeFileModel::refresh()
 {
     checkRepositoryStatus();
     checkAllFileStatus();
@@ -177,7 +177,7 @@ void CFileModel::refresh()
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::stageSelection(QModelIndexList lIndices)
+void CTreeFileModel::stageSelection(QModelIndexList lIndices)
 {
     for (QModelIndex qIndex : lIndices)
     {
@@ -188,7 +188,7 @@ void CFileModel::stageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::unstageSelection(QModelIndexList lIndices)
+void CTreeFileModel::unstageSelection(QModelIndexList lIndices)
 {
     for (QModelIndex qIndex : lIndices)
     {
@@ -199,14 +199,14 @@ void CFileModel::unstageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::stageAll()
+void CTreeFileModel::stageAll()
 {
     m_pController->commands()->stageAll(m_pController->repositoryPath(), true);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::revertSelection(QModelIndexList lIndices)
+void CTreeFileModel::revertSelection(QModelIndexList lIndices)
 {
     for (QModelIndex qIndex : lIndices)
     {
@@ -217,7 +217,7 @@ void CFileModel::revertSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::commit(const QString& sMessage, bool bAmend)
+void CTreeFileModel::commit(const QString& sMessage, bool bAmend)
 {
     if (m_eRepositoryStatus == NoMerge && bAmend == false)
     {
@@ -231,21 +231,21 @@ void CFileModel::commit(const QString& sMessage, bool bAmend)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::continueRebase()
+void CTreeFileModel::continueRebase()
 {
     m_pController->commands()->continueRebase(m_pController->repositoryPath());
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::push()
+void CTreeFileModel::push()
 {
     m_pController->commands()->push(m_pController->repositoryPath());
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::pull()
+void CTreeFileModel::pull()
 {
     m_pController->commands()->pull(m_pController->repositoryPath());
 }
@@ -253,21 +253,21 @@ void CFileModel::pull()
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::commitRebase(const QString& sCommitId)
+void CTreeFileModel::commitRebase(const QString& sCommitId)
 {
     m_pController->commands()->commitRebase(m_pController->repositoryPath(), sCommitId);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
+void CTreeFileModel::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
 {
     m_pController->commands()->changeCommitMessage(m_pController->repositoryPath(), sCommitId, sMessage);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::getBranches(QString sPath)
+void CTreeFileModel::getBranches(QString sPath)
 {
     if (sPath.isEmpty())
     {
@@ -279,7 +279,7 @@ void CFileModel::getBranches(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::getLog(QString sPath)
+void CTreeFileModel::getLog(QString sPath)
 {
     if (sPath.isEmpty())
     {
@@ -294,7 +294,7 @@ void CFileModel::getLog(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onRootPathChanged(const QString& sNewPath)
+void CTreeFileModel::onRootPathChanged(const QString& sNewPath)
 {
     Q_UNUSED(sNewPath);
 
@@ -303,7 +303,7 @@ void CFileModel::onRootPathChanged(const QString& sNewPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sOutput)
+void CTreeFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sOutput)
 {
     switch (eCommand)
     {
@@ -364,7 +364,7 @@ void CFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QS
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue)
+void CTreeFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue)
 {
     switch (eCommand)
     {
@@ -397,7 +397,7 @@ void CFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
+void CTreeFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
 {
     switch (eCommand)
     {
@@ -457,7 +457,7 @@ void CFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCo
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModel::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewGraphLines)
+void CTreeFileModel::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewGraphLines)
 {
     switch (eCommand)
     {

@@ -8,8 +8,8 @@
 
 // Application
 #include "CuteGit.h"
-#include "CFileModel.h"
-#include "CFileModelProxy.h"
+#include "CTreeFileModel.h"
+#include "CTreeFileModelProxy.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -23,10 +23,10 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
         qRegisterMetaType<CXMLNode>();
         qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
-        qRegisterMetaType<CFileModel::ERepositoryStatus>("CFileModel::ERepositoryStatus");
+        qRegisterMetaType<CTreeFileModel::ERepositoryStatus>("CTreeFileModel::ERepositoryStatus");
 
-        qmlRegisterUncreatableType<CFileModel>("CuteGit", 1, 0, "CFileModel", "Cannot create a FileSystemModel instance.");
-        qmlRegisterUncreatableType<CFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
+        qmlRegisterUncreatableType<CTreeFileModel>("CuteGit", 1, 0, "CTreeFileModel", "Cannot create a FileSystemModel instance.");
+        qmlRegisterUncreatableType<CTreeFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
 
         // Create controller and QML engine
         m_pController = new CController(this);

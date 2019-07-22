@@ -3,8 +3,8 @@ HEADERS += \
     ../qt-plus/source/cpp/CXMLNode.h \
     sources/CCommands.h \
     sources/CGitCommands.h \
-    sources/CFileModel.h \
-    sources/CFileModelProxy.h \
+    sources/CTreeFileModel.h \
+    sources/CTreeFileModelProxy.h \
     sources/CFlatFileModel.h \
     sources/CRepoFile.h \
     sources/CLogModel.h \
@@ -16,8 +16,8 @@ SOURCES += \
     ../qt-plus/source/cpp/CXMLNode.cpp \
     sources/CCommands.cpp \
     sources/CGitCommands.cpp \
-    sources/CFileModel.cpp \
-    sources/CFileModelProxy.cpp \
+    sources/CTreeFileModel.cpp \
+    sources/CTreeFileModelProxy.cpp \
     sources/CFlatFileModel.cpp \
     sources/CRepoFile.cpp \
     sources/CLogModel.cpp \

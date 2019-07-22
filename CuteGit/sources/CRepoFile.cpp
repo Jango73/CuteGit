@@ -10,6 +10,7 @@
 const QString CRepoFile::sTokenClean = " ";
 const QString CRepoFile::sTokenAdded = "+";
 const QString CRepoFile::sTokenModified = "*";
+const QString CRepoFile::sTokenRenamed = "=";
 const QString CRepoFile::sTokenDeleted = "-";
 const QString CRepoFile::sTokenUntracked = "?";
 const QString CRepoFile::sTokenIgnored = "!";
@@ -48,6 +49,8 @@ QString CRepoFile::statusToString() const
         return sTokenAdded;
     case eModified:
         return sTokenModified;
+    case eRenamed:
+        return sTokenRenamed;
     case eDeleted:
         return sTokenDeleted;
     case eUntracked:

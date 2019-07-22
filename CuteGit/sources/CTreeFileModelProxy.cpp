@@ -3,12 +3,12 @@
 #include <QDebug>
 
 // Application
-#include "CFileModelProxy.h"
-#include "CFileModel.h"
+#include "CTreeFileModelProxy.h"
+#include "CTreeFileModel.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CFileModelProxy::CFileModelProxy(QObject *parent)
+CTreeFileModelProxy::CTreeFileModelProxy(QObject *parent)
     : QSortFilterProxyModel(parent)
     , m_bShowClean(false)
     , m_bShowAdded(true)
@@ -20,7 +20,7 @@ CFileModelProxy::CFileModelProxy(QObject *parent)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::setShowClean(bool bValue)
+void CTreeFileModelProxy::setShowClean(bool bValue)
 {
     if (m_bShowClean != bValue)
     {
@@ -32,7 +32,7 @@ void CFileModelProxy::setShowClean(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::setShowAdded(bool bValue)
+void CTreeFileModelProxy::setShowAdded(bool bValue)
 {
     if (m_bShowAdded != bValue)
     {
@@ -44,7 +44,7 @@ void CFileModelProxy::setShowAdded(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::setShowModified(bool bValue)
+void CTreeFileModelProxy::setShowModified(bool bValue)
 {
     if (m_bShowModified != bValue)
     {
@@ -56,7 +56,7 @@ void CFileModelProxy::setShowModified(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::setShowDeleted(bool bValue)
+void CTreeFileModelProxy::setShowDeleted(bool bValue)
 {
     if (m_bShowDeleted != bValue)
     {
@@ -68,7 +68,7 @@ void CFileModelProxy::setShowDeleted(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::setShowUntracked(bool bValue)
+void CTreeFileModelProxy::setShowUntracked(bool bValue)
 {
     if (m_bShowUntracked != bValue)
     {
@@ -80,9 +80,9 @@ void CFileModelProxy::setShowUntracked(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
-QModelIndex CFileModelProxy::rootPathIndex() const
+QModelIndex CTreeFileModelProxy::rootPathIndex() const
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -94,7 +94,7 @@ QModelIndex CFileModelProxy::rootPathIndex() const
 
 //-------------------------------------------------------------------------------------------------
 
-bool CFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool CTreeFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
 
@@ -103,15 +103,15 @@ bool CFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceP
 
 //-------------------------------------------------------------------------------------------------
 
-QString CFileModelProxy::statusForIndex(QModelIndex qIndex)
+QString CTreeFileModelProxy::statusForIndex(QModelIndex qIndex)
 {
     if (qIndex.isValid())
     {
-        CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+        CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
         if (pModel != nullptr)
         {
-            return pModel->data(mapToSource(qIndex), CFileModel::eStatusRole).toString();
+            return pModel->data(mapToSource(qIndex), CTreeFileModel::eStatusRole).toString();
         }
     }
 
@@ -120,15 +120,15 @@ QString CFileModelProxy::statusForIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
-QString CFileModelProxy::stagedForIndex(QModelIndex qIndex)
+QString CTreeFileModelProxy::stagedForIndex(QModelIndex qIndex)
 {
     if (qIndex.isValid())
     {
-        CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+        CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
         if (pModel != nullptr)
         {
-            return pModel->data(mapToSource(qIndex), CFileModel::eStagedRole).toString();
+            return pModel->data(mapToSource(qIndex), CTreeFileModel::eStagedRole).toString();
         }
     }
 
@@ -137,9 +137,9 @@ QString CFileModelProxy::stagedForIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::refresh()
+void CTreeFileModelProxy::refresh()
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -150,9 +150,9 @@ void CFileModelProxy::refresh()
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::stageSelection(QModelIndexList lIndices)
+void CTreeFileModelProxy::stageSelection(QModelIndexList lIndices)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -162,9 +162,9 @@ void CFileModelProxy::stageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::unstageSelection(QModelIndexList lIndices)
+void CTreeFileModelProxy::unstageSelection(QModelIndexList lIndices)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -174,9 +174,9 @@ void CFileModelProxy::unstageSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::stageAll()
+void CTreeFileModelProxy::stageAll()
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -186,9 +186,9 @@ void CFileModelProxy::stageAll()
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::revertSelection(QModelIndexList lIndices)
+void CTreeFileModelProxy::revertSelection(QModelIndexList lIndices)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -198,9 +198,9 @@ void CFileModelProxy::revertSelection(QModelIndexList lIndices)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::commit(const QString& sMessage, bool bAmend)
+void CTreeFileModelProxy::commit(const QString& sMessage, bool bAmend)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -210,9 +210,9 @@ void CFileModelProxy::commit(const QString& sMessage, bool bAmend)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::continueRebase()
+void CTreeFileModelProxy::continueRebase()
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -222,9 +222,9 @@ void CFileModelProxy::continueRebase()
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::push()
+void CTreeFileModelProxy::push()
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -234,9 +234,9 @@ void CFileModelProxy::push()
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::pull()
+void CTreeFileModelProxy::pull()
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -246,11 +246,11 @@ void CFileModelProxy::pull()
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
+void CTreeFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 {
     if (qIndex.isValid())
     {
-        CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+        CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
         if (pModel != nullptr)
         {
@@ -261,9 +261,9 @@ void CFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::commitRebase(const QString& sCommitId)
+void CTreeFileModelProxy::commitRebase(const QString& sCommitId)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -273,9 +273,9 @@ void CFileModelProxy::commitRebase(const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
-void CFileModelProxy::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
+void CTreeFileModelProxy::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
 {
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -285,7 +285,7 @@ void CFileModelProxy::changeCommitMessage(const QString& sCommitId, const QStrin
 
 //-------------------------------------------------------------------------------------------------
 
-QModelIndexList CFileModelProxy::indexListToSource(QModelIndexList lIndices) const
+QModelIndexList CTreeFileModelProxy::indexListToSource(QModelIndexList lIndices) const
 {
     QModelIndexList targetIndices;
 
@@ -302,13 +302,13 @@ QModelIndexList CFileModelProxy::indexListToSource(QModelIndexList lIndices) con
 
 //-------------------------------------------------------------------------------------------------
 
-bool CFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
+bool CTreeFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
 {
     QModelIndex qSubIndex = sourceModel()->index(qIndex.row(), 1, qIndex.parent());
-    QString sName = sourceModel()->data(qSubIndex, CFileModel::FileNameRole).toString();
-    QString sStatus = sourceModel()->data(qSubIndex, CFileModel::eStatusRole).toString();
+    QString sName = sourceModel()->data(qSubIndex, CTreeFileModel::FileNameRole).toString();
+    QString sStatus = sourceModel()->data(qSubIndex, CTreeFileModel::eStatusRole).toString();
 
-    CFileModel* pModel = dynamic_cast<CFileModel*>(sourceModel());
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
     {
@@ -326,7 +326,7 @@ bool CFileModelProxy::hasToBeDisplayed(const QModelIndex qIndex) const
 
 //-------------------------------------------------------------------------------------------------
 
-bool CFileModelProxy::statusShown(const QString& sStatus) const
+bool CTreeFileModelProxy::statusShown(const QString& sStatus) const
 {
     if (m_bShowClean && sStatus == CRepoFile::sTokenClean)
         return true;
@@ -335,6 +335,9 @@ bool CFileModelProxy::statusShown(const QString& sStatus) const
         return true;
 
     if (m_bShowModified && sStatus == CRepoFile::sTokenModified)
+        return true;
+
+    if (m_bShowModified && sStatus == CRepoFile::sTokenRenamed)
         return true;
 
     if (m_bShowDeleted && sStatus == CRepoFile::sTokenDeleted)

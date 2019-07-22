@@ -51,6 +51,7 @@ static const char* sComment = "#";
 
 const QString sStatusAdded = "A";
 const QString sStatusModified = "M";
+const QString sStatusRenamed = "R";
 const QString sStatusDeleted = "D";
 const QString sStatusUntracked = "?";
 const QString sStatusIgnored = "!";
@@ -426,7 +427,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
             {
                 QString sStaged = tRegExp.cap(1).trimmed();
                 QString sUnstaged = tRegExp.cap(2).trimmed();
-                QString sRelativeName = tRegExp.cap(3).trimmed();
+                QString sRelativeName = tRegExp.cap(3).split("->").last().trimmed();
                 QString sFullName = sPath + "/" + sRelativeName;
                 QString sFileName = QFileInfo(sFullName).fileName();
                 bool bStaged = false;
@@ -441,6 +442,8 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
                         eStatus = CRepoFile::eAdded;
                     else if (sStaged == sStatusModified)
                         eStatus = CRepoFile::eModified;
+                    else if (sStaged == sStatusRenamed)
+                        eStatus = CRepoFile::eRenamed;
                     else if (sStaged == sStatusDeleted)
                         eStatus = CRepoFile::eDeleted;
                     else if (sStaged == sStatusIgnored)
@@ -463,6 +466,11 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
                     {
                         bStaged = false;
                         eStatus = CRepoFile::eModified;
+                    }
+                    else if (sUnstaged == sStatusRenamed)
+                    {
+                        bStaged = false;
+                        eStatus = CRepoFile::eRenamed;
                     }
                     else if (sUnstaged == sStatusDeleted)
                     {

@@ -79,6 +79,7 @@ Pane {
                 anchors.fill: parent
                 color: if (model.staged === "X") Const.fileStagedColor
                        else if (model.status === "*") Const.fileModifiedColor
+                       else if (model.status === "=") Const.fileRenamedColor
                        else if (model.status === "+") Const.fileAddedColor
                        else if (model.status === "-") Const.fileDeletedColor
                        else Const.transparent
@@ -135,8 +136,8 @@ Pane {
         enabled: visible
         focus: visible
 
-        model: root.controller.fileModelProxy
-        rootIndex: root.controller.fileModelProxy !== null ? root.controller.fileModelProxy.rootPathIndex : undefined
+        model: root.controller.treeFileModelProxy
+        rootIndex: root.controller.treeFileModelProxy !== null ? root.controller.treeFileModelProxy.rootPathIndex : undefined
         selection: root.selection
         selectionMode: 2
         // "None", "Single", "Extended", "Multi", "Contig."
@@ -180,6 +181,7 @@ Pane {
                     anchors.fill: parent
                     color: if (staged === "X") Const.fileStagedColor
                            else if (status === "*") Const.fileModifiedColor
+                           else if (status === "=") Const.fileRenamedColor
                            else if (status === "+") Const.fileAddedColor
                            else if (status === "-") Const.fileDeletedColor
                            else Const.transparent

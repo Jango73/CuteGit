@@ -51,7 +51,7 @@ MenuBar {
             shortcut: "F5"
 
             onTriggered: {
-                root.controller.fileModelProxy.refresh()
+                root.controller.treeFileModelProxy.refresh()
             }
         }
 
@@ -68,50 +68,50 @@ MenuBar {
         MenuItem {
             text: qsTr("Show &clean")
             checkable: true
-            checked: root.controller.fileModelProxy.showClean
+            checked: root.controller.treeFileModelProxy.showClean
 
             onClicked: {
-                root.controller.fileModelProxy.showClean = !root.controller.fileModelProxy.showClean
+                root.controller.treeFileModelProxy.showClean = !root.controller.treeFileModelProxy.showClean
             }
         }
 
         MenuItem {
             text: qsTr("Show &added")
             checkable: true
-            checked: root.controller.fileModelProxy.showAdded
+            checked: root.controller.treeFileModelProxy.showAdded
 
             onClicked: {
-                root.controller.fileModelProxy.showAdded = !root.controller.fileModelProxy.showAdded
+                root.controller.treeFileModelProxy.showAdded = !root.controller.treeFileModelProxy.showAdded
             }
         }
 
         MenuItem {
             text: qsTr("Show &modified")
             checkable: true
-            checked: root.controller.fileModelProxy.showModified
+            checked: root.controller.treeFileModelProxy.showModified
 
             onClicked: {
-                root.controller.fileModelProxy.showModified = !root.controller.fileModelProxy.showModified
+                root.controller.treeFileModelProxy.showModified = !root.controller.treeFileModelProxy.showModified
             }
         }
 
         MenuItem {
             text: qsTr("Show &deleted")
             checkable: true
-            checked: root.controller.fileModelProxy.showDeleted
+            checked: root.controller.treeFileModelProxy.showDeleted
 
             onClicked: {
-                root.controller.fileModelProxy.showDeleted = !root.controller.fileModelProxy.showDeleted
+                root.controller.treeFileModelProxy.showDeleted = !root.controller.treeFileModelProxy.showDeleted
             }
         }
 
         MenuItem {
             text: qsTr("Show &untracked")
             checkable: true
-            checked: root.controller.fileModelProxy.showUntracked
+            checked: root.controller.treeFileModelProxy.showUntracked
 
             onClicked: {
-                root.controller.fileModelProxy.showUntracked = !root.controller.fileModelProxy.showUntracked
+                root.controller.treeFileModelProxy.showUntracked = !root.controller.treeFileModelProxy.showUntracked
             }
         }
     }
@@ -122,7 +122,7 @@ MenuBar {
         Action {
             text: qsTr("Stage &all")
             shortcut: "Ctrl+shift++"
-            onTriggered: root.controller.fileModelProxy.stageAll()
+            onTriggered: root.controller.treeFileModelProxy.stageAll()
         }
 
         Action {
@@ -158,8 +158,8 @@ MenuBar {
         Action {
             text: qsTr("&Continue rebase")
             shortcut: "Ctrl+R"
-            enabled: root.controller.fileModel.repositoryStatus === CFileModel.Rebase
-            || root.controller.fileModel.repositoryStatus === CFileModel.InteractiveRebase
+            enabled: root.controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase
+            || root.controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase
             onTriggered: root.requestContinueRebase()
         }
     }
@@ -170,13 +170,13 @@ MenuBar {
         Action {
             text: qsTr("&Pull...")
             shortcut: "Ctrl+L"
-            onTriggered: root.controller.fileModelProxy.pull()
+            onTriggered: root.controller.treeFileModelProxy.pull()
         }
 
         Action {
             text: qsTr("Pus&h...")
             shortcut: "Ctrl+P"
-            onTriggered: root.controller.fileModelProxy.push()
+            onTriggered: root.controller.treeFileModelProxy.push()
         }
     }
 

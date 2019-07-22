@@ -7,7 +7,7 @@
 // qt-plus
 #include "Macros.h"
 
-class CFileModelProxy : public QSortFilterProxyModel
+class CTreeFileModelProxy : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -29,7 +29,7 @@ public:
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
 
-    CFileModelProxy(QObject* parent = nullptr);
+    CTreeFileModelProxy(QObject* parent = nullptr);
 
     //-------------------------------------------------------------------------------------------------
     // Getters

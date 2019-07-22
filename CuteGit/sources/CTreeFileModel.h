@@ -21,7 +21,7 @@ class CController;
 
 //-------------------------------------------------------------------------------------------------
 
-class CFileModel : public QFileSystemModel
+class CTreeFileModel : public QFileSystemModel
 {
     Q_OBJECT
 
@@ -64,10 +64,10 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CFileModel(CController* pController, QObject *parent = nullptr);
+    CTreeFileModel(CController* pController, QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CFileModel() override;
+    virtual ~CTreeFileModel() override;
 
     //-------------------------------------------------------------------------------------------------
     // Setters

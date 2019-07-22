@@ -49,8 +49,8 @@ const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 CController::CController(QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
-    , m_pFileModel(nullptr)
-    , m_pFileModelProxy(new CFileModelProxy(this))
+    , m_pTreeFileModel(nullptr)
+    , m_pTreeFileModelProxy(new CTreeFileModelProxy(this))
     , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(new QStringListModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
@@ -78,8 +78,8 @@ CController::CController(QObject* parent)
 CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
-    , m_pFileModel(nullptr)
-    , m_pFileModelProxy(nullptr)
+    , m_pTreeFileModel(nullptr)
+    , m_pTreeFileModelProxy(nullptr)
     , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(nullptr)
     , m_pCommandOutputModel(nullptr)
@@ -124,32 +124,32 @@ void CController::setRepositoryPath(QString sPath)
         sPath = QUrl(sPath).toLocalFile();
 
     // If repo path valid and different from current
-    if (m_pFileModel == nullptr || sPath != m_pFileModel->rootPath())
+    if (m_pTreeFileModel == nullptr || sPath != m_pTreeFileModel->rootPath())
     {
         // IF repo is a GIT repo
         if (QDir(QString("%1/.git").arg(sPath)).exists())
         {
             // Delete any existing file model
-            if (m_pFileModel != nullptr)
-                m_pFileModel->deleteLater();
+            if (m_pTreeFileModel != nullptr)
+                m_pTreeFileModel->deleteLater();
 
             if (m_pFlatFileModel != nullptr)
                 m_pFlatFileModel->deleteLater();
 
             // Create a file model
-            m_pFileModel = new CFileModel(this, this);
-            m_pFileModel->setRootPath(sPath);
-            m_pFileModelProxy->setSourceModel(m_pFileModel);
+            m_pTreeFileModel = new CTreeFileModel(this, this);
+            m_pTreeFileModel->setRootPath(sPath);
+            m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
 
             m_pFlatFileModel = new CFlatFileModel(this, this);
 
             emit repositoryPathChanged();
-            emit fileModelChanged();
-            emit fileModelProxyChanged();
+            emit treeFileModelChanged();
+            emit treeFileModelProxyChanged();
             emit flatFileModelChanged();
 
-            connect(m_pFileModel, &CFileModel::currentFileFullName, this, &CController::onCurrentFileFullName);
-            connect(m_pFileModel, &CFileModel::newOutput, this, &CController::onNewOutput);
+            connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CController::onCurrentFileFullName);
+            connect(m_pTreeFileModel, &CTreeFileModel::newOutput, this, &CController::onNewOutput);
             connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CController::onCurrentFileFullName);
 
             // Add this path to repository model
@@ -198,9 +198,9 @@ void CController::setSequenceFileName(const QString& sSequenceFileName)
 
 QString CController::repositoryPath() const
 {
-    if (m_pFileModel != nullptr)
+    if (m_pTreeFileModel != nullptr)
     {
-        return m_pFileModel->rootPath();
+        return m_pTreeFileModel->rootPath();
     }
 
     return "";
@@ -245,7 +245,7 @@ void CController::saveConfiguration()
     CXMLNode xConfig(sParamConfiguration);
 
     CXMLNode xCurrentRepository(sParamCurrentRepository);
-    xCurrentRepository.attributes()[sParamPath] = m_pFileModel->rootPath();
+    xCurrentRepository.attributes()[sParamPath] = m_pTreeFileModel->rootPath();
     xConfig << xCurrentRepository;
 
     CXMLNode xRepositories(sParamRepositories);

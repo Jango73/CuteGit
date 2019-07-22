@@ -26,19 +26,19 @@ Item {
 
         onRequestStageSelection: {
             if (fileView.filesAsTree) {
-                root.controller.fileModelProxy.stageSelection(fileSelection.selectedIndexes)
+                root.controller.treeFileModelProxy.stageSelection(fileSelection.selectedIndexes)
             }
         }
 
         onRequestUnstageSelection: {
             if (fileView.filesAsTree) {
-                root.controller.fileModelProxy.unstageSelection(fileSelection.selectedIndexes)
+                root.controller.treeFileModelProxy.unstageSelection(fileSelection.selectedIndexes)
             }
         }
 
         onRequestRevertSelection: {
             if (fileView.filesAsTree) {
-                root.controller.fileModelProxy.revertSelection(fileSelection.selectedIndexes)
+                root.controller.treeFileModelProxy.revertSelection(fileSelection.selectedIndexes)
             }
         }
 
@@ -58,7 +58,7 @@ Item {
             commit.open()
         }
 
-        onRequestContinueRebase: root.controller.fileModelProxy.continueRebase()
+        onRequestContinueRebase: root.controller.treeFileModelProxy.continueRebase()
     }
 
     Item {
@@ -110,7 +110,7 @@ Item {
 
             Rectangle {
                 anchors.fill: parent
-                color: root.controller.fileModel.repositoryStatus === CFileModel.NoMerge
+                color: root.controller.treeFileModel.repositoryStatus === CTreeFileModel.NoMerge
                        ? Const.transparent
                        : Material.accent
             }
@@ -118,15 +118,15 @@ Item {
             StandardText {
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
-                color: root.controller.fileModel.repositoryStatus === CFileModel.NoMerge
+                color: root.controller.treeFileModel.repositoryStatus === CTreeFileModel.NoMerge
                        ? Material.foreground
                        : Material.background
                 text: {
-                    if (root.controller.fileModel.repositoryStatus === CFileModel.InteractiveRebase)
+                    if (root.controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase)
                         qsTr("Interactive rebase in progress...")
-                    else if (root.controller.fileModel.repositoryStatus === CFileModel.Rebase)
+                    else if (root.controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase)
                         qsTr("Rebase in progress...")
-                    else if (root.controller.fileModel.repositoryStatus === CFileModel.Merge)
+                    else if (root.controller.treeFileModel.repositoryStatus === CTreeFileModel.Merge)
                         qsTr("Merge in progress...")
                     else
                         ""
@@ -143,10 +143,10 @@ Item {
 
             ItemSelectionModel {
                 id: fileSelection
-                model: root.controller.fileModelProxy
+                model: root.controller.treeFileModelProxy
 
                 onCurrentIndexChanged: {
-                    root.controller.fileModelProxy.handleCurrentIndex(currentIndex)
+                    root.controller.treeFileModelProxy.handleCurrentIndex(currentIndex)
                 }
             }
 
@@ -204,7 +204,7 @@ Item {
                 controller: root.controller
 
                 onRequestCommitRebase: {
-                    root.controller.fileModelProxy.commitRebase(commitId)
+                    root.controller.treeFileModelProxy.commitRebase(commitId)
                 }
 
                 onRequestCommitMessageChange: {

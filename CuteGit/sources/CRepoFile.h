@@ -20,6 +20,7 @@ public:
         eClean,
         eAdded,
         eModified,
+        eRenamed,
         eDeleted,
         eUntracked,
         eIgnored
@@ -64,6 +65,7 @@ public:
     static const QString sTokenClean;
     static const QString sTokenAdded;
     static const QString sTokenModified;
+    static const QString sTokenRenamed;
     static const QString sTokenDeleted;
     static const QString sTokenUntracked;
     static const QString sTokenIgnored;

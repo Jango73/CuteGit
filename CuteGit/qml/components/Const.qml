@@ -15,6 +15,7 @@ Item {
     property color transparent: "transparent"
     property color fileStagedColor: "#080"
     property color fileModifiedColor: "#800"
+    property color fileRenamedColor: "#840"
     property color fileAddedColor: "#008"
     property color fileDeletedColor: "#840"
 

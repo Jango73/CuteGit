@@ -13,8 +13,8 @@
 #include "CXMLNode.h"
 
 // Application
-#include "CFileModel.h"
-#include "CFileModelProxy.h"
+#include "CTreeFileModel.h"
+#include "CTreeFileModelProxy.h"
 #include "CFlatFileModel.h"
 #include "CCommands.h"
 
@@ -34,8 +34,8 @@ class CController : public QObject
     Q_PROPERTY(QString repositoryPath READ repositoryPath WRITE setRepositoryPath NOTIFY repositoryPathChanged)
 
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
-    Q_FAST_PROPERTY(CFileModel*, p, fileModel, FileModel)
-    Q_FAST_PROPERTY(CFileModelProxy*, p, fileModelProxy, FileModelProxy)
+    Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
+    Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)

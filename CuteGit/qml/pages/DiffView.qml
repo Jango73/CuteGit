@@ -10,7 +10,7 @@ Pane {
 
     StandardListView {
         anchors.fill: parent
-        model: root.controller !== null ? root.controller.fileModel.diffModel : undefined
+        model: root.controller !== null ? root.controller.treeFileModel.diffModel : undefined
 
         delegate: StandardText {
             width: parent.width

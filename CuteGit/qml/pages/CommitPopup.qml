@@ -73,15 +73,15 @@ Popup {
                 Layout.alignment: Qt.AlignCenter
                 text: Const.okText
 
-                enabled: message.text != "" || root.controller.fileModel.repositoryStatus !== CFileModel.NoMerge
+                enabled: message.text != "" || root.controller.treeFileModel.repositoryStatus !== CTreeFileModel.NoMerge
 
                 onClicked: {
                     root.close()
 
                     if (root.showFileList) {
-                        root.controller.fileModelProxy.commit(message.text, root.amend)
+                        root.controller.treeFileModelProxy.commit(message.text, root.amend)
                     } else {
-                        root.controller.fileModelProxy.changeCommitMessage(commitId, message.text)
+                        root.controller.treeFileModelProxy.changeCommitMessage(commitId, message.text)
                     }
                 }
             }
