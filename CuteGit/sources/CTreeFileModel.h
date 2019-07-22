@@ -115,6 +115,9 @@ public:
     void stageAll();
 
     //!
+    void unstageAll();
+
+    //!
     void revertSelection(QModelIndexList lIndices);
 
     //!

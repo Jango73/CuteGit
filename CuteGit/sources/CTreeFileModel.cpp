@@ -206,6 +206,13 @@ void CTreeFileModel::stageAll()
 
 //-------------------------------------------------------------------------------------------------
 
+void CTreeFileModel::unstageAll()
+{
+    m_pController->commands()->stageAll(m_pController->repositoryPath(), false);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CTreeFileModel::revertSelection(QModelIndexList lIndices)
 {
     for (QModelIndex qIndex : lIndices)

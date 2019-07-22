@@ -50,7 +50,7 @@ CController::CController(QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
     , m_pTreeFileModel(nullptr)
-    , m_pTreeFileModelProxy(nullptr)
+    , m_pTreeFileModelProxy(new CTreeFileModelProxy(this, this))
     , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(new QStringListModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
@@ -203,20 +203,15 @@ void CController::setRepositoryPath(QString sPath)
             if (m_pTreeFileModel != nullptr)
                 m_pTreeFileModel->deleteLater();
 
-            if (m_pTreeFileModelProxy != nullptr)
-                m_pTreeFileModelProxy->deleteLater();
-
             if (m_pFlatFileModel != nullptr)
                 m_pFlatFileModel->deleteLater();
 
             // Create a file model
             m_pTreeFileModel = new CTreeFileModel(this, this);
-            m_pTreeFileModel->setRootPath(sPath);
-
-            m_pTreeFileModelProxy = new CTreeFileModelProxy(this, this);
-            m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
-
             m_pFlatFileModel = new CFlatFileModel(this, this);
+
+            m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
+            m_pTreeFileModel->setRootPath(sPath);
 
             emit repositoryPathChanged();
             emit treeFileModelChanged();

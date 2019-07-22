@@ -126,6 +126,12 @@ MenuBar {
         }
 
         Action {
+            text: qsTr("Usta&ge all")
+            shortcut: "Ctrl+shift+-"
+            onTriggered: root.controller.treeFileModelProxy.unstageAll()
+        }
+
+        Action {
             text: qsTr("&Stage selection")
             shortcut: "Ctrl++"
             onTriggered: root.requestStageSelection()

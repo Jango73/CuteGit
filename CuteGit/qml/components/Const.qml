@@ -57,6 +57,7 @@ Item {
                                        "Refresh\t\t\tF5\n" +
                                        "\n" +
                                        "Stage all\t\t\tControl + Shift + '+'\n" +
+                                       "Unstage all\t\t\tControl + Shift + '-'\n" +
                                        "Stage selection\t\tControl + '+'\n" +
                                        "Unstage selection\t\tControl + '-'\n" +
                                        "Revert selection\t\tControl + 'Z'\n" +

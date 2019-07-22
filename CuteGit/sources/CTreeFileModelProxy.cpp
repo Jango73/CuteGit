@@ -22,9 +22,7 @@ QModelIndex CTreeFileModelProxy::rootPathIndex() const
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
 
     if (pModel != nullptr)
-    {
         return mapFromSource(pModel->rootPathIndex());
-    }
 
     return QModelIndex();
 }
@@ -52,11 +50,8 @@ QString CTreeFileModelProxy::statusForIndex(QModelIndex qIndex)
     if (qIndex.isValid())
     {
         CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
         if (pModel != nullptr)
-        {
             return pModel->data(mapToSource(qIndex), CTreeFileModel::eStatusRole).toString();
-        }
     }
 
     return "";
@@ -69,11 +64,8 @@ QString CTreeFileModelProxy::stagedForIndex(QModelIndex qIndex)
     if (qIndex.isValid())
     {
         CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
         if (pModel != nullptr)
-        {
             return pModel->data(mapToSource(qIndex), CTreeFileModel::eStagedRole).toString();
-        }
     }
 
     return "";
@@ -97,11 +89,8 @@ void CTreeFileModelProxy::refresh()
 void CTreeFileModelProxy::stageSelection(QModelIndexList lIndices)
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->stageSelection(indexListToSource(lIndices));
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -109,11 +98,8 @@ void CTreeFileModelProxy::stageSelection(QModelIndexList lIndices)
 void CTreeFileModelProxy::unstageSelection(QModelIndexList lIndices)
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->unstageSelection(indexListToSource(lIndices));
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -121,11 +107,17 @@ void CTreeFileModelProxy::unstageSelection(QModelIndexList lIndices)
 void CTreeFileModelProxy::stageAll()
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->stageAll();
-    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CTreeFileModelProxy::unstageAll()
+{
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
+    if (pModel != nullptr)
+        pModel->unstageAll();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -133,11 +125,8 @@ void CTreeFileModelProxy::stageAll()
 void CTreeFileModelProxy::revertSelection(QModelIndexList lIndices)
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->revertSelection(indexListToSource(lIndices));
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -145,11 +134,8 @@ void CTreeFileModelProxy::revertSelection(QModelIndexList lIndices)
 void CTreeFileModelProxy::commit(const QString& sMessage, bool bAmend)
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->commit(sMessage, bAmend);
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -157,11 +143,8 @@ void CTreeFileModelProxy::commit(const QString& sMessage, bool bAmend)
 void CTreeFileModelProxy::continueRebase()
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->continueRebase();
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -169,11 +152,8 @@ void CTreeFileModelProxy::continueRebase()
 void CTreeFileModelProxy::push()
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->push();
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -181,11 +161,8 @@ void CTreeFileModelProxy::push()
 void CTreeFileModelProxy::pull()
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->pull();
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -195,11 +172,8 @@ void CTreeFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
     if (qIndex.isValid())
     {
         CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
         if (pModel != nullptr)
-        {
             pModel->handleCurrentIndex(mapToSource(qIndex));
-        }
     }
 }
 
@@ -208,11 +182,8 @@ void CTreeFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 void CTreeFileModelProxy::commitRebase(const QString& sCommitId)
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->commitRebase(sCommitId);
-    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -220,11 +191,8 @@ void CTreeFileModelProxy::commitRebase(const QString& sCommitId)
 void CTreeFileModelProxy::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
-
     if (pModel != nullptr)
-    {
         pModel->changeCommitMessage(sCommitId, sMessage);
-    }
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -22,6 +22,7 @@ Pane {
         anchors.right: parent.right
         anchors.top: parent.top
         height: expandAllButton.height * 1.1
+        visible: root.filesAsTree
 
         RowLayout {
             id: buttons
@@ -51,7 +52,7 @@ Pane {
 
     ListView {
         id: listView
-        anchors.top: toolbar.bottom
+        anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right

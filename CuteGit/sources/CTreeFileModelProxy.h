@@ -73,6 +73,9 @@ public:
     Q_INVOKABLE void stageAll();
 
     //!
+    Q_INVOKABLE void unstageAll();
+
+    //!
     Q_INVOKABLE void revertSelection(QModelIndexList lIndices);
 
     //!
