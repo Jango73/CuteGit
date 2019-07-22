@@ -63,7 +63,7 @@ Item {
                                        "Revert selection\t\tControl + 'Z'\n" +
                                        "Commit\t\t\tControl + 'C'\n" +
                                        "Amend\t\t\tControl + 'A'\n" +
-                                       "Continue rebase\t\t\tControl + 'R'\n" +
+                                       "Continue rebase\t\tControl + 'R'\n" +
                                        "\n" +
                                        "Pull\t\t\tControl + 'L'\n" +
                                        "Push\t\t\tControl + 'P'\n"
