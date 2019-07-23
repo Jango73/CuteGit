@@ -389,26 +389,37 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
 
     case CProcessCommand::eUnstagedFileDiff:
     {
-        QStringList lReturnValue = sValue.split("\n");
+        QList<CDiffLine*> lReturnValue;
+        QStringList lLines = sValue.split("\n");
         bool bAtLeastOneLineNotEmpty = false;
 
-        for (QString sLine : lReturnValue)
+        for (QString sLine : lLines)
         {
-            sLine = sLine.trimmed();
+            QString sTrimmedLine = sLine.trimmed();
 
-            if (not sLine.isEmpty())
+            if (not sTrimmedLine.isEmpty())
             {
                 bAtLeastOneLineNotEmpty = true;
-                break;
+
+                CDiffLine* pDiffLine = new CDiffLine();
+                pDiffLine->setText(sLine);
+
+                if (sLine.startsWith("+"))
+                    pDiffLine->setOperation(CDiffLine::Add);
+                if (sLine.startsWith("-"))
+                    pDiffLine->setOperation(CDiffLine::Delete);
+
+                lReturnValue << pDiffLine;
             }
         }
 
         if (bAtLeastOneLineNotEmpty == false)
         {
-            lReturnValue = QStringList();
+            qDeleteAll(lReturnValue);
+            lReturnValue.clear();
         }
 
-        emit newOutputStringList(eCommand, lReturnValue);
+        emit newOutputListOfCDiffLine(eCommand, lReturnValue);
         break;
     }
 

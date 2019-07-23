@@ -27,7 +27,7 @@ CTreeFileModel::CTreeFileModel(CController* pController, QObject* parent)
     , m_pController(pController)
     , m_pBranchModel(new QStringListModel(this))
     , m_pLogModel(new CLogModel(this))
-    , m_pDiffModel(new QStringListModel(this))
+    , m_pDiffModel(new CDiffModel(this))
     , m_pFileLogModel(new CLogModel(this))
     , m_pFileSystemWatcher(new QFileSystemWatcher(this))
 {
@@ -41,6 +41,7 @@ CTreeFileModel::CTreeFileModel(CController* pController, QObject* parent)
     connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CTreeFileModel::onNewOutputStringList);
     connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CTreeFileModel::onNewOutputListOfCRepoFile);
     connect(m_pController->commands(), &CCommands::newOutputListOfCLogLine, this, &CTreeFileModel::onNewOutputListOfCLogLine);
+    connect(m_pController->commands(), &CCommands::newOutputListOfCDiffLine, this, &CTreeFileModel::onNewOutputListOfCDiffLine);
 
     connect(m_pFileSystemWatcher, &QFileSystemWatcher::directoryChanged, this, &CTreeFileModel::onFileChanged);
     connect(m_pFileSystemWatcher, &QFileSystemWatcher::fileChanged, this, &CTreeFileModel::onFileChanged);
@@ -408,12 +409,6 @@ void CTreeFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCom
         break;
     }
 
-    case CProcessCommand::eUnstagedFileDiff:
-    {
-        m_pDiffModel->setStringList(lValue);
-        break;
-    }
-
     default:
     {
         break;
@@ -484,20 +479,41 @@ void CTreeFileModel::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand
 
 //-------------------------------------------------------------------------------------------------
 
-void CTreeFileModel::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewGraphLines)
+void CTreeFileModel::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewLines)
 {
     switch (eCommand)
     {
 
     case CProcessCommand::eBranchLog:
     {
-        m_pLogModel->setGraphLines(lNewGraphLines);
+        m_pLogModel->setGraphLines(lNewLines);
         break;
     }
 
     case CProcessCommand::eFileLog:
     {
-        m_pFileLogModel->setGraphLines(lNewGraphLines);
+        m_pFileLogModel->setGraphLines(lNewLines);
+        break;
+    }
+
+    default:
+    {
+        break;
+    }
+
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CTreeFileModel::onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines)
+{
+    switch (eCommand)
+    {
+
+    case CProcessCommand::eUnstagedFileDiff:
+    {
+        m_pDiffModel->setLines(lNewLines);
         break;
     }
 

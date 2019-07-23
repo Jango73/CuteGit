@@ -11,6 +11,7 @@
 // Application
 #include "CRepoFile.h"
 #include "CLogLine.h"
+#include "CDiffLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -180,6 +181,9 @@ signals:
 
     //!
     void newOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> vNewGraphLines);
+
+    //!
+    void newOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> vNewGraphLines);
 
 private:
 

@@ -10,6 +10,7 @@
 #include "CuteGit.h"
 #include "CTreeFileModel.h"
 #include "CTreeFileModelProxy.h"
+#include "CDiffLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -24,9 +25,11 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         qRegisterMetaType<CXMLNode>();
         qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
         qRegisterMetaType<CTreeFileModel::ERepositoryStatus>("CTreeFileModel::ERepositoryStatus");
+        qRegisterMetaType<CDiffLine::EDiffOperation>("CDiffLine::EDiffOperation");
 
         qmlRegisterUncreatableType<CTreeFileModel>("CuteGit", 1, 0, "CTreeFileModel", "Cannot create a FileSystemModel instance.");
         qmlRegisterUncreatableType<CTreeFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
+        qmlRegisterUncreatableType<CDiffLine>("CuteGit", 1, 0, "CDiffLine", "Cannot create a CDiffLine instance.");
 
         // Create controller and QML engine
         m_pController = new CController(this);

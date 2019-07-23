@@ -1,31 +1,31 @@
 
 // Application
-#include "CLogModel.h"
+#include "CDiffModel.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CLogModel::CLogModel(QObject* parent)
+CDiffModel::CDiffModel(QObject* parent)
     : QAbstractListModel(parent)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 
-CLogModel::~CLogModel()
+CDiffModel::~CDiffModel()
 {
     qDeleteAll(m_lLines);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CLogModel::setGraphLines(QList<CLogLine*> lNewLines)
+void CDiffModel::setLines(QList<CDiffLine*> lNewLines)
 {
     beginResetModel();
 
     qDeleteAll(m_lLines);
     m_lLines.clear();
 
-    for (CLogLine* pLine : lNewLines)
+    for (CDiffLine* pLine : lNewLines)
         m_lLines << pLine;
 
     endResetModel();
@@ -33,19 +33,17 @@ void CLogModel::setGraphLines(QList<CLogLine*> lNewLines)
 
 //-------------------------------------------------------------------------------------------------
 
-QHash<int, QByteArray> CLogModel::roleNames() const
+QHash<int, QByteArray> CDiffModel::roleNames() const
 {
     QHash<int, QByteArray> hRoleNames;
-    hRoleNames[eCommitIdRole] = "commitId";
-    hRoleNames[eDateRole] = "date";
-    hRoleNames[eAuthorRole] = "author";
-    hRoleNames[eMessageRole] = "message";
+    hRoleNames[eTextRole] = "text";
+    hRoleNames[eOperationRole] = "operation";
     return hRoleNames;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-int CLogModel::rowCount(const QModelIndex& parent) const
+int CDiffModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
 
@@ -54,7 +52,7 @@ int CLogModel::rowCount(const QModelIndex& parent) const
 
 //-------------------------------------------------------------------------------------------------
 
-QVariant CLogModel::data(const QModelIndex& index, int role) const
+QVariant CDiffModel::data(const QModelIndex& index, int role) const
 {
     int row = index.row();
 
@@ -66,17 +64,11 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
 
     switch (role)
     {
-    case eCommitIdRole:
-        return m_lLines[row]->commitId();
+    case eTextRole:
+        return m_lLines[row]->text();
 
-    case eDateRole:
-        return m_lLines[row]->date();
-
-    case eAuthorRole:
-        return m_lLines[row]->author();
-
-    case eMessageRole:
-        return m_lLines[row]->message();
+    case eOperationRole:
+        return m_lLines[row]->operation();
     }
 
     return QVariant();
@@ -84,16 +76,7 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
 
 //-------------------------------------------------------------------------------------------------
 
-//void CGraphModel::addItem(...)
-//{
-//    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-//    m_lGraphLines << item;
-//    endInsertRows();
-//}
-
-//-------------------------------------------------------------------------------------------------
-
-bool CLogModel::isEmpty() const
+bool CDiffModel::isEmpty() const
 {
     return m_lLines.count() == 0;
 }

@@ -5,21 +5,19 @@
 #include <QAbstractListModel>
 
 // qt-plus
-#include "CLogLine.h"
+#include "CDiffLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
-class CLogModel : public QAbstractListModel
+class CDiffModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
     enum ERoles
     {
-        eCommitIdRole = Qt::UserRole + 1,
-        eDateRole,
-        eAuthorRole,
-        eMessageRole
+        eTextRole = Qt::UserRole + 1,
+        eOperationRole,
     };
 
     //-------------------------------------------------------------------------------------------------
@@ -27,17 +25,17 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CLogModel(QObject *parent = nullptr);
+    CDiffModel(QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CLogModel();
+    virtual ~CDiffModel();
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
     //! Sets all lines
-    void setGraphLines(QList<CLogLine*> lNewLines);
+    void setLines(QList<CDiffLine*> lNewLines);
 
     //! Returns role names
     virtual QHash<int, QByteArray> roleNames() const;
@@ -57,5 +55,5 @@ public:
 private:
 
     //! Chat object
-    QList<CLogLine*>  m_lLines;
+    QList<CDiffLine*>   m_lLines;
 };

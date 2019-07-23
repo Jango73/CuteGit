@@ -9,6 +9,8 @@ HEADERS += \
     sources/CRepoFile.h \
     sources/CLogModel.h \
     sources/CLogLine.h \
+    sources/CDiffModel.h \
+    sources/CDiffLine.h \
     sources/CController.h \
     sources/CuteGit.h \
 
@@ -21,7 +23,7 @@ SOURCES += \
     sources/CFlatFileModel.cpp \
     sources/CRepoFile.cpp \
     sources/CLogModel.cpp \
-    sources/CLogLine.cpp \
+    sources/CDiffModel.cpp \
     sources/CController.cpp \
     sources/main.cpp \
     sources/CuteGit.cpp \

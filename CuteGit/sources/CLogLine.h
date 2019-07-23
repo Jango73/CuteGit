@@ -23,16 +23,4 @@ class CLogLine : public QObject
     Q_FAST_PROPERTY(QDateTime, d, date, Date)
     Q_FAST_PROPERTY(QString, s, author, Author)
     Q_FAST_PROPERTY(QString, s, message, Message)
-
-public:
-
-    //-------------------------------------------------------------------------------------------------
-    // Constructor & destructor
-    //-------------------------------------------------------------------------------------------------
-
-    //! Default constructor
-    CLogLine();
-
-    //! Destructor
-    virtual ~CLogLine();
 };

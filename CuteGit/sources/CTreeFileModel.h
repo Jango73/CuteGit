@@ -13,6 +13,7 @@
 // Application
 #include "CRepoFile.h"
 #include "CLogModel.h"
+#include "CDiffModel.h"
 #include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -54,7 +55,7 @@ public:
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
-    Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
+    Q_FAST_PROPERTY(CDiffModel*, p, diffModel, DiffModel)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QFileSystemWatcher*, p, fileSystemWatcher, FileSystemWatcher)
@@ -192,7 +193,10 @@ protected slots:
     void onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 
     //!
-    void onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewGraphLines);
+    void onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
+
+    //!
+    void onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
 
     //-------------------------------------------------------------------------------------------------
     // Properties
