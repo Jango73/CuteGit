@@ -272,6 +272,12 @@ void CTreeFileModel::pull()
     m_pController->commands()->pull(m_pController->repositoryPath());
 }
 
+//-------------------------------------------------------------------------------------------------
+
+void CTreeFileModel::commitReset(const QString& sCommitId)
+{
+    m_pController->commands()->commitReset(m_pController->repositoryPath(), sCommitId);
+}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -370,6 +376,7 @@ void CTreeFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand
     }
 
     case CProcessCommand::eSetCurrentBranch:
+    case CProcessCommand::eCommitReset:
     case CProcessCommand::eCommitRebase:
     case CProcessCommand::eChangeCommitMessage:
     case CProcessCommand::eContinueRebase:

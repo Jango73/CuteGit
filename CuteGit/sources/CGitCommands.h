@@ -88,6 +88,9 @@ public:
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch) override;
 
     //!
+    virtual void commitReset(const QString& sPath, const QString& sCommitId) override;
+
+    //!
     virtual void commitRebase(const QString& sPath, const QString& sCommitId) override;
 
     //!

@@ -39,6 +39,7 @@ public:
         ePull,
         eUnstagedFileDiff,
         eSetCurrentBranch,
+        eCommitReset,
         eCommitRebase,
         eChangeCommitMessage,
         eContinueRebase,
@@ -124,6 +125,9 @@ public:
 
     //!
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch);
+
+    //!
+    virtual void commitReset(const QString& sPath, const QString& sCommitId);
 
     //!
     virtual void commitRebase(const QString& sPath, const QString& sCommitId);

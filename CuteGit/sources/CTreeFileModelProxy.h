@@ -97,6 +97,9 @@ public:
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
 
     //!
+    Q_INVOKABLE void commitReset(const QString& sCommitId);
+
+    //!
     Q_INVOKABLE void commitRebase(const QString& sCommitId);
 
     //!

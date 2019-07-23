@@ -11,6 +11,7 @@ TitlePane {
 
     property variant controller: null
 
+    signal requestCommitReset(var commitId)
     signal requestCommitRebase(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
 
@@ -35,6 +36,10 @@ TitlePane {
         LogMenu {
             id: menu
             controller: root.controller
+
+            onRequestCommitReset: {
+                root.requestCommitReset(commitId)
+            }
 
             onRequestCommitRebase: {
                 root.requestCommitRebase(commitId)

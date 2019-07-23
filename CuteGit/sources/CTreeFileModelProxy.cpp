@@ -188,6 +188,15 @@ void CTreeFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+void CTreeFileModelProxy::commitReset(const QString& sCommitId)
+{
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
+    if (pModel != nullptr)
+        pModel->commitReset(sCommitId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CTreeFileModelProxy::commitRebase(const QString& sCommitId)
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());

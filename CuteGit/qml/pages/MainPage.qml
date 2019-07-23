@@ -43,8 +43,6 @@ Item {
             }
         }
 
-        onRequestShortcuts: shortcuts.open()
-
         onRequestCommit: {
             commit.messageText = ""
             commit.showFileList = true
@@ -61,6 +59,8 @@ Item {
 
         onRequestContinueRebase: root.controller.treeFileModelProxy.continueRebase()
         onRequestAbortRebase:  root.controller.treeFileModelProxy.abortRebase()
+
+        onRequestShortcuts: shortcuts.open()
     }
 
     Item {
@@ -203,6 +203,10 @@ Item {
                 width: parent.width * 0.5
 
                 controller: root.controller
+
+                onRequestCommitReset: {
+                    root.controller.treeFileModelProxy.commitReset(commitId)
+                }
 
                 onRequestCommitRebase: {
                     root.controller.treeFileModelProxy.commitRebase(commitId)

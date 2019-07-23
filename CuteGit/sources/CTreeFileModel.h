@@ -139,6 +139,9 @@ public:
     void pull();
 
     //!
+    void commitReset(const QString& sCommitId);
+
+    //!
     void commitRebase(const QString& sCommitId);
 
     //!

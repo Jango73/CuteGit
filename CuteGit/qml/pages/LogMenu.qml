@@ -12,6 +12,7 @@ Menu {
     property string commitMessage: ""
 
     signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitReset(var commitId)
     signal requestCommitRebase(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
     signal requestCommitSquash(var commitId)
@@ -23,6 +24,16 @@ Menu {
         onTriggered: {
             if (root.commitId !== "") {
                 root.requestCommitDiffPrevious(root.commitId)
+            }
+        }
+    }
+
+    Action {
+        text: qsTr("&Reset to")
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitReset(root.commitId)
             }
         }
     }

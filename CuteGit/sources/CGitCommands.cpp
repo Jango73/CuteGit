@@ -30,6 +30,7 @@ static const char* sCommandPull = "git pull";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
 // static const char* sCommandInteractiveRebase = "git rebase --interactive";
+static const char* sCommandResetOnCommit = "git reset %1";
 static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
 static const char* sCommandContinueRebase = "git rebase --continue";
 static const char* sCommandAbortRebase = "git rebase --abort";
@@ -209,6 +210,15 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::commitReset(const QString& sPath, const QString& sCommitId)
+{
+    emit newOutputString(CProcessCommand::eNotification, tr("Doing reset..."));
+    QString sCommand = QString(sCommandResetOnCommit).arg(sCommitId);
+    exec(new CProcessCommand(CProcessCommand::eCommitReset, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 {
     emit newOutputString(CProcessCommand::eNotification, tr("Doing rebase..."));
@@ -378,6 +388,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::ePush:
     case CProcessCommand::ePull:
     case CProcessCommand::eSetCurrentBranch:
+    case CProcessCommand::eCommitReset:
     case CProcessCommand::eCommitRebase:
     case CProcessCommand::eChangeCommitMessage:
     case CProcessCommand::eContinueRebase:

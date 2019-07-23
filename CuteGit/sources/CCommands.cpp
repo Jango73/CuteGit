@@ -215,6 +215,14 @@ void CCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::commitReset(const QString& sPath, const QString& sCommitId)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 {
     Q_UNUSED(sPath);
