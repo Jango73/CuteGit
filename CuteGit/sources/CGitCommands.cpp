@@ -17,7 +17,7 @@ static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandGraph = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
-static const char* sCommandFileLog = "git log --max-count=20 \"%1\"";
+static const char* sCommandFileLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20 \"%1\"";
 static const char* sCommandStage = "git add -f \"%1\"";
 static const char* sCommandUnstage = "git reset \"%1\"";
 static const char* sCommandStageAll = "git add -u";
@@ -380,6 +380,23 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::eUnstagedFileDiff:
     {
         QStringList lReturnValue = sValue.split("\n");
+        bool bAtLeastOneLineNotEmpty = false;
+
+        for (QString sLine : lReturnValue)
+        {
+            sLine = sLine.trimmed();
+
+            if (not sLine.isEmpty())
+            {
+                bAtLeastOneLineNotEmpty = true;
+                break;
+            }
+        }
+
+        if (bAtLeastOneLineNotEmpty == false)
+        {
+            lReturnValue = QStringList();
+        }
 
         emit newOutputStringList(eCommand, lReturnValue);
         break;

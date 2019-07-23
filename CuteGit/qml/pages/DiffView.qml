@@ -8,7 +8,14 @@ Pane {
 
     property variant controller: null
 
+    StandardLabel {
+        anchors.fill: parent
+        text: Const.nothingToDisplayText
+        visible: root.controller === null | list.count === 0
+    }
+
     StandardListView {
+        id: list
         anchors.fill: parent
         model: root.controller !== null ? root.controller.treeFileModel.diffModel : undefined
 

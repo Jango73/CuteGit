@@ -53,8 +53,9 @@ Pane {
                     visible: display === root.controller.treeFileModel.currentBranch
                 }
 
-                StandardText {
+                ElideText {
                     id: text
+                    width: parent.width - Const.mainPadding * 0.5
                     text: display
                     color: selection.visible ? Material.background : Material.foreground
                 }

@@ -100,12 +100,10 @@ Pane {
                     visible: index === listView.currentIndex
                 }
 
-                StandardText {
+                ElideText {
                     id: listViewFileNameText
                     width: parent.width - Const.mainPadding * 0.5
                     anchors.centerIn: parent
-                    wrapMode: Text.NoWrap
-                    elide: Text.ElideRight
                     color: Material.foreground
                     text: model.fileName
                 }
@@ -117,9 +115,10 @@ Pane {
                 height: parent.height
                 anchors.left: listViewFileName.right
 
-                StandardText {
-                    wrapMode: Text.NoWrap
-                    elide: Text.ElideRight
+                ElideText {
+                    id: listViewRelativeNameText
+                    width: parent.width - Const.mainPadding * 0.5
+                    anchors.centerIn: parent
                     color: Material.foreground
                     text: model.relativeName
                 }
@@ -164,7 +163,7 @@ Pane {
                     color: Material.background
                 }
 
-                StandardText {
+                ElideText {
                     text: styleData.value
                 }
             }
@@ -197,11 +196,10 @@ Pane {
                     borderOnly: true
                 }
 
-                StandardText {
+                ElideText {
                     id: treeText
                     height: Const.treeElementHeight
                     text: styleData.value
-                    elide: styleData.elideMode
                     color: Material.foreground
                 }
             }

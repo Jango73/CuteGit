@@ -61,32 +61,26 @@ Pane {
                 visible: index === list.currentIndex
             }
 
-            StandardText {
+            ElideText {
                 id: messageField
                 width: parent.width * 0.55
                 text: model.message
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
                 color: selection.visible ? Material.background : Material.foreground
             }
 
-            StandardText {
+            ElideText {
                 id: authorField
                 width: parent.width * 0.25
                 anchors.left: messageField.right
                 text: model.author
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
                 color: selection.visible ? Material.background : Material.foreground
             }
 
-            StandardText {
+            ElideText {
                 id: dateField
                 width: parent.width * 0.2
                 anchors.left: authorField.right
                 text: model.date
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
                 color: selection.visible ? Material.background : Material.foreground
             }
         }

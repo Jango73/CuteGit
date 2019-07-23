@@ -10,6 +10,7 @@
         <file>qml/components/StandardButton.qml</file>
         <file>qml/components/StandardListView.qml</file>
         <file>qml/components/StandardStringListView.qml</file>
+        <file>qml/components/ElideText.qml</file>
         <file>qml/components/Calendar.qml</file>
         <file>qml/components/DatePicker.qml</file>
         <file>qml/components/Selection.qml</file>

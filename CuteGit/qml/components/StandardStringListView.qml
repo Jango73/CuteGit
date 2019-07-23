@@ -5,10 +5,9 @@ import "."
 StandardListView {
     id: root
 
-    delegate: StandardText {
+    delegate: ElideText {
         width: parent.width
         height: Const.elementHeight
         text: display
-        elide: Text.ElideRight
     }
 }

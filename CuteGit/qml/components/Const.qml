@@ -47,6 +47,7 @@ Item {
     property string expandAllText: qsTr("Expand all")
     property string collapseAllText: qsTr("Collapse all")
     property string repositoriesText: qsTr("Repositories")
+    property string nothingToDisplayText: qsTr("Nothing to display")
     property string enterMessageHereText: qsTr("Enter your message here...")
 
     property string shortcutsText: qsTr(

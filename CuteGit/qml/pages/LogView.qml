@@ -8,15 +8,21 @@ Pane {
 
     property variant controller: null
 
+    StandardLabel {
+        anchors.fill: parent
+        text: Const.nothingToDisplayText
+        visible: root.controller === null | list.count === 0
+    }
+
     StandardListView {
+        id: list
         anchors.fill: parent
         model: root.controller !== null ? root.controller.treeFileModel.fileLogModel : undefined
 
-        delegate: StandardText {
+        delegate: ElideText {
             width: parent.width
             height: Const.elementHeight
             text: display
-            elide: Text.ElideRight
         }
     }
 }

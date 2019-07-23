@@ -61,8 +61,9 @@ Pane {
                     visible: display === root.controller.repositoryPath
                 }
 
-                StandardText {
+                ElideText {
                     id: text
+                    width: parent.width - Const.mainPadding * 0.5
                     text: display.split("/").slice(-1)[0]
                     color: selection.visible ? Material.background : Material.foreground
                 }
