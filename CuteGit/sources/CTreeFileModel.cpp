@@ -1,4 +1,7 @@
 
+// Qt
+#include <QDebug>
+
 // Application
 #include "CTreeFileModel.h"
 #include "CController.h"
@@ -26,6 +29,7 @@ CTreeFileModel::CTreeFileModel(CController* pController, QObject* parent)
     , m_pLogModel(new CLogModel(this))
     , m_pDiffModel(new QStringListModel(this))
     , m_pFileLogModel(new CLogModel(this))
+    , m_pFileSystemWatcher(new QFileSystemWatcher(this))
 {
     setRootPath(QDir::homePath());
     setResolveSymlinks(true);
@@ -37,6 +41,9 @@ CTreeFileModel::CTreeFileModel(CController* pController, QObject* parent)
     connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CTreeFileModel::onNewOutputStringList);
     connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CTreeFileModel::onNewOutputListOfCRepoFile);
     connect(m_pController->commands(), &CCommands::newOutputListOfCLogLine, this, &CTreeFileModel::onNewOutputListOfCLogLine);
+
+    connect(m_pFileSystemWatcher, &QFileSystemWatcher::directoryChanged, this, &CTreeFileModel::onFileChanged);
+    connect(m_pFileSystemWatcher, &QFileSystemWatcher::fileChanged, this, &CTreeFileModel::onFileChanged);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -311,6 +318,17 @@ void CTreeFileModel::getLog(QString sPath)
 void CTreeFileModel::onRootPathChanged(const QString& sNewPath)
 {
     Q_UNUSED(sNewPath);
+
+    m_pFileSystemWatcher->addPath(sNewPath);
+
+    refresh();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CTreeFileModel::onFileChanged(const QString& path)
+{
+    Q_UNUSED(path);
 
     refresh();
 }

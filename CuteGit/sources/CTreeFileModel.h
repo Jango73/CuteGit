@@ -3,6 +3,7 @@
 
 // Qt
 #include <QFileSystemModel>
+#include <QFileSystemWatcher>
 #include <QStringListModel>
 
 // qt-plus
@@ -56,6 +57,7 @@ public:
     Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
+    Q_FAST_PROPERTY(QFileSystemWatcher*, p, fileSystemWatcher, FileSystemWatcher)
 
 public:
 
@@ -176,6 +178,9 @@ protected slots:
 
     //!
     void onRootPathChanged(const QString& sNewPath);
+
+    //!
+    void onFileChanged(const QString& path);
 
     //!
     void onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sValue);
