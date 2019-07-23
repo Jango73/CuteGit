@@ -85,6 +85,9 @@ public:
     Q_INVOKABLE void continueRebase();
 
     //!
+    Q_INVOKABLE void abortRebase();
+
+    //!
     Q_INVOKABLE void push();
 
     //!

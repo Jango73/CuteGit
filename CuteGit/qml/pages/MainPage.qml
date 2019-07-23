@@ -59,6 +59,7 @@ Item {
         }
 
         onRequestContinueRebase: root.controller.treeFileModelProxy.continueRebase()
+        onRequestAbortRebase:  root.controller.treeFileModelProxy.abortRebase()
     }
 
     Item {

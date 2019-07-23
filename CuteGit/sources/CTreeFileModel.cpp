@@ -245,6 +245,13 @@ void CTreeFileModel::continueRebase()
 
 //-------------------------------------------------------------------------------------------------
 
+void CTreeFileModel::abortRebase()
+{
+    m_pController->commands()->abortRebase(m_pController->repositoryPath());
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CTreeFileModel::push()
 {
     m_pController->commands()->push(m_pController->repositoryPath());
@@ -347,6 +354,7 @@ void CTreeFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand
     case CProcessCommand::eCommitRebase:
     case CProcessCommand::eChangeCommitMessage:
     case CProcessCommand::eContinueRebase:
+    case CProcessCommand::eAbortRebase:
     {
         emit newOutput(sOutput);
         refresh();

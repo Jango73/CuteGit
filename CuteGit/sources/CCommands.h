@@ -40,7 +40,8 @@ public:
         eSetCurrentBranch,
         eCommitRebase,
         eChangeCommitMessage,
-        eContinueRebase
+        eContinueRebase,
+        eAbortRebase
     };
 
     Q_ENUMS(EProcessCommand)
@@ -131,6 +132,9 @@ public:
 
     //!
     virtual void continueRebase(const QString& sPath);
+
+    //!
+    virtual void abortRebase(const QString& sPath);
 
     //!
     virtual void editSequenceFile(const QString& sFileName);

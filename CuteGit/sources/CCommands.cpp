@@ -239,6 +239,13 @@ void CCommands::continueRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::abortRebase(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::editSequenceFile(const QString& sFileName)
 {
     Q_UNUSED(sFileName);

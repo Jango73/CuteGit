@@ -149,6 +149,15 @@ void CTreeFileModelProxy::continueRebase()
 
 //-------------------------------------------------------------------------------------------------
 
+void CTreeFileModelProxy::abortRebase()
+{
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
+    if (pModel != nullptr)
+        pModel->abortRebase();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CTreeFileModelProxy::push()
 {
     CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());

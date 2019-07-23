@@ -97,6 +97,9 @@ public:
     virtual void continueRebase(const QString& sPath) override;
 
     //!
+    virtual void abortRebase(const QString& sPath) override;
+
+    //!
     virtual void editSequenceFile(const QString& sFileName) override;
 
 protected slots:

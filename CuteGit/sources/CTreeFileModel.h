@@ -127,6 +127,9 @@ public:
     void continueRebase();
 
     //!
+    void abortRebase();
+
+    //!
     void push();
 
     //!

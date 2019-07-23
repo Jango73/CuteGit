@@ -12,6 +12,10 @@ MenuBar {
     property variant controller: null
     property bool filesAsTree: false
 
+    property bool rebaseInProgress: controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase
+    || controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase
+
+
     signal requestOpenRepository()
     signal requestStageSelection()
     signal requestUnstageSelection()
@@ -19,6 +23,7 @@ MenuBar {
     signal requestCommit()
     signal requestAmend()
     signal requestContinueRebase()
+    signal requestAbortRebase()
     signal requestShortcuts()
 
     Menu {
@@ -49,70 +54,49 @@ MenuBar {
         Action {
             text: qsTr("&Refresh")
             shortcut: "F5"
-
-            onTriggered: {
-                root.controller.treeFileModelProxy.refresh()
-            }
+            onTriggered: root.controller.treeFileModelProxy.refresh()
         }
 
         MenuItem {
             text: qsTr("Files as a tree")
             checkable: true
             checked: root.filesAsTree
-
-            onClicked: {
-                root.filesAsTree = !root.filesAsTree
-            }
+            onClicked: root.filesAsTree = !root.filesAsTree
         }
 
         MenuItem {
             text: qsTr("Show &clean")
             checkable: true
             checked: root.controller.showClean
-
-            onClicked: {
-                root.controller.showClean = !root.controller.showClean
-            }
+            onClicked: root.controller.showClean = !root.controller.showClean
         }
 
         MenuItem {
             text: qsTr("Show &added")
             checkable: true
             checked: root.controller.showAdded
-
-            onClicked: {
-                root.controller.showAdded = !root.controller.showAdded
-            }
+            onClicked: root.controller.showAdded = !root.controller.showAdded
         }
 
         MenuItem {
             text: qsTr("Show &modified")
             checkable: true
             checked: root.controller.showModified
-
-            onClicked: {
-                root.controller.showModified = !root.controller.showModified
-            }
+            onClicked: root.controller.showModified = !root.controller.showModified
         }
 
         MenuItem {
             text: qsTr("Show &deleted")
             checkable: true
             checked: root.controller.showDeleted
-
-            onClicked: {
-                root.controller.showDeleted = !root.controller.showDeleted
-            }
+            onClicked: root.controller.showDeleted = !root.controller.showDeleted
         }
 
         MenuItem {
             text: qsTr("Show &untracked")
             checkable: true
             checked: root.controller.showUntracked
-
-            onClicked: {
-                root.controller.showUntracked = !root.controller.showUntracked
-            }
+            onClicked: root.controller.showUntracked = !root.controller.showUntracked
         }
     }
 
@@ -120,7 +104,7 @@ MenuBar {
         title: qsTr("&Local")
 
         Action {
-            text: qsTr("Stage &all")
+            text: qsTr("Stage a&ll")
             shortcut: "Ctrl+shift++"
             onTriggered: root.controller.treeFileModelProxy.stageAll()
         }
@@ -162,11 +146,17 @@ MenuBar {
         }
 
         Action {
-            text: qsTr("&Continue rebase")
+            text: qsTr("C&ontinue rebase")
             shortcut: "Ctrl+R"
-            enabled: root.controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase
-            || root.controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase
+            enabled: root.rebaseInProgress
             onTriggered: root.requestContinueRebase()
+        }
+
+        Action {
+            text: qsTr("Abor&t rebase")
+            shortcut: "Ctrl+T"
+            enabled: root.rebaseInProgress
+            onTriggered: root.requestAbortRebase()
         }
     }
 

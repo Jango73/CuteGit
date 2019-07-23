@@ -32,6 +32,7 @@ static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
 // static const char* sCommandInteractiveRebase = "git rebase --interactive";
 static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
 static const char* sCommandContinueRebase = "git rebase --continue";
+static const char* sCommandAbortRebase = "git rebase --abort";
 
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
@@ -256,6 +257,15 @@ void CGitCommands::continueRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::abortRebase(const QString& sPath)
+{
+    emit newOutputString(CProcessCommand::eNotification, tr("Aborting rebase..."));
+    QString sCommand = QString(sCommandAbortRebase);
+    exec(new CProcessCommand(CProcessCommand::eAbortRebase, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::editSequenceFile(const QString& sFileName)
 {
     QFile file(sFileName);
@@ -371,6 +381,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::eCommitRebase:
     case CProcessCommand::eChangeCommitMessage:
     case CProcessCommand::eContinueRebase:
+    case CProcessCommand::eAbortRebase:
     {
         emit newOutputString(eCommand, sValue);
         break;
