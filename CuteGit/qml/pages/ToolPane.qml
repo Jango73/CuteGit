@@ -28,7 +28,7 @@ Pane {
         QC14.Tab {
             title: "Log"
 
-            LogView {
+            FileLogPane {
                 controller: root.controller
             }
         }

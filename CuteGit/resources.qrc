@@ -23,7 +23,7 @@
         <file>qml/pages/ToolPane.qml</file>
         <file>qml/pages/OutputPane.qml</file>
         <file>qml/pages/DiffView.qml</file>
-        <file>qml/pages/LogView.qml</file>
+        <file>qml/pages/FileLogPane.qml</file>
         <file>qml/pages/BranchLogPane.qml</file>
         <file>qml/pages/CommitPopup.qml</file>
         <file>qml/pages/LogMenu.qml</file>
