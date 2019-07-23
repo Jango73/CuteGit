@@ -54,7 +54,7 @@ public:
     Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
     Q_FAST_PROPERTY(QStringListModel*, p, diffModel, DiffModel)
-    Q_FAST_PROPERTY(QStringListModel*, p, fileLogModel, FileLogModel)
+    Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
 
 public:

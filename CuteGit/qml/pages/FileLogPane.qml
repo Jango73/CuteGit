@@ -14,15 +14,16 @@ Pane {
         visible: root.controller === null | list.count === 0
     }
 
-    StandardListView {
+    LogView {
         id: list
         anchors.fill: parent
+
         model: root.controller !== null ? root.controller.treeFileModel.fileLogModel : undefined
 
-        delegate: ElideText {
-            width: parent.width
-            height: Const.elementHeight
-            text: display
+        onItemRightClicked: {
+            menu.commitId = commitId
+            menu.commitMessage = message
+            menu.popup()
         }
     }
 }

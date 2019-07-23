@@ -25,7 +25,7 @@ CTreeFileModel::CTreeFileModel(CController* pController, QObject* parent)
     , m_pBranchModel(new QStringListModel(this))
     , m_pLogModel(new CLogModel(this))
     , m_pDiffModel(new QStringListModel(this))
-    , m_pFileLogModel(new QStringListModel(this))
+    , m_pFileLogModel(new CLogModel(this))
 {
     setRootPath(QDir::homePath());
     setResolveSymlinks(true);
@@ -396,12 +396,6 @@ void CTreeFileModel::onNewOutputStringList(CProcessCommand::EProcessCommand eCom
         break;
     }
 
-    case CProcessCommand::eFileLog:
-    {
-        m_pFileLogModel->setStringList(lValue);
-        break;
-    }
-
     default:
     {
         break;
@@ -480,6 +474,12 @@ void CTreeFileModel::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand 
     case CProcessCommand::eBranchLog:
     {
         m_pLogModel->setGraphLines(lNewGraphLines);
+        break;
+    }
+
+    case CProcessCommand::eFileLog:
+    {
+        m_pFileLogModel->setGraphLines(lNewGraphLines);
         break;
     }
 

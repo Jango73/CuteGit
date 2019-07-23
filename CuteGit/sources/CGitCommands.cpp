@@ -16,7 +16,7 @@ static const char* sLogFormatSplitter = "|";
 static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
-static const char* sCommandGraph = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
+static const char* sCommandBranchLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
 static const char* sCommandFileLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20 \"%1\"";
 static const char* sCommandStage = "git add -f \"%1\"";
 static const char* sCommandUnstage = "git reset \"%1\"";
@@ -120,7 +120,7 @@ void CGitCommands::branchLog(const QString& sPath, const QDateTime& from, const 
 {
     QString sFrom = from.toString(Qt::ISODate);
     QString sTo = to.toString(Qt::ISODate);
-    QString sCommand = QString(sCommandGraph); // .arg(sFrom).arg(sTo);
+    QString sCommand = QString(sCommandBranchLog); // .arg(sFrom).arg(sTo);
     exec(new CProcessCommand(CProcessCommand::eBranchLog, sPath, sCommand));
 }
 
@@ -387,7 +387,6 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eFileLog:
     case CProcessCommand::eUnstagedFileDiff:
     {
         QStringList lReturnValue = sValue.split("\n");
@@ -529,6 +528,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
+    case CProcessCommand::eFileLog:
     case CProcessCommand::eBranchLog:
     {
         QList<CLogLine*> lReturnValue;
