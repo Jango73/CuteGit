@@ -26,26 +26,7 @@ Open /CuteGit.pro and build
 * Simple push
 * Refresh view
 * Modify a commit message
-* Rebase
-
-## Things to fix
-
-* 'Expand all' and 'collapse all' buttons
-* Correctly view files at root folder
-* Prevent crashes in qabstractitemmodel.cpp
-
-## Things to do
-
-* Make a list view for a flat listing of changed files
-  * With a button to switch between tree and flat views
-* File sorting
-* Make the file system model refresh file status when changes occur outside the app
-* Show the staged diffs
-* Show deleted files in the file system model (somehow)
-* Reset HEAD to a commit
-* Create a branch
-* Blame
-* Stash save and pop
+* Begin rebase on a commit
 
 ## Classes
 
