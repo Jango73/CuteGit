@@ -167,7 +167,6 @@ Item {
                 anchors.left: parent.left
                 width: parent.width * 0.5
                 anchors.margins: Const.paneMargins
-                focus: true
                 filesAsTree: menu.filesAsTree
 
                 controller: root.controller

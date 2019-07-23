@@ -58,7 +58,7 @@ Pane {
         anchors.right: parent.right
         visible: !root.filesAsTree
         enabled: visible
-        focus: visible
+        activeFocusOnTab: true
 
         model: root.controller.flatFileModel
 
@@ -98,11 +98,16 @@ Pane {
                     anchors.centerIn: listViewFileNameText
                     borderOnly: true
                     visible: index === listView.currentIndex
+
+                    FocusIndicator {
+                        anchors.fill: parent
+                        visible: listView.activeFocus
+                    }
                 }
 
                 ElideText {
                     id: listViewFileNameText
-                    width: parent.width - Const.mainPadding * 0.5
+                    width: parent.width - Const.smallPadding
                     anchors.centerIn: parent
                     color: Material.foreground
                     text: model.fileName
@@ -117,7 +122,7 @@ Pane {
 
                 ElideText {
                     id: listViewRelativeNameText
-                    width: parent.width - Const.mainPadding * 0.5
+                    width: parent.width - Const.smallPadding
                     anchors.centerIn: parent
                     color: Material.foreground
                     text: model.relativeName
@@ -134,7 +139,6 @@ Pane {
         anchors.right: parent.right
         visible: root.filesAsTree
         enabled: visible
-        focus: visible
 
         model: root.controller.treeFileModelProxy
         rootIndex: root.controller.treeFileModelProxy !== null ? root.controller.treeFileModelProxy.rootPathIndex : undefined

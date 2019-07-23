@@ -32,12 +32,14 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        activeFocusOnTab: true
+
         model: root.controller.treeFileModel !== null ? root.controller.treeFileModel.logModel : undefined
 
         delegate: Item {
             id: delegateItem
             width: parent.width
-            height: Const.elementHeight
+            height: Const.elementHeight + Const.smallPadding
 
             MouseArea {
                 anchors.fill: parent
@@ -55,33 +57,48 @@ Pane {
 
             Selection {
                 id: selection
-                targetWidth: parent.width
-                targetHeight: parent.height
-                anchors.centerIn: parent
+                targetWidth: data.width
+                targetHeight: data.height
+                anchors.centerIn: data
                 visible: index === list.currentIndex
+
+                FocusIndicator {
+                    anchors.fill: parent
+                    visible: list.activeFocus
+                }
             }
 
-            ElideText {
-                id: messageField
-                width: parent.width * 0.55
-                text: model.message
-                color: selection.visible ? Material.background : Material.foreground
-            }
+            Item {
+                id: data
+                anchors.centerIn: parent
+                width: parent.width - Const.smallPadding
+                height: parent.height - Const.smallPadding
 
-            ElideText {
-                id: authorField
-                width: parent.width * 0.25
-                anchors.left: messageField.right
-                text: model.author
-                color: selection.visible ? Material.background : Material.foreground
-            }
+                ElideText {
+                    id: messageField
+                    width: parent.width * 0.55
+                    verticalAlignment: Text.AlignVCenter
+                    color: selection.visible ? Material.background : Material.foreground
+                    text: model.message
+                }
 
-            ElideText {
-                id: dateField
-                width: parent.width * 0.2
-                anchors.left: authorField.right
-                text: model.date
-                color: selection.visible ? Material.background : Material.foreground
+                ElideText {
+                    id: authorField
+                    anchors.left: messageField.right
+                    width: parent.width * 0.25
+                    verticalAlignment: Text.AlignVCenter
+                    color: selection.visible ? Material.background : Material.foreground
+                    text: model.author
+                }
+
+                ElideText {
+                    id: dateField
+                    anchors.left: authorField.right
+                    width: parent.width * 0.2
+                    verticalAlignment: Text.AlignVCenter
+                    color: selection.visible ? Material.background : Material.foreground
+                    text: model.date
+                }
             }
         }
     }

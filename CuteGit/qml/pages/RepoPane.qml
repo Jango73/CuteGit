@@ -44,7 +44,7 @@ Pane {
 
             Item {
                 anchors.fill: parent
-                anchors.margins: Const.mainPadding * 0.5
+                anchors.margins: Const.smallPadding
 
                 MouseArea {
                     anchors.fill: selection
@@ -63,7 +63,7 @@ Pane {
 
                 ElideText {
                     id: text
-                    width: parent.width - Const.mainPadding * 0.5
+                    width: parent.width - Const.smallPadding
                     text: display.split("/").slice(-1)[0]
                     color: selection.visible ? Material.background : Material.foreground
                 }

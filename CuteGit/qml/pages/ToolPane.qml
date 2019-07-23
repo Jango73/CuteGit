@@ -46,6 +46,11 @@ Pane {
                 implicitHeight: Const.elementHeight
                 radius: Const.mainRadius
 
+                FocusIndicator {
+                    anchors.fill: parent
+                    visible: styleData.activeFocus
+                }
+
                 StandardText {
                     id: text
                     anchors.centerIn: parent
