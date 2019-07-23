@@ -15,7 +15,7 @@ MenuBar {
     property bool rebaseInProgress: controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase
     || controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase
 
-
+    signal requestCloneRepository()
     signal requestOpenRepository()
     signal requestStageSelection()
     signal requestUnstageSelection()
@@ -28,6 +28,11 @@ MenuBar {
 
     Menu {
         title: qsTr("&Repository")
+
+        Action {
+            text: qsTr("&Clone...")
+            onTriggered: root.requestCloneRepository()
+        }
 
         Action {
             text: qsTr("&Open...")

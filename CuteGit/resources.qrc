@@ -27,6 +27,7 @@
         <file>qml/pages/DiffView.qml</file>
         <file>qml/pages/FileLogPane.qml</file>
         <file>qml/pages/BranchLogPane.qml</file>
+        <file>qml/pages/ClonePopup.qml</file>
         <file>qml/pages/CommitPopup.qml</file>
         <file>qml/pages/LogMenu.qml</file>
     </qresource>

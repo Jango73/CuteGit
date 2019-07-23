@@ -22,6 +22,7 @@ Item {
 
         controller: root.controller
 
+        onRequestCloneRepository: clone.open()
         onRequestOpenRepository: folderDialog.open()
 
         onRequestStageSelection: {
@@ -227,6 +228,15 @@ Item {
                 controller: root.controller
             }
         }
+    }
+
+    ClonePopup {
+        id: clone
+        width: root.width * Const.popupWidthNorm
+        height: root.height * Const.popupHeightNorm
+        anchors.centerIn: parent
+
+        controller: root.controller
     }
 
     CommitPopup {
