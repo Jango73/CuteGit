@@ -6,52 +6,43 @@ import QtQuick.Controls.Material 2.12
 import CuteGit 1.0
 import "../components"
 
-Pane {
+TitlePane {
     id: root
-    anchors.margins: Const.paneMargins
-
-    Material.elevation: Const.paneElevation
 
     property variant controller: null
 
     signal requestCommitRebase(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
 
-    StandardLabel {
-        id: title
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: Const.elementHeight
-        text: Const.logText
-    }
+    title: Const.logText
 
-    LogView {
-        id: logView
-        anchors.top: title.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+    content: Item {
+        anchors.fill: parent
 
-        model: root.controller.treeFileModel !== null ? root.controller.treeFileModel.logModel : undefined
+        LogView {
+            id: logView
+            anchors.fill: parent
 
-        onItemRightClicked: {
-            menu.commitId = commitId
-            menu.commitMessage = message
-            menu.popup()
-        }
-    }
+            model: root.controller.treeFileModel !== null ? root.controller.treeFileModel.logModel : undefined
 
-    LogMenu {
-        id: menu
-        controller: root.controller
-
-        onRequestCommitRebase: {
-            root.requestCommitRebase(commitId)
+            onItemRightClicked: {
+                menu.commitId = commitId
+                menu.commitMessage = message
+                menu.popup()
+            }
         }
 
-        onRequestCommitMessageChange: {
-            root.requestCommitMessageChange(commitId, commitMessage)
+        LogMenu {
+            id: menu
+            controller: root.controller
+
+            onRequestCommitRebase: {
+                root.requestCommitRebase(commitId)
+            }
+
+            onRequestCommitMessageChange: {
+                root.requestCommitMessageChange(commitId, commitMessage)
+            }
         }
     }
 }

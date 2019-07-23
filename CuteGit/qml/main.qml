@@ -11,7 +11,7 @@ ApplicationWindow {
 
     property var ctrl: controller
 
-    Material.theme: Material.Dark
+    // Material.theme: Material.Dark
     Material.primary: Material.Teal
     Material.accent: Material.Green
 

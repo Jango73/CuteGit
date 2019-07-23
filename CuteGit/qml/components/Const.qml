@@ -13,11 +13,11 @@ Item {
     // Colors
     property color foregroundLighter: "gray"
     property color transparent: "transparent"
-    property color fileStagedColor: "#080"
-    property color fileModifiedColor: "#800"
-    property color fileRenamedColor: "#840"
-    property color fileAddedColor: "#008"
-    property color fileDeletedColor: "#840"
+    property color fileStagedColor: "#80008000"
+    property color fileModifiedColor: "#80800000"
+    property color fileRenamedColor: "#80804000"
+    property color fileAddedColor: "#80000080"
+    property color fileDeletedColor: "#80804000"
 
     // Margins and padding
     property int mainPadding: 16
@@ -42,6 +42,7 @@ Item {
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
     property string clearText: qsTr("Clear")
+    property string filesText: qsTr("Files")
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
     property string branchesText: qsTr("Branches")

@@ -4,68 +4,59 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.12
 import "../components"
 
-Pane {
+TitlePane {
     id: root
-    anchors.margins: Const.paneMargins
-
-    Material.elevation: Const.paneElevation
 
     property variant controller: null
 
-    StandardLabel {
-        id: title
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: Const.elementHeight
-        text: Const.repositoriesText
-    }
+    title: Const.repositoriesText
 
-    StandardLabel {
-        id: listPlaceHolder
-        anchors.fill: list
-        visible: !list.visible
-        text: "Open a repository..."
-    }
+    content: Item {
+        anchors.fill: parent
 
-    StandardListView {
-        id: list
-        anchors.top: title.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        visible: count > 0
+        StandardLabel {
+            id: listPlaceHolder
+            anchors.fill: parent
+            visible: !list.visible
+            text: "Open a repository..."
+        }
 
-        model: root.controller.repositoryModel
+        StandardListView {
+            id: list
+            anchors.fill: parent
+            visible: count > 0
 
-        delegate: Item {
-            width: parent.width
-            height: Const.elementHeight
+            model: root.controller.repositoryModel
 
-            Item {
-                anchors.fill: parent
-                anchors.margins: Const.smallPadding
+            delegate: Item {
+                width: parent.width
+                height: Const.elementHeight
 
-                MouseArea {
-                    anchors.fill: selection
-                    onDoubleClicked: {
-                        root.controller.repositoryPath = display
+                Item {
+                    anchors.fill: parent
+                    anchors.margins: Const.smallPadding
+
+                    MouseArea {
+                        anchors.fill: selection
+                        onDoubleClicked: {
+                            root.controller.repositoryPath = display
+                        }
                     }
-                }
 
-                Selection {
-                    id: selection
-                    targetWidth: text.width
-                    targetHeight: text.height
-                    anchors.centerIn: text
-                    visible: display === root.controller.repositoryPath
-                }
+                    Selection {
+                        id: selection
+                        targetWidth: text.width
+                        targetHeight: text.height
+                        anchors.centerIn: text
+                        visible: display === root.controller.repositoryPath
+                    }
 
-                ElideText {
-                    id: text
-                    width: parent.width - Const.smallPadding
-                    text: display.split("/").slice(-1)[0]
-                    color: selection.visible ? Material.background : Material.foreground
+                    ElideText {
+                        id: text
+                        width: parent.width - Const.smallPadding
+                        text: display.split("/").slice(-1)[0]
+                        color: selection.visible ? Material.background : Material.foreground
+                    }
                 }
             }
         }

@@ -4,60 +4,52 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.12
 import "../components"
 
-Pane {
+TitlePane {
     id: root
-    anchors.margins: Const.paneMargins
-
-    Material.elevation: Const.paneElevation
 
     property variant controller: null
 
-    StandardLabel {
-        id: title
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: Const.elementHeight
-        text: Const.branchesText
-    }
+    title: Const.branchesText
 
-    StandardListView {
-        id: list
-        anchors.top: title.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        visible: count > 0
-        model: root.controller.treeFileModel.branchModel
+    content: Item {
+        anchors.fill: parent
 
-        delegate: Item {
-            width: parent.width
-            height: Const.elementHeight
+        StandardListView {
+            id: list
+            anchors.fill: parent
+            visible: count > 0
 
-            Item {
-                anchors.fill: parent
-                anchors.margins: Const.smallPadding
+            model: root.controller.treeFileModel.branchModel
 
-                MouseArea {
-                    anchors.fill: selection
-                    onDoubleClicked: {
-                        root.controller.treeFileModel.currentBranch = display
+            delegate: Item {
+                width: parent.width
+                height: Const.elementHeight
+
+                Item {
+                    anchors.fill: parent
+                    anchors.margins: Const.smallPadding
+
+                    MouseArea {
+                        anchors.fill: selection
+                        onDoubleClicked: {
+                            root.controller.treeFileModel.currentBranch = display
+                        }
                     }
-                }
 
-                Selection {
-                    id: selection
-                    targetWidth: text.width
-                    targetHeight: text.height
-                    anchors.centerIn: text
-                    visible: display === root.controller.treeFileModel.currentBranch
-                }
+                    Selection {
+                        id: selection
+                        targetWidth: text.width
+                        targetHeight: text.height
+                        anchors.centerIn: text
+                        visible: display === root.controller.treeFileModel.currentBranch
+                    }
 
-                ElideText {
-                    id: text
-                    width: parent.width - Const.smallPadding
-                    text: display
-                    color: selection.visible ? Material.background : Material.foreground
+                    ElideText {
+                        id: text
+                        width: parent.width - Const.smallPadding
+                        text: display
+                        color: selection.visible ? Material.background : Material.foreground
+                    }
                 }
             }
         }
