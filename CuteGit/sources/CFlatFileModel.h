@@ -75,6 +75,9 @@ public:
     //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
 
+    //!
+    Q_INVOKABLE void toggleStaged(QModelIndex qIndex);
+
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------

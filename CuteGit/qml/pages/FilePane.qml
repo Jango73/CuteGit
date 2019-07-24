@@ -65,7 +65,7 @@ TitlePane {
 
             model: root.controller.flatFileModel
 
-            onCurrentIndexChanged: root.controller.flatFileModel.handleCurrentIndex(listView.model.index(currentIndex, 0))
+            onCurrentIndexChanged: root.controller.flatFileModel.handleCurrentIndex(currentModelIndex())
 
             delegate: Item {
                 width: parent.width
@@ -131,6 +131,16 @@ TitlePane {
                         text: model.relativeName
                     }
                 }
+            }
+
+            Keys.onPressed: {
+                if (event.key === Qt.Key_Space) {
+                    root.controller.flatFileModel.toggleStaged(currentModelIndex())
+                }
+            }
+
+            function currentModelIndex() {
+                return listView.model.index(currentIndex, 0)
             }
         }
 

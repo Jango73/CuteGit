@@ -112,6 +112,17 @@ void CFlatFileModel::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+void CFlatFileModel::toggleStaged(QModelIndex qIndex)
+{
+    if (qIndex.isValid())
+    {
+        QString sFileFullName = m_vRepoFiles[qIndex.row()]->fullName();
+        // m_pController->commands()->toggleStaged(m_pController->repositoryPath(), sFileFullName);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFlatFileModel::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sOutput)
 {
     Q_UNUSED(eCommand);

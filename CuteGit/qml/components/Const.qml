@@ -20,7 +20,7 @@ Item {
     property color fileDeletedColor: "#80804000"
 
     // Margins and padding
-    property int mainPadding: 16
+    property int mainPadding: 8
     property int mainRadius: 2
     property int smallPadding: mainPadding / 2
     property int paneMargins: smallPadding
@@ -61,6 +61,7 @@ Item {
                                        "\n" +
                                        "Stage all\t\t\tControl + Shift + '+'\n" +
                                        "Unstage all\t\t\tControl + Shift + '-'\n" +
+                                       "Toggle staged selection\t\t\tSpace\n" +
                                        "Stage selection\t\tControl + '+'\n" +
                                        "Unstage selection\t\tControl + '-'\n" +
                                        "Revert selection\t\tControl + 'Z'\n" +

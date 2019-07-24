@@ -15,6 +15,12 @@ MenuBar {
     property bool rebaseInProgress: controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase
     || controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase
 
+    property alias cloneRepositoryAction: cloneRepository
+    property alias openRepositoryAction: openRepository
+    property alias pullAction: pull
+    property alias pushAction: push
+    property alias commitAction: commit
+
     signal requestCloneRepository()
     signal requestOpenRepository()
     signal requestStageSelection()
@@ -30,18 +36,20 @@ MenuBar {
         title: qsTr("&Repository")
 
         Action {
-            text: qsTr("&Clone...")
+            id: cloneRepository
+            text: qsTr("&Clone")
             onTriggered: root.requestCloneRepository()
         }
 
         Action {
-            text: qsTr("&Open...")
+            id: openRepository
+            text: qsTr("&Open")
             shortcut: "Ctrl+O"
             onTriggered: root.requestOpenRepository()
         }
 
         Action {
-            text: qsTr("&Remove...")
+            text: qsTr("&Remove")
         }
 
         MenuSeparator { }
@@ -139,13 +147,14 @@ MenuBar {
         }
 
         Action {
-            text: qsTr("&Commit...")
+            id: commit
+            text: qsTr("&Commit")
             shortcut: "Ctrl+C"
             onTriggered: root.requestCommit()
         }
 
         Action {
-            text: qsTr("&Amend...")
+            text: qsTr("&Amend")
             shortcut: "Ctrl+A"
             onTriggered: root.requestAmend()
         }
@@ -169,13 +178,15 @@ MenuBar {
         title: qsTr("Re&mote")
 
         Action {
-            text: qsTr("&Pull...")
+            id: pull
+            text: qsTr("&Pull")
             shortcut: "Ctrl+L"
             onTriggered: root.controller.treeFileModelProxy.pull()
         }
 
         Action {
-            text: qsTr("Pus&h...")
+            id: push
+            text: qsTr("Pus&h")
             shortcut: "Ctrl+P"
             onTriggered: root.controller.treeFileModelProxy.push()
         }
@@ -185,7 +196,7 @@ MenuBar {
         title: qsTr("&Help")
 
         Action {
-            text: qsTr("&Shortcuts...")
+            text: qsTr("&Shortcuts")
             onTriggered: root.requestShortcuts()
         }
     }

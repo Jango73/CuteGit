@@ -63,9 +63,24 @@ Item {
         onRequestShortcuts: shortcuts.open()
     }
 
+    ToolBar {
+        id: toolBar
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: menu.bottom
+
+        Row {
+            ToolButton { action: menu.cloneRepositoryAction }
+            ToolButton { action: menu.openRepositoryAction }
+            ToolButton { action: menu.pullAction }
+            ToolButton { action: menu.pushAction }
+            ToolButton { action: menu.commitAction }
+        }
+    }
+
     Item {
         id: container
-        anchors.top: menu.bottom
+        anchors.top: toolBar.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
