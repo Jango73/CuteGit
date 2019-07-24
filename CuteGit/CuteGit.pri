@@ -11,6 +11,7 @@ HEADERS += \
     sources/CLogLine.h \
     sources/CDiffModel.h \
     sources/CDiffLine.h \
+    sources/CRepository.h \
     sources/CController.h \
     sources/CuteGit.h \
 
@@ -24,6 +25,7 @@ SOURCES += \
     sources/CRepoFile.cpp \
     sources/CLogModel.cpp \
     sources/CDiffModel.cpp \
+    sources/CRepository.cpp \
     sources/CController.cpp \
     sources/main.cpp \
     sources/CuteGit.cpp \

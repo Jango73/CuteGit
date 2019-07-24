@@ -145,6 +145,14 @@ void CCommands::fileLog(const QString& sPath, const QString& sFullName)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::toggleStaged(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
 {
     Q_UNUSED(sPath);

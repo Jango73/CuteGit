@@ -53,9 +53,6 @@ public:
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
-    //! Sets all lines
-    void setRepoFiles(QList<CRepoFile*> lNewFiles);
-
     //! Returns role names
     virtual QHash<int, QByteArray> roleNames() const;
 
@@ -65,8 +62,8 @@ public:
     //! Returns data
     virtual QVariant data(const QModelIndex& qIndex, int iRole) const;
 
-    //! Model empty?
-    bool isEmpty() const;
+    //!
+    void handleRepoFilesChanged();
 
     //-------------------------------------------------------------------------------------------------
     // Invokables
@@ -74,9 +71,6 @@ public:
 
     //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
-
-    //!
-    Q_INVOKABLE void toggleStaged(QModelIndex qIndex);
 
     //-------------------------------------------------------------------------------------------------
     // Signals
@@ -86,30 +80,4 @@ signals:
 
     //!
     void currentFileFullName(QString sFileFullName);
-
-    //-------------------------------------------------------------------------------------------------
-    // Slots
-    //-------------------------------------------------------------------------------------------------
-
-protected slots:
-
-    //!
-    void onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sValue);
-
-    //!
-    void onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
-
-    //!
-    void onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
-
-    //!
-    void onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewGraphLines);
-
-    //-------------------------------------------------------------------------------------------------
-    // Properties
-    //-------------------------------------------------------------------------------------------------
-
-protected:
-
-    QList<CRepoFile*>   m_vRepoFiles;
 };

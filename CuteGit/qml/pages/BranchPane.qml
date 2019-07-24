@@ -19,7 +19,7 @@ TitlePane {
             anchors.fill: parent
             visible: count > 0
 
-            model: root.controller.treeFileModel.branchModel
+            model: root.controller.repository.branchModel
 
             delegate: Item {
                 width: parent.width
@@ -32,7 +32,7 @@ TitlePane {
                     MouseArea {
                         anchors.fill: selection
                         onDoubleClicked: {
-                            root.controller.treeFileModel.currentBranch = display
+                            root.controller.repository.currentBranch = display
                         }
                     }
 
@@ -41,7 +41,7 @@ TitlePane {
                         targetWidth: text.width
                         targetHeight: text.height
                         anchors.centerIn: text
-                        visible: display === root.controller.treeFileModel.currentBranch
+                        visible: display === root.controller.repository.currentBranch
                     }
 
                     ElideText {

@@ -37,7 +37,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Sets all lines
-    void setGraphLines(QList<CLogLine*> lNewLines);
+    void setLines(QList<CLogLine*> lNewLines);
 
     //! Returns role names
     virtual QHash<int, QByteArray> roleNames() const;
@@ -50,9 +50,6 @@ public:
 
     //! Adds a message
     bool addMessage(qint64 iUserId, QString sMessage);
-
-    //! Model empty?
-    bool isEmpty() const;
 
 private:
 

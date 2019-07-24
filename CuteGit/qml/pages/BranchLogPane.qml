@@ -24,7 +24,7 @@ TitlePane {
             id: logView
             anchors.fill: parent
 
-            model: root.controller.treeFileModel !== null ? root.controller.treeFileModel.logModel : undefined
+            model: root.controller !== null ? root.controller.repository.logModel : undefined
 
             onItemRightClicked: {
                 menu.commitId = commitId

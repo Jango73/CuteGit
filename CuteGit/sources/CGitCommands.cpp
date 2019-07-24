@@ -14,6 +14,7 @@ static int iLogFormatValueCount = 4;
 static const char* sLogFormatSplitter = "|";
 
 static const char* sCommandStatus = "git status --ignored --porcelain";
+static const char* sCommandStatusForFile = "git status --ignored --porcelain \"%1\"";
 static const char* sCommandBranches = "git branch -a";
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandBranchLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
@@ -131,6 +132,21 @@ void CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandFileLog).arg(sFullName);
     exec(new CProcessCommand(CProcessCommand::eFileLog, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
+{
+    QString sLine = execNow(sPath, QString(sCommandStatusForFile).arg(sFullName));
+
+    CRepoFile* pFile = repoFileForLine(sPath, sLine);
+
+    if (pFile != nullptr)
+    {
+        stageFile(sPath, sFullName, not pFile->staged());
+        pFile->deleteLater();
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -370,6 +386,91 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
 
 //-------------------------------------------------------------------------------------------------
 
+CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
+{
+    QRegExp tRegExp(sStatusRegExp);
+
+    if (sLine.isEmpty() == false && sLine.back() == '/')
+        sLine.chop(1);
+
+    if (tRegExp.indexIn(sLine) != -1)
+    {
+        QString sStaged = tRegExp.cap(1).trimmed();
+        QString sUnstaged = tRegExp.cap(2).trimmed();
+        QString sRelativeName = tRegExp.cap(3).split("->").last().trimmed();
+        QString sFullName = sPath + "/" + sRelativeName;
+        QString sFileName = QFileInfo(sFullName).fileName();
+        bool bStaged = false;
+
+        CRepoFile::ERepoFileStatus eStatus = CRepoFile::eClean;
+
+        if (sStaged.isEmpty() == false)
+        {
+            bStaged = true;
+
+            if (sStaged == sStatusAdded)
+                eStatus = CRepoFile::eAdded;
+            else if (sStaged == sStatusModified)
+                eStatus = CRepoFile::eModified;
+            else if (sStaged == sStatusRenamed)
+                eStatus = CRepoFile::eRenamed;
+            else if (sStaged == sStatusDeleted)
+                eStatus = CRepoFile::eDeleted;
+            else if (sStaged == sStatusIgnored)
+                eStatus = CRepoFile::eIgnored;
+            else if (sStaged == sStatusUntracked)
+            {
+                bStaged = false;
+                eStatus = CRepoFile::eUntracked;
+            }
+        }
+
+        if (sUnstaged.isEmpty() == false)
+        {
+            if (sUnstaged == sStatusAdded)
+            {
+                bStaged = false;
+                eStatus = CRepoFile::eAdded;
+            }
+            else if (sUnstaged == sStatusModified)
+            {
+                bStaged = false;
+                eStatus = CRepoFile::eModified;
+            }
+            else if (sUnstaged == sStatusRenamed)
+            {
+                bStaged = false;
+                eStatus = CRepoFile::eRenamed;
+            }
+            else if (sUnstaged == sStatusDeleted)
+            {
+                bStaged = false;
+                eStatus = CRepoFile::eDeleted;
+            }
+            else if (sUnstaged == sStatusIgnored)
+                eStatus = CRepoFile::eIgnored;
+            else if (sUnstaged == sStatusUntracked)
+            {
+                bStaged = false;
+                eStatus = CRepoFile::eUntracked;
+            }
+        }
+
+        CRepoFile* pFile = new CRepoFile();
+        pFile->setFullName(sFullName);
+        pFile->setFileName(sFileName);
+        pFile->setRelativeName(sRelativeName);
+        pFile->setStatus(eStatus);
+        pFile->setStaged(bStaged);
+
+        return pFile;
+    }
+
+    return nullptr;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue)
 {
     switch (eCommand)
@@ -465,85 +566,13 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     {
         QList<CRepoFile*> vReturnValue;
         QStringList lStrings = sValue.split("\n");
-        QRegExp tRegExp(sStatusRegExp);
 
         for (QString sLine : lStrings)
         {
-            if (sLine.isEmpty() == false && sLine.back() == '/')
-                sLine.chop(1);
+            CRepoFile* pFile = repoFileForLine(sPath, sLine);
 
-            if (tRegExp.indexIn(sLine) != -1)
-            {
-                QString sStaged = tRegExp.cap(1).trimmed();
-                QString sUnstaged = tRegExp.cap(2).trimmed();
-                QString sRelativeName = tRegExp.cap(3).split("->").last().trimmed();
-                QString sFullName = sPath + "/" + sRelativeName;
-                QString sFileName = QFileInfo(sFullName).fileName();
-                bool bStaged = false;
-
-                CRepoFile::ERepoFileStatus eStatus = CRepoFile::eClean;
-
-                if (sStaged.isEmpty() == false)
-                {
-                    bStaged = true;
-
-                    if (sStaged == sStatusAdded)
-                        eStatus = CRepoFile::eAdded;
-                    else if (sStaged == sStatusModified)
-                        eStatus = CRepoFile::eModified;
-                    else if (sStaged == sStatusRenamed)
-                        eStatus = CRepoFile::eRenamed;
-                    else if (sStaged == sStatusDeleted)
-                        eStatus = CRepoFile::eDeleted;
-                    else if (sStaged == sStatusIgnored)
-                        eStatus = CRepoFile::eIgnored;
-                    else if (sStaged == sStatusUntracked)
-                    {
-                        bStaged = false;
-                        eStatus = CRepoFile::eUntracked;
-                    }
-                }
-
-                if (sUnstaged.isEmpty() == false)
-                {
-                    if (sUnstaged == sStatusAdded)
-                    {
-                        bStaged = false;
-                        eStatus = CRepoFile::eAdded;
-                    }
-                    else if (sUnstaged == sStatusModified)
-                    {
-                        bStaged = false;
-                        eStatus = CRepoFile::eModified;
-                    }
-                    else if (sUnstaged == sStatusRenamed)
-                    {
-                        bStaged = false;
-                        eStatus = CRepoFile::eRenamed;
-                    }
-                    else if (sUnstaged == sStatusDeleted)
-                    {
-                        bStaged = false;
-                        eStatus = CRepoFile::eDeleted;
-                    }
-                    else if (sUnstaged == sStatusIgnored)
-                        eStatus = CRepoFile::eIgnored;
-                    else if (sUnstaged == sStatusUntracked)
-                    {
-                        bStaged = false;
-                        eStatus = CRepoFile::eUntracked;
-                    }
-                }
-
-                CRepoFile* pFile = new CRepoFile();
-                pFile->setFullName(sFullName);
-                pFile->setFileName(sFileName);
-                pFile->setRelativeName(sRelativeName);
-                pFile->setStatus(eStatus);
-                pFile->setStaged(bStaged);
-
+            if (pFile != nullptr)
                 vReturnValue << pFile;
-            }
         }
 
         emit newOutputListOfCRepoFile(eCommand, vReturnValue);

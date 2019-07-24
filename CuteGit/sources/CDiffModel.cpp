@@ -73,10 +73,3 @@ QVariant CDiffModel::data(const QModelIndex& index, int role) const
 
     return QVariant();
 }
-
-//-------------------------------------------------------------------------------------------------
-
-bool CDiffModel::isEmpty() const
-{
-    return m_lLines.count() == 0;
-}

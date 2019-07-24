@@ -100,6 +100,9 @@ public:
     virtual void fileLog(const QString& sPath, const QString& sFullName);
 
     //!
+    virtual void toggleStaged(const QString& sPath, const QString& sFullName);
+
+    //!
     virtual void stageFile(const QString& sPath, const QString& sFullName, bool bStage);
 
     //!

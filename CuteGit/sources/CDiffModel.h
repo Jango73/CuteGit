@@ -46,12 +46,6 @@ public:
     //! Returns data
     virtual QVariant data(const QModelIndex& index, int role) const;
 
-    //! Adds a message
-    bool addMessage(qint64 iUserId, QString sMessage);
-
-    //! Model empty?
-    bool isEmpty() const;
-
 private:
 
     //! Chat object

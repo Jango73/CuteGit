@@ -63,19 +63,22 @@ TitlePane {
             enabled: visible
             activeFocusOnTab: true
 
-            model: root.controller.flatFileModel
+            model: root.controller !== null ? root.controller.repository.flatFileModel : undefined
 
-            onCurrentIndexChanged: root.controller.flatFileModel.handleCurrentIndex(currentModelIndex())
+            onCurrentIndexChanged: root.controller.repository.flatFileModel.handleCurrentIndex(currentModelIndex())
 
             delegate: Item {
                 width: parent.width
                 height: Const.treeElementHeight + Const.mainPadding * 0.25
+
+                property string fullName: model.fullName
 
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.AllButtons
                     onClicked: {
                         listView.currentIndex = index
+                        listView.forceActiveFocus()
                     }
                 }
 
@@ -135,7 +138,7 @@ TitlePane {
 
             Keys.onPressed: {
                 if (event.key === Qt.Key_Space) {
-                    root.controller.flatFileModel.toggleStaged(currentModelIndex())
+                    root.controller.repository.toggleStaged(currentItem.fullName)
                 }
             }
 
@@ -153,8 +156,8 @@ TitlePane {
             visible: root.filesAsTree
             enabled: visible
 
-            model: root.controller.treeFileModelProxy
-            rootIndex: root.controller.treeFileModelProxy !== null ? root.controller.treeFileModelProxy.rootPathIndex : undefined
+            model: root.controller !== null ? root.controller.repository.treeFileModelProxy : undefined
+            rootIndex: root.controller !== null ? root.controller.repository.treeFileModelProxy.rootPathIndex : undefined
             selection: root.selection
             selectionMode: 2
             // "None", "Single", "Extended", "Multi", "Contig."

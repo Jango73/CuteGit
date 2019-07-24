@@ -51,13 +51,7 @@ public:
 
     Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
 
-    Q_FAST_PROPERTY(ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
-    Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
-    Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
-    Q_FAST_PROPERTY(CDiffModel*, p, diffModel, DiffModel)
-    Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
-    Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QFileSystemWatcher*, p, fileSystemWatcher, FileSystemWatcher)
 
 public:
@@ -97,67 +91,16 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const override;
 
     //!
-    void checkAllFileStatus(QString sPath = "");
-
-    //!
-    void checkRepositoryStatus(QString sPath = "");
+    void handleRepoFilesChanged();
 
     //!
     void handleCurrentIndex(QModelIndex qIndex);
-
-    //!
-    void refresh();
-
-    //!
-    void stageSelection(QModelIndexList lIndices);
-
-    //!
-    void unstageSelection(QModelIndexList lIndices);
-
-    //!
-    void stageAll();
-
-    //!
-    void unstageAll();
-
-    //!
-    void revertSelection(QModelIndexList lIndices);
-
-    //!
-    void commit(const QString& sMessage, bool bAmend);
-
-    //!
-    void continueRebase();
-
-    //!
-    void abortRebase();
-
-    //!
-    void push();
-
-    //!
-    void pull();
-
-    //!
-    void commitReset(const QString& sCommitId);
-
-    //!
-    void commitRebase(const QString& sCommitId);
-
-    //!
-    void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
     //-------------------------------------------------------------------------------------------------
 
 protected:
-
-    //!
-    void getBranches(QString sPath = "");
-
-    //!
-    void getLog(QString sPath = "");
 
     //-------------------------------------------------------------------------------------------------
     // Signals
@@ -171,9 +114,6 @@ signals:
     //!
     void currentFileFullName(QString sFileFullName);
 
-    //!
-    void newOutput(QString sText);
-
     //-------------------------------------------------------------------------------------------------
     // Slots
     //-------------------------------------------------------------------------------------------------
@@ -185,27 +125,4 @@ protected slots:
 
     //!
     void onFileChanged(const QString& path);
-
-    //!
-    void onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sValue);
-
-    //!
-    void onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
-
-    //!
-    void onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
-
-    //!
-    void onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
-
-    //!
-    void onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
-
-    //-------------------------------------------------------------------------------------------------
-    // Properties
-    //-------------------------------------------------------------------------------------------------
-
-protected:
-
-    QList<CRepoFile*>     m_vRepoFiles;
 };

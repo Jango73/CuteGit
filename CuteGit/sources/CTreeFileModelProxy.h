@@ -61,49 +61,7 @@ public:
     Q_INVOKABLE QString stagedForIndex(QModelIndex qIndex);
 
     //!
-    Q_INVOKABLE void refresh();
-
-    //!
-    Q_INVOKABLE void stageSelection(QModelIndexList lIndices);
-
-    //!
-    Q_INVOKABLE void unstageSelection(QModelIndexList lIndices);
-
-    //!
-    Q_INVOKABLE void stageAll();
-
-    //!
-    Q_INVOKABLE void unstageAll();
-
-    //!
-    Q_INVOKABLE void revertSelection(QModelIndexList lIndices);
-
-    //!
-    Q_INVOKABLE void commit(const QString& sMessage, bool bAmend);
-
-    //!
-    Q_INVOKABLE void continueRebase();
-
-    //!
-    Q_INVOKABLE void abortRebase();
-
-    //!
-    Q_INVOKABLE void push();
-
-    //!
-    Q_INVOKABLE void pull();
-
-    //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
-
-    //!
-    Q_INVOKABLE void commitReset(const QString& sCommitId);
-
-    //!
-    Q_INVOKABLE void commitRebase(const QString& sCommitId);
-
-    //!
-    Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
 
     //-------------------------------------------------------------------------------------------------
     // Signals

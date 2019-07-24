@@ -18,7 +18,7 @@ CLogModel::~CLogModel()
 
 //-------------------------------------------------------------------------------------------------
 
-void CLogModel::setGraphLines(QList<CLogLine*> lNewLines)
+void CLogModel::setLines(QList<CLogLine*> lNewLines)
 {
     beginResetModel();
 
@@ -80,20 +80,4 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
     }
 
     return QVariant();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-//void CGraphModel::addItem(...)
-//{
-//    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-//    m_lGraphLines << item;
-//    endInsertRows();
-//}
-
-//-------------------------------------------------------------------------------------------------
-
-bool CLogModel::isEmpty() const
-{
-    return m_lLines.count() == 0;
 }

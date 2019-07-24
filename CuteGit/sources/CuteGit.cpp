@@ -8,6 +8,7 @@
 
 // Application
 #include "CuteGit.h"
+#include "CRepository.h"
 #include "CTreeFileModel.h"
 #include "CTreeFileModelProxy.h"
 #include "CDiffLine.h"
@@ -24,7 +25,7 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
         qRegisterMetaType<CXMLNode>();
         qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
-        qRegisterMetaType<CTreeFileModel::ERepositoryStatus>("CTreeFileModel::ERepositoryStatus");
+        qRegisterMetaType<CRepository::ERepositoryStatus>("CRepository::ERepositoryStatus");
         qRegisterMetaType<CDiffLine::EDiffOperation>("CDiffLine::EDiffOperation");
 
         qmlRegisterUncreatableType<CTreeFileModel>("CuteGit", 1, 0, "CTreeFileModel", "Cannot create a FileSystemModel instance.");

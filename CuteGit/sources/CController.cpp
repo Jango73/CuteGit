@@ -1,7 +1,6 @@
 
 // Qt
 #include <QDebug>
-#include <QUrl>
 #include <QApplication>
 
 // Application
@@ -49,11 +48,9 @@ const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 CController::CController(QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
-    , m_pTreeFileModel(nullptr)
-    , m_pTreeFileModelProxy(new CTreeFileModelProxy(this, this))
-    , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(new QStringListModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
+    , m_pRepository(new CRepository(this, this))
     , m_bShowClean(false)
     , m_bShowAdded(true)
     , m_bShowModified(true)
@@ -83,11 +80,9 @@ CController::CController(QObject* parent)
 CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
     , m_pCommands(new CGitCommands())
-    , m_pTreeFileModel(nullptr)
-    , m_pTreeFileModelProxy(nullptr)
-    , m_pFlatFileModel(nullptr)
     , m_pRepositoryModel(nullptr)
     , m_pCommandOutputModel(nullptr)
+    , m_pRepository(nullptr)
     , m_bMasterMode(false)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
@@ -128,8 +123,8 @@ void CController::setShowClean(bool bValue)
     if (m_bShowClean != bValue)
     {
         m_bShowClean = bValue;
-        if (m_pTreeFileModelProxy != nullptr)
-            m_pTreeFileModelProxy->filterChanged();
+        if (m_pRepository->treeFileModelProxy() != nullptr)
+            m_pRepository->treeFileModelProxy()->filterChanged();
         emit showCleanChanged();
     }
 }
@@ -141,8 +136,8 @@ void CController::setShowAdded(bool bValue)
     if (m_bShowAdded != bValue)
     {
         m_bShowAdded = bValue;
-        if (m_pTreeFileModelProxy != nullptr)
-            m_pTreeFileModelProxy->filterChanged();
+        if (m_pRepository->treeFileModelProxy() != nullptr)
+            m_pRepository->treeFileModelProxy()->filterChanged();
         emit showAddedChanged();
     }
 }
@@ -154,8 +149,8 @@ void CController::setShowModified(bool bValue)
     if (m_bShowModified != bValue)
     {
         m_bShowModified = bValue;
-        if (m_pTreeFileModelProxy != nullptr)
-            m_pTreeFileModelProxy->filterChanged();
+        if (m_pRepository->treeFileModelProxy() != nullptr)
+            m_pRepository->treeFileModelProxy()->filterChanged();
         emit showModifiedChanged();
     }
 }
@@ -167,8 +162,8 @@ void CController::setShowDeleted(bool bValue)
     if (m_bShowDeleted != bValue)
     {
         m_bShowDeleted = bValue;
-        if (m_pTreeFileModelProxy != nullptr)
-            m_pTreeFileModelProxy->filterChanged();
+        if (m_pRepository->treeFileModelProxy() != nullptr)
+            m_pRepository->treeFileModelProxy()->filterChanged();
         emit showDeletedChanged();
     }
 }
@@ -180,63 +175,9 @@ void CController::setShowUntracked(bool bValue)
     if (m_bShowUntracked != bValue)
     {
         m_bShowUntracked = bValue;
-        if (m_pTreeFileModelProxy != nullptr)
-            m_pTreeFileModelProxy->filterChanged();
+        if (m_pRepository->treeFileModelProxy() != nullptr)
+            m_pRepository->treeFileModelProxy()->filterChanged();
         emit showUntrackedChanged();
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CController::setRepositoryPath(QString sPath)
-{
-    if (sPath.startsWith("file:"))
-        sPath = QUrl(sPath).toLocalFile();
-
-    // If repo path valid and different from current
-    if (m_pTreeFileModel == nullptr || sPath != m_pTreeFileModel->rootPath())
-    {
-        // IF repo is a GIT repo
-        if (QDir(QString("%1/.git").arg(sPath)).exists())
-        {
-            // Delete any existing file model
-            if (m_pTreeFileModel != nullptr)
-                m_pTreeFileModel->deleteLater();
-
-            if (m_pFlatFileModel != nullptr)
-                m_pFlatFileModel->deleteLater();
-
-            // Create a file model
-            m_pTreeFileModel = new CTreeFileModel(this, this);
-            m_pFlatFileModel = new CFlatFileModel(this, this);
-
-            m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
-            m_pTreeFileModel->setRootPath(sPath);
-
-            emit repositoryPathChanged();
-            emit treeFileModelChanged();
-            emit treeFileModelProxyChanged();
-            emit flatFileModelChanged();
-
-            connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CController::onCurrentFileFullName);
-            connect(m_pTreeFileModel, &CTreeFileModel::newOutput, this, &CController::onNewOutput);
-            connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CController::onCurrentFileFullName);
-
-            // Add this path to repository model
-            QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
-
-            if (lRepositoryPaths.contains(sPath) == false)
-                lRepositoryPaths << sPath;
-
-            m_pRepositoryModel->setStringList(lRepositoryPaths);
-
-            // Clear command output
-            m_pCommandOutputModel->setStringList(QStringList());
-        }
-        else
-        {
-            onNewOutput(QString(tr("%1 is not a GIT repository.\nPlease select a folder containing a GIT repository.")).arg(sPath));
-        }
     }
 }
 
@@ -262,18 +203,6 @@ void CController::setSequenceFileName(const QString& sSequenceFileName)
         strcpy(pData->sSequenceFileName, sSequenceFileName.toUtf8().constData());
         m_tShared.unlock();
     }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-QString CController::repositoryPath() const
-{
-    if (m_pTreeFileModel != nullptr)
-    {
-        return m_pTreeFileModel->rootPath();
-    }
-
-    return "";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -315,7 +244,7 @@ void CController::saveConfiguration()
     CXMLNode xConfig(sParamConfiguration);
 
     CXMLNode xCurrentRepository(sParamCurrentRepository);
-    xCurrentRepository.attributes()[sParamPath] = m_pTreeFileModel->rootPath();
+    xCurrentRepository.attributes()[sParamPath] = repository()->repositoryPath();
     xConfig << xCurrentRepository;
 
     CXMLNode xRepositories(sParamRepositories);
@@ -358,11 +287,11 @@ void CController::loadConfiguration()
 
     if (sCurrentPath.isEmpty() == false)
     {
-        setRepositoryPath(sCurrentPath);
+        m_pRepository->setRepositoryPath(sCurrentPath);
     }
     else if (lRepositoryPaths.count() > 0)
     {
-        setRepositoryPath(lRepositoryPaths[0]);
+        m_pRepository->setRepositoryPath(lRepositoryPaths[0]);
     }
 }
 
@@ -390,44 +319,6 @@ void CController::quit()
 void CController::clearOutput()
 {
     m_pCommandOutputModel->setStringList(QStringList());
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CController::onCurrentFileFullName(QString sFileFullName)
-{
-    m_pCommands->unstagedFileDiff(repositoryPath(), sFileFullName);
-    m_pCommands->fileLog(repositoryPath(), sFileFullName);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CController::onNewOutput(QString sOutput)
-{
-    QStringList lNewList = sOutput.split("\n");
-    QStringList lData = m_pCommandOutputModel->stringList();
-    bool bHasNewLine = false;
-
-    for (QString sLine : lNewList)
-    {
-        sLine = sLine.trimmed();
-
-        if (sLine.isEmpty() == false)
-        {
-            bHasNewLine = true;
-            lData << sLine;
-        }
-    }
-
-    if (bHasNewLine)
-    {
-        lData << "----------------------------------------------------------------------------------------------------";
-    }
-
-    while (lData.count() > 50)
-        lData.removeFirst();
-
-    m_pCommandOutputModel->setStringList(lData);
 }
 
 //-------------------------------------------------------------------------------------------------

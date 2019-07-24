@@ -13,9 +13,7 @@
 #include "CXMLNode.h"
 
 // Application
-#include "CTreeFileModel.h"
-#include "CTreeFileModelProxy.h"
-#include "CFlatFileModel.h"
+#include "CRepository.h"
 #include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -31,14 +29,10 @@ class CController : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString repositoryPath READ repositoryPath WRITE setRepositoryPath NOTIFY repositoryPathChanged)
-
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
-    Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
-    Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
-    Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
+    Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
 
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showAdded, ShowAdded)
@@ -82,9 +76,6 @@ public:
     // Setters
     //-------------------------------------------------------------------------------------------------
 
-    //! Sets current repository path
-    void setRepositoryPath(QString sPath);
-
     //!
     void setSharedOperation(ESharedOperation iOperation);
 
@@ -94,9 +85,6 @@ public:
     //-------------------------------------------------------------------------------------------------
     // Getters
     //-------------------------------------------------------------------------------------------------
-
-    //! Returns current repository path
-    QString repositoryPath() const;
 
     //!
     ESharedOperation sharedOperation();
@@ -133,19 +121,11 @@ public:
 
 signals:
 
-    void repositoryPathChanged();
-
     //-------------------------------------------------------------------------------------------------
     // Slots
     //-------------------------------------------------------------------------------------------------
 
 protected slots:
-
-    //!
-    void onCurrentFileFullName(QString sFileFullName);
-
-    //!
-    void onNewOutput(QString sOutput);
 
     //!
     void onSharedTimerTick();

@@ -12,8 +12,8 @@ MenuBar {
     property variant controller: null
     property bool filesAsTree: false
 
-    property bool rebaseInProgress: controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase
-    || controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase
+    property bool rebaseInProgress: controller.repository.repositoryStatus === CTreeFileModel.Rebase
+    || controller.repository.repositoryStatus === CTreeFileModel.InteractiveRebase
 
     property alias cloneRepositoryAction: cloneRepository
     property alias openRepositoryAction: openRepository
@@ -67,7 +67,7 @@ MenuBar {
         Action {
             text: qsTr("&Refresh")
             shortcut: "F5"
-            onTriggered: root.controller.treeFileModelProxy.refresh()
+            onTriggered: root.controller.repository.refresh()
         }
 
         MenuItem {
@@ -119,13 +119,13 @@ MenuBar {
         Action {
             text: qsTr("Stage a&ll")
             shortcut: "Ctrl+shift++"
-            onTriggered: root.controller.treeFileModelProxy.stageAll()
+            onTriggered: root.controller.repository.stageAll()
         }
 
         Action {
             text: qsTr("Usta&ge all")
             shortcut: "Ctrl+shift+-"
-            onTriggered: root.controller.treeFileModelProxy.unstageAll()
+            onTriggered: root.controller.repository.unstageAll()
         }
 
         Action {
@@ -181,14 +181,14 @@ MenuBar {
             id: pull
             text: qsTr("&Pull")
             shortcut: "Ctrl+L"
-            onTriggered: root.controller.treeFileModelProxy.pull()
+            onTriggered: root.controller.repository.pull()
         }
 
         Action {
             id: push
             text: qsTr("Pus&h")
             shortcut: "Ctrl+P"
-            onTriggered: root.controller.treeFileModelProxy.push()
+            onTriggered: root.controller.repository.push()
         }
     }
 

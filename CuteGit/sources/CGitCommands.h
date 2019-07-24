@@ -61,6 +61,9 @@ public:
     virtual void fileLog(const QString& sPath, const QString& sFullName) override;
 
     //!
+    virtual void toggleStaged(const QString& sPath, const QString& sFullName) override;
+
+    //!
     virtual void stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
 
     //!
@@ -104,6 +107,15 @@ public:
 
     //!
     virtual void editSequenceFile(const QString& sFileName) override;
+
+    //-------------------------------------------------------------------------------------------------
+    // Protected control methods
+    //-------------------------------------------------------------------------------------------------
+
+protected:
+
+    //!
+    CRepoFile* repoFileForLine(const QString& sPath, QString sLine);
 
 protected slots:
 

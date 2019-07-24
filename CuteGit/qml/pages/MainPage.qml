@@ -27,19 +27,19 @@ Item {
 
         onRequestStageSelection: {
             if (fileView.filesAsTree) {
-                root.controller.treeFileModelProxy.stageSelection(fileSelection.selectedIndexes)
+                root.controller.repository.stageSelection()
             }
         }
 
         onRequestUnstageSelection: {
             if (fileView.filesAsTree) {
-                root.controller.treeFileModelProxy.unstageSelection(fileSelection.selectedIndexes)
+                root.controller.repository.unstageSelection()
             }
         }
 
         onRequestRevertSelection: {
             if (fileView.filesAsTree) {
-                root.controller.treeFileModelProxy.revertSelection(fileSelection.selectedIndexes)
+                root.controller.repository.revertSelection()
             }
         }
 
@@ -57,8 +57,8 @@ Item {
             commit.open()
         }
 
-        onRequestContinueRebase: root.controller.treeFileModelProxy.continueRebase()
-        onRequestAbortRebase:  root.controller.treeFileModelProxy.abortRebase()
+        onRequestContinueRebase: root.controller.repository.continueRebase()
+        onRequestAbortRebase:  root.controller.repository.abortRebase()
 
         onRequestShortcuts: shortcuts.open()
     }
@@ -127,7 +127,7 @@ Item {
 
             Rectangle {
                 anchors.fill: parent
-                color: root.controller.treeFileModel.repositoryStatus === CTreeFileModel.NoMerge
+                color: root.controller.repository.repositoryStatus === CTreeFileModel.NoMerge
                        ? Const.transparent
                        : Material.accent
             }
@@ -135,15 +135,15 @@ Item {
             StandardText {
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
-                color: root.controller.treeFileModel.repositoryStatus === CTreeFileModel.NoMerge
+                color: root.controller.repository.repositoryStatus === CTreeFileModel.NoMerge
                        ? Material.foreground
                        : Material.background
                 text: {
-                    if (root.controller.treeFileModel.repositoryStatus === CTreeFileModel.InteractiveRebase)
+                    if (root.controller.repository.repositoryStatus === CTreeFileModel.InteractiveRebase)
                         qsTr("Interactive rebase in progress...")
-                    else if (root.controller.treeFileModel.repositoryStatus === CTreeFileModel.Rebase)
+                    else if (root.controller.repository.repositoryStatus === CTreeFileModel.Rebase)
                         qsTr("Rebase in progress...")
-                    else if (root.controller.treeFileModel.repositoryStatus === CTreeFileModel.Merge)
+                    else if (root.controller.repository.repositoryStatus === CTreeFileModel.Merge)
                         qsTr("Merge in progress...")
                     else
                         ""
@@ -160,21 +160,12 @@ Item {
 
             ItemSelectionModel {
                 id: fileSelection
-                model: root.controller.treeFileModelProxy
+                model: root.controller.repository.treeFileModelProxy
 
                 onCurrentIndexChanged: {
-                    root.controller.treeFileModelProxy.handleCurrentIndex(currentIndex)
+                    root.controller.repository.treeFileModelProxy.handleCurrentIndex(currentIndex)
                 }
             }
-
-//            ItemSelectionModel {
-//                id: flatFileSelection
-//                model: root.controller.flatFileModel
-
-//                onCurrentIndexChanged: {
-//                    root.controller.flatFileModel.handleCurrentIndex(currentIndex)
-//                }
-//            }
 
             FilePane {
                 id: fileView
@@ -220,11 +211,11 @@ Item {
                 controller: root.controller
 
                 onRequestCommitReset: {
-                    root.controller.treeFileModelProxy.commitReset(commitId)
+                    root.controller.repository.commitReset(commitId)
                 }
 
                 onRequestCommitRebase: {
-                    root.controller.treeFileModelProxy.commitRebase(commitId)
+                    root.controller.repository.commitRebase(commitId)
                 }
 
                 onRequestCommitMessageChange: {

@@ -18,7 +18,7 @@ Pane {
         id: list
         anchors.fill: parent
 
-        model: root.controller !== null ? root.controller.treeFileModel.fileLogModel : undefined
+        model: root.controller !== null ? root.controller.repository.fileLogModel : undefined
 
         onItemRightClicked: {
             menu.commitId = commitId

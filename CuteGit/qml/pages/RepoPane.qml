@@ -39,7 +39,7 @@ TitlePane {
                     MouseArea {
                         anchors.fill: selection
                         onDoubleClicked: {
-                            root.controller.repositoryPath = display
+                            root.controller.repository.repositoryPath = display
                         }
                     }
 
@@ -48,7 +48,7 @@ TitlePane {
                         targetWidth: text.width
                         targetHeight: text.height
                         anchors.centerIn: text
-                        visible: display === root.controller.repositoryPath
+                        visible: display === root.controller.repository.repositoryPath
                     }
 
                     ElideText {

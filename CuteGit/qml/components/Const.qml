@@ -61,7 +61,7 @@ Item {
                                        "\n" +
                                        "Stage all\t\t\tControl + Shift + '+'\n" +
                                        "Unstage all\t\t\tControl + Shift + '-'\n" +
-                                       "Toggle staged selection\t\t\tSpace\n" +
+                                       "Toggle staged\t\tSpace\n" +
                                        "Stage selection\t\tControl + '+'\n" +
                                        "Unstage selection\t\tControl + '-'\n" +
                                        "Revert selection\t\tControl + 'Z'\n" +
