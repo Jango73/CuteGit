@@ -26,7 +26,7 @@ Open /CuteGit.pro and build
 * Simple push
 * Refresh view
 * Modify a commit message
-* Begin rebase on a commit
+* Begin rebase on a commit, continue and abort rebase
 
 ## Classes
 
