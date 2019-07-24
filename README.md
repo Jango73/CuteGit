@@ -45,7 +45,7 @@ Open /CuteGit.pro and build
   * the model for the list of repositories
   * the model for lines of output when executing a process
 
-### CFileModel
+### CTreeFileModel
 
 * Inherits QFileSystemModel
 * Provides access to
@@ -61,8 +61,14 @@ Open /CuteGit.pro and build
 ### CFileModelProxy
 
 * Inherits QSortFilterProxyModel
+* Encapsulates CTreeFileModel
 * Enables showing/hiding the files using their GIT status property
 * Exposes to QML / JS the versioning methods: stage, unstage, commit, push, ...
+
+### CFlatFileModel
+
+* Inherits QAbstractListModel
+* Shows changed files as a list
 
 ### CRepoFile
 
@@ -80,6 +86,11 @@ Open /CuteGit.pro and build
 * Inherits CCommands
 * Implements GIT versioning commands
 
+### CSVNCommands
+
+* Will inherit CCommands
+* Will implements SVN versioning commands
+
 ### CLogModel
 
 * A collection of log lines
@@ -87,3 +98,11 @@ Open /CuteGit.pro and build
 ### CLogLine
 
 * A line of log : commit id, date, author, message
+
+### CDiffModel
+
+* A collection of CDiffLine
+
+### CDiffLine
+
+* A line of diff between two files
