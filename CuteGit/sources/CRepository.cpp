@@ -18,7 +18,7 @@ CRepository::CRepository(CController* pController, QObject* parent)
     , m_pFlatFileModel(nullptr)
     , m_pBranchModel(new QStringListModel(this))
     , m_pLogModel(new CLogModel(this))
-    , m_pDiffModel(new CDiffModel(this))
+    , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileLogModel(new CLogModel(this))
 {
     // Command return values
@@ -57,6 +57,9 @@ void CRepository::setRepositoryPath(QString sPath)
 
             if (m_pFlatFileModel != nullptr)
                 m_pFlatFileModel->deleteLater();
+
+            m_pFileDiffModel->setLines(QList<CDiffLine*>());
+            m_pFileLogModel->setLines(QList<CLogLine*>());
 
             // Create a file model
             m_pTreeFileModel = new CTreeFileModel(m_pController, this);
@@ -496,7 +499,7 @@ void CRepository::onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eC
 
     case CProcessCommand::eUnstagedFileDiff:
     {
-        m_pDiffModel->setLines(lNewLines);
+        m_pFileDiffModel->setLines(lNewLines);
         break;
     }
 

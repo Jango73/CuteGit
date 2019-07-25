@@ -44,7 +44,7 @@ Popup {
             anchors.top: title.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            height: parent.height * 0.4
+            height: parent.height * 0.3
             anchors.margins: Const.mainPadding
             focus: true
         }

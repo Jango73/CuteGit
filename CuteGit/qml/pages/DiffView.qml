@@ -18,7 +18,7 @@ Pane {
     StandardListView {
         id: list
         anchors.fill: parent
-        model: root.controller !== null ? root.controller.repository.diffModel : undefined
+        model: root.controller !== null ? root.controller.repository.fileDiffModel : undefined
 
         delegate: Item {
             width: parent.width
