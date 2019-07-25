@@ -439,6 +439,32 @@ void CRepository::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eC
 
     case CProcessCommand::eAllFileStatus:
     {
+        // TODO
+//        QStringList changedFiles;
+
+//        for (CRepoFile* pExistingFile : m_lRepoFiles)
+//        {
+//            CRepoFile* pNewFile = fileByFullName(lNewRepoFiles, pExistingFile->fullName());
+
+//            if (pNewFile == nullptr)
+//            {
+//                changedFiles << pNewFile->fullName();
+//            }
+//        }
+
+//        for (CRepoFile* pFile : lNewRepoFiles)
+//        {
+//            CRepoFile* pExistingFile = fileByFullName(m_lRepoFiles, pFile->fullName());
+
+//            if (pExistingFile != nullptr)
+//            {
+//                if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
+//                {
+//                    changedFiles << pExistingFile->fullName();
+//                }
+//            }
+//        }
+
         qDeleteAll(m_lRepoFiles);
         m_lRepoFiles.clear();
 
