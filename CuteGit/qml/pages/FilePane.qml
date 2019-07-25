@@ -237,6 +237,12 @@ TitlePane {
 
             function collapseAll() {
             }
+
+            Keys.onPressed: {
+                if (event.key === Qt.Key_Space) {
+                    // root.controller.repository.toggleStaged(currentItem.fullName)
+                }
+            }
         }
     }
 

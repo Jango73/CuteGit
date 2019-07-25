@@ -26,15 +26,11 @@ Item {
         onRequestOpenRepository: folderDialog.open()
 
         onRequestStageSelection: {
-            if (fileView.filesAsTree) {
-                root.controller.repository.stageSelection(fileView.getSelectedFiles())
-            }
+            root.controller.repository.stageSelection(fileView.getSelectedFiles())
         }
 
         onRequestUnstageSelection: {
-            if (fileView.filesAsTree) {
-                root.controller.repository.unstageSelection(fileView.getSelectedFiles())
-            }
+            root.controller.repository.unstageSelection(fileView.getSelectedFiles())
         }
 
         onRequestRevertSelection: {

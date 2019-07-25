@@ -16,9 +16,12 @@ static const char* sLogFormatSplitter = "|";
 static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandStatusForFile = "git status --ignored --porcelain \"%1\"";
 static const char* sCommandBranches = "git branch -a";
+
 // static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
 static const char* sCommandBranchLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
-static const char* sCommandFileLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20 \"%1\"";
+static const char* sCommandFileLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20 HEAD \"%1\"";
+static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space HEAD \"%1\"";
+
 static const char* sCommandStage = "git add -f \"%1\"";
 static const char* sCommandUnstage = "git reset HEAD \"%1\"";
 static const char* sCommandStageAll = "git add -u";
@@ -28,7 +31,6 @@ static const char* sCommandCommit = "git commit -m \"%1\"";
 static const char* sCommandAmend = "git commit --amend --reset-author --no-edit";
 static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
-static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space \"%1\"";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
 // static const char* sCommandInteractiveRebase = "git rebase --interactive";
 static const char* sCommandResetOnCommit = "git reset %1";

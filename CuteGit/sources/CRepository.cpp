@@ -160,7 +160,7 @@ void CRepository::toggleStaged(QString sFullName)
     if (not sFullName.isEmpty())
     {
         m_pController->commands()->toggleStaged(m_sRepositoryPath, sFullName);
-
+        checkAllFileStatus();
     }
 }
 
@@ -168,22 +168,24 @@ void CRepository::toggleStaged(QString sFullName)
 
 void CRepository::stageSelection(QStringList lFileFullNames)
 {
-//    for (QModelIndex qIndex : lIndices)
-//    {
-//        QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-//        m_pController->commands()->stageFile(m_sRepositoryPath, sFileFullName, true);
-//    }
+    for (QString sFullName : lFileFullNames)
+    {
+        if (not sFullName.isEmpty())
+            m_pController->commands()->stageFile(m_sRepositoryPath, sFullName, true);
+    }
+    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::unstageSelection(QStringList lFileFullNames)
 {
-//    for (QModelIndex qIndex : lIndices)
-//    {
-//        QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-//        m_pController->commands()->stageFile(m_sRepositoryPath, sFileFullName, false);
-//    }
+    for (QString sFullName : lFileFullNames)
+    {
+        if (not sFullName.isEmpty())
+            m_pController->commands()->stageFile(m_sRepositoryPath, sFullName, false);
+    }
+    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -191,6 +193,7 @@ void CRepository::unstageSelection(QStringList lFileFullNames)
 void CRepository::stageAll()
 {
     m_pController->commands()->stageAll(m_sRepositoryPath, true);
+    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -198,6 +201,7 @@ void CRepository::stageAll()
 void CRepository::unstageAll()
 {
     m_pController->commands()->stageAll(m_sRepositoryPath, false);
+    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -208,6 +212,7 @@ void CRepository::revertSelection(QStringList lFileFullNames)
     {
         m_pController->commands()->revertFile(m_sRepositoryPath, sFullName);
     }
+    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -326,12 +331,12 @@ void CRepository::onNewOutput(QString sOutput)
     if (bHasNewLine)
     {
         lData << "----------------------------------------------------------------------------------------------------";
+
+        while (lData.count() > 50)
+            lData.removeFirst();
+
+        m_pController->commandOutputModel()->setStringList(lData);
     }
-
-    while (lData.count() > 50)
-        lData.removeFirst();
-
-    m_pController->commandOutputModel()->setStringList(lData);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -358,6 +363,11 @@ void CRepository::onNewOutputString(CProcessCommand::EProcessCommand eCommand, Q
     case CProcessCommand::eStageFile:
     case CProcessCommand::eStageAll:
     case CProcessCommand::eRevertFile:
+    {
+        onNewOutput(sOutput);
+        break;
+    }
+
     case CProcessCommand::eCommit:
     case CProcessCommand::eAmend:
     case CProcessCommand::ePush:
