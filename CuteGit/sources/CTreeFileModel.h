@@ -88,13 +88,16 @@ public:
     virtual QHash<int, QByteArray> roleNames() const override;
 
     //! Returns data
-    virtual QVariant data(const QModelIndex& index, int role) const override;
+    virtual QVariant data(const QModelIndex& qIndex, int iRole) const override;
 
     //!
     void handleRepoFilesChanged();
 
     //!
     void handleCurrentIndex(QModelIndex qIndex);
+
+    //!
+    QStringList selectionToFullNameList(QModelIndexList lIndices);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods

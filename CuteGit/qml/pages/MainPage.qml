@@ -27,20 +27,18 @@ Item {
 
         onRequestStageSelection: {
             if (fileView.filesAsTree) {
-                root.controller.repository.stageSelection()
+                root.controller.repository.stageSelection(fileView.getSelectedFiles())
             }
         }
 
         onRequestUnstageSelection: {
             if (fileView.filesAsTree) {
-                root.controller.repository.unstageSelection()
+                root.controller.repository.unstageSelection(fileView.getSelectedFiles())
             }
         }
 
         onRequestRevertSelection: {
-            if (fileView.filesAsTree) {
-                root.controller.repository.revertSelection()
-            }
+            root.controller.repository.revertSelection(fileView.getSelectedFiles())
         }
 
         onRequestCommit: {

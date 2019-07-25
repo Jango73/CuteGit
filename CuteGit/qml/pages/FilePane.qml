@@ -239,4 +239,13 @@ TitlePane {
             }
         }
     }
+
+    function getSelectedFiles() {
+        var files
+        if (filesAsTree) {
+            files = treeView.model.selectionToFullNameList(selection.selectedIndexes)
+        } else {
+        }
+        return files
+    }
 }

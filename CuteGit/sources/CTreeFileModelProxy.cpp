@@ -85,6 +85,19 @@ void CTreeFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+QStringList CTreeFileModelProxy::selectionToFullNameList(QModelIndexList lIndices)
+{
+    QStringList lFullNames;
+
+    CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
+    if (pModel != nullptr)
+        return pModel->selectionToFullNameList(indexListToSource(lIndices));
+
+    return lFullNames;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QModelIndexList CTreeFileModelProxy::indexListToSource(QModelIndexList lIndices) const
 {
     QModelIndexList targetIndices;

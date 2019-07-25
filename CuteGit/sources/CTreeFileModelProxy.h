@@ -63,6 +63,9 @@ public:
     //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
 
+    //!
+    Q_INVOKABLE QStringList selectionToFullNameList(QModelIndexList lIndices);
+
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------

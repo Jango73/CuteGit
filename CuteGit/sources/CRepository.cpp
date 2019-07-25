@@ -166,7 +166,7 @@ void CRepository::toggleStaged(QString sFullName)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::stageSelection()
+void CRepository::stageSelection(QStringList lFileFullNames)
 {
 //    for (QModelIndex qIndex : lIndices)
 //    {
@@ -177,7 +177,7 @@ void CRepository::stageSelection()
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::unstageSelection()
+void CRepository::unstageSelection(QStringList lFileFullNames)
 {
 //    for (QModelIndex qIndex : lIndices)
 //    {
@@ -202,13 +202,12 @@ void CRepository::unstageAll()
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::revertSelection()
+void CRepository::revertSelection(QStringList lFileFullNames)
 {
-//    for (QModelIndex qIndex : lIndices)
-//    {
-//        QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-//        m_pController->commands()->revertFile(m_sPath, sFileFullName);
-//    }
+    for (QString sFullName : lFileFullNames)
+    {
+        m_pController->commands()->revertFile(m_sRepositoryPath, sFullName);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

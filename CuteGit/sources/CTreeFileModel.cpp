@@ -75,21 +75,21 @@ QHash<int, QByteArray> CTreeFileModel::roleNames() const
 
 //-------------------------------------------------------------------------------------------------
 
-QVariant CTreeFileModel::data(const QModelIndex& index, int role) const
+QVariant CTreeFileModel::data(const QModelIndex& qIndex, int iRole) const
 {
-    if (index.isValid() && role >= eSizeRole)
+    if (qIndex.isValid() && iRole >= eSizeRole)
     {
-        switch (role)
+        switch (iRole)
         {
 
         case eSizeRole:
         {
-            return QVariant(sizeString(fileInfo(index)));
+            return QVariant(sizeString(fileInfo(qIndex)));
         }
 
         case eStatusRole:
         {
-            QString sFileFullName = fileInfo(index).absoluteFilePath();
+            QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
             CRepoFile* pFile = fileByFullName(m_pController->repository()->repoFiles(), sFileFullName);
 
             if (pFile != nullptr)
@@ -100,7 +100,7 @@ QVariant CTreeFileModel::data(const QModelIndex& index, int role) const
 
         case eStagedRole:
         {
-            QString sFileFullName = fileInfo(index).absoluteFilePath();
+            QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
             CRepoFile* pFile = fileByFullName(m_pController->repository()->repoFiles(), sFileFullName);
 
             if (pFile != nullptr)
@@ -115,7 +115,7 @@ QVariant CTreeFileModel::data(const QModelIndex& index, int role) const
 
     }
 
-    return QFileSystemModel::data(index, role);
+    return QFileSystemModel::data(qIndex, iRole);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -133,6 +133,20 @@ void CTreeFileModel::handleCurrentIndex(QModelIndex qIndex)
     QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
 
     emit currentFileFullName(sFileFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CTreeFileModel::selectionToFullNameList(QModelIndexList lIndices)
+{
+    QStringList lFullNames;
+
+    for (QModelIndex qIndex : lIndices)
+    {
+        lFullNames << fileInfo(qIndex).absoluteFilePath();
+    }
+
+    return lFullNames;
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -104,10 +104,10 @@ public:
     Q_INVOKABLE void toggleStaged(QString sFullName);
 
     //!
-    Q_INVOKABLE void stageSelection();
+    Q_INVOKABLE void stageSelection(QStringList lFileFullNames);
 
     //!
-    Q_INVOKABLE void unstageSelection();
+    Q_INVOKABLE void unstageSelection(QStringList lFileFullNames);
 
     //!
     Q_INVOKABLE void stageAll();
@@ -116,7 +116,7 @@ public:
     Q_INVOKABLE void unstageAll();
 
     //!
-    Q_INVOKABLE void revertSelection();
+    Q_INVOKABLE void revertSelection(QStringList lFileFullNames);
 
     //!
     Q_INVOKABLE void commit(const QString& sMessage, bool bAmend);

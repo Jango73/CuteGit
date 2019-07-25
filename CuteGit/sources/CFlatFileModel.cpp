@@ -91,3 +91,17 @@ void CFlatFileModel::handleCurrentIndex(QModelIndex qIndex)
         emit currentFileFullName(m_pController->repository()->repoFiles()[qIndex.row()]->fullName());
     }
 }
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CFlatFileModel::selectionToFullNameList(QModelIndexList lIndices)
+{
+    QStringList lFullNames;
+
+    for (QModelIndex qIndex : lIndices)
+    {
+        lFullNames << m_pController->repository()->repoFiles()[qIndex.row()]->fullName();
+    }
+
+    return lFullNames;
+}
