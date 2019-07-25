@@ -157,7 +157,7 @@ void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
 void CGitCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
 {
     QString sCommand = QString(bStage ? sCommandStage : sCommandUnstage).arg(sFullName);
-    exec(new CProcessCommand(CProcessCommand::eStageFile, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eStageFile, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ void CGitCommands::stageFile(const QString& sPath, const QString& sFullName, boo
 void CGitCommands::stageAll(const QString& sPath, bool bStage)
 {
     QString sCommand = QString(bStage ? sCommandStageAll : sCommandUnstageAll);
-    exec(new CProcessCommand(CProcessCommand::eStageAll, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eStageAll, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ void CGitCommands::stageAll(const QString& sPath, bool bStage)
 void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandRevert).arg(sFullName);
-    exec(new CProcessCommand(CProcessCommand::eRevertFile, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eRevertFile, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -181,7 +181,7 @@ void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 {
     QString sCommand = QString(sCommandCommit).arg(sMessage);
-    exec(new CProcessCommand(CProcessCommand::eCommit, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eCommit, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -189,7 +189,7 @@ void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 void CGitCommands::amend(const QString& sPath)
 {
     QString sCommand = QString(sCommandAmend);
-    exec(new CProcessCommand(CProcessCommand::eAmend, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eAmend, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ void CGitCommands::push(const QString& sPath)
 {
     emit newOutputString(CProcessCommand::eNotification, tr("Pushing..."));
     QString sCommand = QString(sCommandPush);
-    exec(new CProcessCommand(CProcessCommand::ePush, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::ePush, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -207,7 +207,7 @@ void CGitCommands::pull(const QString& sPath)
 {
     emit newOutputString(CProcessCommand::eNotification, tr("Pulling..."));
     QString sCommand = QString(sCommandPull);
-    exec(new CProcessCommand(CProcessCommand::ePull, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::ePull, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -224,7 +224,8 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 {
     QString sFinalName = sBranch;
     sFinalName.replace(sRemoteBranchPrefix, "");
-    exec(new CProcessCommand(CProcessCommand::eSetCurrentBranch, sPath, QString(sCommandSetCurrentBranch).arg(sFinalName)));
+    QString sCommand = QString(sCommandSetCurrentBranch).arg(sFinalName);
+    exec(new CProcessCommand(CProcessCommand::eSetCurrentBranch, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -233,7 +234,7 @@ void CGitCommands::commitReset(const QString& sPath, const QString& sCommitId)
 {
     emit newOutputString(CProcessCommand::eNotification, tr("Doing reset..."));
     QString sCommand = QString(sCommandResetOnCommit).arg(sCommitId);
-    exec(new CProcessCommand(CProcessCommand::eCommitReset, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eCommitReset, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -252,7 +253,7 @@ void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
-    exec(new CProcessCommand(CProcessCommand::eCommitRebase, sPath, sCommand, mEnvironment));
+    exec(new CProcessCommand(CProcessCommand::eCommitRebase, sPath, sCommand, true, mEnvironment));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -272,7 +273,7 @@ void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCom
 
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
-    exec(new CProcessCommand(CProcessCommand::eChangeCommitMessage, sPath, sCommand, mEnvironment));
+    exec(new CProcessCommand(CProcessCommand::eChangeCommitMessage, sPath, sCommand, true, mEnvironment));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -281,7 +282,7 @@ void CGitCommands::continueRebase(const QString& sPath)
 {
     emit newOutputString(CProcessCommand::eNotification, tr("Continuing rebase..."));
     QString sCommand = QString(sCommandContinueRebase);
-    exec(new CProcessCommand(CProcessCommand::eContinueRebase, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eContinueRebase, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -290,7 +291,7 @@ void CGitCommands::abortRebase(const QString& sPath)
 {
     emit newOutputString(CProcessCommand::eNotification, tr("Aborting rebase..."));
     QString sCommand = QString(sCommandAbortRebase);
-    exec(new CProcessCommand(CProcessCommand::eAbortRebase, sPath, sCommand));
+    exec(new CProcessCommand(CProcessCommand::eAbortRebase, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------

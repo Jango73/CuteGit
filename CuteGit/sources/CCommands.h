@@ -48,8 +48,9 @@ public:
 
     Q_ENUMS(EProcessCommand)
 
-    CProcessCommand(EProcessCommand eCommand, QString sWorkPath, QString sCommand, QMap<QString, QString> mEnvironment = QMap<QString, QString>())
+    CProcessCommand(EProcessCommand eCommand, QString sWorkPath, QString sCommand, bool bAllowStack = false, QMap<QString, QString> mEnvironment = QMap<QString, QString>())
         : m_eCommand(eCommand)
+        , m_bAllowStack(bAllowStack)
         , m_sWorkPath(sWorkPath)
         , m_sCommand(sCommand)
         , m_mEnvironment(mEnvironment)
@@ -57,6 +58,7 @@ public:
     }
 
     EProcessCommand         m_eCommand;
+    bool                    m_bAllowStack;
     QString                 m_sWorkPath;
     QString                 m_sCommand;
     QMap<QString, QString>  m_mEnvironment;

@@ -64,13 +64,17 @@ void CCommands::exec(CProcessCommand* pCommand)
     QMutexLocker locker(&m_mMutex);
 
     // Leave only one command of a given type in the stack
-    for (int index = 0; index < m_lCommandStack.count(); index++)
+    // if not allowed to stack
+    if (pCommand->m_bAllowStack == false)
     {
-        if (m_lCommandStack[index]->m_eCommand == pCommand->m_eCommand)
+        for (int index = 0; index < m_lCommandStack.count(); index++)
         {
-            m_lCommandStack[index]->deleteLater();
-            m_lCommandStack.removeAt(index);
-            index--;
+            if (m_lCommandStack[index]->m_eCommand == pCommand->m_eCommand)
+            {
+                m_lCommandStack[index]->deleteLater();
+                m_lCommandStack.removeAt(index);
+                index--;
+            }
         }
     }
 
