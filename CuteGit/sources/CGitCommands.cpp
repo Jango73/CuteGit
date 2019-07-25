@@ -20,7 +20,7 @@ static const char* sCommandBranches = "git branch -a";
 static const char* sCommandBranchLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
 static const char* sCommandFileLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20 \"%1\"";
 static const char* sCommandStage = "git add -f \"%1\"";
-static const char* sCommandUnstage = "git reset \"%1\"";
+static const char* sCommandUnstage = "git reset HEAD \"%1\"";
 static const char* sCommandStageAll = "git add -u";
 static const char* sCommandUnstageAll = "git reset .";
 static const char* sCommandRevert = "git checkout \"%1\"";
@@ -138,7 +138,8 @@ void CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
 
 void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
 {
-    QString sLine = execNow(sPath, QString(sCommandStatusForFile).arg(sFullName));
+    QString sCommand = QString(sCommandStatusForFile).arg(sFullName);
+    QString sLine = execNow(sPath, sCommand);
 
     CRepoFile* pFile = repoFileForLine(sPath, sLine);
 
