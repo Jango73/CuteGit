@@ -20,6 +20,7 @@
         <file>qml/pages/MainPage.qml</file>
         <file>qml/pages/MainMenu.qml</file>
         <file>qml/pages/FilePane.qml</file>
+        <file>qml/pages/FlatFileView.qml</file>
         <file>qml/pages/RepoPane.qml</file>
         <file>qml/pages/BranchPane.qml</file>
         <file>qml/pages/ToolPane.qml</file>

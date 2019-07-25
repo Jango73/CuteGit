@@ -49,17 +49,16 @@ Popup {
             focus: true
         }
 
-        StandardText {
+        FlatFileView {
             id: fileList
             anchors.top: message.bottom
             anchors.bottom: buttons.top
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: Const.mainPadding
-            text: qsTr("File list")
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            controller: root.controller
             visible: root.showFileList
+            mouseActive: false
         }
 
         RowLayout {

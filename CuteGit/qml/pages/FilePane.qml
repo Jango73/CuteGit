@@ -53,7 +53,7 @@ TitlePane {
             }
         }
 
-        ListView {
+        FlatFileView {
             id: listView
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -63,88 +63,7 @@ TitlePane {
             enabled: visible
             activeFocusOnTab: true
 
-            model: root.controller !== null ? root.controller.repository.flatFileModel : undefined
-
-            onCurrentIndexChanged: root.controller.repository.flatFileModel.handleCurrentIndex(currentModelIndex())
-
-            delegate: Item {
-                width: parent.width
-                height: Const.treeElementHeight + Const.mainPadding * 0.25
-
-                property string fullName: model.fullName
-
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-                    onClicked: {
-                        listView.currentIndex = index
-                        listView.forceActiveFocus()
-                    }
-                }
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: if (model.staged === "X") Const.fileStagedColor
-                           else if (model.status === "*") Const.fileModifiedColor
-                           else if (model.status === "=") Const.fileRenamedColor
-                           else if (model.status === "+") Const.fileAddedColor
-                           else if (model.status === "-") Const.fileDeletedColor
-                           else Const.transparent
-                }
-
-                Item {
-                    id: listViewFileName
-                    width: parent.width * 0.4
-                    height: parent.height
-
-                    Selection {
-                        id: listSelection
-                        targetWidth: listViewFileNameText.width
-                        targetHeight: listViewFileNameText.height
-                        anchors.centerIn: listViewFileNameText
-                        borderOnly: true
-                        visible: index === listView.currentIndex
-
-                        FocusIndicator {
-                            anchors.fill: parent
-                            visible: listView.activeFocus
-                        }
-                    }
-
-                    ElideText {
-                        id: listViewFileNameText
-                        width: parent.width - Const.smallPadding
-                        anchors.centerIn: parent
-                        color: Material.foreground
-                        text: model.fileName
-                    }
-                }
-
-                Item {
-                    id: listViewRelativeName
-                    width: parent.width * 0.6
-                    height: parent.height
-                    anchors.left: listViewFileName.right
-
-                    ElideText {
-                        id: listViewRelativeNameText
-                        width: parent.width - Const.smallPadding
-                        anchors.centerIn: parent
-                        color: Material.foreground
-                        text: model.relativeName
-                    }
-                }
-            }
-
-            Keys.onPressed: {
-                if (event.key === Qt.Key_Space) {
-                    root.controller.repository.toggleStaged(currentItem.fullName)
-                }
-            }
-
-            function currentModelIndex() {
-                return listView.model.index(currentIndex, 0)
-            }
+            controller: root.controller
         }
 
         QQC15.TreeView {
