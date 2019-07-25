@@ -3,6 +3,6 @@ import QtQuick.Controls 2.5
 import "."
 
 Button {
-    flat: true
+//    flat: true
     implicitHeight: Const.buttonHeight
 }

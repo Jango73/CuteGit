@@ -21,7 +21,7 @@ Item {
 
     // Margins and padding
     property int mainPadding: 8
-    property int mainRadius: 2
+    property int mainRadius: 4
     property int smallPadding: mainPadding / 2
     property int paneMargins: smallPadding
     property int paneElevation: 2

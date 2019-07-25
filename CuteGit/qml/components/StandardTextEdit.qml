@@ -14,7 +14,7 @@ Item {
         anchors.fill: parent
         color: Const.transparent
         border.width: 1
-        border.color: Material.foreground
+        border.color: Material.accent
     }
 
     TextEdit {

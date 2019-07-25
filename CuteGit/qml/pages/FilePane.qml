@@ -55,10 +55,7 @@ TitlePane {
 
         FlatFileView {
             id: listView
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.fill: parent
             visible: !root.filesAsTree
             enabled: visible
             activeFocusOnTab: true

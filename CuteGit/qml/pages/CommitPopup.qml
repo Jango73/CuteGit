@@ -49,16 +49,22 @@ Popup {
             focus: true
         }
 
-        FlatFileView {
-            id: fileList
+        TitlePane {
+            id: filePane
             anchors.top: message.bottom
             anchors.bottom: buttons.top
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: Const.mainPadding
-            controller: root.controller
-            visible: root.showFileList
-            mouseActive: false
+            title: Const.filesText
+
+            content: FlatFileView {
+                id: fileList
+                anchors.fill: parent
+                anchors.margins: Const.mainPadding
+                controller: root.controller
+                visible: root.showFileList
+                mouseActive: false
+            }
         }
 
         RowLayout {
