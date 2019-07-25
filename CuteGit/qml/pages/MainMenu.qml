@@ -20,6 +20,7 @@ MenuBar {
     property alias pullAction: pull
     property alias pushAction: push
     property alias commitAction: commit
+    property alias amendAction: amend
 
     signal requestCloneRepository()
     signal requestOpenRepository()
@@ -58,6 +59,86 @@ MenuBar {
             text: qsTr("&Quit")
             shortcut: "Ctrl+Q"
             onTriggered: root.controller.quit()
+        }
+    }
+
+    Menu {
+        title: qsTr("Re&mote")
+
+        Action {
+            id: pull
+            text: qsTr("&Pull")
+            shortcut: "Ctrl+L"
+            onTriggered: root.controller.repository.pull()
+        }
+
+        Action {
+            id: push
+            text: qsTr("Pus&h")
+            shortcut: "Ctrl+P"
+            onTriggered: root.controller.repository.push()
+        }
+    }
+
+    Menu {
+        title: qsTr("&Local")
+
+        Action {
+            text: qsTr("Stage a&ll")
+            shortcut: "Ctrl+shift++"
+            onTriggered: root.controller.repository.stageAll()
+        }
+
+        Action {
+            text: qsTr("Usta&ge all")
+            shortcut: "Ctrl+shift+-"
+            onTriggered: root.controller.repository.unstageAll()
+        }
+
+        Action {
+            text: qsTr("&Stage selection")
+            shortcut: "Ctrl++"
+            onTriggered: root.requestStageSelection()
+        }
+
+        Action {
+            text: qsTr("&Unstage selection")
+            shortcut: "Ctrl+-"
+            onTriggered: root.requestUnstageSelection()
+        }
+
+        Action {
+            text: qsTr("&Revert selection")
+            shortcut: "Ctrl+Z"
+            onTriggered: root.requestRevertSelection()
+        }
+
+        Action {
+            id: commit
+            text: qsTr("&Commit")
+            shortcut: "Ctrl+C"
+            onTriggered: root.requestCommit()
+        }
+
+        Action {
+            id: amend
+            text: qsTr("&Amend")
+            shortcut: "Ctrl+A"
+            onTriggered: root.requestAmend()
+        }
+
+        Action {
+            text: qsTr("C&ontinue rebase")
+            shortcut: "Ctrl+R"
+            enabled: root.rebaseInProgress
+            onTriggered: root.requestContinueRebase()
+        }
+
+        Action {
+            text: qsTr("Abor&t rebase")
+            shortcut: "Ctrl+T"
+            enabled: root.rebaseInProgress
+            onTriggered: root.requestAbortRebase()
         }
     }
 
@@ -110,85 +191,6 @@ MenuBar {
             checkable: true
             checked: root.controller.showUntracked
             onClicked: root.controller.showUntracked = !root.controller.showUntracked
-        }
-    }
-
-    Menu {
-        title: qsTr("&Local")
-
-        Action {
-            text: qsTr("Stage a&ll")
-            shortcut: "Ctrl+shift++"
-            onTriggered: root.controller.repository.stageAll()
-        }
-
-        Action {
-            text: qsTr("Usta&ge all")
-            shortcut: "Ctrl+shift+-"
-            onTriggered: root.controller.repository.unstageAll()
-        }
-
-        Action {
-            text: qsTr("&Stage selection")
-            shortcut: "Ctrl++"
-            onTriggered: root.requestStageSelection()
-        }
-
-        Action {
-            text: qsTr("&Unstage selection")
-            shortcut: "Ctrl+-"
-            onTriggered: root.requestUnstageSelection()
-        }
-
-        Action {
-            text: qsTr("&Revert selection")
-            shortcut: "Ctrl+Z"
-            onTriggered: root.requestRevertSelection()
-        }
-
-        Action {
-            id: commit
-            text: qsTr("&Commit")
-            shortcut: "Ctrl+C"
-            onTriggered: root.requestCommit()
-        }
-
-        Action {
-            text: qsTr("&Amend")
-            shortcut: "Ctrl+A"
-            onTriggered: root.requestAmend()
-        }
-
-        Action {
-            text: qsTr("C&ontinue rebase")
-            shortcut: "Ctrl+R"
-            enabled: root.rebaseInProgress
-            onTriggered: root.requestContinueRebase()
-        }
-
-        Action {
-            text: qsTr("Abor&t rebase")
-            shortcut: "Ctrl+T"
-            enabled: root.rebaseInProgress
-            onTriggered: root.requestAbortRebase()
-        }
-    }
-
-    Menu {
-        title: qsTr("Re&mote")
-
-        Action {
-            id: pull
-            text: qsTr("&Pull")
-            shortcut: "Ctrl+L"
-            onTriggered: root.controller.repository.pull()
-        }
-
-        Action {
-            id: push
-            text: qsTr("Pus&h")
-            shortcut: "Ctrl+P"
-            onTriggered: root.controller.repository.push()
         }
     }
 

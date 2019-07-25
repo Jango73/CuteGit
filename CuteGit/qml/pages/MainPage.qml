@@ -66,9 +66,12 @@ Item {
         Row {
             ToolButton { action: menu.cloneRepositoryAction }
             ToolButton { action: menu.openRepositoryAction }
+            ToolSeparator {}
             ToolButton { action: menu.pullAction }
             ToolButton { action: menu.pushAction }
+            ToolSeparator {}
             ToolButton { action: menu.commitAction }
+            ToolButton { action: menu.amendAction }
         }
     }
 
