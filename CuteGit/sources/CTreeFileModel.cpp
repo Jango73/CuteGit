@@ -122,8 +122,6 @@ QVariant CTreeFileModel::data(const QModelIndex& qIndex, int iRole) const
 
 void CTreeFileModel::handleRepoFilesChanged()
 {
-    beginResetModel();
-    endResetModel();
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -123,8 +123,10 @@ void CController::setShowClean(bool bValue)
     {
         m_bShowClean = bValue;
         if (m_pRepository != nullptr)
-            if (m_pRepository->treeFileModelProxy() != nullptr)
-                m_pRepository->treeFileModelProxy()->filterChanged();
+        {
+            m_pRepository->treeFileModelProxy()->filterChanged();
+            m_pRepository->flatFileModelProxy()->filterChanged();
+        }
         emit showCleanChanged();
     }
 }
@@ -137,8 +139,10 @@ void CController::setShowAdded(bool bValue)
     {
         m_bShowAdded = bValue;
         if (m_pRepository != nullptr)
-            if (m_pRepository->treeFileModelProxy() != nullptr)
-                m_pRepository->treeFileModelProxy()->filterChanged();
+        {
+            m_pRepository->treeFileModelProxy()->filterChanged();
+            m_pRepository->flatFileModelProxy()->filterChanged();
+        }
         emit showAddedChanged();
     }
 }
@@ -151,8 +155,10 @@ void CController::setShowModified(bool bValue)
     {
         m_bShowModified = bValue;
         if (m_pRepository != nullptr)
-            if (m_pRepository->treeFileModelProxy() != nullptr)
-                m_pRepository->treeFileModelProxy()->filterChanged();
+        {
+            m_pRepository->treeFileModelProxy()->filterChanged();
+            m_pRepository->flatFileModelProxy()->filterChanged();
+        }
         emit showModifiedChanged();
     }
 }
@@ -165,8 +171,10 @@ void CController::setShowDeleted(bool bValue)
     {
         m_bShowDeleted = bValue;
         if (m_pRepository != nullptr)
-            if (m_pRepository->treeFileModelProxy() != nullptr)
-                m_pRepository->treeFileModelProxy()->filterChanged();
+        {
+            m_pRepository->treeFileModelProxy()->filterChanged();
+            m_pRepository->flatFileModelProxy()->filterChanged();
+        }
         emit showDeletedChanged();
     }
 }
@@ -179,8 +187,10 @@ void CController::setShowUntracked(bool bValue)
     {
         m_bShowUntracked = bValue;
         if (m_pRepository != nullptr)
-            if (m_pRepository->treeFileModelProxy() != nullptr)
-                m_pRepository->treeFileModelProxy()->filterChanged();
+        {
+            m_pRepository->treeFileModelProxy()->filterChanged();
+            m_pRepository->flatFileModelProxy()->filterChanged();
+        }
         emit showUntrackedChanged();
     }
 }

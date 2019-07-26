@@ -10,9 +10,9 @@ StandardListView {
     property variant controller: null
     property bool mouseActive: true
 
-    model: root.controller !== null ? root.controller.repository.flatFileModel : undefined
+    model: root.controller !== null ? root.controller.repository.flatFileModelProxy : undefined
 
-    onCurrentIndexChanged: root.controller.repository.flatFileModel.handleCurrentIndex(currentModelIndex())
+    onCurrentIndexChanged: root.controller.repository.flatFileModelProxy.handleCurrentIndex(currentModelIndex())
 
     delegate: Item {
         width: parent.width

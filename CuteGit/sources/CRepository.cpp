@@ -21,6 +21,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pTreeFileModel(nullptr)
     , m_pTreeFileModelProxy(new CTreeFileModelProxy(pController, this))
     , m_pFlatFileModel(nullptr)
+    , m_pFlatFileModelProxy(new CFlatFileModelProxy(pController, this))
     , m_pBranchModel(new QStringListModel(this))
     , m_pLogModel(new CLogModel(this))
     , m_pFileDiffModel(new CDiffModel(this))
@@ -59,13 +60,6 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(m_pCommands, &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
     connect(m_pCommands, &CCommands::newOutputListOfCGraphLine, this, &CRepository::onNewOutputListOfCGraphLine);
 
-    // Delete any existing file model
-    if (m_pTreeFileModel != nullptr)
-        m_pTreeFileModel->deleteLater();
-
-    if (m_pFlatFileModel != nullptr)
-        m_pFlatFileModel->deleteLater();
-
     m_pFileDiffModel->setLines(QList<CDiffLine*>());
     m_pFileLogModel->setLines(QList<CLogLine*>());
 
@@ -79,6 +73,8 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
 
     connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
+
+    m_pFlatFileModelProxy->setSourceModel(m_pFlatFileModel);
 
     m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
     m_pTreeFileModel->setRootPath(sPath);
@@ -509,7 +505,7 @@ void CRepository::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eC
                 m_lRepoFiles << pFile;
         }
 
-//        m_pTreeFileModel->handleRepoFilesChanged();
+        m_pTreeFileModel->handleRepoFilesChanged();
         m_pFlatFileModel->handleRepoFilesChanged();
         m_pTreeFileModelProxy->filterChanged();
 

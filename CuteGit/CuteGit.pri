@@ -7,6 +7,7 @@ HEADERS += \
     sources/CTreeFileModel.h \
     sources/CTreeFileModelProxy.h \
     sources/CFlatFileModel.h \
+    sources/CFlatFileModelProxy.h \
     sources/CRepoFile.h \
     sources/CLogModel.h \
     sources/CLogLine.h \
@@ -26,6 +27,7 @@ SOURCES += \
     sources/CTreeFileModel.cpp \
     sources/CTreeFileModelProxy.cpp \
     sources/CFlatFileModel.cpp \
+    sources/CFlatFileModelProxy.cpp \
     sources/CRepoFile.cpp \
     sources/CLogModel.cpp \
     sources/CGraphModel.cpp \

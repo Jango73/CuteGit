@@ -145,9 +145,9 @@ TitlePane {
                 for (var i = 0; i < treeView.model.rowCount(); i++) {
                     var index = treeView.model.index(i, 0)
 
-                    if (!treeView.isExpanded(index)) {
+//                    if (!treeView.isExpanded(index)) {
                         treeView.expand(index)
-                    }
+//                    }
                 }
             }
 
