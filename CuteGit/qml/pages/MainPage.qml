@@ -207,6 +207,14 @@ Item {
 
                 controller: root.controller
 
+                onRequestCommitDiffPrevious: {
+                    root.controller.repository.commitDiffPrevious(commitId)
+                }
+
+                onRequestCommitBranchFrom: {
+                    root.controller.repository.branchFromCommit(commitId)
+                }
+
                 onRequestCommitReset: {
                     root.controller.repository.commitReset(commitId)
                 }

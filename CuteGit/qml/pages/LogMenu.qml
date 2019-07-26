@@ -12,6 +12,7 @@ Menu {
     property string commitMessage: ""
 
     signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitBranchFrom(var commitId)
     signal requestCommitReset(var commitId)
     signal requestCommitRebase(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
@@ -29,7 +30,17 @@ Menu {
     }
 
     Action {
-        text: qsTr("&Reset to")
+        text: qsTr("&Branch from")
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitBranchFrom(root.commitId)
+            }
+        }
+    }
+
+    Action {
+        text: qsTr("Reset &to")
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -49,7 +60,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("&Change message...")
+        text: qsTr("&Change message")
 
         onTriggered: {
             if (root.commitId !== "") {

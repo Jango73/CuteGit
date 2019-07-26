@@ -11,9 +11,12 @@ TitlePane {
 
     property variant controller: null
 
+    signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitBranchFrom(var commitId)
     signal requestCommitReset(var commitId)
     signal requestCommitRebase(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
+    signal requestCommitSquash(var commitId)
 
     title: Const.logText
 
@@ -37,6 +40,14 @@ TitlePane {
             id: menu
             controller: root.controller
 
+            onRequestCommitDiffPrevious: {
+                root.requestCommitDiffPrevious(commitId)
+            }
+
+            onRequestCommitBranchFrom: {
+                root.requestCommitBranchFrom(commitId)
+            }
+
             onRequestCommitReset: {
                 root.requestCommitReset(commitId)
             }
@@ -47,6 +58,10 @@ TitlePane {
 
             onRequestCommitMessageChange: {
                 root.requestCommitMessageChange(commitId, commitMessage)
+            }
+
+            onRequestCommitSquash: {
+                root.requestCommitSquash(commitId)
             }
         }
     }
