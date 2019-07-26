@@ -9,7 +9,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-class CGitCommands : public CCommands
+class CSvnCommands : public CCommands
 {
     Q_OBJECT
 
@@ -19,27 +19,15 @@ public:
     // Enumerators
     //-------------------------------------------------------------------------------------------------
 
-    enum ERebaseType
-    {
-        eRTReword,
-        eRTEdit
-    };
-
-    enum ERebaseStep
-    {
-        eRSChangeCommitEditSequence,
-        eRSChangeCommitEditMessage
-    };
-
     //-------------------------------------------------------------------------------------------------
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CGitCommands();
+    CSvnCommands();
 
     //! Destructor
-    virtual ~CGitCommands() override;
+    virtual ~CSvnCommands() override;
 
     //-------------------------------------------------------------------------------------------------
     // Getters
@@ -85,12 +73,6 @@ public:
     virtual void commit(const QString& sPath, const QString& sMessage) override;
 
     //!
-    virtual void amend(const QString& sPath) override;
-
-    //!
-    virtual void push(const QString& sPath) override;
-
-    //!
     virtual void pull(const QString& sPath) override;
 
     //!
@@ -98,27 +80,6 @@ public:
 
     //!
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch) override;
-
-    //!
-    virtual void commitReset(const QString& sPath, const QString& sCommitId) override;
-
-    //!
-    virtual void commitRebase(const QString& sPath, const QString& sCommitId) override;
-
-    //!
-    virtual void commitSquash(const QString& sPath, const QString& sCommitId) override;
-
-    //!
-    virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage) override;
-
-    //!
-    virtual void continueRebase(const QString& sPath) override;
-
-    //!
-    virtual void abortRebase(const QString& sPath) override;
-
-    //!
-    virtual void editSequenceFile(const QString& sFileName) override;
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
@@ -136,8 +97,6 @@ protected slots:
 
 protected:
 
-    ERebaseType     m_eRebaseType;
-    ERebaseStep     m_eRebaseStep;
     QString         m_sCommitId;
     QString         m_sCommitMessage;
 };

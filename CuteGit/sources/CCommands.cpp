@@ -26,6 +26,14 @@ CCommands::~CCommands()
 
 //-------------------------------------------------------------------------------------------------
 
+bool CCommands::can(ECapability eWhat) const
+{
+    Q_UNUSED(eWhat);
+    return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 // This method does NOT run in the main thread
 // Watch out for data integrity protection
 void CCommands::run()
@@ -64,7 +72,7 @@ void CCommands::exec(CProcessCommand* pCommand)
     QMutexLocker locker(&m_mMutex);
 
     // Leave only one command of a given type in the stack
-    // if not allowed to stack
+    // if not allowed to stack the type
     if (pCommand->m_bAllowStack == false)
     {
         for (int index = 0; index < m_lCommandStack.count(); index++)
@@ -126,6 +134,13 @@ void CCommands::repositoryStatus(const QString& sPath)
 //-------------------------------------------------------------------------------------------------
 
 void CCommands::branches(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::graph(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }
@@ -236,6 +251,14 @@ void CCommands::commitReset(const QString& sPath, const QString& sCommitId)
 //-------------------------------------------------------------------------------------------------
 
 void CCommands::commitRebase(const QString& sPath, const QString& sCommitId)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::commitSquash(const QString& sPath, const QString& sCommitId)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(sCommitId);

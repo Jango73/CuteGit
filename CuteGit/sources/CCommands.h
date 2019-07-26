@@ -12,6 +12,7 @@
 #include "CRepoFile.h"
 #include "CLogLine.h"
 #include "CDiffLine.h"
+#include "CGraphLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -27,6 +28,7 @@ public:
         eAllFileStatus,
         eRepositoryStatus,
         eBranches,
+        eGraph,
         eBranchLog,
         eCurrentBranch,
         eFileLog,
@@ -41,6 +43,7 @@ public:
         eSetCurrentBranch,
         eCommitReset,
         eCommitRebase,
+        eCommitSquash,
         eChangeCommitMessage,
         eContinueRebase,
         eAbortRebase
@@ -72,6 +75,26 @@ class CCommands : public QThread
 
 public:
 
+    enum ECapability
+    {
+        Clone,
+        ShowGlobalGraph,
+        ShowBranchLog,
+        ShowFileLog,
+        Commit,
+        Amend,
+        Push,
+        Pull,
+        SquashCommit,
+        ChangeCommitMessage,
+        ResetToCommit,
+        RebaseOnCommit,
+        ContinueRebase,
+        AbortRebase,
+    };
+
+    Q_ENUMS(ECapability)
+
     //-------------------------------------------------------------------------------------------------
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
@@ -83,40 +106,50 @@ public:
     virtual ~CCommands() override;
 
     //-------------------------------------------------------------------------------------------------
+    // Getters
+    //-------------------------------------------------------------------------------------------------
+
+    virtual bool can(ECapability eWhat) const;
+
+    //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
-    //!
+    //! Creates a list of CRepoFile from the repo at sPath
     virtual void allFileStatus(const QString& sPath);
 
-    //!
+    //! Checks the status of the repo at sPath
     virtual void repositoryStatus(const QString& sPath);
 
-    //!
+    //! Creates a list of branches of the repo at sPath
     virtual void branches(const QString& sPath);
 
-    //!
+    //! Creates a list of CGraphLine from the repo at sPath
+    virtual void graph(const QString& sPath);
+
+    //! Creates a list of CLogLine from the repo at sPath, for the current branch
     virtual void branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to);
 
-    //!
+    //! Creates a list of CLogLine from the repo at sPath, for sFullName
     virtual void fileLog(const QString& sPath, const QString& sFullName);
 
-    //!
+    //! Toggles the 'staged' state of sFullName in the repo at sPath
     virtual void toggleStaged(const QString& sPath, const QString& sFullName);
 
-    //!
+    //! Stages or unstages sFullName in the repo at sPath
     virtual void stageFile(const QString& sPath, const QString& sFullName, bool bStage);
 
-    //!
+    //! Stages or unstages all files in the repo at sPath
     virtual void stageAll(const QString& sPath, bool bStage);
 
-    //!
+    //! Reverts all modifications of sFullName in the repo at sPath
+    //! Use with caution
     virtual void revertFile(const QString& sPath, const QString& sFullName);
 
-    //!
+    //! Commits all staged files in the repo at sPath, using sMessage
     virtual void commit(const QString& sPath, const QString& sMessage);
 
-    //!
+    //! Amends all staged files in the repo at sPath
     virtual void amend(const QString& sPath);
 
     //!
@@ -136,6 +169,9 @@ public:
 
     //!
     virtual void commitRebase(const QString& sPath, const QString& sCommitId);
+
+    //!
+    virtual void commitSquash(const QString& sPath, const QString& sCommitId);
 
     //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage);
@@ -186,13 +222,16 @@ signals:
     void newOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
 
     //!
-    void newOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> vNewRepoFiles);
+    void newOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 
     //!
-    void newOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> vNewGraphLines);
+    void newOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
 
     //!
-    void newOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> vNewGraphLines);
+    void newOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
+
+    //!
+    void newOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
 
 private:
 

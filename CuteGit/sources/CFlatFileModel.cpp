@@ -8,9 +8,9 @@
 
 //-------------------------------------------------------------------------------------------------
 
-CFlatFileModel::CFlatFileModel(CController* pController, QObject* parent)
+CFlatFileModel::CFlatFileModel(CRepository* pRepository, QObject* parent)
     : QAbstractListModel(parent)
-    , m_pController(pController)
+    , m_pRepository(pRepository)
 {
 }
 
@@ -40,7 +40,7 @@ int CFlatFileModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
 
-    return m_pController->repository()->repoFiles().count();
+    return m_pRepository->repoFiles().count();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -52,22 +52,22 @@ QVariant CFlatFileModel::data(const QModelIndex& qIndex, int iRole) const
         switch (iRole)
         {
         case eFullNameRole:
-            return m_pController->repository()->repoFiles()[qIndex.row()]->fullName();
+            return m_pRepository->repoFiles()[qIndex.row()]->fullName();
 
         case eFileNameRole:
-            return m_pController->repository()->repoFiles()[qIndex.row()]->fileName();
+            return m_pRepository->repoFiles()[qIndex.row()]->fileName();
 
         case eRelativeNameRole:
-            return m_pController->repository()->repoFiles()[qIndex.row()]->relativeName();
+            return m_pRepository->repoFiles()[qIndex.row()]->relativeName();
 
         case eSizeRole:
             return 0;
 
         case eStatusRole:
-            return m_pController->repository()->repoFiles()[qIndex.row()]->statusToString();
+            return m_pRepository->repoFiles()[qIndex.row()]->statusToString();
 
         case eStagedRole:
-            return m_pController->repository()->repoFiles()[qIndex.row()]->stagedToString();
+            return m_pRepository->repoFiles()[qIndex.row()]->stagedToString();
         }
     }
 
@@ -88,7 +88,7 @@ void CFlatFileModel::handleCurrentIndex(QModelIndex qIndex)
 {
     if (qIndex.isValid())
     {
-        emit currentFileFullName(m_pController->repository()->repoFiles()[qIndex.row()]->fullName());
+        emit currentFileFullName(m_pRepository->repoFiles()[qIndex.row()]->fullName());
     }
 }
 
@@ -100,7 +100,7 @@ QStringList CFlatFileModel::selectionToFullNameList(QModelIndexList lIndices)
 
     for (QModelIndex qIndex : lIndices)
     {
-        lFullNames << m_pController->repository()->repoFiles()[qIndex.row()]->fullName();
+        lFullNames << m_pRepository->repoFiles()[qIndex.row()]->fullName();
     }
 
     return lFullNames;

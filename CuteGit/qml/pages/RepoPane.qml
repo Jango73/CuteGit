@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.12
+import CuteGit 1.0
 import "../components"
 
 TitlePane {
@@ -33,13 +34,14 @@ TitlePane {
                 height: Const.elementHeight
 
                 Item {
+                    id: item
                     anchors.fill: parent
                     anchors.margins: Const.smallPadding
 
                     MouseArea {
                         anchors.fill: selection
                         onDoubleClicked: {
-                            root.controller.repository.repositoryPath = display
+                            root.controller.repositoryPath = display
                         }
                     }
 
@@ -48,14 +50,21 @@ TitlePane {
                         targetWidth: text.width
                         targetHeight: text.height
                         anchors.centerIn: text
-                        visible: display === root.controller.repository.repositoryPath
+                        visible: display === root.controller.repositoryPath
                     }
 
                     ElideText {
                         id: text
                         width: parent.width - Const.smallPadding
-                        text: display.split("/").slice(-1)[0]
+                        text: item.getDisplayName()
                         color: selection.visible ? Material.background : Material.foreground
+                    }
+
+                    function getDisplayName() {
+                        // var type = root.controller.repository.repositoryType
+                        // var repoString = type === CRepository.GIT ? "Git" : type === CRepository.SVN ? "SVN" : ""
+                        // return display.split("/").slice(-1)[0] + "(" + repoString + ")"
+                        return display.split("/").slice(-1)[0]
                     }
                 }
             }

@@ -2,6 +2,7 @@
 // Qt
 #include <QDebug>
 #include <QApplication>
+#include <QUrl>
 
 // Application
 #include "CController.h"
@@ -47,10 +48,9 @@ const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 
 CController::CController(QObject* parent)
     : QObject(parent)
-    , m_pCommands(new CGitCommands())
     , m_pRepositoryModel(new QStringListModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
-    , m_pRepository(new CRepository(this, this))
+    , m_pRepository(nullptr)
     , m_bShowClean(false)
     , m_bShowAdded(true)
     , m_bShowModified(true)
@@ -79,7 +79,6 @@ CController::CController(QObject* parent)
 
 CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
-    , m_pCommands(new CGitCommands())
     , m_pRepositoryModel(nullptr)
     , m_pCommandOutputModel(nullptr)
     , m_pRepository(nullptr)
@@ -123,8 +122,9 @@ void CController::setShowClean(bool bValue)
     if (m_bShowClean != bValue)
     {
         m_bShowClean = bValue;
-        if (m_pRepository->treeFileModelProxy() != nullptr)
-            m_pRepository->treeFileModelProxy()->filterChanged();
+        if (m_pRepository != nullptr)
+            if (m_pRepository->treeFileModelProxy() != nullptr)
+                m_pRepository->treeFileModelProxy()->filterChanged();
         emit showCleanChanged();
     }
 }
@@ -136,8 +136,9 @@ void CController::setShowAdded(bool bValue)
     if (m_bShowAdded != bValue)
     {
         m_bShowAdded = bValue;
-        if (m_pRepository->treeFileModelProxy() != nullptr)
-            m_pRepository->treeFileModelProxy()->filterChanged();
+        if (m_pRepository != nullptr)
+            if (m_pRepository->treeFileModelProxy() != nullptr)
+                m_pRepository->treeFileModelProxy()->filterChanged();
         emit showAddedChanged();
     }
 }
@@ -149,8 +150,9 @@ void CController::setShowModified(bool bValue)
     if (m_bShowModified != bValue)
     {
         m_bShowModified = bValue;
-        if (m_pRepository->treeFileModelProxy() != nullptr)
-            m_pRepository->treeFileModelProxy()->filterChanged();
+        if (m_pRepository != nullptr)
+            if (m_pRepository->treeFileModelProxy() != nullptr)
+                m_pRepository->treeFileModelProxy()->filterChanged();
         emit showModifiedChanged();
     }
 }
@@ -162,8 +164,9 @@ void CController::setShowDeleted(bool bValue)
     if (m_bShowDeleted != bValue)
     {
         m_bShowDeleted = bValue;
-        if (m_pRepository->treeFileModelProxy() != nullptr)
-            m_pRepository->treeFileModelProxy()->filterChanged();
+        if (m_pRepository != nullptr)
+            if (m_pRepository->treeFileModelProxy() != nullptr)
+                m_pRepository->treeFileModelProxy()->filterChanged();
         emit showDeletedChanged();
     }
 }
@@ -175,9 +178,44 @@ void CController::setShowUntracked(bool bValue)
     if (m_bShowUntracked != bValue)
     {
         m_bShowUntracked = bValue;
-        if (m_pRepository->treeFileModelProxy() != nullptr)
-            m_pRepository->treeFileModelProxy()->filterChanged();
+        if (m_pRepository != nullptr)
+            if (m_pRepository->treeFileModelProxy() != nullptr)
+                m_pRepository->treeFileModelProxy()->filterChanged();
         emit showUntrackedChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setRepositoryPath(QString sPath)
+{
+    if (sPath.startsWith("file:"))
+        sPath = QUrl(sPath).toLocalFile();
+
+    CRepository::ERepositoryType eType = CRepository::getRepositoryType(sPath);
+
+    // If specified directory is a repository
+    if (eType != CRepository::UnknownRepositoryType)
+    {
+        if (m_pRepository != nullptr)
+            delete m_pRepository;
+
+        setRepository(new CRepository(sPath, this, this));
+
+        // Add this path to repository model
+        QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+
+        if (lRepositoryPaths.contains(sPath) == false)
+            lRepositoryPaths << sPath;
+
+        m_pRepositoryModel->setStringList(lRepositoryPaths);
+
+        // Clear command output
+        m_pCommandOutputModel->setStringList(QStringList());
+    }
+    else
+    {
+        // onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
     }
 }
 
@@ -203,6 +241,17 @@ void CController::setSequenceFileName(const QString& sSequenceFileName)
         strcpy(pData->sSequenceFileName, sSequenceFileName.toUtf8().constData());
         m_tShared.unlock();
     }
+}
+
+
+//-------------------------------------------------------------------------------------------------
+
+QString CController::repositoryPath() const
+{
+    if (m_pRepository != nullptr)
+        return m_pRepository->repositoryPath();
+
+    return "";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -287,11 +336,15 @@ void CController::loadConfiguration()
 
     if (sCurrentPath.isEmpty() == false)
     {
-        m_pRepository->setRepositoryPath(sCurrentPath);
+        setRepositoryPath(sCurrentPath);
     }
     else if (lRepositoryPaths.count() > 0)
     {
-        m_pRepository->setRepositoryPath(lRepositoryPaths[0]);
+        setRepositoryPath(lRepositoryPaths[0]);
+    }
+    else
+    {
+        setRepositoryPath("");
     }
 }
 
@@ -331,7 +384,8 @@ void CController::onSharedTimerTick()
         {
             QString sFileName = sequenceFileName();
 
-            m_pCommands->editSequenceFile(sFileName);
+            if (m_pRepository != nullptr && m_pRepository->commands() != nullptr)
+                m_pRepository->commands()->editSequenceFile(sFileName);
 
             setSharedOperation(eSOMasterFinishedEdit);
         }

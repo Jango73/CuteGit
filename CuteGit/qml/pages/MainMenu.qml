@@ -39,6 +39,7 @@ MenuBar {
         Action {
             id: cloneRepository
             text: qsTr("&Clone")
+            enabled: root.controller.repository.can(CCommands.Clone)
             onTriggered: root.requestCloneRepository()
         }
 
@@ -69,6 +70,7 @@ MenuBar {
             id: pull
             text: qsTr("&Pull")
             shortcut: "Ctrl+L"
+            enabled: root.controller.repository.can(CCommands.Pull)
             onTriggered: root.controller.repository.pull()
         }
 
@@ -76,6 +78,7 @@ MenuBar {
             id: push
             text: qsTr("Pus&h")
             shortcut: "Ctrl+P"
+            enabled: root.controller.repository.can(CCommands.Push)
             onTriggered: root.controller.repository.push()
         }
     }
@@ -117,6 +120,7 @@ MenuBar {
             id: commit
             text: qsTr("&Commit")
             shortcut: "Ctrl+C"
+            enabled: root.controller.repository.can(CCommands.Commit)
             onTriggered: root.requestCommit()
         }
 
@@ -124,20 +128,21 @@ MenuBar {
             id: amend
             text: qsTr("&Amend")
             shortcut: "Ctrl+A"
+            enabled: root.controller.repository.can(CCommands.Amend)
             onTriggered: root.requestAmend()
         }
 
         Action {
             text: qsTr("C&ontinue rebase")
             shortcut: "Ctrl+R"
-            enabled: root.rebaseInProgress
+            enabled: root.rebaseInProgress && root.controller.repository.can(CCommands.ContinueRebase)
             onTriggered: root.requestContinueRebase()
         }
 
         Action {
             text: qsTr("Abor&t rebase")
             shortcut: "Ctrl+T"
-            enabled: root.rebaseInProgress
+            enabled: root.rebaseInProgress && root.controller.repository.can(CCommands.AbortRebase)
             onTriggered: root.requestAbortRebase()
         }
     }

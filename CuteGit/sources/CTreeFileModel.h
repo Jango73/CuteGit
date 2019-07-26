@@ -19,7 +19,7 @@
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
 
-class CController;
+class CRepository;
 
 //-------------------------------------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ public:
 
     Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootPathIndexChanged)
 
-    Q_FAST_PROPERTY(CController*, p, controller, Controller)
+    Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
     Q_FAST_PROPERTY(QFileSystemWatcher*, p, fileSystemWatcher, FileSystemWatcher)
 
 public:
@@ -61,7 +61,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CTreeFileModel(CController* pController, QObject *parent = nullptr);
+    CTreeFileModel(CRepository* pRepository, QObject *parent = nullptr);
 
     //! Destructor
     virtual ~CTreeFileModel() override;

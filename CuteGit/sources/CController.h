@@ -14,7 +14,6 @@
 
 // Application
 #include "CRepository.h"
-#include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -29,11 +28,11 @@ class CController : public QObject
 {
     Q_OBJECT
 
-    Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
+    Q_PROPERTY(QString repositoryPath READ repositoryPath WRITE setRepositoryPath NOTIFY repositoryPathChanged)
+
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
     Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
-
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showAdded, ShowAdded)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showModified, ShowModified)
@@ -76,6 +75,9 @@ public:
     // Setters
     //-------------------------------------------------------------------------------------------------
 
+    //! Sets current repository path
+    void setRepositoryPath(QString sPath);
+
     //!
     void setSharedOperation(ESharedOperation iOperation);
 
@@ -85,6 +87,9 @@ public:
     //-------------------------------------------------------------------------------------------------
     // Getters
     //-------------------------------------------------------------------------------------------------
+
+    //!
+    QString repositoryPath() const;
 
     //!
     ESharedOperation sharedOperation();
@@ -102,17 +107,17 @@ public:
     //! Loads configuration
     void loadConfiguration();
 
-    //!
+    //! Clears the shared memory data
     void clearSharedMemory();
 
     //-------------------------------------------------------------------------------------------------
     // Invokables
     //-------------------------------------------------------------------------------------------------
 
-    //!
+    //! Quits the application
     Q_INVOKABLE void quit();
 
-    //!
+    //! Clears the list of output lines
     Q_INVOKABLE void clearOutput();
 
     //-------------------------------------------------------------------------------------------------
@@ -121,13 +126,16 @@ public:
 
 signals:
 
+    //!
+    void repositoryPathChanged();
+
     //-------------------------------------------------------------------------------------------------
     // Slots
     //-------------------------------------------------------------------------------------------------
 
 protected slots:
 
-    //!
+    //! Triggered for shared memory operation sync
     void onSharedTimerTick();
 
     //-------------------------------------------------------------------------------------------------

@@ -15,6 +15,7 @@
 #include "CRepoFile.h"
 #include "CLogModel.h"
 #include "CDiffModel.h"
+#include "CGraphModel.h"
 #include "CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -30,6 +31,14 @@ class CRepository : public QObject
 
 public:
 
+    enum ERepositoryType
+    {
+        UnknownRepositoryType,
+        GIT,
+        CVS,
+        SVN
+    };
+
     enum ERepositoryStatus
     {
         NoMerge,
@@ -38,16 +47,18 @@ public:
         InteractiveRebase
     };
 
+    Q_ENUMS(ERepositoryType)
     Q_ENUMS(ERepositoryStatus)
 
     //-------------------------------------------------------------------------------------------------
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
-    Q_PROPERTY(QString repositoryPath READ repositoryPath WRITE setRepositoryPath NOTIFY repositoryPathChanged)
-
+    Q_FAST_PROPERTY(ERepositoryType, e, repositoryType, RepositoryType)
     Q_FAST_PROPERTY(ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
+    Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
+    Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
     Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
@@ -55,6 +66,7 @@ public:
     Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
+    Q_FAST_PROPERTY(CGraphModel*, p, graphModel, GraphModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
 
@@ -65,7 +77,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CRepository(CController* pController, QObject *parent = nullptr);
+    CRepository(const QString& sPath, CController* pController, QObject *parent = nullptr);
 
     //! Destructor
     virtual ~CRepository() override;
@@ -74,15 +86,9 @@ public:
     // Setters
     //-------------------------------------------------------------------------------------------------
 
-    //! Sets current repository path
-    void setRepositoryPath(QString sPath);
-
     //-------------------------------------------------------------------------------------------------
     // Getters
     //-------------------------------------------------------------------------------------------------
-
-    //! Returns current repository path
-    QString repositoryPath() const;
 
     //!
     CRepoFile* fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const;
@@ -90,6 +96,9 @@ public:
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
+
+    //!
+    Q_INVOKABLE bool can(CCommands::ECapability eWhat);
 
     //!
     Q_INVOKABLE void checkAllFileStatus(QString sPath = "");
@@ -140,7 +149,17 @@ public:
     Q_INVOKABLE void commitRebase(const QString& sCommitId);
 
     //!
+    Q_INVOKABLE void commitSquash(const QString& sCommitId);
+
+    //!
     Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
+
+    //-------------------------------------------------------------------------------------------------
+    // Static control methods
+    //-------------------------------------------------------------------------------------------------
+
+    //!
+    static ERepositoryType getRepositoryType(const QString& sPath);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
@@ -152,6 +171,9 @@ protected:
     void getBranches(QString sPath = "");
 
     //!
+    void getGraph(QString sPath = "");
+
+    //!
     void getLog(QString sPath = "");
 
     //-------------------------------------------------------------------------------------------------
@@ -159,9 +181,6 @@ protected:
     //-------------------------------------------------------------------------------------------------
 
 signals:
-
-    //!
-    void repositoryPathChanged();
 
     //!
     void currentFileFullName(QString sFileFullName);
@@ -193,11 +212,6 @@ protected slots:
     //!
     void onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
 
-    //-------------------------------------------------------------------------------------------------
-    // Properties
-    //-------------------------------------------------------------------------------------------------
-
-protected:
-
-    QString     m_sRepositoryPath;
+    //!
+    void onNewOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
 };

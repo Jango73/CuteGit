@@ -25,12 +25,16 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
         qRegisterMetaType<CXMLNode>();
         qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
+        qRegisterMetaType<CCommands::ECapability>("CCommands::ECapability");
+        qRegisterMetaType<CRepository::ERepositoryType>("CRepository::ERepositoryType");
         qRegisterMetaType<CRepository::ERepositoryStatus>("CRepository::ERepositoryStatus");
         qRegisterMetaType<CDiffLine::EDiffOperation>("CDiffLine::EDiffOperation");
 
         qmlRegisterUncreatableType<CTreeFileModel>("CuteGit", 1, 0, "CTreeFileModel", "Cannot create a FileSystemModel instance.");
         qmlRegisterUncreatableType<CTreeFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
         qmlRegisterUncreatableType<CDiffLine>("CuteGit", 1, 0, "CDiffLine", "Cannot create a CDiffLine instance.");
+        qmlRegisterUncreatableType<CCommands>("CuteGit", 1, 0, "CCommands", "Cannot create a CCommands instance.");
+        qmlRegisterUncreatableType<CRepository>("CuteGit", 1, 0, "CRepository", "Cannot create a CRepository instance.");
 
         // Create controller and QML engine
         m_pController = new CController(this);

@@ -11,16 +11,17 @@
 //-------------------------------------------------------------------------------------------------
 
 static int iLogFormatValueCount = 4;
-static const char* sLogFormatSplitter = "|";
+static int iGraphFormatValueCount = 5;
+static const char* sLogFormatSplitter = "&&&";
 
 static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandStatusForFile = "git status --ignored --porcelain \"%1\"";
 static const char* sCommandBranches = "git branch -a";
 
-// static const char* sCommandGraph = "git log --graph --pretty=format:\"%h | %s | %an | %ai\" --after=\"%1\" --before=\"%2\"";
-static const char* sCommandBranchLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20";
-static const char* sCommandFileLog = "git log --pretty=format:\"%h | %s | %an | %aI\" --max-count=20 HEAD \"%1\"";
+static const char* sCommandBranchLog = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
+static const char* sCommandFileLog = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space HEAD \"%1\"";
+static const char* sCommandGraph = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
 
 static const char* sCommandStage = "git add -f \"%1\"";
 static const char* sCommandUnstage = "git reset HEAD \"%1\"";
@@ -76,6 +77,16 @@ CGitCommands::~CGitCommands()
 
 //-------------------------------------------------------------------------------------------------
 
+bool CGitCommands::can(ECapability eWhat) const
+{
+    Q_UNUSED(eWhat);
+
+    // Yes Git does all this + coffee
+    return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::allFileStatus(const QString& sPath)
 {
     exec(new CProcessCommand(CProcessCommand::eAllFileStatus, sPath, sCommandStatus));
@@ -116,6 +127,13 @@ void CGitCommands::repositoryStatus(const QString& sPath)
 void CGitCommands::branches(const QString& sPath)
 {
     exec(new CProcessCommand(CProcessCommand::eBranches, sPath, sCommandBranches));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::graph(const QString& sPath)
+{
+    exec(new CProcessCommand(CProcessCommand::eGraph, sPath, sCommandGraph));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -254,6 +272,16 @@ void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
     exec(new CProcessCommand(CProcessCommand::eCommitRebase, sPath, sCommand, true, mEnvironment));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::commitSquash(const QString& sPath, const QString& sCommitId)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+
+    // TODO
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -495,6 +523,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
     case CProcessCommand::eSetCurrentBranch:
     case CProcessCommand::eCommitReset:
     case CProcessCommand::eCommitRebase:
+    case CProcessCommand::eCommitSquash:
     case CProcessCommand::eChangeCommitMessage:
     case CProcessCommand::eContinueRebase:
     case CProcessCommand::eAbortRebase:
@@ -568,7 +597,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
 
     case CProcessCommand::eAllFileStatus:
     {
-        QList<CRepoFile*> vReturnValue;
+        QList<CRepoFile*> lReturnValue;
         QStringList lStrings = sValue.split("\n");
 
         for (QString sLine : lStrings)
@@ -576,10 +605,10 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
             CRepoFile* pFile = repoFileForLine(sPath, sLine);
 
             if (pFile != nullptr)
-                vReturnValue << pFile;
+                lReturnValue << pFile;
         }
 
-        emit newOutputListOfCRepoFile(eCommand, vReturnValue);
+        emit newOutputListOfCRepoFile(eCommand, lReturnValue);
         break;
     }
 
@@ -607,6 +636,33 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         }
 
         emit newOutputListOfCLogLine(eCommand, lReturnValue);
+        break;
+    }
+
+    case CProcessCommand::eGraph:
+    {
+        QList<CGraphLine*> lReturnValue;
+        QStringList lStrings = sValue.split("\n");
+
+        for (QString sLine : lStrings)
+        {
+            QStringList sValues = sLine.split(sLogFormatSplitter);
+
+            if (sValues.count() == iGraphFormatValueCount)
+            {
+                CGraphLine* pLine = new CGraphLine();
+
+                pLine->setGraphSymbol(sValues[0].trimmed());
+                pLine->setCommitId(sValues[1].trimmed());
+                pLine->setMessage(sValues[2].trimmed());
+                pLine->setAuthor(sValues[3].trimmed());
+                pLine->setDate(QDateTime::fromString(sValues[4].trimmed(), Qt::ISODate));
+
+                lReturnValue << pLine;
+            }
+        }
+
+        emit newOutputListOfCGraphLine(eCommand, lReturnValue);
         break;
     }
 

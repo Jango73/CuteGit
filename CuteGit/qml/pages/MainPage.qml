@@ -223,6 +223,10 @@ Item {
                     root.controller.repository.commitRebase(commitId)
                 }
 
+                onRequestCommitSquash: {
+                    root.controller.repository.commitSquash(commitId)
+                }
+
                 onRequestCommitMessageChange: {
                     commit.messageText = commitMessage
                     commit.showFileList = false

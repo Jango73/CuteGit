@@ -5,11 +5,11 @@
 #include <QAbstractListModel>
 
 // qt-plus
-#include "CLogLine.h"
+#include "CGraphLine.h"
 
 //-------------------------------------------------------------------------------------------------
 
-class CLogModel : public QAbstractListModel
+class CGraphModel : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -19,7 +19,8 @@ public:
         eCommitIdRole = Qt::UserRole + 1,
         eDateRole,
         eAuthorRole,
-        eMessageRole
+        eMessageRole,
+        eGraphSymbolRole,
     };
 
     //-------------------------------------------------------------------------------------------------
@@ -27,17 +28,17 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CLogModel(QObject *parent = nullptr);
+    CGraphModel(QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CLogModel();
+    virtual ~CGraphModel();
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
     //! Sets all lines
-    void setLines(QList<CLogLine*> lNewLines);
+    void setLines(QList<CGraphLine*> lNewLines);
 
     //! Returns role names
     virtual QHash<int, QByteArray> roleNames() const;
@@ -50,6 +51,6 @@ public:
 
 private:
 
-    //! Lines of the log
-    QList<CLogLine*>  m_lLines;
+    //! Lines of the graph
+    QList<CGraphLine*>  m_lLines;
 };

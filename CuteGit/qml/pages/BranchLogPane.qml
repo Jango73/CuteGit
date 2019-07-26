@@ -15,8 +15,8 @@ TitlePane {
     signal requestCommitBranchFrom(var commitId)
     signal requestCommitReset(var commitId)
     signal requestCommitRebase(var commitId)
-    signal requestCommitMessageChange(var commitId, var commitMessage)
     signal requestCommitSquash(var commitId)
+    signal requestCommitMessageChange(var commitId, var commitMessage)
 
     title: Const.logText
 
@@ -56,12 +56,12 @@ TitlePane {
                 root.requestCommitRebase(commitId)
             }
 
-            onRequestCommitMessageChange: {
-                root.requestCommitMessageChange(commitId, commitMessage)
-            }
-
             onRequestCommitSquash: {
                 root.requestCommitSquash(commitId)
+            }
+
+            onRequestCommitMessageChange: {
+                root.requestCommitMessageChange(commitId, commitMessage)
             }
         }
     }

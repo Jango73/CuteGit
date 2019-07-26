@@ -1,18 +1,23 @@
 
 // Qt
 #include <QDebug>
-#include <QUrl>
 
 // Application
 #include "CTreeFileModel.h"
 #include "CTreeFileModelProxy.h"
 #include "CController.h"
+#include "CGitCommands.h"
+#include "CSvnCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CRepository::CRepository(CController* pController, QObject* parent)
+CRepository::CRepository(const QString& sPath, CController* pController, QObject* parent)
     : QObject(parent)
+    , m_eRepositoryType(UnknownRepositoryType)
+    , m_eRepositoryStatus(NoMerge)
+    , m_sRepositoryPath(sPath)
     , m_pController(pController)
+    , m_pCommands(new CCommands())
     , m_pTreeFileModel(nullptr)
     , m_pTreeFileModelProxy(new CTreeFileModelProxy(pController, this))
     , m_pFlatFileModel(nullptr)
@@ -20,13 +25,65 @@ CRepository::CRepository(CController* pController, QObject* parent)
     , m_pLogModel(new CLogModel(this))
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileLogModel(new CLogModel(this))
+    , m_pGraphModel(new CGraphModel(this))
 {
+    setRepositoryType(getRepositoryType(sPath));
+
+    // Delete any existing command interface
+    if (m_pCommands != nullptr)
+        m_pCommands->deleteLater();
+
+    // Create the command interface
+    switch (m_eRepositoryType)
+    {
+
+    case GIT:
+        setCommands(new CGitCommands());
+        break;
+
+    case SVN:
+        setCommands(new CSvnCommands());
+        break;
+
+    default:
+        setCommands(new CCommands());
+        break;
+
+    }
+
     // Command return values
-    connect(m_pController->commands(), &CCommands::newOutputString, this, &CRepository::onNewOutputString);
-    connect(m_pController->commands(), &CCommands::newOutputStringList, this, &CRepository::onNewOutputStringList);
-    connect(m_pController->commands(), &CCommands::newOutputListOfCRepoFile, this, &CRepository::onNewOutputListOfCRepoFile);
-    connect(m_pController->commands(), &CCommands::newOutputListOfCLogLine, this, &CRepository::onNewOutputListOfCLogLine);
-    connect(m_pController->commands(), &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
+    connect(m_pCommands, &CCommands::newOutputString, this, &CRepository::onNewOutputString);
+    connect(m_pCommands, &CCommands::newOutputStringList, this, &CRepository::onNewOutputStringList);
+    connect(m_pCommands, &CCommands::newOutputListOfCRepoFile, this, &CRepository::onNewOutputListOfCRepoFile);
+    connect(m_pCommands, &CCommands::newOutputListOfCLogLine, this, &CRepository::onNewOutputListOfCLogLine);
+    connect(m_pCommands, &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
+    connect(m_pCommands, &CCommands::newOutputListOfCGraphLine, this, &CRepository::onNewOutputListOfCGraphLine);
+
+    // Delete any existing file model
+    if (m_pTreeFileModel != nullptr)
+        m_pTreeFileModel->deleteLater();
+
+    if (m_pFlatFileModel != nullptr)
+        m_pFlatFileModel->deleteLater();
+
+    m_pFileDiffModel->setLines(QList<CDiffLine*>());
+    m_pFileLogModel->setLines(QList<CLogLine*>());
+
+    // Create a file model
+    m_pTreeFileModel = new CTreeFileModel(this, this);
+    m_pFlatFileModel = new CFlatFileModel(this, this);
+
+//    emit treeFileModelChanged();
+//    emit treeFileModelProxyChanged();
+//    emit flatFileModelChanged();
+
+    connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
+    connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
+
+    m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
+    m_pTreeFileModel->setRootPath(sPath);
+
+    refresh();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -34,66 +91,9 @@ CRepository::CRepository(CController* pController, QObject* parent)
 CRepository::~CRepository()
 {
     qDeleteAll(m_lRepoFiles);
-}
 
-//-------------------------------------------------------------------------------------------------
-
-void CRepository::setRepositoryPath(QString sPath)
-{
-    if (sPath.startsWith("file:"))
-        sPath = QUrl(sPath).toLocalFile();
-
-    // If repo path valid and different from current
-    if (m_pTreeFileModel == nullptr || m_sRepositoryPath != sPath)
-    {
-        // IF repo is a GIT repo
-        if (QDir(QString("%1/.git").arg(sPath)).exists())
-        {
-            m_sRepositoryPath = sPath;
-
-            // Delete any existing file model
-            if (m_pTreeFileModel != nullptr)
-                m_pTreeFileModel->deleteLater();
-
-            if (m_pFlatFileModel != nullptr)
-                m_pFlatFileModel->deleteLater();
-
-            m_pFileDiffModel->setLines(QList<CDiffLine*>());
-            m_pFileLogModel->setLines(QList<CLogLine*>());
-
-            // Create a file model
-            m_pTreeFileModel = new CTreeFileModel(m_pController, this);
-            m_pFlatFileModel = new CFlatFileModel(m_pController, this);
-
-            m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
-            m_pTreeFileModel->setRootPath(sPath);
-
-            emit repositoryPathChanged();
-            emit treeFileModelChanged();
-            emit treeFileModelProxyChanged();
-            emit flatFileModelChanged();
-
-            connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
-            connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
-
-            // Add this path to repository model
-            QStringList lRepositoryPaths = m_pController->repositoryModel()->stringList();
-
-            if (lRepositoryPaths.contains(sPath) == false)
-                lRepositoryPaths << sPath;
-
-            m_pController->repositoryModel()->setStringList(lRepositoryPaths);
-
-            // Clear command output
-            m_pController->commandOutputModel()->setStringList(QStringList());
-
-            refresh();
-        }
-        else
-        {
-            onNewOutput(QString(tr("%1 is not a GIT repository.\nPlease select a folder containing a GIT repository.")).arg(sPath));
-        }
-    }
+    if (m_pCommands != nullptr)
+        delete m_pCommands;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -102,15 +102,8 @@ void CRepository::setCurrentBranch(QString sValue)
 {
     if (m_sCurrentBranch != sValue)
     {
-        m_pController->commands()->setCurrentBranch(m_sRepositoryPath, sValue);
+        m_pCommands->setCurrentBranch(m_sRepositoryPath, sValue);
     }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-QString CRepository::repositoryPath() const
-{
-    return m_sRepositoryPath;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -128,12 +121,19 @@ CRepoFile* CRepository::fileByFullName(const QList<CRepoFile*>& vFiles, const QS
 
 //-------------------------------------------------------------------------------------------------
 
+bool CRepository::can(CCommands::ECapability eWhat)
+{
+    return m_pCommands->can(eWhat);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::checkAllFileStatus(QString sPath)
 {
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
-    m_pController->commands()->allFileStatus(sPath);
+    m_pCommands->allFileStatus(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ void CRepository::checkRepositoryStatus(QString sPath)
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
-    m_pController->commands()->repositoryStatus(sPath);
+    m_pCommands->repositoryStatus(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ void CRepository::toggleStaged(QString sFullName)
 {
     if (not sFullName.isEmpty())
     {
-        m_pController->commands()->toggleStaged(m_sRepositoryPath, sFullName);
+        m_pCommands->toggleStaged(m_sRepositoryPath, sFullName);
         checkAllFileStatus();
     }
 }
@@ -174,7 +174,7 @@ void CRepository::stageSelection(QStringList lFileFullNames)
     for (QString sFullName : lFileFullNames)
     {
         if (not sFullName.isEmpty())
-            m_pController->commands()->stageFile(m_sRepositoryPath, sFullName, true);
+            m_pCommands->stageFile(m_sRepositoryPath, sFullName, true);
     }
     checkAllFileStatus();
 }
@@ -186,7 +186,7 @@ void CRepository::unstageSelection(QStringList lFileFullNames)
     for (QString sFullName : lFileFullNames)
     {
         if (not sFullName.isEmpty())
-            m_pController->commands()->stageFile(m_sRepositoryPath, sFullName, false);
+            m_pCommands->stageFile(m_sRepositoryPath, sFullName, false);
     }
     checkAllFileStatus();
 }
@@ -195,7 +195,7 @@ void CRepository::unstageSelection(QStringList lFileFullNames)
 
 void CRepository::stageAll()
 {
-    m_pController->commands()->stageAll(m_sRepositoryPath, true);
+    m_pCommands->stageAll(m_sRepositoryPath, true);
     checkAllFileStatus();
 }
 
@@ -203,7 +203,7 @@ void CRepository::stageAll()
 
 void CRepository::unstageAll()
 {
-    m_pController->commands()->stageAll(m_sRepositoryPath, false);
+    m_pCommands->stageAll(m_sRepositoryPath, false);
     checkAllFileStatus();
 }
 
@@ -213,7 +213,7 @@ void CRepository::revertSelection(QStringList lFileFullNames)
 {
     for (QString sFullName : lFileFullNames)
     {
-        m_pController->commands()->revertFile(m_sRepositoryPath, sFullName);
+        m_pCommands->revertFile(m_sRepositoryPath, sFullName);
     }
     checkAllFileStatus();
 }
@@ -224,11 +224,11 @@ void CRepository::commit(const QString& sMessage, bool bAmend)
 {
     if (m_eRepositoryStatus == NoMerge && bAmend == false)
     {
-        m_pController->commands()->commit(m_sRepositoryPath, sMessage);
+        m_pCommands->commit(m_sRepositoryPath, sMessage);
     }
     else
     {
-        m_pController->commands()->amend(m_sRepositoryPath);
+        m_pCommands->amend(m_sRepositoryPath);
     }
 }
 
@@ -236,49 +236,73 @@ void CRepository::commit(const QString& sMessage, bool bAmend)
 
 void CRepository::continueRebase()
 {
-    m_pController->commands()->continueRebase(m_sRepositoryPath);
+    m_pCommands->continueRebase(m_sRepositoryPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::abortRebase()
 {
-    m_pController->commands()->abortRebase(m_sRepositoryPath);
+    m_pCommands->abortRebase(m_sRepositoryPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::push()
 {
-    m_pController->commands()->push(m_sRepositoryPath);
+    m_pCommands->push(m_sRepositoryPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::pull()
 {
-    m_pController->commands()->pull(m_sRepositoryPath);
+    m_pCommands->pull(m_sRepositoryPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::commitReset(const QString& sCommitId)
 {
-    m_pController->commands()->commitReset(m_sRepositoryPath, sCommitId);
+    m_pCommands->commitReset(m_sRepositoryPath, sCommitId);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::commitRebase(const QString& sCommitId)
 {
-    m_pController->commands()->commitRebase(m_sRepositoryPath, sCommitId);
+    m_pCommands->commitRebase(m_sRepositoryPath, sCommitId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::commitSquash(const QString& sCommitId)
+{
+    m_pCommands->commitSquash(m_sRepositoryPath, sCommitId);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
 {
-    m_pController->commands()->changeCommitMessage(m_sRepositoryPath, sCommitId, sMessage);
+    m_pCommands->changeCommitMessage(m_sRepositoryPath, sCommitId, sMessage);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+CRepository::ERepositoryType CRepository::getRepositoryType(const QString& sPath)
+{
+    if (QDir(QString("%1/.git").arg(sPath)).exists())
+    {
+        return GIT;
+    }
+
+    if (QDir(QString("%1/.svn").arg(sPath)).exists())
+    {
+        return SVN;
+    }
+
+    return UnknownRepositoryType;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -288,7 +312,17 @@ void CRepository::getBranches(QString sPath)
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
-    m_pController->commands()->branches(sPath);
+    m_pCommands->branches(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::getGraph(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pCommands->graph(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -301,15 +335,15 @@ void CRepository::getLog(QString sPath)
     QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
     QDateTime dTo = QDateTime::currentDateTime().addDays(2);
 
-    m_pController->commands()->branchLog(sPath, dFrom, dTo);
+    m_pCommands->branchLog(sPath, dFrom, dTo);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::onCurrentFileFullName(QString sFileFullName)
 {
-    m_pController->commands()->unstagedFileDiff(m_sRepositoryPath, sFileFullName);
-    m_pController->commands()->fileLog(m_sRepositoryPath, sFileFullName);
+    m_pCommands->unstagedFileDiff(m_sRepositoryPath, sFileFullName);
+    m_pCommands->fileLog(m_sRepositoryPath, sFileFullName);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -385,6 +419,7 @@ void CRepository::onNewOutputString(CProcessCommand::EProcessCommand eCommand, Q
     case CProcessCommand::eSetCurrentBranch:
     case CProcessCommand::eCommitReset:
     case CProcessCommand::eCommitRebase:
+    case CProcessCommand::eCommitSquash:
     case CProcessCommand::eChangeCommitMessage:
     case CProcessCommand::eContinueRebase:
     case CProcessCommand::eAbortRebase:
@@ -526,6 +561,27 @@ void CRepository::onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eC
     case CProcessCommand::eUnstagedFileDiff:
     {
         m_pFileDiffModel->setLines(lNewLines);
+        break;
+    }
+
+    default:
+    {
+        break;
+    }
+
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::onNewOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewLines)
+{
+    switch (eCommand)
+    {
+
+    case CProcessCommand::eGraph:
+    {
+        m_pGraphModel->setLines(lNewLines);
         break;
     }
 

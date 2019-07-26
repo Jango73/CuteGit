@@ -22,9 +22,9 @@ static inline QString sizeString(const QFileInfo &fi)
 
 //-------------------------------------------------------------------------------------------------
 
-CTreeFileModel::CTreeFileModel(CController* pController, QObject* parent)
+CTreeFileModel::CTreeFileModel(CRepository *pRepository, QObject* parent)
     : QFileSystemModel(parent)
-    , m_pController(pController)
+    , m_pRepository(pRepository)
     , m_pFileSystemWatcher(new QFileSystemWatcher(this))
 {
     setRootPath(QDir::homePath());
@@ -90,7 +90,7 @@ QVariant CTreeFileModel::data(const QModelIndex& qIndex, int iRole) const
         case eStatusRole:
         {
             QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-            CRepoFile* pFile = fileByFullName(m_pController->repository()->repoFiles(), sFileFullName);
+            CRepoFile* pFile = fileByFullName(m_pRepository->repoFiles(), sFileFullName);
 
             if (pFile != nullptr)
                 return pFile->statusToString();
@@ -101,7 +101,7 @@ QVariant CTreeFileModel::data(const QModelIndex& qIndex, int iRole) const
         case eStagedRole:
         {
             QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-            CRepoFile* pFile = fileByFullName(m_pController->repository()->repoFiles(), sFileFullName);
+            CRepoFile* pFile = fileByFullName(m_pRepository->repoFiles(), sFileFullName);
 
             if (pFile != nullptr)
                 return pFile->stagedToString();

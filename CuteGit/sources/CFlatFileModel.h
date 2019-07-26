@@ -12,7 +12,7 @@
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
 
-class CController;
+class CRepository;
 
 //-------------------------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ public:
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
-    Q_FAST_PROPERTY(CController*, p, controller, Controller)
+    Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
 
 public:
 
@@ -44,7 +44,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CFlatFileModel(CController* pController, QObject *parent = nullptr);
+    CFlatFileModel(CRepository* pRepository, QObject *parent = nullptr);
 
     //! Destructor
     virtual ~CFlatFileModel();
