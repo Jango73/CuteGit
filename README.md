@@ -6,7 +6,9 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 
 ## Building
 
-Open /CuteGit.pro and build
+- Make sure to update submodules
+- Open /CuteGit.pro in QtCreator
+- Build and run
 
 ## Things it does
 
