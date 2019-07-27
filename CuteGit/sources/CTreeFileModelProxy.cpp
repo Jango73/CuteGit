@@ -73,6 +73,31 @@ QString CTreeFileModelProxy::stagedForIndex(QModelIndex qIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+QString CTreeFileModelProxy::fullNameForIndex(QModelIndex qIndex)
+{
+    if (qIndex.isValid())
+    {
+        QModelIndex qSourceIndex = mapToSource(qIndex);
+
+        if (qSourceIndex.isValid())
+        {
+            CTreeFileModel* pModel = dynamic_cast<CTreeFileModel*>(sourceModel());
+
+            if (pModel != nullptr)
+            {
+                QString sPath = pModel->data(qSourceIndex, CTreeFileModel::FilePathRole).toString();
+                QString sName = pModel->data(qSourceIndex, CTreeFileModel::FileNameRole).toString();
+
+                return QString("%1/%2").arg(sPath).arg(sName);
+            }
+        }
+    }
+
+    return "";
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CTreeFileModelProxy::handleCurrentIndex(QModelIndex qIndex)
 {
     if (qIndex.isValid())

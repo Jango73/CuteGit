@@ -61,6 +61,9 @@ public:
     Q_INVOKABLE QString stagedForIndex(QModelIndex qIndex);
 
     //!
+    Q_INVOKABLE QString fullNameForIndex(QModelIndex qIndex);
+
+    //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
 
     //!

@@ -15,6 +15,8 @@ TreeView {
     model: root.controller !== null ? root.controller.repository.treeFileModelProxy : undefined
 
     rootIndex: root.controller !== null ? root.controller.repository.treeFileModelProxy.rootPathIndex : undefined
+    backgroundVisible: false
+    headerVisible: false
     selection: root.selection
     selectionMode: 2
     // "None", "Single", "Extended", "Multi", "Contig."
@@ -22,63 +24,72 @@ TreeView {
     TableViewColumn {
         title: "Name"
         role: "fileName"
-        width: root.width * 0.8
     }
 
-    TableViewColumn {
-        title: "Status"
-        role: "status"
-        width: root.width * 0.2
-    }
+    rowDelegate: rowDlg
+    itemDelegate: itemDlg
 
-    style: TreeViewStyle {
-        headerDelegate: Item {
+    Component {
+        id: rowDlg
+
+        Rectangle {
             height: Const.treeElementHeight
-
-            Rectangle {
-                anchors.fill: parent
-                color: Material.background
-            }
-
-            ElideText {
-                text: styleData.value
-            }
-        }
-
-        rowDelegate: Rectangle {
             color: Material.background
-            height: Const.treeElementHeight
         }
+    }
 
-        itemDelegate: Item {
-            property string status: root.model.statusForIndex(styleData.index)
-            property string staged: root.model.stagedForIndex(styleData.index)
+    Component {
+        id: itemDlg
+
+        Rectangle {
+            height: Const.treeElementHeight
+            color: Material.background
 
             Rectangle {
                 anchors.fill: parent
-                color: if (staged === "X") Const.fileStagedColor
-                       else if (status === "*") Const.fileModifiedColor
-                       else if (status === "=") Const.fileRenamedColor
-                       else if (status === "+") Const.fileAddedColor
-                       else if (status === "-") Const.fileDeletedColor
+                color: if (model.staged === "X") Const.fileStagedColor
+                       else if (model.status === "*") Const.fileModifiedColor
+                       else if (model.status === "=") Const.fileRenamedColor
+                       else if (model.status === "+") Const.fileAddedColor
+                       else if (model.status === "-") Const.fileDeletedColor
                        else Const.transparent
             }
 
             Selection {
-                id: treeSelection
-                targetWidth: treeText.width
-                targetHeight: treeText.height
-                anchors.centerIn: treeText
-                visible: styleData.selected && styleData.value !== ""
+                id: selectionIndicator
+                targetWidth: fileNameText.width
+                targetHeight: fileNameText.height
+                anchors.centerIn: fileNameText
                 borderOnly: true
+                visible: styleData.selected
+
+                FocusIndicator {
+                    anchors.fill: parent
+                    visible: root.activeFocus
+                }
             }
 
             ElideText {
-                id: treeText
-                height: Const.treeElementHeight
-                text: styleData.value
-                color: Material.foreground
+                id: statusText
+                width: Const.elementHeight
+                height: parent.height
+                text: model.status
             }
+
+            ElideText {
+                id: fileNameText
+                anchors.left: statusText.right
+                anchors.right: parent.right
+                height: parent.height
+                text: model.fileName
+            }
+        }
+    }
+
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Space) {
+            var currentFileFullName = model.fullNameForIndex(currentIndex)
+            root.controller.repository.toggleStaged(currentFileFullName)
         }
     }
 
@@ -93,11 +104,5 @@ TreeView {
     }
 
     function collapseAll() {
-    }
-
-    Keys.onPressed: {
-        if (event.key === Qt.Key_Space) {
-            // root.controller.repository.toggleStaged(currentItem.fullName)
-        }
     }
 }
