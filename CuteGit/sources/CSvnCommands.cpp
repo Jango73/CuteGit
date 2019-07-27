@@ -20,16 +20,16 @@ CSvnCommands::~CSvnCommands()
 
 //-------------------------------------------------------------------------------------------------
 
-bool CSvnCommands::can(ECapability eWhat) const
+bool CSvnCommands::can(CEnums::ECapability eWhat) const
 {
     switch (eWhat)
     {
-        case Clone:
-        case ShowGlobalGraph:
-        case ShowBranchLog:
-        case ShowFileLog:
-        case Commit:
-        case Pull:
+        case CEnums::Clone:
+        case CEnums::ShowGlobalGraph:
+        case CEnums::ShowBranchLog:
+        case CEnums::ShowFileLog:
+        case CEnums::Commit:
+        case CEnums::Pull:
             return true;
 
     default:
@@ -148,38 +148,38 @@ void CSvnCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 
 //-------------------------------------------------------------------------------------------------
 
-void CSvnCommands::onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue)
+void CSvnCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue)
 {
     Q_UNUSED(sPath);
 
     switch (eCommand)
     {
 
-    case CProcessCommand::eNotification:
-    case CProcessCommand::eCurrentBranch:
-    case CProcessCommand::eRepositoryStatus:
+    case CEnums::eNotification:
+    case CEnums::eCurrentBranch:
+    case CEnums::eRepositoryStatus:
         break;
 
-    case CProcessCommand::eStageFile:
-    case CProcessCommand::eStageAll:
-    case CProcessCommand::eRevertFile:
-    case CProcessCommand::eCommit:
-    case CProcessCommand::eAmend:
-    case CProcessCommand::ePush:
-    case CProcessCommand::ePull:
-    case CProcessCommand::eSetCurrentBranch:
-    case CProcessCommand::eCommitReset:
-    case CProcessCommand::eCommitRebase:
-    case CProcessCommand::eCommitSquash:
-    case CProcessCommand::eChangeCommitMessage:
-    case CProcessCommand::eContinueRebase:
-    case CProcessCommand::eAbortRebase:
+    case CEnums::eStageFile:
+    case CEnums::eStageAll:
+    case CEnums::eRevertFile:
+    case CEnums::eCommit:
+    case CEnums::eAmend:
+    case CEnums::ePush:
+    case CEnums::ePull:
+    case CEnums::eSetCurrentBranch:
+    case CEnums::eCommitReset:
+    case CEnums::eCommitRebase:
+    case CEnums::eCommitSquash:
+    case CEnums::eChangeCommitMessage:
+    case CEnums::eContinueRebase:
+    case CEnums::eAbortRebase:
     {
         emit newOutputString(eCommand, sValue);
         break;
     }
 
-    case CProcessCommand::eUnstagedFileDiff:
+    case CEnums::eUnstagedFileDiff:
     {
         QList<CDiffLine*> lReturnValue;
         QStringList lLines = sValue.split("\n");
@@ -197,9 +197,9 @@ void CSvnCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
                 pDiffLine->setText(sLine);
 
                 if (sLine.startsWith("+"))
-                    pDiffLine->setOperation(CDiffLine::Add);
+                    pDiffLine->setOperation(CEnums::Add);
                 if (sLine.startsWith("-"))
-                    pDiffLine->setOperation(CDiffLine::Delete);
+                    pDiffLine->setOperation(CEnums::Delete);
 
                 lReturnValue << pDiffLine;
             }
@@ -215,29 +215,34 @@ void CSvnCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eBranches:
+    case CEnums::eBranches:
     {
         QStringList lReturnValue;
         emit newOutputStringList(eCommand, lReturnValue);
         break;
     }
 
-    case CProcessCommand::eAllFileStatus:
+    case CEnums::eBranchHeadCommits:
+    {
+        break;
+    }
+
+    case CEnums::eAllFileStatus:
     {
         QList<CRepoFile*> lReturnValue;
         emit newOutputListOfCRepoFile(eCommand, lReturnValue);
         break;
     }
 
-    case CProcessCommand::eFileLog:
-    case CProcessCommand::eBranchLog:
+    case CEnums::eFileLog:
+    case CEnums::eBranchLog:
     {
         QList<CLogLine*> lReturnValue;
         emit newOutputListOfCLogLine(eCommand, lReturnValue);
         break;
     }
 
-    case CProcessCommand::eGraph:
+    case CEnums::eGraph:
     {
         QList<CGraphLine*> lReturnValue;
         emit newOutputListOfCGraphLine(eCommand, lReturnValue);

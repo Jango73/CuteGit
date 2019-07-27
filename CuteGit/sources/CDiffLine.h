@@ -9,6 +9,9 @@
 #include "Macros.h"
 #include "CXMLNode.h"
 
+// Application
+#include "CEnums.h"
+
 //-------------------------------------------------------------------------------------------------
 
 class CDiffLine : public QObject
@@ -17,21 +20,12 @@ class CDiffLine : public QObject
 
 public:
 
-    enum EDiffOperation
-    {
-        None,
-        Add,
-        Delete
-    };
-
-    Q_ENUMS(EDiffOperation)
-
     //-------------------------------------------------------------------------------------------------
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
     Q_FAST_PROPERTY(QString, s, text, Text)
-    Q_FAST_PROPERTY(EDiffOperation, e, operation, Operation)
+    Q_FAST_PROPERTY(CEnums::EDiffOperation, e, operation, Operation)
 
 public:
 
@@ -39,5 +33,5 @@ public:
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
 
-    CDiffLine() : m_eOperation(None) {}
+    CDiffLine() : m_eOperation(CEnums::None) {}
 };

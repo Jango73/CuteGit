@@ -26,7 +26,7 @@ CCommands::~CCommands()
 
 //-------------------------------------------------------------------------------------------------
 
-bool CCommands::can(ECapability eWhat) const
+bool CCommands::can(CEnums::ECapability eWhat) const
 {
     Q_UNUSED(eWhat);
     return false;
@@ -40,6 +40,7 @@ void CCommands::run()
 {
     while (not m_bStop)
     {
+        bool bStackEmpty = true;
         CProcessCommand* pCommand = nullptr;
 
         {
@@ -47,6 +48,7 @@ void CCommands::run()
 
             if (m_lCommandStack.count() > 0)
             {
+                bStackEmpty = false;
                 pCommand = m_lCommandStack[0];
                 m_lCommandStack.removeAt(0);
             }
@@ -61,7 +63,7 @@ void CCommands::run()
             pCommand->deleteLater();
         }
 
-        msleep(100);
+        msleep(bStackEmpty ? 100 : 10);
     }
 }
 

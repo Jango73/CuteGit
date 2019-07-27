@@ -12,8 +12,8 @@ MenuBar {
     property variant controller: null
     property bool filesAsTree: false
 
-    property bool rebaseInProgress: controller.repository.repositoryStatus === CTreeFileModel.Rebase
-    || controller.repository.repositoryStatus === CTreeFileModel.InteractiveRebase
+    property bool rebaseInProgress: controller.repository.repositoryStatus === CEnums.Rebase
+    || controller.repository.repositoryStatus === CEnums.InteractiveRebase
 
     property alias cloneRepositoryAction: cloneRepository
     property alias openRepositoryAction: openRepository
@@ -39,7 +39,7 @@ MenuBar {
         Action {
             id: cloneRepository
             text: qsTr("&Clone")
-            enabled: root.controller.repository.can(CCommands.Clone)
+            enabled: root.controller.repository.can(CEnums.Clone)
             onTriggered: root.requestCloneRepository()
         }
 
@@ -70,7 +70,7 @@ MenuBar {
             id: pull
             text: qsTr("&Pull")
             shortcut: "Ctrl+L"
-            enabled: root.controller.repository.can(CCommands.Pull)
+            enabled: root.controller.repository.can(CEnums.Pull)
             onTriggered: root.controller.repository.pull()
         }
 
@@ -78,7 +78,7 @@ MenuBar {
             id: push
             text: qsTr("Pus&h")
             shortcut: "Ctrl+P"
-            enabled: root.controller.repository.can(CCommands.Push)
+            enabled: root.controller.repository.can(CEnums.Push)
             onTriggered: root.controller.repository.push()
         }
     }
@@ -120,7 +120,7 @@ MenuBar {
             id: commit
             text: qsTr("&Commit")
             shortcut: "Ctrl+C"
-            enabled: root.controller.repository.can(CCommands.Commit)
+            enabled: root.controller.repository.can(CEnums.Commit)
             onTriggered: root.requestCommit()
         }
 
@@ -128,21 +128,21 @@ MenuBar {
             id: amend
             text: qsTr("&Amend")
             shortcut: "Ctrl+A"
-            enabled: root.controller.repository.can(CCommands.Amend)
+            enabled: root.controller.repository.can(CEnums.Amend)
             onTriggered: root.requestAmend()
         }
 
         Action {
             text: qsTr("C&ontinue rebase")
             shortcut: "Ctrl+R"
-            enabled: root.rebaseInProgress && root.controller.repository.can(CCommands.ContinueRebase)
+            enabled: root.rebaseInProgress && root.controller.repository.can(CEnums.ContinueRebase)
             onTriggered: root.requestContinueRebase()
         }
 
         Action {
             text: qsTr("Abor&t rebase")
             shortcut: "Ctrl+T"
-            enabled: root.rebaseInProgress && root.controller.repository.can(CCommands.AbortRebase)
+            enabled: root.rebaseInProgress && root.controller.repository.can(CEnums.AbortRebase)
             onTriggered: root.requestAbortRebase()
         }
     }

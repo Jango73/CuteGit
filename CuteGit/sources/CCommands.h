@@ -9,6 +9,7 @@
 #include <QMutex>
 
 // Application
+#include "CEnums.h"
 #include "CRepoFile.h"
 #include "CLogLine.h"
 #include "CDiffLine.h"
@@ -22,36 +23,7 @@ class CProcessCommand : public QObject
 
 public:
 
-    enum EProcessCommand
-    {
-        eNotification,
-        eAllFileStatus,
-        eRepositoryStatus,
-        eBranches,
-        eGraph,
-        eBranchLog,
-        eCurrentBranch,
-        eFileLog,
-        eStageFile,
-        eStageAll,
-        eRevertFile,
-        eCommit,
-        eAmend,
-        ePush,
-        ePull,
-        eUnstagedFileDiff,
-        eSetCurrentBranch,
-        eCommitReset,
-        eCommitRebase,
-        eCommitSquash,
-        eChangeCommitMessage,
-        eContinueRebase,
-        eAbortRebase
-    };
-
-    Q_ENUMS(EProcessCommand)
-
-    CProcessCommand(EProcessCommand eCommand, QString sWorkPath, QString sCommand, bool bAllowStack = false, QMap<QString, QString> mEnvironment = QMap<QString, QString>())
+    CProcessCommand(CEnums::EProcessCommand eCommand, QString sWorkPath, QString sCommand, bool bAllowStack = false, QMap<QString, QString> mEnvironment = QMap<QString, QString>())
         : m_eCommand(eCommand)
         , m_bAllowStack(bAllowStack)
         , m_sWorkPath(sWorkPath)
@@ -60,7 +32,7 @@ public:
     {
     }
 
-    EProcessCommand         m_eCommand;
+    CEnums::EProcessCommand m_eCommand;
     bool                    m_bAllowStack;
     QString                 m_sWorkPath;
     QString                 m_sCommand;
@@ -74,26 +46,6 @@ class CCommands : public QThread
     Q_OBJECT
 
 public:
-
-    enum ECapability
-    {
-        Clone,
-        ShowGlobalGraph,
-        ShowBranchLog,
-        ShowFileLog,
-        Commit,
-        Amend,
-        Push,
-        Pull,
-        SquashCommit,
-        ChangeCommitMessage,
-        ResetToCommit,
-        RebaseOnCommit,
-        ContinueRebase,
-        AbortRebase,
-    };
-
-    Q_ENUMS(ECapability)
 
     //-------------------------------------------------------------------------------------------------
     // Constructor & destructor
@@ -109,7 +61,7 @@ public:
     // Getters
     //-------------------------------------------------------------------------------------------------
 
-    virtual bool can(ECapability eWhat) const;
+    virtual bool can(CEnums::ECapability eWhat) const;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
@@ -213,25 +165,25 @@ private:
 signals:
 
     //!
-    void execFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue);
+    void execFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue);
 
     //!
-    void newOutputString(CProcessCommand::EProcessCommand eCommand, QString sValue);
+    void newOutputString(CEnums::EProcessCommand eCommand, QString sValue);
 
     //!
-    void newOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
+    void newOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue);
 
     //!
-    void newOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 
     //!
-    void newOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
+    void newOutputListOfCLogLine(CEnums::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
 
     //!
-    void newOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
+    void newOutputListOfCDiffLine(CEnums::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
 
     //!
-    void newOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
+    void newOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
 
 private:
 

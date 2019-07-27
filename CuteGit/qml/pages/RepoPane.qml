@@ -62,7 +62,7 @@ TitlePane {
 
                     function getDisplayName() {
                         // var type = root.controller.repository.repositoryType
-                        // var repoString = type === CRepository.GIT ? "Git" : type === CRepository.SVN ? "SVN" : ""
+                        // var repoString = type === CEnums.GIT ? "Git" : type === CEnums.SVN ? "SVN" : ""
                         // return display.split("/").slice(-1)[0] + "(" + repoString + ")"
                         return display.split("/").slice(-1)[0]
                     }

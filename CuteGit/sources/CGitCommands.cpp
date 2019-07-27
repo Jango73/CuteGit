@@ -22,6 +22,7 @@ static const char* sCommandBranchLog = "git log --pretty=format:\"%h &&& %s &&& 
 static const char* sCommandFileLog = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space HEAD \"%1\"";
 static const char* sCommandGraph = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
+static const char* sCommandHeadCommit = "git rev-parse \"%1\"";
 
 static const char* sCommandStage = "git add -f \"%1\"";
 static const char* sCommandUnstage = "git reset HEAD \"%1\"";
@@ -33,7 +34,6 @@ static const char* sCommandAmend = "git commit --amend --reset-author --no-edit"
 static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
-// static const char* sCommandInteractiveRebase = "git rebase --interactive";
 static const char* sCommandResetOnCommit = "git reset %1";
 static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
 static const char* sCommandContinueRebase = "git rebase --continue";
@@ -77,7 +77,7 @@ CGitCommands::~CGitCommands()
 
 //-------------------------------------------------------------------------------------------------
 
-bool CGitCommands::can(ECapability eWhat) const
+bool CGitCommands::can(CEnums::ECapability eWhat) const
 {
     Q_UNUSED(eWhat);
 
@@ -89,7 +89,7 @@ bool CGitCommands::can(ECapability eWhat) const
 
 void CGitCommands::allFileStatus(const QString& sPath)
 {
-    exec(new CProcessCommand(CProcessCommand::eAllFileStatus, sPath, sCommandStatus));
+    exec(new CProcessCommand(CEnums::eAllFileStatus, sPath, sCommandStatus));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -102,21 +102,21 @@ void CGitCommands::repositoryStatus(const QString& sPath)
     if (QDir(sRebaseMergePath).exists())
     {
         emit newOutputString(
-                    CProcessCommand::eRepositoryStatus,
+                    CEnums::eRepositoryStatus,
                     CRepoFile::sRepositoryStatusInteractiveRebase
                     );
     }
     else if (QDir(sRebaseApplyPath).exists())
     {
         emit newOutputString(
-                    CProcessCommand::eRepositoryStatus,
+                    CEnums::eRepositoryStatus,
                     CRepoFile::sRepositoryStatusRebase
                     );
     }
     else
     {
         emit newOutputString(
-                    CProcessCommand::eRepositoryStatus,
+                    CEnums::eRepositoryStatus,
                     CRepoFile::sRepositoryStatusClean
                     );
     }
@@ -126,14 +126,14 @@ void CGitCommands::repositoryStatus(const QString& sPath)
 
 void CGitCommands::branches(const QString& sPath)
 {
-    exec(new CProcessCommand(CProcessCommand::eBranches, sPath, sCommandBranches));
+    exec(new CProcessCommand(CEnums::eBranches, sPath, sCommandBranches));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CGitCommands::graph(const QString& sPath)
 {
-    exec(new CProcessCommand(CProcessCommand::eGraph, sPath, sCommandGraph));
+    exec(new CProcessCommand(CEnums::eGraph, sPath, sCommandGraph));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ void CGitCommands::branchLog(const QString& sPath, const QDateTime& from, const 
     QString sFrom = from.toString(Qt::ISODate);
     QString sTo = to.toString(Qt::ISODate);
     QString sCommand = QString(sCommandBranchLog); // .arg(sFrom).arg(sTo);
-    exec(new CProcessCommand(CProcessCommand::eBranchLog, sPath, sCommand));
+    exec(new CProcessCommand(CEnums::eBranchLog, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ void CGitCommands::branchLog(const QString& sPath, const QDateTime& from, const 
 void CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandFileLog).arg(sFullName);
-    exec(new CProcessCommand(CProcessCommand::eFileLog, sPath, sCommand));
+    exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -175,7 +175,7 @@ void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
 void CGitCommands::stageFile(const QString& sPath, const QString& sFullName, bool bStage)
 {
     QString sCommand = QString(bStage ? sCommandStage : sCommandUnstage).arg(sFullName);
-    exec(new CProcessCommand(CProcessCommand::eStageFile, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eStageFile, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -183,7 +183,7 @@ void CGitCommands::stageFile(const QString& sPath, const QString& sFullName, boo
 void CGitCommands::stageAll(const QString& sPath, bool bStage)
 {
     QString sCommand = QString(bStage ? sCommandStageAll : sCommandUnstageAll);
-    exec(new CProcessCommand(CProcessCommand::eStageAll, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eStageAll, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -191,7 +191,7 @@ void CGitCommands::stageAll(const QString& sPath, bool bStage)
 void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandRevert).arg(sFullName);
-    exec(new CProcessCommand(CProcessCommand::eRevertFile, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eRevertFile, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 {
     QString sCommand = QString(sCommandCommit).arg(sMessage);
-    exec(new CProcessCommand(CProcessCommand::eCommit, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eCommit, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -207,25 +207,25 @@ void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 void CGitCommands::amend(const QString& sPath)
 {
     QString sCommand = QString(sCommandAmend);
-    exec(new CProcessCommand(CProcessCommand::eAmend, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eAmend, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CGitCommands::push(const QString& sPath)
 {
-    emit newOutputString(CProcessCommand::eNotification, tr("Pushing..."));
+    emit newOutputString(CEnums::eNotification, tr("Pushing..."));
     QString sCommand = QString(sCommandPush);
-    exec(new CProcessCommand(CProcessCommand::ePush, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::ePush, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CGitCommands::pull(const QString& sPath)
 {
-    emit newOutputString(CProcessCommand::eNotification, tr("Pulling..."));
+    emit newOutputString(CEnums::eNotification, tr("Pulling..."));
     QString sCommand = QString(sCommandPull);
-    exec(new CProcessCommand(CProcessCommand::ePull, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::ePull, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -233,7 +233,7 @@ void CGitCommands::pull(const QString& sPath)
 void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
 {
     QString sCommand = QString(sCommandUnstagedDiff).arg(sFullName);
-    exec(new CProcessCommand(CProcessCommand::eUnstagedFileDiff, sPath, sCommand));
+    exec(new CProcessCommand(CEnums::eUnstagedFileDiff, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -243,23 +243,23 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
     QString sFinalName = sBranch;
     sFinalName.replace(sRemoteBranchPrefix, "");
     QString sCommand = QString(sCommandSetCurrentBranch).arg(sFinalName);
-    exec(new CProcessCommand(CProcessCommand::eSetCurrentBranch, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eSetCurrentBranch, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CGitCommands::commitReset(const QString& sPath, const QString& sCommitId)
 {
-    emit newOutputString(CProcessCommand::eNotification, tr("Doing reset..."));
+    emit newOutputString(CEnums::eNotification, tr("Doing reset..."));
     QString sCommand = QString(sCommandResetOnCommit).arg(sCommitId);
-    exec(new CProcessCommand(CProcessCommand::eCommitReset, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eCommitReset, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 {
-    emit newOutputString(CProcessCommand::eNotification, tr("Doing rebase..."));
+    emit newOutputString(CEnums::eNotification, tr("Doing rebase..."));
 
     m_eRebaseType = eRTEdit;
     m_eRebaseStep = eRSChangeCommitEditSequence;
@@ -271,7 +271,7 @@ void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
-    exec(new CProcessCommand(CProcessCommand::eCommitRebase, sPath, sCommand, true, mEnvironment));
+    exec(new CProcessCommand(CEnums::eCommitRebase, sPath, sCommand, true, mEnvironment));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -288,7 +288,7 @@ void CGitCommands::commitSquash(const QString& sPath, const QString& sCommitId)
 
 void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
-    emit newOutputString(CProcessCommand::eNotification, tr("Doing rebase and commit message changes..."));
+    emit newOutputString(CEnums::eNotification, tr("Doing rebase and commit message changes..."));
 
     m_eRebaseType = eRTReword;
     m_eRebaseStep = eRSChangeCommitEditSequence;
@@ -301,25 +301,25 @@ void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCom
 
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
-    exec(new CProcessCommand(CProcessCommand::eChangeCommitMessage, sPath, sCommand, true, mEnvironment));
+    exec(new CProcessCommand(CEnums::eChangeCommitMessage, sPath, sCommand, true, mEnvironment));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CGitCommands::continueRebase(const QString& sPath)
 {
-    emit newOutputString(CProcessCommand::eNotification, tr("Continuing rebase..."));
+    emit newOutputString(CEnums::eNotification, tr("Continuing rebase..."));
     QString sCommand = QString(sCommandContinueRebase);
-    exec(new CProcessCommand(CProcessCommand::eContinueRebase, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eContinueRebase, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CGitCommands::abortRebase(const QString& sPath)
 {
-    emit newOutputString(CProcessCommand::eNotification, tr("Aborting rebase..."));
+    emit newOutputString(CEnums::eNotification, tr("Aborting rebase..."));
     QString sCommand = QString(sCommandAbortRebase);
-    exec(new CProcessCommand(CProcessCommand::eAbortRebase, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eAbortRebase, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -434,26 +434,26 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
         QString sFileName = QFileInfo(sFullName).fileName();
         bool bStaged = false;
 
-        CRepoFile::ERepoFileStatus eStatus = CRepoFile::eClean;
+        CEnums::ERepoFileStatus eStatus = CEnums::eClean;
 
         if (sStaged.isEmpty() == false)
         {
             bStaged = true;
 
             if (sStaged == sStatusAdded)
-                eStatus = CRepoFile::eAdded;
+                eStatus = CEnums::eAdded;
             else if (sStaged == sStatusModified)
-                eStatus = CRepoFile::eModified;
+                eStatus = CEnums::eModified;
             else if (sStaged == sStatusRenamed)
-                eStatus = CRepoFile::eRenamed;
+                eStatus = CEnums::eRenamed;
             else if (sStaged == sStatusDeleted)
-                eStatus = CRepoFile::eDeleted;
+                eStatus = CEnums::eDeleted;
             else if (sStaged == sStatusIgnored)
-                eStatus = CRepoFile::eIgnored;
+                eStatus = CEnums::eIgnored;
             else if (sStaged == sStatusUntracked)
             {
                 bStaged = false;
-                eStatus = CRepoFile::eUntracked;
+                eStatus = CEnums::eUntracked;
             }
         }
 
@@ -462,29 +462,29 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
             if (sUnstaged == sStatusAdded)
             {
                 bStaged = false;
-                eStatus = CRepoFile::eAdded;
+                eStatus = CEnums::eAdded;
             }
             else if (sUnstaged == sStatusModified)
             {
                 bStaged = false;
-                eStatus = CRepoFile::eModified;
+                eStatus = CEnums::eModified;
             }
             else if (sUnstaged == sStatusRenamed)
             {
                 bStaged = false;
-                eStatus = CRepoFile::eRenamed;
+                eStatus = CEnums::eRenamed;
             }
             else if (sUnstaged == sStatusDeleted)
             {
                 bStaged = false;
-                eStatus = CRepoFile::eDeleted;
+                eStatus = CEnums::eDeleted;
             }
             else if (sUnstaged == sStatusIgnored)
-                eStatus = CRepoFile::eIgnored;
+                eStatus = CEnums::eIgnored;
             else if (sUnstaged == sStatusUntracked)
             {
                 bStaged = false;
-                eStatus = CRepoFile::eUntracked;
+                eStatus = CEnums::eUntracked;
             }
         }
 
@@ -503,36 +503,36 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue)
+void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue)
 {
     switch (eCommand)
     {
 
-    case CProcessCommand::eNotification:
-    case CProcessCommand::eCurrentBranch:
-    case CProcessCommand::eRepositoryStatus:
+    case CEnums::eNotification:
+    case CEnums::eCurrentBranch:
+    case CEnums::eRepositoryStatus:
         break;
 
-    case CProcessCommand::eStageFile:
-    case CProcessCommand::eStageAll:
-    case CProcessCommand::eRevertFile:
-    case CProcessCommand::eCommit:
-    case CProcessCommand::eAmend:
-    case CProcessCommand::ePush:
-    case CProcessCommand::ePull:
-    case CProcessCommand::eSetCurrentBranch:
-    case CProcessCommand::eCommitReset:
-    case CProcessCommand::eCommitRebase:
-    case CProcessCommand::eCommitSquash:
-    case CProcessCommand::eChangeCommitMessage:
-    case CProcessCommand::eContinueRebase:
-    case CProcessCommand::eAbortRebase:
+    case CEnums::eStageFile:
+    case CEnums::eStageAll:
+    case CEnums::eRevertFile:
+    case CEnums::eCommit:
+    case CEnums::eAmend:
+    case CEnums::ePush:
+    case CEnums::ePull:
+    case CEnums::eSetCurrentBranch:
+    case CEnums::eCommitReset:
+    case CEnums::eCommitRebase:
+    case CEnums::eCommitSquash:
+    case CEnums::eChangeCommitMessage:
+    case CEnums::eContinueRebase:
+    case CEnums::eAbortRebase:
     {
         emit newOutputString(eCommand, sValue);
         break;
     }
 
-    case CProcessCommand::eUnstagedFileDiff:
+    case CEnums::eUnstagedFileDiff:
     {
         QList<CDiffLine*> lReturnValue;
         QStringList lLines = sValue.split("\n");
@@ -550,9 +550,9 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
                 pDiffLine->setText(sLine);
 
                 if (sLine.startsWith("+"))
-                    pDiffLine->setOperation(CDiffLine::Add);
+                    pDiffLine->setOperation(CEnums::Add);
                 if (sLine.startsWith("-"))
-                    pDiffLine->setOperation(CDiffLine::Delete);
+                    pDiffLine->setOperation(CEnums::Delete);
 
                 lReturnValue << pDiffLine;
             }
@@ -568,7 +568,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eBranches:
+    case CEnums::eBranches:
     {
         QStringList lLines = sValue.split("\n");
         QStringList lReturnValue;
@@ -582,7 +582,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
                 sLine.remove(0, 2);
                 lReturnValue << sLine;
 
-                emit newOutputString(CProcessCommand::eCurrentBranch, sLine);
+                emit newOutputString(CEnums::eCurrentBranch, sLine);
             }
             else
             {
@@ -595,7 +595,13 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eAllFileStatus:
+    case CEnums::eBranchHeadCommits:
+    {
+        // TODO
+        break;
+    }
+
+    case CEnums::eAllFileStatus:
     {
         QList<CRepoFile*> lReturnValue;
         QStringList lStrings = sValue.split("\n");
@@ -612,8 +618,8 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eFileLog:
-    case CProcessCommand::eBranchLog:
+    case CEnums::eFileLog:
+    case CEnums::eBranchLog:
     {
         QList<CLogLine*> lReturnValue;
         QStringList lStrings = sValue.split("\n");
@@ -639,7 +645,7 @@ void CGitCommands::onExecFinished(QString sPath, CProcessCommand::EProcessComman
         break;
     }
 
-    case CProcessCommand::eGraph:
+    case CEnums::eGraph:
     {
         QList<CGraphLine*> lReturnValue;
         QStringList lStrings = sValue.split("\n");

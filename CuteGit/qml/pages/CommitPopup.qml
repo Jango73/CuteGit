@@ -78,7 +78,7 @@ Popup {
                 Layout.alignment: Qt.AlignCenter
                 text: Const.okText
 
-                enabled: message.text != "" || root.controller.repository.repositoryStatus !== CTreeFileModel.NoMerge
+                enabled: message.text != "" || root.controller.repository.repositoryStatus !== CEnums.NoMerge
 
                 onClicked: {
                     root.close()

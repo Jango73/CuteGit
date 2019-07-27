@@ -45,7 +45,7 @@ public:
     // Getters
     //-------------------------------------------------------------------------------------------------
 
-    virtual bool can(ECapability eWhat) const override;
+    virtual bool can(CEnums::ECapability eWhat) const override;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
@@ -132,7 +132,7 @@ protected:
 protected slots:
 
     //!
-    void onExecFinished(QString sPath, CProcessCommand::EProcessCommand eCommand, QString sValue);
+    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue);
 
 protected:
 

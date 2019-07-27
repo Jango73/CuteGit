@@ -14,6 +14,7 @@ class CDiffModel : public QAbstractListModel
     Q_OBJECT
 
 public:
+
     enum ERoles
     {
         eTextRole = Qt::UserRole + 1,

@@ -14,6 +14,7 @@ class CLogModel : public QAbstractListModel
     Q_OBJECT
 
 public:
+
     enum ERoles
     {
         eCommitIdRole = Qt::UserRole + 1,

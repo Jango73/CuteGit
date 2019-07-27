@@ -7,6 +7,9 @@
 // qt-plus
 #include "Macros.h"
 
+// Application
+#include "CEnums.h"
+
 //-------------------------------------------------------------------------------------------------
 
 class CRepoFile : public QObject
@@ -15,17 +18,6 @@ class CRepoFile : public QObject
 
 public:
 
-    enum ERepoFileStatus
-    {
-        eClean,
-        eAdded,
-        eModified,
-        eRenamed,
-        eDeleted,
-        eUntracked,
-        eIgnored
-    };
-
     //-------------------------------------------------------------------------------------------------
     // QML properties
     //-------------------------------------------------------------------------------------------------
@@ -33,7 +25,7 @@ public:
     Q_FAST_PROPERTY(QString, s, fullName, FullName)
     Q_FAST_PROPERTY(QString, s, fileName, FileName)
     Q_FAST_PROPERTY(QString, s, relativeName, RelativeName)
-    Q_FAST_PROPERTY(ERepoFileStatus, e, status, Status)
+    Q_FAST_PROPERTY(CEnums::ERepoFileStatus, e, status, Status)
     Q_FAST_PROPERTY(bool, b, staged, Staged)
 
 public:

@@ -124,7 +124,7 @@ Item {
 
             Rectangle {
                 anchors.fill: parent
-                color: root.controller.repository.repositoryStatus === CTreeFileModel.NoMerge
+                color: root.controller.repository.repositoryStatus === CEnums.NoMerge
                        ? Const.transparent
                        : Material.accent
             }
@@ -132,15 +132,15 @@ Item {
             StandardText {
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
-                color: root.controller.repository.repositoryStatus === CTreeFileModel.NoMerge
+                color: root.controller.repository.repositoryStatus === CEnums.NoMerge
                        ? Material.foreground
                        : Material.background
                 text: {
-                    if (root.controller.repository.repositoryStatus === CTreeFileModel.InteractiveRebase)
+                    if (root.controller.repository.repositoryStatus === CEnums.InteractiveRebase)
                         qsTr("Interactive rebase in progress...")
-                    else if (root.controller.repository.repositoryStatus === CTreeFileModel.Rebase)
+                    else if (root.controller.repository.repositoryStatus === CEnums.Rebase)
                         qsTr("Rebase in progress...")
-                    else if (root.controller.repository.repositoryStatus === CTreeFileModel.Merge)
+                    else if (root.controller.repository.repositoryStatus === CEnums.Merge)
                         qsTr("Merge in progress...")
                     else
                         ""

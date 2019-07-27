@@ -26,8 +26,8 @@ Pane {
 
             Rectangle {
                 anchors.fill: parent
-                color: if (operation === CDiffLine.Add) Const.fileStagedColor
-                       else if (operation === CDiffLine.Delete) Const.fileModifiedColor
+                color: if (operation === CEnums.Add) Const.fileStagedColor
+                       else if (operation === CEnums.Delete) Const.fileModifiedColor
                        else Const.transparent
             }
 

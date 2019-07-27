@@ -8,6 +8,7 @@
 
 // Application
 #include "CuteGit.h"
+#include "CEnums.h"
 #include "CRepository.h"
 #include "CTreeFileModel.h"
 #include "CTreeFileModelProxy.h"
@@ -24,17 +25,13 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         // Register types
         // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
         qRegisterMetaType<CXMLNode>();
-        qRegisterMetaType<CProcessCommand::EProcessCommand>("CProcessCommand::EProcessCommand");
-        qRegisterMetaType<CCommands::ECapability>("CCommands::ECapability");
-        qRegisterMetaType<CRepository::ERepositoryType>("CRepository::ERepositoryType");
-        qRegisterMetaType<CRepository::ERepositoryStatus>("CRepository::ERepositoryStatus");
-        qRegisterMetaType<CDiffLine::EDiffOperation>("CDiffLine::EDiffOperation");
+        qRegisterMetaType<CEnums::EProcessCommand>("CEnums::EProcessCommand");
+        qRegisterMetaType<CEnums::ECapability>("CEnums::ECapability");
+        qRegisterMetaType<CEnums::ERepositoryType>("CEnums::ERepositoryType");
+        qRegisterMetaType<CEnums::ERepositoryStatus>("CEnums::ERepositoryStatus");
+        qRegisterMetaType<CEnums::EDiffOperation>("CEnums::EDiffOperation");
 
-        qmlRegisterUncreatableType<CTreeFileModel>("CuteGit", 1, 0, "CTreeFileModel", "Cannot create a FileSystemModel instance.");
-        qmlRegisterUncreatableType<CTreeFileModelProxy>("CuteGit", 1, 0, "CFileModelProxy", "Cannot create a FileSystemModelProxy instance.");
-        qmlRegisterUncreatableType<CDiffLine>("CuteGit", 1, 0, "CDiffLine", "Cannot create a CDiffLine instance.");
-        qmlRegisterUncreatableType<CCommands>("CuteGit", 1, 0, "CCommands", "Cannot create a CCommands instance.");
-        qmlRegisterUncreatableType<CRepository>("CuteGit", 1, 0, "CRepository", "Cannot create a CRepository instance.");
+        qmlRegisterUncreatableType<CEnums>("CuteGit", 1, 0, "CEnums", "Cannot create a CEnums instance.");
 
         // Create controller and QML engine
         m_pController = new CController(this);

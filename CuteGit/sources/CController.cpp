@@ -202,10 +202,10 @@ void CController::setRepositoryPath(QString sPath)
     if (sPath.startsWith("file:"))
         sPath = QUrl(sPath).toLocalFile();
 
-    CRepository::ERepositoryType eType = CRepository::getRepositoryType(sPath);
+    CEnums::ERepositoryType eType = CRepository::getRepositoryType(sPath);
 
     // If specified directory is a repository
-    if (eType != CRepository::UnknownRepositoryType)
+    if (eType != CEnums::UnknownRepositoryType)
     {
         if (m_pRepository != nullptr)
             delete m_pRepository;

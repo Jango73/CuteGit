@@ -21,6 +21,7 @@ class CFlatFileModel : public QAbstractListModel
     Q_OBJECT
 
 public:
+
     enum ERoles
     {
         eFullNameRole = Qt::UserRole + 1,

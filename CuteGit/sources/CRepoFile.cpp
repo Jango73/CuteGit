@@ -26,7 +26,7 @@ const QString CRepoFile::sRepositoryStatusInteractiveRebase = "Interactive rebas
 
 CRepoFile::CRepoFile(QObject* parent)
     : QObject(parent)
-    , m_eStatus(eUntracked)
+    , m_eStatus(CEnums::eUntracked)
     , m_bStaged(false)
 {
 }
@@ -43,19 +43,19 @@ QString CRepoFile::statusToString() const
 {
     switch (m_eStatus)
     {
-    case eClean:
+    case CEnums::eClean:
         return sTokenClean;
-    case eAdded:
+    case CEnums::eAdded:
         return sTokenAdded;
-    case eModified:
+    case CEnums::eModified:
         return sTokenModified;
-    case eRenamed:
+    case CEnums::eRenamed:
         return sTokenRenamed;
-    case eDeleted:
+    case CEnums::eDeleted:
         return sTokenDeleted;
-    case eUntracked:
+    case CEnums::eUntracked:
         return sTokenUntracked;
-    case eIgnored:
+    case CEnums::eIgnored:
         return sTokenIgnored;
     }
 

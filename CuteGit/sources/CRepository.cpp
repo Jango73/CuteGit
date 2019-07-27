@@ -13,8 +13,8 @@
 
 CRepository::CRepository(const QString& sPath, CController* pController, QObject* parent)
     : QObject(parent)
-    , m_eRepositoryType(UnknownRepositoryType)
-    , m_eRepositoryStatus(NoMerge)
+    , m_eRepositoryType(CEnums::UnknownRepositoryType)
+    , m_eRepositoryStatus(CEnums::NoMerge)
     , m_sRepositoryPath(sPath)
     , m_pController(pController)
     , m_pCommands(new CCommands())
@@ -38,11 +38,11 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     switch (m_eRepositoryType)
     {
 
-    case GIT:
+    case CEnums::GIT:
         setCommands(new CGitCommands());
         break;
 
-    case SVN:
+    case CEnums::SVN:
         setCommands(new CSvnCommands());
         break;
 
@@ -117,7 +117,7 @@ CRepoFile* CRepository::fileByFullName(const QList<CRepoFile*>& vFiles, const QS
 
 //-------------------------------------------------------------------------------------------------
 
-bool CRepository::can(CCommands::ECapability eWhat)
+bool CRepository::can(CEnums::ECapability eWhat)
 {
     return m_pCommands->can(eWhat);
 }
@@ -218,7 +218,7 @@ void CRepository::revertSelection(QStringList lFileFullNames)
 
 void CRepository::commit(const QString& sMessage, bool bAmend)
 {
-    if (m_eRepositoryStatus == NoMerge && bAmend == false)
+    if (m_eRepositoryStatus == CEnums::NoMerge && bAmend == false)
     {
         m_pCommands->commit(m_sRepositoryPath, sMessage);
     }
@@ -286,19 +286,19 @@ void CRepository::changeCommitMessage(const QString& sCommitId, const QString& s
 
 //-------------------------------------------------------------------------------------------------
 
-CRepository::ERepositoryType CRepository::getRepositoryType(const QString& sPath)
+CEnums::ERepositoryType CRepository::getRepositoryType(const QString& sPath)
 {
     if (QDir(QString("%1/.git").arg(sPath)).exists())
     {
-        return GIT;
+        return CEnums::GIT;
     }
 
     if (QDir(QString("%1/.svn").arg(sPath)).exists())
     {
-        return SVN;
+        return CEnums::SVN;
     }
 
-    return UnknownRepositoryType;
+    return CEnums::UnknownRepositoryType;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -374,37 +374,37 @@ void CRepository::onNewOutput(QString sOutput)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sOutput)
+void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sOutput)
 {
     switch (eCommand)
     {
 
-    case CProcessCommand::eRepositoryStatus:
+    case CEnums::eRepositoryStatus:
     {
         if (sOutput == CRepoFile::sRepositoryStatusClean)
-            setRepositoryStatus(NoMerge);
+            setRepositoryStatus(CEnums::NoMerge);
         else if (sOutput == CRepoFile::sRepositoryStatusMerge)
-            setRepositoryStatus(Merge);
+            setRepositoryStatus(CEnums::Merge);
         else if (sOutput == CRepoFile::sRepositoryStatusRebase)
-            setRepositoryStatus(Rebase);
+            setRepositoryStatus(CEnums::Rebase);
         else if (sOutput == CRepoFile::sRepositoryStatusInteractiveRebase)
-            setRepositoryStatus(InteractiveRebase);
+            setRepositoryStatus(CEnums::InteractiveRebase);
         break;
     }
 
-    case CProcessCommand::eNotification:
-    case CProcessCommand::eStageFile:
-    case CProcessCommand::eStageAll:
-    case CProcessCommand::eRevertFile:
+    case CEnums::eNotification:
+    case CEnums::eStageFile:
+    case CEnums::eStageAll:
+    case CEnums::eRevertFile:
     {
         onNewOutput(sOutput);
         break;
     }
 
-    case CProcessCommand::eCommit:
-    case CProcessCommand::eAmend:
-    case CProcessCommand::ePush:
-    case CProcessCommand::ePull:
+    case CEnums::eCommit:
+    case CEnums::eAmend:
+    case CEnums::ePush:
+    case CEnums::ePull:
     {
         onNewOutput(sOutput);
         checkAllFileStatus();
@@ -412,20 +412,20 @@ void CRepository::onNewOutputString(CProcessCommand::EProcessCommand eCommand, Q
         break;
     }
 
-    case CProcessCommand::eSetCurrentBranch:
-    case CProcessCommand::eCommitReset:
-    case CProcessCommand::eCommitRebase:
-    case CProcessCommand::eCommitSquash:
-    case CProcessCommand::eChangeCommitMessage:
-    case CProcessCommand::eContinueRebase:
-    case CProcessCommand::eAbortRebase:
+    case CEnums::eSetCurrentBranch:
+    case CEnums::eCommitReset:
+    case CEnums::eCommitRebase:
+    case CEnums::eCommitSquash:
+    case CEnums::eChangeCommitMessage:
+    case CEnums::eContinueRebase:
+    case CEnums::eAbortRebase:
     {
         onNewOutput(sOutput);
         refresh();
         break;
     }
 
-    case CProcessCommand::eCurrentBranch:
+    case CEnums::eCurrentBranch:
     {
         m_sCurrentBranch = sOutput;
         emit currentBranchChanged();
@@ -442,12 +442,12 @@ void CRepository::onNewOutputString(CProcessCommand::EProcessCommand eCommand, Q
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue)
+void CRepository::onNewOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue)
 {
     switch (eCommand)
     {
 
-    case CProcessCommand::eBranches:
+    case CEnums::eBranches:
     {
         m_pBranchModel->setStringList(lValue);
         break;
@@ -463,12 +463,12 @@ void CRepository::onNewOutputStringList(CProcessCommand::EProcessCommand eComman
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
+void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
 {
     switch (eCommand)
     {
 
-    case CProcessCommand::eAllFileStatus:
+    case CEnums::eAllFileStatus:
     {
         // TODO
 //        QStringList changedFiles;
@@ -501,7 +501,7 @@ void CRepository::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eC
 
         for (CRepoFile* pFile : lNewRepoFiles)
         {
-            if (pFile->status() != CRepoFile::eIgnored)
+            if (pFile->status() != CEnums::eIgnored)
                 m_lRepoFiles << pFile;
         }
 
@@ -522,18 +522,18 @@ void CRepository::onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eC
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewLines)
+void CRepository::onNewOutputListOfCLogLine(CEnums::EProcessCommand eCommand, QList<CLogLine*> lNewLines)
 {
     switch (eCommand)
     {
 
-    case CProcessCommand::eBranchLog:
+    case CEnums::eBranchLog:
     {
         m_pLogModel->setLines(lNewLines);
         break;
     }
 
-    case CProcessCommand::eFileLog:
+    case CEnums::eFileLog:
     {
         m_pFileLogModel->setLines(lNewLines);
         break;
@@ -549,12 +549,12 @@ void CRepository::onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCo
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines)
+void CRepository::onNewOutputListOfCDiffLine(CEnums::EProcessCommand eCommand, QList<CDiffLine*> lNewLines)
 {
     switch (eCommand)
     {
 
-    case CProcessCommand::eUnstagedFileDiff:
+    case CEnums::eUnstagedFileDiff:
     {
         m_pFileDiffModel->setLines(lNewLines);
         break;
@@ -570,12 +570,12 @@ void CRepository::onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eC
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewLines)
+void CRepository::onNewOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, QList<CGraphLine*> lNewLines)
 {
     switch (eCommand)
     {
 
-    case CProcessCommand::eGraph:
+    case CEnums::eGraph:
     {
         m_pGraphModel->setLines(lNewLines);
         break;

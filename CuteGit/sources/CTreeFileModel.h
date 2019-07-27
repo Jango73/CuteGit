@@ -11,6 +11,7 @@
 #include "CXMLNode.h"
 
 // Application
+#include "CEnums.h"
 #include "CRepoFile.h"
 #include "CLogModel.h"
 #include "CDiffModel.h"
@@ -28,22 +29,13 @@ class CTreeFileModel : public QFileSystemModel
     Q_OBJECT
 
 public:
+
     enum ERoles
     {
         eSizeRole = Qt::UserRole + 10,
         eStatusRole,
         eStagedRole
     };
-
-    enum ERepositoryStatus
-    {
-        NoMerge,
-        Merge,
-        Rebase,
-        InteractiveRebase
-    };
-
-    Q_ENUMS(ERepositoryStatus)
 
     //-------------------------------------------------------------------------------------------------
     // QML properties

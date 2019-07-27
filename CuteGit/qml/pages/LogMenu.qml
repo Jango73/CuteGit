@@ -41,7 +41,7 @@ Menu {
 
     Action {
         text: qsTr("Reset &to")
-        enabled: root.controller.repository.can(CCommands.ResetToCommit)
+        enabled: root.controller.repository.can(CEnums.ResetToCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -52,7 +52,7 @@ Menu {
 
     Action {
         text: qsTr("&Rebase")
-        enabled: root.controller.repository.can(CCommands.RebaseOnCommit)
+        enabled: root.controller.repository.can(CEnums.RebaseOnCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -63,7 +63,7 @@ Menu {
 
     Action {
         text: qsTr("&Squash")
-        enabled: root.controller.repository.can(CCommands.SquashCommit)
+        enabled: root.controller.repository.can(CEnums.SquashCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -74,7 +74,7 @@ Menu {
 
     Action {
         text: qsTr("&Change message")
-        enabled: root.controller.repository.can(CCommands.ChangeCommitMessage)
+        enabled: root.controller.repository.can(CEnums.ChangeCommitMessage)
 
         onTriggered: {
             if (root.commitId !== "") {

@@ -1,6 +1,7 @@
 
 HEADERS += \
     ../qt-plus/source/cpp/CXMLNode.h \
+    sources/CEnums.h \
     sources/CCommands.h \
     sources/CGitCommands.h \
     sources/CSvnCommands.h \

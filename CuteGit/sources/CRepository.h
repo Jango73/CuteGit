@@ -9,6 +9,7 @@
 #include "CXMLNode.h"
 
 // Application
+#include "CEnums.h"
 #include "CTreeFileModel.h"
 #include "CTreeFileModelProxy.h"
 #include "CFlatFileModel.h"
@@ -32,31 +33,12 @@ class CRepository : public QObject
 
 public:
 
-    enum ERepositoryType
-    {
-        UnknownRepositoryType,
-        GIT,
-        CVS,
-        SVN
-    };
-
-    enum ERepositoryStatus
-    {
-        NoMerge,
-        Merge,
-        Rebase,
-        InteractiveRebase
-    };
-
-    Q_ENUMS(ERepositoryType)
-    Q_ENUMS(ERepositoryStatus)
-
     //-------------------------------------------------------------------------------------------------
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
-    Q_FAST_PROPERTY(ERepositoryType, e, repositoryType, RepositoryType)
-    Q_FAST_PROPERTY(ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
+    Q_FAST_PROPERTY(CEnums::ERepositoryType, e, repositoryType, RepositoryType)
+    Q_FAST_PROPERTY(CEnums::ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
@@ -100,7 +82,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    Q_INVOKABLE bool can(CCommands::ECapability eWhat);
+    Q_INVOKABLE bool can(CEnums::ECapability eWhat);
 
     //!
     Q_INVOKABLE void checkAllFileStatus(QString sPath = "");
@@ -161,7 +143,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    static ERepositoryType getRepositoryType(const QString& sPath);
+    static CEnums::ERepositoryType getRepositoryType(const QString& sPath);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
@@ -200,20 +182,20 @@ protected slots:
     void onNewOutput(QString sOutput);
 
     //!
-    void onNewOutputString(CProcessCommand::EProcessCommand eCommand, QString sValue);
+    void onNewOutputString(CEnums::EProcessCommand eCommand, QString sValue);
 
     //!
-    void onNewOutputStringList(CProcessCommand::EProcessCommand eCommand, QStringList lValue);
+    void onNewOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue);
 
     //!
-    void onNewOutputListOfCRepoFile(CProcessCommand::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+    void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 
     //!
-    void onNewOutputListOfCLogLine(CProcessCommand::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
+    void onNewOutputListOfCLogLine(CEnums::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
 
     //!
-    void onNewOutputListOfCDiffLine(CProcessCommand::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
+    void onNewOutputListOfCDiffLine(CEnums::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
 
     //!
-    void onNewOutputListOfCGraphLine(CProcessCommand::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
+    void onNewOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
 };
