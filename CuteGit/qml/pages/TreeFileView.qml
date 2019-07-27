@@ -1,12 +1,11 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5
-import QtQuick.Controls 1.5 as QQC15
+import QtQuick.Controls 1.5
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
 import CuteGit 1.0
 import "../components"
 
-QQC15.TreeView {
+TreeView {
     id: root
     enabled: visible
 
@@ -20,13 +19,13 @@ QQC15.TreeView {
     selectionMode: 2
     // "None", "Single", "Extended", "Multi", "Contig."
 
-    QQC15.TableViewColumn {
+    TableViewColumn {
         title: "Name"
         role: "fileName"
         width: root.width * 0.8
     }
 
-    QQC15.TableViewColumn {
+    TableViewColumn {
         title: "Status"
         role: "status"
         width: root.width * 0.2
