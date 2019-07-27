@@ -1,5 +1,7 @@
 # CuteGit
 
+![alt text](https://github.com/Jango73/CuteGit/blob/master/Media/Screenshot01.jpg)
+
 This is a simple UI for the GIT executable.
 I decided to make my own because the only efficient GIT UIs on Linux are paywares.
 It is however not meant to compete with paywares, just provide minimal GIT functionality.
