@@ -153,7 +153,10 @@ void CTreeFileModel::onRootPathChanged(const QString& sNewPath)
 {
     Q_UNUSED(sNewPath);
 
-    m_pFileSystemWatcher->addPath(sNewPath);
+    if (not sNewPath.isEmpty())
+    {
+        m_pFileSystemWatcher->addPath(sNewPath);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
