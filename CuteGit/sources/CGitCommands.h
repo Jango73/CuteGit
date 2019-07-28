@@ -61,6 +61,9 @@ public:
     virtual void branches(const QString& sPath) override;
 
     //!
+    virtual void branchHeadCommits(const QString& sPath, QStringList lBranches) override;
+
+    //!
     virtual void graph(const QString& sPath) override;
 
     //!
@@ -132,7 +135,7 @@ protected:
 protected slots:
 
     //!
-    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue);
+    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
 
 protected:
 

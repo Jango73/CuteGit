@@ -73,7 +73,7 @@ TreeView {
                 id: statusText
                 width: Const.elementHeight
                 height: parent.height
-                text: model.status
+                text: typeof(model) !== "undefined" ? model.status : ""
             }
 
             ElideText {
@@ -81,7 +81,7 @@ TreeView {
                 anchors.left: statusText.right
                 anchors.right: parent.right
                 height: parent.height
-                text: model.fileName
+                text: typeof(model) !== "undefined" ? model.fileName : ""
             }
         }
     }

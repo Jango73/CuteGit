@@ -2,9 +2,11 @@
 HEADERS += \
     ../qt-plus/source/cpp/CXMLNode.h \
     sources/CEnums.h \
+    sources/CBranch.h \
     sources/CCommands.h \
     sources/CGitCommands.h \
     sources/CSvnCommands.h \
+    sources/CBranchModel.h \
     sources/CTreeFileModel.h \
     sources/CTreeFileModelProxy.h \
     sources/CFlatFileModel.h \
@@ -25,6 +27,7 @@ SOURCES += \
     sources/CCommands.cpp \
     sources/CGitCommands.cpp \
     sources/CSvnCommands.cpp \
+    sources/CBranchModel.cpp \
     sources/CTreeFileModel.cpp \
     sources/CTreeFileModelProxy.cpp \
     sources/CFlatFileModel.cpp \

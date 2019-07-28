@@ -18,8 +18,8 @@ static const char* sCommandStatus = "git status --ignored --porcelain";
 static const char* sCommandStatusForFile = "git status --ignored --porcelain \"%1\"";
 static const char* sCommandBranches = "git branch -a";
 
-static const char* sCommandBranchLog = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
-static const char* sCommandFileLog = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
+static const char* sCommandBranchLog = "git log --pretty=format:\"%H &&& %s &&& %an &&& %aI\" --max-count=20";
+static const char* sCommandFileLog = "git log --pretty=format:\"%H &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
 static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space HEAD \"%1\"";
 static const char* sCommandGraph = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
 static const char* sCommandHeadCommit = "git rev-parse \"%1\"";
@@ -127,6 +127,17 @@ void CGitCommands::repositoryStatus(const QString& sPath)
 void CGitCommands::branches(const QString& sPath)
 {
     exec(new CProcessCommand(CEnums::eBranches, sPath, sCommandBranches));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::branchHeadCommits(const QString& sPath, QStringList lBranches)
+{
+    for (QString sBranch: lBranches)
+    {
+        QString sCommand = QString(sCommandHeadCommit).arg(sBranch);
+        exec(new CProcessCommand(CEnums::eBranchHeadCommit, sPath, sCommand, true, QMap<QString, QString>(), sBranch));
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -503,7 +514,7 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue)
+void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData)
 {
     switch (eCommand)
     {
@@ -530,6 +541,11 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     {
         emit newOutputString(eCommand, sValue);
         break;
+    }
+
+    case CEnums::eBranchHeadCommit:
+    {
+        emit newOutputKeyValue(eCommand, sUserData, sValue.trimmed());
     }
 
     case CEnums::eUnstagedFileDiff:
@@ -571,33 +587,34 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eBranches:
     {
         QStringList lLines = sValue.split("\n");
-        QStringList lReturnValue;
+        QList<CBranch*> lReturnValue;
 
         for (QString sLine : lLines)
         {
             sLine = sLine.split("->").first();
 
-            if (sLine.startsWith("*"))
+            if (not sLine.isEmpty())
             {
-                sLine.remove(0, 2);
-                lReturnValue << sLine;
+                CBranch* pNewBranch = new CBranch();
 
-                emit newOutputString(CEnums::eCurrentBranch, sLine);
-            }
-            else
-            {
-                sLine.remove(0, 2);
-                lReturnValue << sLine;
+                if (sLine.startsWith("*"))
+                {
+                    sLine.remove(0, 2);
+                    pNewBranch->setName(sLine);
+
+                    emit newOutputString(CEnums::eCurrentBranch, sLine);
+                }
+                else
+                {
+                    sLine.remove(0, 2);
+                    pNewBranch->setName(sLine);
+                }
+
+                lReturnValue << pNewBranch;
             }
         }
 
-        emit newOutputStringList(eCommand, lReturnValue);
-        break;
-    }
-
-    case CEnums::eBranchHeadCommits:
-    {
-        // TODO
+        emit newOutputListOfCBranch(eCommand, lReturnValue);
         break;
     }
 

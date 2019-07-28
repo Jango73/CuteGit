@@ -8,6 +8,11 @@
 #include "CLogLine.h"
 
 //-------------------------------------------------------------------------------------------------
+// Forward declarations
+
+class CRepository;
+
+//-------------------------------------------------------------------------------------------------
 
 class CLogModel : public QAbstractListModel
 {
@@ -20,15 +25,24 @@ public:
         eCommitIdRole = Qt::UserRole + 1,
         eDateRole,
         eAuthorRole,
-        eMessageRole
+        eMessageRole,
+        eLabelsRole
     };
+
+    //-------------------------------------------------------------------------------------------------
+    // QML properties
+    //-------------------------------------------------------------------------------------------------
+
+    Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
+
+public:
 
     //-------------------------------------------------------------------------------------------------
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CLogModel(QObject *parent = nullptr);
+    CLogModel(CRepository* pRepository, QObject *parent = nullptr);
 
     //! Destructor
     virtual ~CLogModel();
@@ -48,6 +62,12 @@ public:
 
     //! Returns data
     virtual QVariant data(const QModelIndex& index, int role) const;
+
+    //!
+    void commitChanged(const QString& sCommitId);
+
+    //!
+    void invalidate();
 
 private:
 

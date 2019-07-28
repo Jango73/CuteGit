@@ -14,6 +14,8 @@ StandardListView {
         width: parent.width
         height: Const.elementHeight + Const.smallPadding
 
+        property variant labels: model.labels
+
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
@@ -28,9 +30,9 @@ StandardListView {
 
         Selection {
             id: selection
-            targetWidth: data.width
-            targetHeight: data.height
-            anchors.centerIn: data
+            anchors.centerIn: dataZone
+            targetWidth: dataZone.width
+            targetHeight: dataZone.height
             visible: index === root.currentIndex
 
             FocusIndicator {
@@ -40,23 +42,68 @@ StandardListView {
         }
 
         Item {
-            id: data
+            id: dataZone
             anchors.centerIn: parent
             width: parent.width - Const.smallPadding
             height: parent.height - Const.smallPadding
 
-            ElideText {
+            Item {
                 id: messageField
                 width: parent.width * 0.55
-                verticalAlignment: Text.AlignVCenter
-                color: selection.visible ? Material.background : Material.foreground
-                text: model.message
+
+                Row {
+                    id: labels
+                    width: addedWidth
+
+                    property int addedWidth: 0
+
+                    Repeater {
+                        model: delegateItem.labels
+
+                        Item {
+                            width: labelText.width
+                            height: parent.height
+
+                            Selection {
+                                anchors.centerIn: labelText
+                                targetWidth: labelText.width
+                                targetHeight: labelText.height
+                                color: Material.accent
+                            }
+
+                            StandardText {
+                                id: labelText
+                                color: Material.background
+                                text: modelData
+                            }
+
+                            Component.onCompleted: {
+                                labels.addedWidth += width
+                            }
+
+                            Component.onDestruction: {
+                                labels.addedWidth -= width
+                            }
+                        }
+                    }
+                }
+
+                ElideText {
+                    height: dataZone.height
+                    anchors.left: labels.right
+                    anchors.right: parent.right
+                    anchors.leftMargin: Const.mainPadding
+                    verticalAlignment: Text.AlignVCenter
+                    color: selection.visible ? Material.background : Material.foreground
+                    text: model.message
+                }
             }
 
             ElideText {
                 id: authorField
                 anchors.left: messageField.right
                 width: parent.width * 0.25
+                height: dataZone.height
                 verticalAlignment: Text.AlignVCenter
                 color: selection.visible ? Material.background : Material.foreground
                 text: model.author
@@ -66,6 +113,7 @@ StandardListView {
                 id: dateField
                 anchors.left: authorField.right
                 width: parent.width * 0.2
+                height: dataZone.height
                 verticalAlignment: Text.AlignVCenter
                 color: selection.visible ? Material.background : Material.foreground
                 text: model.date

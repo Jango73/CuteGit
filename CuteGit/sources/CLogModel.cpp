@@ -1,11 +1,13 @@
 
 // Application
 #include "CLogModel.h"
+#include "CRepository.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CLogModel::CLogModel(QObject* parent)
+CLogModel::CLogModel(CRepository *pRepository, QObject* parent)
     : QAbstractListModel(parent)
+    , m_pRepository(pRepository)
 {
 }
 
@@ -40,6 +42,7 @@ QHash<int, QByteArray> CLogModel::roleNames() const
     hRoleNames[eDateRole] = "date";
     hRoleNames[eAuthorRole] = "author";
     hRoleNames[eMessageRole] = "message";
+    hRoleNames[eLabelsRole] = "labels";
     return hRoleNames;
 }
 
@@ -77,7 +80,34 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
 
     case eMessageRole:
         return m_lLines[row]->message();
+
+    case eLabelsRole:
+        return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
     }
 
     return QVariant();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CLogModel::commitChanged(const QString& sCommitId)
+{
+    for (int iLineIndex = 0; iLineIndex < m_lLines.count(); iLineIndex++)
+    {
+        CLogLine* pLine = m_lLines[iLineIndex];
+
+        if (pLine->commitId() == sCommitId)
+        {
+            emit dataChanged(index(iLineIndex), index(iLineIndex));
+            break;
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CLogModel::invalidate()
+{
+    beginResetModel();
+    endResetModel();
 }

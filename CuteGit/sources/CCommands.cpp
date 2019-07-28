@@ -58,7 +58,7 @@ void CCommands::run()
         {
             QString sOutput = execNow(pCommand->m_sWorkPath, pCommand->m_sCommand, pCommand->m_mEnvironment);
 
-            emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput);
+            emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData);
 
             pCommand->deleteLater();
         }
@@ -136,6 +136,13 @@ void CCommands::repositoryStatus(const QString& sPath)
 //-------------------------------------------------------------------------------------------------
 
 void CCommands::branches(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::branchHeadCommits(const QString& sPath, QStringList lBranches)
 {
     Q_UNUSED(sPath);
 }

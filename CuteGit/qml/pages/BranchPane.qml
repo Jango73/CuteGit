@@ -32,7 +32,7 @@ TitlePane {
                     MouseArea {
                         anchors.fill: selection
                         onDoubleClicked: {
-                            root.controller.repository.currentBranch = display
+                            root.controller.repository.currentBranch = model.name
                         }
                     }
 
@@ -41,13 +41,13 @@ TitlePane {
                         targetWidth: text.width
                         targetHeight: text.height
                         anchors.centerIn: text
-                        visible: display === root.controller.repository.currentBranch
+                        visible: model.name === root.controller.repository.currentBranch
                     }
 
                     ElideText {
                         id: text
                         width: parent.width - Const.smallPadding
-                        text: display
+                        text: model.name
                         color: selection.visible ? Material.background : Material.foreground
                     }
                 }

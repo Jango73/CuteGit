@@ -10,6 +10,7 @@
 
 // Application
 #include "CEnums.h"
+#include "CBranchModel.h"
 #include "CTreeFileModel.h"
 #include "CTreeFileModelProxy.h"
 #include "CFlatFileModel.h"
@@ -46,7 +47,7 @@ public:
     Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(CFlatFileModelProxy*, p, flatFileModelProxy, FlatFileModelProxy)
-    Q_FAST_PROPERTY(QStringListModel*, p, branchModel, BranchModel)
+    Q_FAST_PROPERTY(CBranchModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
@@ -76,6 +77,9 @@ public:
 
     //!
     CRepoFile* fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const;
+
+    //!
+    QStringList labelsForCommit(const QString& sCommitId) const;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
@@ -155,6 +159,9 @@ protected:
     void getBranches(QString sPath = "");
 
     //!
+    void getBranchHeadCommits(QString sPath = "");
+
+    //!
     void getGraph(QString sPath = "");
 
     //!
@@ -185,7 +192,13 @@ protected slots:
     void onNewOutputString(CEnums::EProcessCommand eCommand, QString sValue);
 
     //!
+    void onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString sKey, QString sValue);
+
+    //!
     void onNewOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue);
+
+    //!
+    void onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QList<CBranch*> lNewBranches);
 
     //!
     void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);

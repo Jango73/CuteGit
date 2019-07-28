@@ -22,7 +22,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pTreeFileModelProxy(new CTreeFileModelProxy(pController, this))
     , m_pFlatFileModel(nullptr)
     , m_pFlatFileModelProxy(new CFlatFileModelProxy(pController, this))
-    , m_pBranchModel(new QStringListModel(this))
+    , m_pBranchModel(new CBranchModel(this))
     , m_pLogModel(new CLogModel(this))
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileLogModel(new CLogModel(this))
@@ -54,7 +54,9 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
 
     // Command return values
     connect(m_pCommands, &CCommands::newOutputString, this, &CRepository::onNewOutputString);
+    connect(m_pCommands, &CCommands::newOutputKeyValue, this, &CRepository::onNewOutputKeyValue);
     connect(m_pCommands, &CCommands::newOutputStringList, this, &CRepository::onNewOutputStringList);
+    connect(m_pCommands, &CCommands::newOutputListOfCBranch, this, &CRepository::onNewOutputListOfCBranch);
     connect(m_pCommands, &CCommands::newOutputListOfCRepoFile, this, &CRepository::onNewOutputListOfCRepoFile);
     connect(m_pCommands, &CCommands::newOutputListOfCLogLine, this, &CRepository::onNewOutputListOfCLogLine);
     connect(m_pCommands, &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
@@ -66,10 +68,6 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     // Create a file model
     m_pTreeFileModel = new CTreeFileModel(this, this);
     m_pFlatFileModel = new CFlatFileModel(this, this);
-
-//    emit treeFileModelChanged();
-//    emit treeFileModelProxyChanged();
-//    emit flatFileModelChanged();
 
     connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
@@ -113,6 +111,13 @@ CRepoFile* CRepository::fileByFullName(const QList<CRepoFile*>& vFiles, const QS
     }
 
     return nullptr;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QStringList CRepository::labelsForCommit(const QString& sCommitId) const
+{
+    return m_pBranchModel->labelsForCommit(sCommitId);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -313,6 +318,16 @@ void CRepository::getBranches(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::getBranchHeadCommits(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pCommands->branchHeadCommits(sPath, m_pBranchModel->branchNames());
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::getGraph(QString sPath)
 {
     if (sPath.isEmpty())
@@ -407,6 +422,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::ePull:
     {
         onNewOutput(sOutput);
+        getBranchHeadCommits();
         checkAllFileStatus();
         getLog();
         break;
@@ -442,14 +458,54 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString sKey, QString sValue)
+{
+    switch (eCommand)
+    {
+
+    case CEnums::eBranchHeadCommit:
+    {
+        m_pBranchModel->setBranchHeadCommit(sKey, sValue);
+        m_pLogModel->commitChanged(sValue);
+        break;
+    }
+
+    default:
+    {
+        break;
+    }
+
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::onNewOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue)
+{
+    Q_UNUSED(lValue);
+
+    switch (eCommand)
+    {
+
+    default:
+    {
+        break;
+    }
+
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QList<CBranch*> lNewBranches)
 {
     switch (eCommand)
     {
 
     case CEnums::eBranches:
     {
-        m_pBranchModel->setStringList(lValue);
+        m_pBranchModel->setBranchList(lNewBranches);
+        getBranchHeadCommits();
         break;
     }
 

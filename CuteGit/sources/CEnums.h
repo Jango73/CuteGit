@@ -77,7 +77,7 @@ public:
         eAllFileStatus,
         eRepositoryStatus,
         eBranches,
-        eBranchHeadCommits,
+        eBranchHeadCommit,
         eCurrentBranch,
         eGraph,
         eBranchLog,

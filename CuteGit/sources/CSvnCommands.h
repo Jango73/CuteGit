@@ -93,7 +93,7 @@ protected:
 protected slots:
 
     //!
-    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue);
+    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
 
 protected:
 

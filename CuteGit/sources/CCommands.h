@@ -10,6 +10,7 @@
 
 // Application
 #include "CEnums.h"
+#include "CBranch.h"
 #include "CRepoFile.h"
 #include "CLogLine.h"
 #include "CDiffLine.h"
@@ -23,12 +24,13 @@ class CProcessCommand : public QObject
 
 public:
 
-    CProcessCommand(CEnums::EProcessCommand eCommand, QString sWorkPath, QString sCommand, bool bAllowStack = false, QMap<QString, QString> mEnvironment = QMap<QString, QString>())
+    CProcessCommand(CEnums::EProcessCommand eCommand, QString sWorkPath, QString sCommand, bool bAllowStack = false, QMap<QString, QString> mEnvironment = QMap<QString, QString>(), QString sUserData = "")
         : m_eCommand(eCommand)
         , m_bAllowStack(bAllowStack)
         , m_sWorkPath(sWorkPath)
         , m_sCommand(sCommand)
         , m_mEnvironment(mEnvironment)
+        , m_sUserData(sUserData)
     {
     }
 
@@ -37,6 +39,7 @@ public:
     QString                 m_sWorkPath;
     QString                 m_sCommand;
     QMap<QString, QString>  m_mEnvironment;
+    QString                 m_sUserData;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -75,6 +78,9 @@ public:
 
     //! Creates a list of branches of the repo at sPath
     virtual void branches(const QString& sPath);
+
+    //! Creates a list of head commits for branches of the repo at sPath
+    virtual void branchHeadCommits(const QString& sPath, QStringList lBranches);
 
     //! Creates a list of CGraphLine from the repo at sPath
     virtual void graph(const QString& sPath);
@@ -165,13 +171,19 @@ private:
 signals:
 
     //!
-    void execFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue);
+    void execFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
 
     //!
     void newOutputString(CEnums::EProcessCommand eCommand, QString sValue);
 
     //!
+    void newOutputKeyValue(CEnums::EProcessCommand eCommand, QString sKey, QString sValue);
+
+    //!
     void newOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue);
+
+    //!
+    void newOutputListOfCBranch(CEnums::EProcessCommand eCommand, QList<CBranch*> lNewBranches);
 
     //!
     void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
