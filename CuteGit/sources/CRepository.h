@@ -131,6 +131,9 @@ public:
     Q_INVOKABLE void pull();
 
     //!
+    Q_INVOKABLE void fetch();
+
+    //!
     Q_INVOKABLE void commitReset(const QString& sCommitId);
 
     //!

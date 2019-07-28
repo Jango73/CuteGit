@@ -235,6 +235,13 @@ void CCommands::pull(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::fetch(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
 {
     Q_UNUSED(sPath);

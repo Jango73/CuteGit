@@ -67,6 +67,14 @@ MenuBar {
         title: qsTr("Re&mote")
 
         Action {
+            id: fetch
+            text: qsTr("&Fetch")
+            shortcut: "Ctrl+F"
+            enabled: root.controller.repository.can(CEnums.Fetch)
+            onTriggered: root.controller.repository.fetch()
+        }
+
+        Action {
             id: pull
             text: qsTr("&Pull")
             shortcut: "Ctrl+L"

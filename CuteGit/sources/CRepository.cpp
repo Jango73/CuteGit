@@ -263,6 +263,13 @@ void CRepository::pull()
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::fetch()
+{
+    m_pCommands->fetch(m_sRepositoryPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::commitReset(const QString& sCommitId)
 {
     m_pCommands->commitReset(m_sRepositoryPath, sCommitId);

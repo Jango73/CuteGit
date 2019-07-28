@@ -117,6 +117,9 @@ public:
     virtual void pull(const QString& sPath);
 
     //!
+    virtual void fetch(const QString& sPath);
+
+    //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);
 
     //!

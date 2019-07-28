@@ -70,6 +70,7 @@ Item {
                                        "Continue rebase\t\tControl + 'R'\n" +
                                        "Abort rebase\t\tControl + 'T'\n" +
                                        "\n" +
+                                       "Fetch\t\t\tControl + 'F'\n" +
                                        "Pull\t\t\tControl + 'L'\n" +
                                        "Push\t\t\tControl + 'P'\n"
                                        )

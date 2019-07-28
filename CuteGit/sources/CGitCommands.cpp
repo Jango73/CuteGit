@@ -33,6 +33,7 @@ static const char* sCommandCommit = "git commit -m \"%1\"";
 static const char* sCommandAmend = "git commit --amend --reset-author --no-edit";
 static const char* sCommandPush = "git push";
 static const char* sCommandPull = "git pull";
+static const char* sCommandFetch = "git fetch";
 static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
 static const char* sCommandResetOnCommit = "git reset %1";
 static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
@@ -237,6 +238,15 @@ void CGitCommands::pull(const QString& sPath)
     emit newOutputString(CEnums::eNotification, tr("Pulling..."));
     QString sCommand = QString(sCommandPull);
     exec(new CProcessCommand(CEnums::ePull, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::fetch(const QString& sPath)
+{
+    emit newOutputString(CEnums::eNotification, tr("Fetching..."));
+    QString sCommand = QString(sCommandFetch);
+    exec(new CProcessCommand(CEnums::eFetch, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -531,6 +541,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eAmend:
     case CEnums::ePush:
     case CEnums::ePull:
+    case CEnums::eFetch:
     case CEnums::eSetCurrentBranch:
     case CEnums::eCommitReset:
     case CEnums::eCommitRebase:
@@ -546,6 +557,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eBranchHeadCommit:
     {
         emit newOutputKeyValue(eCommand, sUserData, sValue.trimmed());
+        break;
     }
 
     case CEnums::eUnstagedFileDiff:

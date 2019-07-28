@@ -97,6 +97,9 @@ public:
     virtual void pull(const QString& sPath) override;
 
     //!
+    virtual void fetch(const QString& sPath) override;
+
+    //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
 
     //!
