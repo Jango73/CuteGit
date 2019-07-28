@@ -205,7 +205,7 @@ Item {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
-                width: parent.width * 0.5
+                width: parent.width * 0.6
 
                 controller: root.controller
 

@@ -50,7 +50,7 @@ StandardListView {
 
             Item {
                 id: messageField
-                width: parent.width * 0.55
+                width: parent.width * 0.6
                 height: parent.height
 
                 RowLayout {
@@ -92,7 +92,7 @@ StandardListView {
             ElideText {
                 id: authorField
                 anchors.left: messageField.right
-                width: parent.width * 0.25
+                width: parent.width * 0.2
                 height: dataZone.height
                 verticalAlignment: Text.AlignVCenter
                 color: selection.visible ? Material.background : Material.foreground
