@@ -2,35 +2,36 @@
     <qresource prefix="/">
         <file>qml/main.qml</file>
         <file>qml/components/qmldir</file>
+        <file>qml/components/Calendar.qml</file>
         <file>qml/components/Const.qml</file>
+        <file>qml/components/DatePicker.qml</file>
+        <file>qml/components/ElideText.qml</file>
         <file>qml/components/FocusIndicator.qml</file>
-        <file>qml/components/StandardTextField.qml</file>
-        <file>qml/components/StandardText.qml</file>
-        <file>qml/components/StandardTextEdit.qml</file>
-        <file>qml/components/StandardLabel.qml</file>
+        <file>qml/components/LogLabel.qml</file>
         <file>qml/components/StandardButton.qml</file>
+        <file>qml/components/StandardLabel.qml</file>
         <file>qml/components/StandardListView.qml</file>
         <file>qml/components/StandardStringListView.qml</file>
-        <file>qml/components/ElideText.qml</file>
-        <file>qml/components/Calendar.qml</file>
-        <file>qml/components/DatePicker.qml</file>
+        <file>qml/components/StandardText.qml</file>
+        <file>qml/components/StandardTextEdit.qml</file>
+        <file>qml/components/StandardTextField.qml</file>
         <file>qml/components/Selection.qml</file>
         <file>qml/components/TitlePane.qml</file>
-        <file>qml/pages/LogView.qml</file>
-        <file>qml/pages/MainPage.qml</file>
-        <file>qml/pages/MainMenu.qml</file>
-        <file>qml/pages/FilePane.qml</file>
-        <file>qml/pages/FlatFileView.qml</file>
-        <file>qml/pages/TreeFileView.qml</file>
-        <file>qml/pages/RepoPane.qml</file>
-        <file>qml/pages/BranchPane.qml</file>
-        <file>qml/pages/ToolPane.qml</file>
-        <file>qml/pages/OutputPane.qml</file>
-        <file>qml/pages/DiffView.qml</file>
-        <file>qml/pages/FileLogPane.qml</file>
         <file>qml/pages/BranchLogPane.qml</file>
+        <file>qml/pages/BranchPane.qml</file>
         <file>qml/pages/ClonePopup.qml</file>
         <file>qml/pages/CommitPopup.qml</file>
+        <file>qml/pages/DiffView.qml</file>
+        <file>qml/pages/FileLogPane.qml</file>
+        <file>qml/pages/FilePane.qml</file>
+        <file>qml/pages/FlatFileView.qml</file>
         <file>qml/pages/LogMenu.qml</file>
+        <file>qml/pages/LogView.qml</file>
+        <file>qml/pages/MainMenu.qml</file>
+        <file>qml/pages/MainPage.qml</file>
+        <file>qml/pages/OutputPane.qml</file>
+        <file>qml/pages/RepoPane.qml</file>
+        <file>qml/pages/ToolPane.qml</file>
+        <file>qml/pages/TreeFileView.qml</file>
     </qresource>
 </RCC>

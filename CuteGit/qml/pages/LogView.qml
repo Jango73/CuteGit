@@ -51,32 +51,21 @@ StandardListView {
             Item {
                 id: messageField
                 width: parent.width * 0.55
+                height: parent.height
 
                 RowLayout {
                     id: labels
                     width: addedWidth
+                    height: parent.height
 
                     property int addedWidth: 0
 
                     Repeater {
                         model: delegateItem.labels
 
-                        Item {
-                            width: labelText.width
+                        LogLabel {
                             height: parent.height
-
-                            Selection {
-                                anchors.centerIn: labelText
-                                targetWidth: labelText.width
-                                targetHeight: labelText.height
-                                color: Material.accent
-                            }
-
-                            StandardText {
-                                id: labelText
-                                color: Material.background
-                                text: modelData
-                            }
+                            text: modelData
 
                             Component.onCompleted: {
                                 labels.addedWidth += width
