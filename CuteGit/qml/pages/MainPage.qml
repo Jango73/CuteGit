@@ -38,6 +38,7 @@ Item {
         }
 
         onRequestCommit: {
+            commit.messageEnabled = true
             commit.messageText = ""
             commit.showFileList = true
             commit.amend = false
@@ -45,7 +46,8 @@ Item {
         }
 
         onRequestAmend: {
-            commit.messageText = ""
+            commit.messageEnabled = false
+            commit.messageText = Const.amendingText
             commit.showFileList = true
             commit.amend = true
             commit.open()
@@ -228,6 +230,7 @@ Item {
                 }
 
                 onRequestCommitMessageChange: {
+                    commit.messageEnabled = true
                     commit.messageText = commitMessage
                     commit.showFileList = false
                     commit.amend = false

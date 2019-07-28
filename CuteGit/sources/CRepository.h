@@ -55,6 +55,8 @@ public:
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
 
+    Q_FAST_PROPERTY(bool, b, hasCommitableFiles, HasCommitableFiles)
+
 public:
 
     //-------------------------------------------------------------------------------------------------

@@ -20,6 +20,7 @@ Popup {
     property bool amend: false
 
     property alias messageText: message.text
+    property alias messageEnabled: message.enabled
 
     Component.onCompleted: {
         root.forceActiveFocus()

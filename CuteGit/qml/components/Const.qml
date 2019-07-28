@@ -46,6 +46,7 @@ Item {
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
     property string branchesText: qsTr("Branches")
+    property string amendingText: qsTr("Amending...")
     property string expandAllText: qsTr("Expand all")
     property string collapseAllText: qsTr("Collapse all")
     property string repositoriesText: qsTr("Repositories")

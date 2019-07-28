@@ -128,7 +128,7 @@ MenuBar {
             id: commit
             text: qsTr("&Commit")
             shortcut: "Ctrl+C"
-            enabled: root.controller.repository.can(CEnums.Commit)
+            enabled: root.controller.repository.can(CEnums.Commit) && root.controller.repository.hasCommitableFiles
             onTriggered: root.requestCommit()
         }
 
@@ -136,7 +136,7 @@ MenuBar {
             id: amend
             text: qsTr("&Amend")
             shortcut: "Ctrl+A"
-            enabled: root.controller.repository.can(CEnums.Amend)
+            enabled: root.controller.repository.can(CEnums.Amend) && root.controller.repository.hasCommitableFiles
             onTriggered: root.requestAmend()
         }
 

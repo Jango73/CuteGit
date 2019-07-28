@@ -27,6 +27,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileLogModel(new CLogModel(this))
     , m_pGraphModel(new CGraphModel(this))
+    , m_bHasCommitableFiles(false)
 {
     setRepositoryType(getRepositoryType(sPath));
 
@@ -562,15 +563,25 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
         qDeleteAll(m_lRepoFiles);
         m_lRepoFiles.clear();
 
+        bool bHasCommitableFiles = false;
+
         for (CRepoFile* pFile : lNewRepoFiles)
         {
             if (pFile->status() != CEnums::eIgnored)
+            {
+                if (pFile->staged())
+                    bHasCommitableFiles = true;
+
                 m_lRepoFiles << pFile;
+            }
         }
+
+        setHasCommitableFiles(bHasCommitableFiles);
 
         m_pTreeFileModel->handleRepoFilesChanged();
         m_pFlatFileModel->handleRepoFilesChanged();
         m_pTreeFileModelProxy->filterChanged();
+        m_pFlatFileModelProxy->filterChanged();
 
         break;
     }
