@@ -292,6 +292,13 @@ void CRepository::commitSquash(const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::commitBranchFrom(const QString& sCommitId, const QString& sBranchName)
+{
+    m_pCommands->commitBranchFrom(m_sRepositoryPath, sCommitId, sBranchName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::changeCommitMessage(const QString& sCommitId, const QString& sMessage)
 {
     m_pCommands->changeCommitMessage(m_sRepositoryPath, sCommitId, sMessage);
@@ -437,9 +444,10 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     }
 
     case CEnums::eSetCurrentBranch:
-    case CEnums::eCommitReset:
-    case CEnums::eCommitRebase:
-    case CEnums::eCommitSquash:
+    case CEnums::eResetToCommit:
+    case CEnums::eRebaseOnCommit:
+    case CEnums::eSquashCommit:
+    case CEnums::eBranchFromCommit:
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:
@@ -490,17 +498,8 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
 
 void CRepository::onNewOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue)
 {
+    Q_UNUSED(eCommand);
     Q_UNUSED(lValue);
-
-    switch (eCommand)
-    {
-
-    default:
-    {
-        break;
-    }
-
-    }
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -39,6 +39,7 @@ static const char* sCommandResetOnCommit = "git reset %1";
 static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
 static const char* sCommandContinueRebase = "git rebase --continue";
 static const char* sCommandAbortRebase = "git rebase --abort";
+static const char* sCommandBranchFromCommit = "git checkout -b \"%1\" \"%2\"";
 
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
@@ -272,8 +273,9 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 void CGitCommands::commitReset(const QString& sPath, const QString& sCommitId)
 {
     emit newOutputString(CEnums::eNotification, tr("Doing reset..."));
+
     QString sCommand = QString(sCommandResetOnCommit).arg(sCommitId);
-    exec(new CProcessCommand(CEnums::eCommitReset, sPath, sCommand, true));
+    exec(new CProcessCommand(CEnums::eResetToCommit, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -292,7 +294,7 @@ void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
-    exec(new CProcessCommand(CEnums::eCommitRebase, sPath, sCommand, true, mEnvironment));
+    exec(new CProcessCommand(CEnums::eRebaseOnCommit, sPath, sCommand, true, mEnvironment));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -307,9 +309,17 @@ void CGitCommands::commitSquash(const QString& sPath, const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName)
+{
+    QString sCommand = QString(sCommandBranchFromCommit).arg(sBranchName).arg(sCommitId);
+    exec(new CProcessCommand(CEnums::eBranchFromCommit, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
-    emit newOutputString(CEnums::eNotification, tr("Doing rebase and commit message changes..."));
+    emit newOutputString(CEnums::eNotification, tr("Changing commit message..."));
 
     m_eRebaseType = eRTReword;
     m_eRebaseStep = eRSChangeCommitEditSequence;
@@ -543,9 +553,10 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::ePull:
     case CEnums::eFetch:
     case CEnums::eSetCurrentBranch:
-    case CEnums::eCommitReset:
-    case CEnums::eCommitRebase:
-    case CEnums::eCommitSquash:
+    case CEnums::eResetToCommit:
+    case CEnums::eRebaseOnCommit:
+    case CEnums::eSquashCommit:
+    case CEnums::eBranchFromCommit:
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:

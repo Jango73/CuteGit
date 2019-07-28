@@ -135,6 +135,9 @@ public:
     virtual void commitSquash(const QString& sPath, const QString& sCommitId);
 
     //!
+    virtual void commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName);
+
+    //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage);
 
     //!

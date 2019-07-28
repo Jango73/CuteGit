@@ -33,6 +33,9 @@ Item {
     property real popupWidthNorm: 0.50
     property real popupHeightNorm: 0.75
 
+    property real popupWidthSmall: 0.25
+    property real popupHeightSmall: 0.25
+
     // Animations
     property int menuAnimationDuration: 500
 
@@ -48,10 +51,12 @@ Item {
     property string branchesText: qsTr("Branches")
     property string amendingText: qsTr("Amending...")
     property string expandAllText: qsTr("Expand all")
+    property string branchFromText: qsTr("Branch from")
     property string collapseAllText: qsTr("Collapse all")
     property string repositoriesText: qsTr("Repositories")
     property string nothingToDisplayText: qsTr("Nothing to display")
     property string enterMessageHereText: qsTr("Enter your message here...")
+    property string enterBranchNameHereText: qsTr("Enter branch name here...")
 
     property string shortcutsText: qsTr(
                                        "Shortcuts\n" +

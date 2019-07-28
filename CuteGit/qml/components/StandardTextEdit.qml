@@ -6,6 +6,7 @@ Item {
     id: root
 
     property alias text: text.text
+    property alias placeHolderText: placeholder.text
     property alias horizontalAlignment: text.horizontalAlignment
     property alias verticalAlignment: text.verticalAlignment
 
@@ -36,7 +37,6 @@ Item {
         anchors.fill: parent
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        text: Const.enterMessageHereText
         visible: text.text === ""
         color: Const.foregroundLighter
     }

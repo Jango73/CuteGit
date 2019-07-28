@@ -214,7 +214,8 @@ Item {
                 }
 
                 onRequestCommitBranchFrom: {
-                    root.controller.repository.branchFromCommit(commitId)
+                    branchFrom.commitId = commitId
+                    branchFrom.open()
                 }
 
                 onRequestCommitReset: {
@@ -265,6 +266,15 @@ Item {
         id: commit
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
+        anchors.centerIn: parent
+
+        controller: root.controller
+    }
+
+    BranchFromPopup {
+        id: branchFrom
+        width: root.width * Const.popupWidthSmall
+        height: root.height * Const.popupHeightSmall
         anchors.centerIn: parent
 
         controller: root.controller

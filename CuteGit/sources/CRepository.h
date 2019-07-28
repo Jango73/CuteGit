@@ -145,6 +145,9 @@ public:
     Q_INVOKABLE void commitSquash(const QString& sCommitId);
 
     //!
+    Q_INVOKABLE void commitBranchFrom(const QString& sCommitId, const QString& sBranchName);
+
+    //!
     Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
 
     //-------------------------------------------------------------------------------------------------

@@ -282,6 +282,15 @@ void CCommands::commitSquash(const QString& sPath, const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+    Q_UNUSED(sBranchName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
     Q_UNUSED(sPath);

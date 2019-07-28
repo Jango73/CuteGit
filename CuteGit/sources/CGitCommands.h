@@ -115,6 +115,9 @@ public:
     virtual void commitSquash(const QString& sPath, const QString& sCommitId) override;
 
     //!
+    virtual void commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName) override;
+
+    //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage) override;
 
     //!

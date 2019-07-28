@@ -32,6 +32,7 @@ public:
         ChangeCommitMessage,
         ResetToCommit,
         RebaseOnCommit,
+        BranchFromCommit,
         ContinueRebase,
         AbortRebase,
     };
@@ -93,10 +94,11 @@ public:
         eFetch,
         eUnstagedFileDiff,
         eSetCurrentBranch,
-        eCommitReset,
-        eCommitRebase,
-        eCommitSquash,
+        eResetToCommit,
+        eRebaseOnCommit,
+        eSquashCommit,
         eChangeCommitMessage,
+        eBranchFromCommit,
         eContinueRebase,
         eAbortRebase
     };

@@ -17,6 +17,7 @@
         <file>qml/components/StandardTextField.qml</file>
         <file>qml/components/Selection.qml</file>
         <file>qml/components/TitlePane.qml</file>
+        <file>qml/pages/BranchFromPopup.qml</file>
         <file>qml/pages/BranchLogPane.qml</file>
         <file>qml/pages/BranchPane.qml</file>
         <file>qml/pages/ClonePopup.qml</file>

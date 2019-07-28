@@ -30,6 +30,7 @@ bool CSvnCommands::can(CEnums::ECapability eWhat) const
         case CEnums::ShowFileLog:
         case CEnums::Commit:
         case CEnums::Pull:
+        case CEnums::BranchFromCommit:
             return true;
 
     default:

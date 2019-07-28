@@ -31,6 +31,7 @@ Menu {
 
     Action {
         text: qsTr("&Branch from")
+        enabled: root.controller.repository.can(CEnums.BranchFromCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
