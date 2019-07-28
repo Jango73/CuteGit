@@ -53,10 +53,16 @@ Item {
     property string expandAllText: qsTr("Expand all")
     property string branchFromText: qsTr("Branch from")
     property string collapseAllText: qsTr("Collapse all")
+    property string deleteBranchText: qsTr("Delete branch")
     property string repositoriesText: qsTr("Repositories")
     property string nothingToDisplayText: qsTr("Nothing to display")
     property string enterMessageHereText: qsTr("Enter your message here...")
     property string enterBranchNameHereText: qsTr("Enter branch name here...")
+
+    property string deleteBranchMessage: qsTr(
+                                             "You are about to delete a branch.\n\n" +
+                                             "Are you sure you want to do this? It cannot be undone."
+                                             )
 
     property string shortcutsText: qsTr(
                                        "Shortcuts\n" +

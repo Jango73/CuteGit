@@ -5,7 +5,7 @@ import "../components"
 
 Menu {
     id: root
-    title: qsTr("&Repository")
+    title: ""
 
     property variant controller: null
     property string commitId: ""

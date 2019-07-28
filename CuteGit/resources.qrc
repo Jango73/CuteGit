@@ -11,6 +11,7 @@
         <file>qml/components/StandardButton.qml</file>
         <file>qml/components/StandardLabel.qml</file>
         <file>qml/components/StandardListView.qml</file>
+        <file>qml/components/StandardPopup.qml</file>
         <file>qml/components/StandardStringListView.qml</file>
         <file>qml/components/StandardText.qml</file>
         <file>qml/components/StandardTextEdit.qml</file>
@@ -19,9 +20,11 @@
         <file>qml/components/TitlePane.qml</file>
         <file>qml/pages/BranchFromPopup.qml</file>
         <file>qml/pages/BranchLogPane.qml</file>
+        <file>qml/pages/BranchMenu.qml</file>
         <file>qml/pages/BranchPane.qml</file>
         <file>qml/pages/ClonePopup.qml</file>
         <file>qml/pages/CommitPopup.qml</file>
+        <file>qml/pages/ConfirmPopup.qml</file>
         <file>qml/pages/DiffView.qml</file>
         <file>qml/pages/FileLogPane.qml</file>
         <file>qml/pages/FilePane.qml</file>

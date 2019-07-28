@@ -110,6 +110,20 @@ Item {
                 anchors.right: parent.right
 
                 controller: root.controller
+
+                onRequestDeleteBranch: {
+                    deleteBranchAction.branchName = name
+                    confirm.titleText = Const.deleteBranchText + " " + name
+                    confirm.messageText = Const.deleteBranchMessage
+                    confirm.action = deleteBranchAction
+                    confirm.open()
+                }
+
+                Action {
+                    id: deleteBranchAction
+                    property string branchName: ""
+                    onTriggered: root.controller.repository.deleteBranch(branchName)
+                }
             }
         }
 
@@ -251,6 +265,13 @@ Item {
                 controller: root.controller
             }
         }
+    }
+
+    ConfirmPopup {
+        id: confirm
+        width: root.width * Const.popupWidthSmall
+        height: root.height * Const.popupHeightSmall
+        anchors.centerIn: parent
     }
 
     ClonePopup {

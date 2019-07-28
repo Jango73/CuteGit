@@ -147,6 +147,9 @@ public:
     virtual void abortRebase(const QString& sPath);
 
     //!
+    virtual void deleteBranch(const QString& sPath, const QString& sBranchName);
+
+    //!
     virtual void editSequenceFile(const QString& sFileName);
 
     //-------------------------------------------------------------------------------------------------

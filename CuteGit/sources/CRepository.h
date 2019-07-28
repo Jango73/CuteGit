@@ -150,6 +150,9 @@ public:
     //!
     Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
 
+    //!
+    Q_INVOKABLE void deleteBranch(const QString& sName);
+
     //-------------------------------------------------------------------------------------------------
     // Static control methods
     //-------------------------------------------------------------------------------------------------

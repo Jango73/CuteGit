@@ -314,6 +314,14 @@ void CCommands::abortRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::deleteBranch(const QString& sPath, const QString& sBranchName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sBranchName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::editSequenceFile(const QString& sFileName)
 {
     Q_UNUSED(sFileName);

@@ -127,6 +127,9 @@ public:
     virtual void abortRebase(const QString& sPath) override;
 
     //!
+    virtual void deleteBranch(const QString& sPath, const QString& sBranchName) override;
+
+    //!
     virtual void editSequenceFile(const QString& sFileName) override;
 
     //-------------------------------------------------------------------------------------------------

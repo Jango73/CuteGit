@@ -1,16 +1,10 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
-import QtQuick.Controls.Material 2.12
 import "../components"
 
-Popup {
+StandardPopup {
     id: root
-    modal: true
-    closePolicy: Popup.CloseOnEscape
-    padding: Const.mainPadding
-
-    Material.elevation: Const.popupElevation
 
     property variant controller: null
 
@@ -35,7 +29,7 @@ Popup {
         RowLayout {
             id: buttons
             width: parent.width
-            height: cancelButton.height * 1.1
+            height: cancelButton.height + Const.mainPadding
             anchors.bottom: parent.bottom
 
             StandardButton {

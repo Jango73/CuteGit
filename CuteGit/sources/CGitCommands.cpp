@@ -40,6 +40,7 @@ static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
 static const char* sCommandContinueRebase = "git rebase --continue";
 static const char* sCommandAbortRebase = "git rebase --abort";
 static const char* sCommandBranchFromCommit = "git checkout -b \"%1\" \"%2\"";
+static const char* sCommandDeleteBranch = "git branch --delete \"%1\"";
 
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
@@ -355,6 +356,15 @@ void CGitCommands::abortRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::deleteBranch(const QString& sPath, const QString& sBranchName)
+{
+    emit newOutputString(CEnums::eNotification, QString(tr("Deleting branch %1...")).arg(sBranchName));
+    QString sCommand = QString(sCommandDeleteBranch).arg(sBranchName);
+    exec(new CProcessCommand(CEnums::eDeleteBranch, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::editSequenceFile(const QString& sFileName)
 {
     QFile file(sFileName);
@@ -557,6 +567,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
     case CEnums::eBranchFromCommit:
+    case CEnums::eDeleteBranch:
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:

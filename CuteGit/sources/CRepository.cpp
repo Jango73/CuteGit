@@ -306,6 +306,13 @@ void CRepository::changeCommitMessage(const QString& sCommitId, const QString& s
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::deleteBranch(const QString& sName)
+{
+    m_pCommands->deleteBranch(m_sRepositoryPath, sName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 CEnums::ERepositoryType CRepository::getRepositoryType(const QString& sPath)
 {
     if (QDir(QString("%1/.git").arg(sPath)).exists())
@@ -448,6 +455,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
     case CEnums::eBranchFromCommit:
+    case CEnums::eDeleteBranch:
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:

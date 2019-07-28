@@ -33,6 +33,7 @@ public:
         ResetToCommit,
         RebaseOnCommit,
         BranchFromCommit,
+        DeleteBranch,
         ContinueRebase,
         AbortRebase,
     };
@@ -99,6 +100,7 @@ public:
         eSquashCommit,
         eChangeCommitMessage,
         eBranchFromCommit,
+        eDeleteBranch,
         eContinueRebase,
         eAbortRebase
     };

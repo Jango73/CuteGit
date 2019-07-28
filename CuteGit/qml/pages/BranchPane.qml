@@ -8,6 +8,9 @@ TitlePane {
     id: root
 
     property variant controller: null
+    property string branchName: ""
+
+    signal requestDeleteBranch(var name)
 
     title: Const.branchesText
 
@@ -30,7 +33,14 @@ TitlePane {
                     anchors.margins: Const.smallPadding
 
                     MouseArea {
-                        anchors.fill: selection
+                        anchors.fill: parent
+                        acceptedButtons: Qt.AllButtons
+                        onClicked: {
+                            if (mouse.button === Qt.RightButton) {
+                                root.branchName = model.name
+                                menu.popup()
+                            }
+                        }
                         onDoubleClicked: {
                             root.controller.repository.currentBranch = model.name
                         }
@@ -51,6 +61,14 @@ TitlePane {
                         color: selection.visible ? Material.background : Material.foreground
                     }
                 }
+            }
+        }
+
+        BranchMenu {
+            id: menu
+
+            onRequestDeleteBranch: {
+                root.requestDeleteBranch(root.branchName)
             }
         }
     }
