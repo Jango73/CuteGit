@@ -59,13 +59,15 @@ Item {
         onRequestShortcuts: shortcuts.open()
     }
 
-    ToolBar {
+    StandardToolBar {
         id: toolBar
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: menu.bottom
 
         Row {
+            spacing: Const.mainPadding
+
             ToolButton { action: menu.cloneRepositoryAction }
             ToolButton { action: menu.openRepositoryAction }
             ToolSeparator {}

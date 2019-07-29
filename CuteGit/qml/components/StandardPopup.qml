@@ -10,4 +10,8 @@ Popup {
     padding: Const.mainPadding
 
     Material.elevation: Const.popupElevation
+
+    Component.onCompleted: {
+        root.forceActiveFocus()
+    }
 }

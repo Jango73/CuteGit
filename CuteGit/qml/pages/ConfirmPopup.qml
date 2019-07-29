@@ -12,10 +12,6 @@ StandardPopup {
     property alias titleText: title.text
     property alias messageText: message.text
 
-    Component.onCompleted: {
-        root.forceActiveFocus()
-    }
-
     contentItem: Item {
         anchors.fill: parent
 
@@ -37,30 +33,36 @@ StandardPopup {
             anchors.margins: Const.mainPadding
         }
 
-        RowLayout {
+        StandardToolBar {
             id: buttons
             width: parent.width
             height: cancelButton.height + Const.mainPadding
             anchors.bottom: parent.bottom
 
-            StandardButton {
-                id: okButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.okText
+            Row {
+                spacing: Const.mainPadding
 
-                onClicked: {
-                    root.close()
-                    root.action.trigger()
+                ToolButton {
+                    action: Action {
+                        id: okButton
+                        text: Const.okText
+                        onTriggered: {
+                            if (root.action !== null) {
+                                root.close()
+                                root.action.trigger()
+                            }
+                        }
+                    }
                 }
-            }
 
-            StandardButton {
-                id: cancelButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.cancelText
-
-                onClicked: {
-                    root.close()
+                ToolButton {
+                    action: Action {
+                        id: cancelButton
+                        text: Const.cancelText
+                        onTriggered: {
+                            root.close()
+                        }
+                    }
                 }
             }
         }

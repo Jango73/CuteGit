@@ -8,10 +8,6 @@ StandardPopup {
 
     property variant controller: null
 
-    Component.onCompleted: {
-        root.forceActiveFocus()
-    }
-
     contentItem: Item {
         anchors.fill: parent
 
@@ -23,31 +19,35 @@ StandardPopup {
             anchors.margins: Const.mainPadding
 
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Clone repository")
+            text: Const.cloneRepositoryText
         }
 
-        RowLayout {
+        StandardToolBar {
             id: buttons
             width: parent.width
             height: cancelButton.height + Const.mainPadding
             anchors.bottom: parent.bottom
 
-            StandardButton {
-                id: okButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.okText
+            Row {
+                spacing: Const.mainPadding
 
-                onClicked: {
+                ToolButton {
+                    action: Action {
+                        id: okButton
+                        text: Const.okText
+                        onTriggered: {
+                        }
+                    }
                 }
-            }
 
-            StandardButton {
-                id: cancelButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.cancelText
-
-                onClicked: {
-                    root.close()
+                ToolButton {
+                    action: Action {
+                        id: cancelButton
+                        text: Const.cancelText
+                        onTriggered: {
+                            root.close()
+                        }
+                    }
                 }
             }
         }

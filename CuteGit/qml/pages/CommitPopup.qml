@@ -1,5 +1,4 @@
 import QtQuick 2.12
-import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import CuteGit 1.0
 import "../components"
@@ -14,10 +13,6 @@ StandardPopup {
 
     property alias messageText: message.text
     property alias messageEnabled: message.enabled
-
-    Component.onCompleted: {
-        root.forceActiveFocus()
-    }
 
     contentItem: Item {
         anchors.fill: parent
@@ -64,37 +59,40 @@ StandardPopup {
             }
         }
 
-        RowLayout {
+        StandardToolBar {
             id: buttons
             width: parent.width
             height: cancelButton.height + Const.mainPadding
             anchors.bottom: parent.bottom
 
-            StandardButton {
-                id: okButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.okText
+            Row {
+                spacing: Const.mainPadding
 
-                enabled: message.text != "" || root.controller.repository.repositoryStatus !== CEnums.NoMerge
+                ToolButton {
+                    action: Action {
+                        id: okButton
+                        text: Const.okText
+                        enabled: message.text != "" || root.controller.repository.repositoryStatus !== CEnums.NoMerge
+                        onTriggered: {
+                            root.close()
 
-                onClicked: {
-                    root.close()
-
-                    if (root.showFileList) {
-                        root.controller.repository.commit(message.text, root.amend)
-                    } else {
-                        root.controller.repository.changeCommitMessage(commitId, message.text)
+                            if (root.showFileList) {
+                                root.controller.repository.commit(message.text, root.amend)
+                            } else {
+                                root.controller.repository.changeCommitMessage(commitId, message.text)
+                            }
+                        }
                     }
                 }
-            }
 
-            StandardButton {
-                id: cancelButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.cancelText
-
-                onClicked: {
-                    root.close()
+                ToolButton {
+                    action: Action {
+                        id: cancelButton
+                        text: Const.cancelText
+                        onTriggered: {
+                            root.close()
+                        }
+                    }
                 }
             }
         }

@@ -55,6 +55,7 @@ Item {
     property string collapseAllText: qsTr("Collapse all")
     property string deleteBranchText: qsTr("Delete branch")
     property string repositoriesText: qsTr("Repositories")
+    property string cloneRepositoryText: qsTr("Clone repository")
     property string nothingToDisplayText: qsTr("Nothing to display")
     property string enterMessageHereText: qsTr("Enter your message here...")
     property string enterBranchNameHereText: qsTr("Enter branch name here...")
