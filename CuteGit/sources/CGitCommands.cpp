@@ -236,6 +236,7 @@ void CGitCommands::stageFile(const QString& sPath, const QString& sFullName, boo
 
 void CGitCommands::stageAll(const QString& sPath, bool bStage)
 {
+    emit newOutputString(CEnums::eNotification, bStage ? tr("Staging all files...") : tr("Unstaging all files..."));
     QString sCommand = QString(bStage ? sCommandStageAll : sCommandUnstageAll);
     exec(new CProcessCommand(CEnums::eStageAll, sPath, sCommand, true));
 }
@@ -244,6 +245,7 @@ void CGitCommands::stageAll(const QString& sPath, bool bStage)
 
 void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 {
+    emit newOutputString(CEnums::eNotification, tr("Reverting..."));
     QString sCommand = QString(sCommandRevert).arg(sFullName);
     exec(new CProcessCommand(CEnums::eRevertFile, sPath, sCommand, true));
 }
@@ -252,6 +254,7 @@ void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
 
 void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 {
+    emit newOutputString(CEnums::eNotification, tr("Commiting..."));
     QString sCommand = QString(sCommandCommit).arg(sMessage);
     exec(new CProcessCommand(CEnums::eCommit, sPath, sCommand, true));
 }
@@ -260,6 +263,7 @@ void CGitCommands::commit(const QString& sPath, const QString& sMessage)
 
 void CGitCommands::amend(const QString& sPath)
 {
+    emit newOutputString(CEnums::eNotification, tr("Amending..."));
     QString sCommand = QString(sCommandAmend);
     exec(new CProcessCommand(CEnums::eAmend, sPath, sCommand, true));
 }
