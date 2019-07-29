@@ -14,31 +14,28 @@ TitlePane {
     content: Item {
         anchors.fill: parent
 
-        Item {
-            id: toolbar
+        StandardToolBar {
+            id: buttons
+            width: parent.width
             anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: Const.elementHeight + Const.smallPadding
 
-            RowLayout {
-                id: buttons
-                anchors.fill: parent
+            Row {
+                spacing: Const.mainPadding
 
-                StandardButton {
-                    id: clearButton
-                    Layout.alignment: Qt.AlignCenter
-                    text: Const.clearText
-
-                    onClicked: {
-                        root.controller.clearOutput()
+                ToolButton {
+                    action: Action {
+                        id: clearButton
+                        text: Const.clearText
+                        onTriggered: {
+                            root.controller.clearOutput()
+                        }
                     }
                 }
             }
         }
 
         StandardStringListView {
-            anchors.top: toolbar.bottom
+            anchors.top: buttons.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right

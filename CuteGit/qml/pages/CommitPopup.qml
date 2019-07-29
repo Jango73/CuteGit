@@ -62,7 +62,6 @@ StandardPopup {
         StandardToolBar {
             id: buttons
             width: parent.width
-            height: cancelButton.height + Const.mainPadding
             anchors.bottom: parent.bottom
 
             Row {
