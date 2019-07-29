@@ -220,7 +220,7 @@ void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
     if (pFile != nullptr)
     {
         stageFile(sPath, sFullName, not pFile->staged());
-        pFile->deleteLater();
+        delete pFile;
     }
 }
 

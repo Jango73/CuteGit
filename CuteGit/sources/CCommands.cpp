@@ -60,7 +60,7 @@ void CCommands::run()
 
             emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData);
 
-            pCommand->deleteLater();
+            delete pCommand;
         }
 
         msleep(bStackEmpty ? 100 : 10);
@@ -81,7 +81,7 @@ void CCommands::exec(CProcessCommand* pCommand)
         {
             if (m_lCommandStack[index]->m_eCommand == pCommand->m_eCommand)
             {
-                m_lCommandStack[index]->deleteLater();
+                delete m_lCommandStack[index];
                 m_lCommandStack.removeAt(index);
                 index--;
             }

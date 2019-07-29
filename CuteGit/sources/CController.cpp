@@ -451,7 +451,7 @@ void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOu
     Q_UNUSED(eCommand);
 
     if (m_pCloneCommands != nullptr)
-        m_pCloneCommands->deleteLater();
+        delete m_pCloneCommands;
 
     m_pCloneCommands = nullptr;
 
