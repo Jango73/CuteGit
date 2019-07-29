@@ -6,6 +6,7 @@ HEADERS += \
     sources/CCommands.h \
     sources/CGitCommands.h \
     sources/CSvnCommands.h \
+    sources/CHgCommands.h \
     sources/CBranchModel.h \
     sources/CTreeFileModel.h \
     sources/CTreeFileModelProxy.h \
@@ -27,6 +28,7 @@ SOURCES += \
     sources/CCommands.cpp \
     sources/CGitCommands.cpp \
     sources/CSvnCommands.cpp \
+    sources/CHgCommands.cpp \
     sources/CBranchModel.cpp \
     sources/CTreeFileModel.cpp \
     sources/CTreeFileModelProxy.cpp \

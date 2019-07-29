@@ -22,6 +22,20 @@ StandardPopup {
             text: Const.cloneRepositoryText
         }
 
+        TitleTextField {
+            id: repositoryURL
+            anchors.top: title.bottom
+            width: parent.width
+            title: Const.repositoryURLText
+        }
+
+        FolderSelector {
+            id: repositoryPath
+            anchors.top: repositoryURL.bottom
+            width: parent.width
+            title: Const.destinationFolderText
+        }
+
         StandardToolBar {
             id: buttons
             width: parent.width
@@ -36,6 +50,8 @@ StandardPopup {
                         id: okButton
                         text: Const.okText
                         onTriggered: {
+                            root.controller.cloneRepository(repositoryURL.text, repositoryPath.text)
+                            root.close()
                         }
                     }
                 }
@@ -51,5 +67,15 @@ StandardPopup {
                 }
             }
         }
+    }
+
+    onOpened: {
+        repositoryURL.text = root.controller.lastBrowsedRepositoryURL
+        repositoryPath.text = root.controller.lastBrowsedRepositoryPath
+    }
+
+    onClosed: {
+        root.controller.lastBrowsedRepositoryURL = repositoryURL.text
+        root.controller.lastBrowsedRepositoryPath = repositoryPath.text
     }
 }

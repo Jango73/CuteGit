@@ -12,8 +12,10 @@ const QString CRepoFile::sTokenAdded = "+";
 const QString CRepoFile::sTokenModified = "*";
 const QString CRepoFile::sTokenRenamed = "=";
 const QString CRepoFile::sTokenDeleted = "-";
-const QString CRepoFile::sTokenUntracked = "?";
+const QString CRepoFile::sTokenMissing = "?";
+const QString CRepoFile::sTokenUntracked = "<";
 const QString CRepoFile::sTokenIgnored = "!";
+
 const QString CRepoFile::sTokenStaged = "X";
 const QString CRepoFile::sTokenUnstaged = " ";
 
@@ -53,6 +55,8 @@ QString CRepoFile::statusToString() const
         return sTokenRenamed;
     case CEnums::eDeleted:
         return sTokenDeleted;
+    case CEnums::eMissing:
+        return sTokenMissing;
     case CEnums::eUntracked:
         return sTokenUntracked;
     case CEnums::eIgnored:

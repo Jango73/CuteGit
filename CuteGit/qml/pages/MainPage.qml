@@ -279,7 +279,7 @@ Item {
     ClonePopup {
         id: clone
         width: root.width * Const.popupWidthNorm
-        height: root.height * Const.popupHeightNorm
+        height: root.height * Const.popupHeightSmall
         anchors.centerIn: parent
 
         controller: root.controller

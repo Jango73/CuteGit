@@ -52,16 +52,25 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    virtual void allFileStatus(const QString& sPath) override;
+    virtual void cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath) ;
 
     //!
     virtual void repositoryStatus(const QString& sPath) override;
+
+    //!
+    virtual void allFileStatus(const QString& sPath) override;
 
     //!
     virtual void branches(const QString& sPath) override;
 
     //!
     virtual void branchHeadCommits(const QString& sPath, QStringList lBranches) override;
+
+    //!
+    virtual void tags(const QString& sPath) override;
+
+    //!
+    virtual void tagCommits(const QString& sPath, QStringList lTags) override;
 
     //!
     virtual void graph(const QString& sPath) override;
@@ -98,6 +107,12 @@ public:
 
     //!
     virtual void fetch(const QString& sPath) override;
+
+    //!
+    virtual void stashSave(const QString& sPath) override;
+
+    //!
+    virtual void stashPop(const QString& sPath) override;
 
     //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
@@ -141,10 +156,18 @@ protected:
     //!
     CRepoFile* repoFileForLine(const QString& sPath, QString sLine);
 
+    //-------------------------------------------------------------------------------------------------
+    // Protected slots
+    //-------------------------------------------------------------------------------------------------
+
 protected slots:
 
     //!
     void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
+
+    //-------------------------------------------------------------------------------------------------
+    // Properties
+    //-------------------------------------------------------------------------------------------------
 
 protected:
 

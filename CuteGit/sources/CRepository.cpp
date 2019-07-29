@@ -8,6 +8,22 @@
 #include "CController.h"
 #include "CGitCommands.h"
 #include "CSvnCommands.h"
+#include "CHgCommands.h"
+
+//-------------------------------------------------------------------------------------------------
+
+/*!
+    \class CController
+    \inmodule CuteGit
+    \section1 How this class works
+    Whenever the user triggers a repository command from the UI:
+    \list
+    \li A method from this class is called.
+    \li The method in turn calls one or more methods in CCommands.
+    \li CCommands executes some process and emits a result.
+    \li The result is caught in this class' slots, like onNewOutputString.
+    \li The data is put into models which in turn notify the UI.
+*/
 
 //-------------------------------------------------------------------------------------------------
 
@@ -16,42 +32,23 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_eRepositoryType(CEnums::UnknownRepositoryType)
     , m_eRepositoryStatus(CEnums::NoMerge)
     , m_sRepositoryPath(sPath)
-    , m_pController(pController)
-    , m_pCommands(new CCommands())
-    , m_pTreeFileModel(nullptr)
+    , m_pCommands(nullptr)
+    , m_pTreeFileModel(new CTreeFileModel(this, this))
     , m_pTreeFileModelProxy(new CTreeFileModelProxy(pController, this))
-    , m_pFlatFileModel(nullptr)
+    , m_pFlatFileModel(new CFlatFileModel(this, this))
     , m_pFlatFileModelProxy(new CFlatFileModelProxy(pController, this))
     , m_pBranchModel(new CBranchModel(this))
+    , m_pTagModel(new CBranchModel(this))
     , m_pLogModel(new CLogModel(this))
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileLogModel(new CLogModel(this))
     , m_pGraphModel(new CGraphModel(this))
     , m_bHasCommitableFiles(false)
 {
-    setRepositoryType(getRepositoryType(sPath));
-
-    // Delete any existing command interface
-    if (m_pCommands != nullptr)
-        m_pCommands->deleteLater();
+    m_eRepositoryType = getRepositoryTypeFromFolder(sPath);
 
     // Create the command interface
-    switch (m_eRepositoryType)
-    {
-
-    case CEnums::GIT:
-        setCommands(new CGitCommands());
-        break;
-
-    case CEnums::SVN:
-        setCommands(new CSvnCommands());
-        break;
-
-    default:
-        setCommands(new CCommands());
-        break;
-
-    }
+    m_pCommands = getCommandsForRepositoryType(m_eRepositoryType);
 
     // Command return values
     connect(m_pCommands, &CCommands::newOutputString, this, &CRepository::onNewOutputString);
@@ -63,18 +60,17 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(m_pCommands, &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
     connect(m_pCommands, &CCommands::newOutputListOfCGraphLine, this, &CRepository::onNewOutputListOfCGraphLine);
 
+    m_pBranchModel->setBranchList(QList<CBranch*>());
+    m_pTagModel->setBranchList(QList<CBranch*>());
+    m_pLogModel->setLines(QList<CLogLine*>());
     m_pFileDiffModel->setLines(QList<CDiffLine*>());
     m_pFileLogModel->setLines(QList<CLogLine*>());
-
-    // Create a file model
-    m_pTreeFileModel = new CTreeFileModel(this, this);
-    m_pFlatFileModel = new CFlatFileModel(this, this);
+    m_pGraphModel->setLines(QList<CGraphLine*>());
 
     connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
     m_pFlatFileModelProxy->setSourceModel(m_pFlatFileModel);
-
     m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
     m_pTreeFileModel->setRootPath(sPath);
 
@@ -155,6 +151,7 @@ void CRepository::refresh()
     checkRepositoryStatus();
     checkAllFileStatus();
     getBranches();
+    getTags();
     getLog();
 }
 
@@ -271,6 +268,20 @@ void CRepository::fetch()
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::stashSave()
+{
+    m_pCommands->stashSave(m_sRepositoryPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::stashPop()
+{
+    m_pCommands->stashPop(m_sRepositoryPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::commitReset(const QString& sCommitId)
 {
     m_pCommands->commitReset(m_sRepositoryPath, sCommitId);
@@ -313,7 +324,7 @@ void CRepository::deleteBranch(const QString& sName)
 
 //-------------------------------------------------------------------------------------------------
 
-CEnums::ERepositoryType CRepository::getRepositoryType(const QString& sPath)
+CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& sPath)
 {
     if (QDir(QString("%1/.git").arg(sPath)).exists())
     {
@@ -325,7 +336,50 @@ CEnums::ERepositoryType CRepository::getRepositoryType(const QString& sPath)
         return CEnums::SVN;
     }
 
+    if (QDir(QString("%1/.hg").arg(sPath)).exists())
+    {
+        return CEnums::HG;
+    }
+
     return CEnums::UnknownRepositoryType;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+CEnums::ERepositoryType CRepository::getRepositoryTypeFromURL(const QString& sRepositoryURL)
+{
+    if (sRepositoryURL.contains(".git"))
+        return CEnums::GIT;
+
+    if (sRepositoryURL.contains("/svn"))
+        return CEnums::SVN;
+
+    if (sRepositoryURL.contains("/hg"))
+        return CEnums::HG;
+
+    return CEnums::UnknownRepositoryType;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+CCommands* CRepository::getCommandsForRepositoryType(CEnums::ERepositoryType eType)
+{
+    switch (eType)
+    {
+
+    case CEnums::GIT:
+        return new CGitCommands();
+
+    case CEnums::SVN:
+        return new CSvnCommands();
+
+    case CEnums::HG:
+        return new CHgCommands();
+
+    default:
+        return new CCommands();
+
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -346,6 +400,26 @@ void CRepository::getBranchHeadCommits(QString sPath)
         sPath = m_sRepositoryPath;
 
     m_pCommands->branchHeadCommits(sPath, m_pBranchModel->branchNames());
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::getTags(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pCommands->tags(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::getTagCommits(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pCommands->tagCommits(sPath, m_pTagModel->branchNames());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -383,30 +457,7 @@ void CRepository::onCurrentFileFullName(QString sFileFullName)
 
 void CRepository::onNewOutput(QString sOutput)
 {
-    QStringList lNewList = sOutput.split("\n");
-    QStringList lData = m_pController->commandOutputModel()->stringList();
-    bool bHasNewLine = false;
-
-    for (QString sLine : lNewList)
-    {
-        sLine = sLine.trimmed();
-
-        if (sLine.isEmpty() == false)
-        {
-            bHasNewLine = true;
-            lData << sLine;
-        }
-    }
-
-    if (bHasNewLine)
-    {
-        lData << "----------------------------------------------------------------------------------------------------";
-
-        while (lData.count() > 50)
-            lData.removeFirst();
-
-        m_pController->commandOutputModel()->setStringList(lData);
-    }
+    emit newOutput(sOutput);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -415,6 +466,12 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
 {
     switch (eCommand)
     {
+
+    case CEnums::eCloneRepository:
+    {
+        onNewOutput(sOutput);
+        break;
+    }
 
     case CEnums::eRepositoryStatus:
     {
@@ -438,10 +495,19 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+    case CEnums::eStashSave:
+    case CEnums::eStashPop:
+    {
+        onNewOutput(sOutput);
+        checkAllFileStatus();
+        break;
+    }
+
     case CEnums::eCommit:
     case CEnums::eAmend:
     case CEnums::ePush:
     case CEnums::ePull:
+    case CEnums::eFetch:
     {
         onNewOutput(sOutput);
         getBranchHeadCommits();
@@ -494,6 +560,13 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
         break;
     }
 
+    case CEnums::eTagCommit:
+    {
+        m_pTagModel->setBranchHeadCommit(sKey, sValue);
+        m_pLogModel->commitChanged(sValue);
+        break;
+    }
+
     default:
     {
         break;
@@ -541,7 +614,8 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
 
     case CEnums::eAllFileStatus:
     {
-        // TODO
+// TODO : Use a smart algorithm to update the model
+
 //        QStringList changedFiles;
 
 //        for (CRepoFile* pExistingFile : m_lRepoFiles)
@@ -570,6 +644,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
         qDeleteAll(m_lRepoFiles);
         m_lRepoFiles.clear();
 
+        // Check if there are any commitable files
         bool bHasCommitableFiles = false;
 
         for (CRepoFile* pFile : lNewRepoFiles)
@@ -585,6 +660,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
 
         setHasCommitableFiles(bHasCommitableFiles);
 
+        // Update the models
         m_pTreeFileModel->handleRepoFilesChanged();
         m_pFlatFileModel->handleRepoFilesChanged();
         m_pTreeFileModelProxy->filterChanged();

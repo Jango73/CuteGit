@@ -36,11 +36,6 @@ Item {
     property real popupWidthSmall: 0.25
     property real popupHeightSmall: 0.25
 
-    // Animations
-    property int menuAnimationDuration: 500
-
-    // Images
-
     // Text
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
@@ -48,6 +43,7 @@ Item {
     property string filesText: qsTr("Files")
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
+    property string browseText: qsTr("Browse")
     property string branchesText: qsTr("Branches")
     property string amendingText: qsTr("Amending...")
     property string expandAllText: qsTr("Expand all")
@@ -55,9 +51,11 @@ Item {
     property string collapseAllText: qsTr("Collapse all")
     property string deleteBranchText: qsTr("Delete branch")
     property string repositoriesText: qsTr("Repositories")
+    property string repositoryURLText: qsTr("Repository URL")
     property string cloneRepositoryText: qsTr("Clone repository")
     property string nothingToDisplayText: qsTr("Nothing to display")
     property string enterMessageHereText: qsTr("Enter your message here...")
+    property string destinationFolderText: qsTr("Destination folder")
     property string enterBranchNameHereText: qsTr("Enter branch name here...")
 
     property string deleteBranchMessage: qsTr(

@@ -23,6 +23,7 @@ public:
         ShowGlobalGraph,
         ShowBranchLog,
         ShowFileLog,
+        Stash,
         Commit,
         Amend,
         Push,
@@ -44,7 +45,8 @@ public:
         UnknownRepositoryType,
         GIT,
         CVS,
-        SVN
+        SVN,
+        HG,		// Mercurial
     };
 
     // Status of a repository
@@ -77,10 +79,13 @@ public:
     enum EProcessCommand
     {
         eNotification,
+        eCloneRepository,
         eAllFileStatus,
         eRepositoryStatus,
         eBranches,
         eBranchHeadCommit,
+        eTags,
+        eTagCommit,
         eCurrentBranch,
         eGraph,
         eBranchLog,
@@ -93,6 +98,8 @@ public:
         ePush,
         ePull,
         eFetch,
+        eStashSave,
+        eStashPop,
         eUnstagedFileDiff,
         eSetCurrentBranch,
         eResetToCommit,
@@ -113,6 +120,7 @@ public:
         eModified,
         eRenamed,
         eDeleted,
+        eMissing,
         eUntracked,
         eIgnored
     };

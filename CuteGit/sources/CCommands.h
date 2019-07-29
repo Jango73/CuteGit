@@ -70,17 +70,26 @@ public:
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
-    //! Creates a list of CRepoFile from the repo at sPath
-    virtual void allFileStatus(const QString& sPath);
+    //! Clones a repository
+    virtual void cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath);
 
     //! Checks the status of the repo at sPath
     virtual void repositoryStatus(const QString& sPath);
+
+    //! Creates a list of CRepoFile from the repo at sPath
+    virtual void allFileStatus(const QString& sPath);
 
     //! Creates a list of branches of the repo at sPath
     virtual void branches(const QString& sPath);
 
     //! Creates a list of head commits for branches of the repo at sPath
     virtual void branchHeadCommits(const QString& sPath, QStringList lBranches);
+
+    //! Creates a list of tags of the repo at sPath
+    virtual void tags(const QString& sPath);
+
+    //! Creates a list of head commits for tags of the repo at sPath
+    virtual void tagCommits(const QString& sPath, QStringList lTags);
 
     //! Creates a list of CGraphLine from the repo at sPath
     virtual void graph(const QString& sPath);
@@ -118,6 +127,12 @@ public:
 
     //!
     virtual void fetch(const QString& sPath);
+
+    //!
+    virtual void stashSave(const QString& sPath);
+
+    //!
+    virtual void stashPop(const QString& sPath);
 
     //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);

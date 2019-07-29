@@ -9,61 +9,75 @@
 #include "CGitCommands.h"
 
 //-------------------------------------------------------------------------------------------------
+// Constant numbers
 
 static int iLogFormatValueCount = 4;
 static int iGraphFormatValueCount = 5;
-static const char* sLogFormatSplitter = "&&&";
 
-static const char* sCommandStatus = "git status --ignored --porcelain";
-static const char* sCommandStatusForFile = "git status --ignored --porcelain \"%1\"";
-static const char* sCommandBranches = "git branch -a";
+//-------------------------------------------------------------------------------------------------
+// Command strings
 
-static const char* sCommandBranchLog = "git log --pretty=format:\"%H &&& %s &&& %an &&& %aI\" --max-count=20";
-static const char* sCommandFileLog = "git log --pretty=format:\"%H &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
-static const char* sCommandUnstagedDiff = "git diff --no-color --ignore-all-space HEAD \"%1\"";
-static const char* sCommandGraph = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
-static const char* sCommandHeadCommit = "git rev-parse \"%1\"";
-
-static const char* sCommandStage = "git add -f \"%1\"";
-static const char* sCommandUnstage = "git reset HEAD \"%1\"";
-static const char* sCommandStageAll = "git add -u";
-static const char* sCommandUnstageAll = "git reset .";
-static const char* sCommandRevert = "git checkout \"%1\"";
-static const char* sCommandCommit = "git commit -m \"%1\"";
-static const char* sCommandAmend = "git commit --amend --reset-author --no-edit";
-static const char* sCommandPush = "git push";
-static const char* sCommandPull = "git pull";
-static const char* sCommandFetch = "git fetch";
-static const char* sCommandSetCurrentBranch = "git checkout \"%1\"";
-static const char* sCommandResetOnCommit = "git reset %1";
-static const char* sCommandRebaseOnCommit = "git rebase --interactive %1~1";
-static const char* sCommandContinueRebase = "git rebase --continue";
-static const char* sCommandAbortRebase = "git rebase --abort";
-static const char* sCommandBranchFromCommit = "git checkout -b \"%1\" \"%2\"";
-static const char* sCommandDeleteBranch = "git branch --delete \"%1\"";
-
+static const char* sCommandAbortRebase        = "git rebase --abort";
+static const char* sCommandAmend              = "git commit --amend --reset-author --no-edit";
+static const char* sCommandBranches           = "git branch -a";
+static const char* sCommandBranchFromCommit   = "git checkout -b \"%1\" \"%2\"";
+static const char* sCommandBranchLog          = "git log --pretty=format:\"%H &&& %s &&& %an &&& %aI\" --max-count=20";
+static const char* sCommandClone              = "git clone \"%1\"";
+static const char* sCommandCommit             = "git commit -m \"%1\"";
+static const char* sCommandContinueRebase     = "git rebase --continue";
+static const char* sCommandDeleteBranch       = "git branch --delete \"%1\"";
+static const char* sCommandFetch              = "git fetch";
+static const char* sCommandFileLog            = "git log --pretty=format:\"%H &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
+static const char* sCommandGraph              = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
+static const char* sCommandHeadCommit         = "git rev-parse \"%1\"";
+static const char* sCommandPull               = "git pull";
+static const char* sCommandPush               = "git push";
+static const char* sCommandRebaseOnCommit     = "git rebase --interactive %1~1";
+static const char* sCommandResetOnCommit      = "git reset %1";
+static const char* sCommandRevert             = "git checkout \"%1\"";
+static const char* sCommandSetCurrentBranch   = "git checkout \"%1\"";
+static const char* sCommandStage              = "git add -f \"%1\"";
+static const char* sCommandStageAll           = "git add -u";
+static const char* sCommandStashPop           = "git stash pop";
+static const char* sCommandStashSave          = "git stash save";
+static const char* sCommandStatus             = "git status --porcelain --ignored --untracked-files=all";
+static const char* sCommandStatusForFile      = "git status --porcelain --ignored --untracked-files=all \"%1\"";
+static const char* sCommandTags               = "git tag";
+static const char* sCommandTagCommit          = "git rev-list -n 1 \"%1\"";
+static const char* sCommandUnstage            = "git reset HEAD \"%1\"";
+static const char* sCommandUnstageAll         = "git reset .";
+static const char* sCommandUnstagedDiff       = "git diff --no-color --ignore-all-space HEAD \"%1\"";
 
-static const char* sStatusRegExp = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
+//-------------------------------------------------------------------------------------------------
+// Regular expressions
+
+static const char* sStatusRegExp     = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
 static const char* sPickCommitRegExp = "(pick)\\s+([a-zA-Z0-9]+)\\s+(.*)";
 
-static const char* sRemoteBranchPrefix = "remotes/origin/";
+//-------------------------------------------------------------------------------------------------
+// Other strings
 
+static const char* sLogFormatSplitter   = "&&&";
+static const char* sRemoteBranchPrefix  = "remotes/origin/";
 static const char* sSequenceEditorToken = "GIT_SEQUENCE_EDITOR";
-static const char* sTextEditorToken = "GIT_EDITOR";
+static const char* sTextEditorToken     = "GIT_EDITOR";
+static const char* sRebaseEditCommit    = "edit %1 %2";
+static const char* sRebaseRewordCommit  = "reword %1 %2";
+static const char* sComment             = "#";
 
-static const char* sRebaseEditCommit = "edit %1 %2";
-static const char* sRebaseRewordCommit = "reword %1 %2";
+//-------------------------------------------------------------------------------------------------
+// Status characters
 
-static const char* sComment = "#";
-
-const QString sStatusAdded = "A";
-const QString sStatusModified = "M";
-const QString sStatusRenamed = "R";
-const QString sStatusDeleted = "D";
+const QString sStatusClean     = " ";
+const QString sStatusAdded     = "A";
+const QString sStatusModified  = "M";
+const QString sStatusRenamed   = "R";
+const QString sStatusDeleted   = "D";
+const QString sStatusUnmerged  = "U";
 const QString sStatusUntracked = "?";
-const QString sStatusIgnored = "!";
+const QString sStatusIgnored   = "!";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -90,9 +104,10 @@ bool CGitCommands::can(CEnums::ECapability eWhat) const
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::allFileStatus(const QString& sPath)
+void CGitCommands::cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath)
 {
-    exec(new CProcessCommand(CEnums::eAllFileStatus, sPath, sCommandStatus));
+    QString sCommand = QString(sCommandClone).arg(sRepositoryURL);
+    exec(new CProcessCommand(CEnums::eCloneRepository, sRepositoryPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -127,6 +142,13 @@ void CGitCommands::repositoryStatus(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::allFileStatus(const QString& sPath)
+{
+    exec(new CProcessCommand(CEnums::eAllFileStatus, sPath, sCommandStatus));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::branches(const QString& sPath)
 {
     exec(new CProcessCommand(CEnums::eBranches, sPath, sCommandBranches));
@@ -140,6 +162,24 @@ void CGitCommands::branchHeadCommits(const QString& sPath, QStringList lBranches
     {
         QString sCommand = QString(sCommandHeadCommit).arg(sBranch);
         exec(new CProcessCommand(CEnums::eBranchHeadCommit, sPath, sCommand, true, QMap<QString, QString>(), sBranch));
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::tags(const QString& sPath)
+{
+    exec(new CProcessCommand(CEnums::eTags, sPath, sCommandTags));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::tagCommits(const QString& sPath, QStringList lTags)
+{
+    for (QString sTag: lTags)
+    {
+        QString sCommand = QString(sCommandTagCommit).arg(sTag);
+        exec(new CProcessCommand(CEnums::eTagCommit, sPath, sCommand, true, QMap<QString, QString>(), sTag));
     }
 }
 
@@ -249,6 +289,22 @@ void CGitCommands::fetch(const QString& sPath)
     emit newOutputString(CEnums::eNotification, tr("Fetching..."));
     QString sCommand = QString(sCommandFetch);
     exec(new CProcessCommand(CEnums::eFetch, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::stashSave(const QString& sPath)
+{
+    emit newOutputString(CEnums::eNotification, tr("Saving stash..."));
+    exec(new CProcessCommand(CEnums::eStashSave, sPath, sCommandStashSave, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::stashPop(const QString& sPath)
+{
+    emit newOutputString(CEnums::eNotification, tr("Restoring stash..."));
+    exec(new CProcessCommand(CEnums::eStashPop, sPath, sCommandStashPop, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -466,6 +522,8 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
     if (sLine.isEmpty() == false && sLine.back() == '/')
         sLine.chop(1);
 
+    // TODO : Handle quoted file names
+
     if (tRegExp.indexIn(sLine) != -1)
     {
         QString sStaged = tRegExp.cap(1).trimmed();
@@ -521,7 +579,9 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
                 eStatus = CEnums::eDeleted;
             }
             else if (sUnstaged == sStatusIgnored)
+            {
                 eStatus = CEnums::eIgnored;
+            }
             else if (sUnstaged == sStatusUntracked)
             {
                 bStaged = false;
@@ -554,6 +614,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eRepositoryStatus:
         break;
 
+    case CEnums::eCloneRepository:
     case CEnums::eStageFile:
     case CEnums::eStageAll:
     case CEnums::eRevertFile:
@@ -562,6 +623,8 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::ePush:
     case CEnums::ePull:
     case CEnums::eFetch:
+    case CEnums::eStashSave:
+    case CEnums::eStashPop:
     case CEnums::eSetCurrentBranch:
     case CEnums::eResetToCommit:
     case CEnums::eRebaseOnCommit:
@@ -572,18 +635,23 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:
     {
+        // Throw the returned string of the process
         emit newOutputString(eCommand, sValue);
         break;
     }
 
     case CEnums::eBranchHeadCommit:
+    case CEnums::eTagCommit:
     {
+        // Throw the returned string of the process
         emit newOutputKeyValue(eCommand, sUserData, sValue.trimmed());
         break;
     }
 
     case CEnums::eUnstagedFileDiff:
     {
+        // Create CDiffLines with the returned string of the process
+
         QList<CDiffLine*> lReturnValue;
         QStringList lLines = sValue.split("\n");
         bool bAtLeastOneLineNotEmpty = false;
@@ -620,8 +688,10 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
     case CEnums::eBranches:
     {
-        QStringList lLines = sValue.split("\n");
+        // Create CBranchs with the returned string of the process
+
         QList<CBranch*> lReturnValue;
+        QStringList lLines = sValue.split("\n");
 
         for (QString sLine : lLines)
         {
@@ -652,8 +722,31 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         break;
     }
 
+    case CEnums::eTags:
+    {
+        QList<CBranch*> lReturnValue;
+        QStringList lLines = sValue.split("\n");
+
+        for (QString sLine : lLines)
+        {
+            sLine = sLine.trimmed();
+
+            if (not sLine.isEmpty())
+            {
+                CBranch* pNewBranch = new CBranch();
+                pNewBranch->setName(sLine);
+                lReturnValue << pNewBranch;
+            }
+        }
+
+        emit newOutputListOfCBranch(eCommand, lReturnValue);
+        break;
+    }
+
     case CEnums::eAllFileStatus:
     {
+        // Create CRepoFiles with the returned string of the process
+
         QList<CRepoFile*> lReturnValue;
         QStringList lStrings = sValue.split("\n");
 
@@ -672,6 +765,8 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eFileLog:
     case CEnums::eBranchLog:
     {
+        // Create CLogLines with the returned string of the process
+
         QList<CLogLine*> lReturnValue;
         QStringList lStrings = sValue.split("\n");
 
@@ -698,6 +793,8 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
     case CEnums::eGraph:
     {
+        // Create CGraphLines with the returned string of the process
+
         QList<CGraphLine*> lReturnValue;
         QStringList lStrings = sValue.split("\n");
 

@@ -4,6 +4,6 @@ import "."
 
 TextField {
     id: root
-    font.family: Theme.mainFontFamily
-    font.pixelSize: Theme.mainFontSize
+    font.family: Const.mainFontFamily
+    font.pixelSize: Const.mainFontSize
 }

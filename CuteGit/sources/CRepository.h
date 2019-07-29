@@ -41,13 +41,13 @@ public:
     Q_FAST_PROPERTY(CEnums::ERepositoryType, e, repositoryType, RepositoryType)
     Q_FAST_PROPERTY(CEnums::ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
-    Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
     Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(CFlatFileModelProxy*, p, flatFileModelProxy, FlatFileModelProxy)
     Q_FAST_PROPERTY(CBranchModel*, p, branchModel, BranchModel)
+    Q_FAST_PROPERTY(CBranchModel*, p, tagModel, TagModel)
     Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
@@ -84,7 +84,7 @@ public:
     QStringList labelsForCommit(const QString& sCommitId) const;
 
     //-------------------------------------------------------------------------------------------------
-    // Control methods
+    // Invokable control methods
     //-------------------------------------------------------------------------------------------------
 
     //!
@@ -136,6 +136,12 @@ public:
     Q_INVOKABLE void fetch();
 
     //!
+    Q_INVOKABLE void stashSave();
+
+    //!
+    Q_INVOKABLE void stashPop();
+
+    //!
     Q_INVOKABLE void commitReset(const QString& sCommitId);
 
     //!
@@ -158,7 +164,13 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    static CEnums::ERepositoryType getRepositoryType(const QString& sPath);
+    static CEnums::ERepositoryType getRepositoryTypeFromFolder(const QString& sPath);
+
+    //! Returns the type of repository using URL
+    static CEnums::ERepositoryType getRepositoryTypeFromURL(const QString& sRepositoryURL);
+
+    //!
+    static CCommands* getCommandsForRepositoryType(CEnums::ERepositoryType eType);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
@@ -171,6 +183,12 @@ protected:
 
     //!
     void getBranchHeadCommits(QString sPath = "");
+
+    //!
+    void getTags(QString sPath = "");
+
+    //!
+    void getTagCommits(QString sPath = "");
 
     //!
     void getGraph(QString sPath = "");
@@ -186,6 +204,9 @@ signals:
 
     //!
     void currentFileFullName(QString sFileFullName);
+
+    //!
+    void newOutput(QString sOutput);
 
     //-------------------------------------------------------------------------------------------------
     // Slots

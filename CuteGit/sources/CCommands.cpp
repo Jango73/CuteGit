@@ -121,14 +121,22 @@ QString CCommands::execNow(QString m_sWorkPath, QString m_sCommand, QMap<QString
 
 //-------------------------------------------------------------------------------------------------
 
-void CCommands::allFileStatus(const QString& sPath)
+void CCommands::cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath)
+{
+    Q_UNUSED(sRepositoryURL);
+    Q_UNUSED(sRepositoryPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::repositoryStatus(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CCommands::repositoryStatus(const QString& sPath)
+void CCommands::allFileStatus(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }
@@ -145,6 +153,22 @@ void CCommands::branches(const QString& sPath)
 void CCommands::branchHeadCommits(const QString& sPath, QStringList lBranches)
 {
     Q_UNUSED(sPath);
+    Q_UNUSED(lBranches);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::tags(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::tagCommits(const QString& sPath, QStringList lTags)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(lTags);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -236,6 +260,20 @@ void CCommands::pull(const QString& sPath)
 //-------------------------------------------------------------------------------------------------
 
 void CCommands::fetch(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::stashSave(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::stashPop(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }

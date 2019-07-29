@@ -4,6 +4,8 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import "../components"
 
+// TODO : Make this a tab view and add tags
+
 TitlePane {
     id: root
 

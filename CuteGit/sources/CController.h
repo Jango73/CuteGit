@@ -33,6 +33,9 @@ class CController : public QObject
     Q_FAST_PROPERTY(QStringListModel*, p, repositoryModel, RepositoryModel)
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
     Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
+    Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryURL, LastBrowsedRepositoryURL)
+    Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryPath, LastBrowsedRepositoryPath)
+
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showAdded, ShowAdded)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showModified, ShowModified)
@@ -120,6 +123,9 @@ public:
     //! Clears the list of output lines
     Q_INVOKABLE void clearOutput();
 
+    //! Clones a repository
+    Q_INVOKABLE void cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath);
+
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------
@@ -135,6 +141,12 @@ signals:
 
 protected slots:
 
+    //!
+    void onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOutput);
+
+    //!
+    void onNewOutput(QString sOutput);
+
     //! Triggered for shared memory operation sync
     void onSharedTimerTick();
 
@@ -147,6 +159,7 @@ protected:
     bool                    m_bMasterMode;
     QSharedMemory           m_tShared;
     QTimer                  m_tSharedTimer;
+    CCommands*              m_pCloneCommands;
 
     static const QString    m_sSharedKey;
 };

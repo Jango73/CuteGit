@@ -24,14 +24,14 @@ bool CSvnCommands::can(CEnums::ECapability eWhat) const
 {
     switch (eWhat)
     {
-        case CEnums::Clone:
-        case CEnums::ShowGlobalGraph:
-        case CEnums::ShowBranchLog:
-        case CEnums::ShowFileLog:
-        case CEnums::Commit:
-        case CEnums::Pull:
-        case CEnums::BranchFromCommit:
-            return true;
+    case CEnums::Clone:
+    case CEnums::ShowGlobalGraph:
+    case CEnums::ShowBranchLog:
+    case CEnums::ShowFileLog:
+    case CEnums::Commit:
+    case CEnums::Pull:
+    case CEnums::BranchFromCommit:
+        return true;
 
     default:
         return false;
@@ -40,14 +40,14 @@ bool CSvnCommands::can(CEnums::ECapability eWhat) const
 
 //-------------------------------------------------------------------------------------------------
 
-void CSvnCommands::allFileStatus(const QString& sPath)
+void CSvnCommands::repositoryStatus(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CSvnCommands::repositoryStatus(const QString& sPath)
+void CSvnCommands::allFileStatus(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }

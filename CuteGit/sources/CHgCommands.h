@@ -9,7 +9,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-class CSvnCommands : public CCommands
+class CHgCommands : public CCommands
 {
     Q_OBJECT
 
@@ -24,10 +24,10 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CSvnCommands();
+    CHgCommands();
 
     //! Destructor
-    virtual ~CSvnCommands() override;
+    virtual ~CHgCommands() override;
 
     //-------------------------------------------------------------------------------------------------
     // Getters
@@ -40,46 +40,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    virtual void repositoryStatus(const QString& sPath) override;
-
-    //!
     virtual void allFileStatus(const QString& sPath) override;
-
-    //!
-    virtual void branches(const QString& sPath) override;
-
-    //!
-    virtual void graph(const QString& sPath) override;
-
-    //!
-    virtual void branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
-
-    //!
-    virtual void fileLog(const QString& sPath, const QString& sFullName) override;
-
-    //!
-    virtual void toggleStaged(const QString& sPath, const QString& sFullName) override;
-
-    //!
-    virtual void stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
-
-    //!
-    virtual void stageAll(const QString& sPath, bool bStage) override;
-
-    //!
-    virtual void revertFile(const QString& sPath, const QString& sFullName) override;
-
-    //!
-    virtual void commit(const QString& sPath, const QString& sMessage) override;
-
-    //!
-    virtual void pull(const QString& sPath) override;
-
-    //!
-    virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
-
-    //!
-    virtual void setCurrentBranch(const QString& sPath, const QString& sBranch) override;
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods

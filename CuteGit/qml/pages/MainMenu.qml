@@ -125,6 +125,18 @@ MenuBar {
         }
 
         Action {
+            text: qsTr("Save stash")
+            enabled: root.controller.repository.can(CEnums.Stash)
+            onTriggered: root.controller.repository.stashSave()
+        }
+
+        Action {
+            text: qsTr("Pop stash")
+            enabled: root.controller.repository.can(CEnums.Stash)
+            onTriggered: root.controller.repository.stashPop()
+        }
+
+        Action {
             id: commit
             text: qsTr("&Commit")
             shortcut: "Ctrl+C"

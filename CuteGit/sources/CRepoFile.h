@@ -59,8 +59,10 @@ public:
     static const QString sTokenModified;
     static const QString sTokenRenamed;
     static const QString sTokenDeleted;
+    static const QString sTokenMissing;
     static const QString sTokenUntracked;
     static const QString sTokenIgnored;
+
     static const QString sTokenStaged;
     static const QString sTokenUnstaged;
 

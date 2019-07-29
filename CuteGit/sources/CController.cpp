@@ -32,6 +32,10 @@
     ** CuteGit-2 quits
     * Git quits
     * CuteGit-1-B returns
+
+    (\../)
+    ( *.*)
+    (")_(")
 */
 
 //-------------------------------------------------------------------------------------------------
@@ -41,6 +45,9 @@ const QString sParamCurrentRepository = "CurrentRepository";
 const QString sParamRepositories = "Repositories";
 const QString sParamRepository = "Repository";
 const QString sParamPath = "Path";
+const QString sParamHistory = "History";
+const QString sParamLastBrowsedRepositoryURL = "LastBrowsedRepositoryURL";
+const QString sParamLastBrowsedRepositoryPath = "LastBrowsedRepositoryPath";
 
 const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 
@@ -82,6 +89,11 @@ CController::CController(QString sSequenceFileName, QObject* parent)
     , m_pRepositoryModel(nullptr)
     , m_pCommandOutputModel(nullptr)
     , m_pRepository(nullptr)
+    , m_bShowClean(false)
+    , m_bShowAdded(true)
+    , m_bShowModified(true)
+    , m_bShowDeleted(true)
+    , m_bShowUntracked(false)
     , m_bMasterMode(false)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
@@ -202,30 +214,51 @@ void CController::setRepositoryPath(QString sPath)
     if (sPath.startsWith("file:"))
         sPath = QUrl(sPath).toLocalFile();
 
-    CEnums::ERepositoryType eType = CRepository::getRepositoryType(sPath);
-
-    // If specified directory is a repository
-    if (eType != CEnums::UnknownRepositoryType)
+    if (QDir(sPath).exists())
     {
-        if (m_pRepository != nullptr)
-            delete m_pRepository;
+        CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromFolder(sPath);
 
-        setRepository(new CRepository(sPath, this, this));
+        // If specified directory is a repository
+        if (eType != CEnums::UnknownRepositoryType)
+        {
+            // Delete the current repository item
+            if (m_pRepository != nullptr)
+                delete m_pRepository;
 
-        // Add this path to repository model
-        QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+            // Create a new repository item
+            m_pRepository = new CRepository(sPath, this, this);
 
-        if (lRepositoryPaths.contains(sPath) == false)
-            lRepositoryPaths << sPath;
+            // Add this path to repository model
+            QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
 
-        m_pRepositoryModel->setStringList(lRepositoryPaths);
+            if (lRepositoryPaths.contains(sPath) == false)
+                lRepositoryPaths << sPath;
 
-        // Clear command output
-        m_pCommandOutputModel->setStringList(QStringList());
+            m_pRepositoryModel->setStringList(lRepositoryPaths);
+
+            // Clear command output
+            m_pCommandOutputModel->setStringList(QStringList());
+
+            connect(m_pRepository, &CRepository::newOutput, this, &CController::onNewOutput);
+
+            emit repositoryChanged();
+            emit repositoryPathChanged();
+
+            onNewOutput(QString(tr("Now working on %1.")).arg(sPath));
+        }
+        else
+        {
+            onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
+        }
     }
     else
     {
-        // onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
+        // Clears this path from repository model
+        QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+        lRepositoryPaths.removeAll(sPath);
+        m_pRepositoryModel->setStringList(lRepositoryPaths);
+
+        onNewOutput(QString(tr("%1 does not exist. Ignoring.")).arg(sPath));
     }
 }
 
@@ -302,10 +335,18 @@ void CController::saveConfiguration()
 {
     CXMLNode xConfig(sParamConfiguration);
 
+    // Save history items
+    CXMLNode xHistory(sParamHistory);
+    xHistory.attributes()[sParamLastBrowsedRepositoryURL] = m_sLastBrowsedRepositoryURL;
+    xHistory.attributes()[sParamLastBrowsedRepositoryPath] = m_sLastBrowsedRepositoryPath;
+    xConfig << xHistory;
+
+    // Save current repository
     CXMLNode xCurrentRepository(sParamCurrentRepository);
     xCurrentRepository.attributes()[sParamPath] = repository()->repositoryPath();
     xConfig << xCurrentRepository;
 
+    // Save known repository list
     CXMLNode xRepositories(sParamRepositories);
 
     // Add repository to model
@@ -329,9 +370,16 @@ void CController::loadConfiguration()
 {
     CXMLNode xConfig = CXMLNode::load(CONFIG_FILE_NAME);
 
+    // Load history items
+    CXMLNode xHistory = xConfig.getNodeByTagName(sParamHistory);
+    m_sLastBrowsedRepositoryURL = xHistory.attributes()[sParamLastBrowsedRepositoryURL];
+    m_sLastBrowsedRepositoryPath = xHistory.attributes()[sParamLastBrowsedRepositoryPath];
+
+    // Load current repository
     CXMLNode xCurrentRepository = xConfig.getNodeByTagName(sParamCurrentRepository);
     QString sCurrentPath = xCurrentRepository.attributes()[sParamPath];
 
+    // Load known repository list
     CXMLNode xRepositories = xConfig.getNodeByTagName(sParamRepositories);
     QVector<CXMLNode> xRepositoryList = xRepositories.getNodesByTagName(sParamRepository);
 
@@ -382,6 +430,62 @@ void CController::quit()
 void CController::clearOutput()
 {
     m_pCommandOutputModel->setStringList(QStringList());
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath)
+{
+    CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromURL(sRepositoryURL);
+
+    m_pCloneCommands = CRepository::getCommandsForRepositoryType(eType);
+
+    connect(m_pCloneCommands, &CCommands::newOutputString, this, &CController::onNewCloneOutput);
+    m_pCloneCommands->cloneRepository(sRepositoryURL, sRepositoryPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOutput)
+{
+    Q_UNUSED(eCommand);
+
+    if (m_pCloneCommands != nullptr)
+        m_pCloneCommands->deleteLater();
+
+    m_pCloneCommands = nullptr;
+
+    onNewOutput(sOutput);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::onNewOutput(QString sOutput)
+{
+    QStringList lNewList = sOutput.split("\n");
+    QStringList lData = m_pCommandOutputModel->stringList();
+    bool bHasNewLine = false;
+
+    for (QString sLine : lNewList)
+    {
+        sLine = sLine.trimmed();
+
+        if (sLine.isEmpty() == false)
+        {
+            bHasNewLine = true;
+            lData << sLine;
+        }
+    }
+
+    if (bHasNewLine)
+    {
+        lData << "----------------------------------------------------------------------------------------------------";
+
+        while (lData.count() > 50)
+            lData.removeFirst();
+
+        m_pCommandOutputModel->setStringList(lData);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -12,9 +12,14 @@ TreeView {
     property variant controller: null
     property bool mouseActive: true
 
-    model: root.controller !== null ? root.controller.repository.treeFileModelProxy : undefined
+    model: root.controller !== null && root.controller.repository !== null
+           ? root.controller.repository.treeFileModelProxy
+           : undefined
 
-    rootIndex: root.controller !== null ? root.controller.repository.treeFileModelProxy.rootPathIndex : undefined
+    rootIndex: root.controller !== null && root.controller.repository !== null
+               ? root.controller.repository.treeFileModelProxy.rootPathIndex
+               : undefined
+
     backgroundVisible: false
     headerVisible: false
     selection: root.selection
@@ -47,12 +52,14 @@ TreeView {
 
             Rectangle {
                 anchors.fill: parent
-                color: if (model.staged === "X") Const.fileStagedColor
-                       else if (model.status === "*") Const.fileModifiedColor
-                       else if (model.status === "=") Const.fileRenamedColor
-                       else if (model.status === "+") Const.fileAddedColor
-                       else if (model.status === "-") Const.fileDeletedColor
-                       else Const.transparent
+                color: if (model !== null && typeof model !== "undefined")
+                           if (model.staged === "X") Const.fileStagedColor
+                           else if (model.status === "*") Const.fileModifiedColor
+                           else if (model.status === "=") Const.fileRenamedColor
+                           else if (model.status === "+") Const.fileAddedColor
+                           else if (model.status === "-") Const.fileDeletedColor
+                           else Const.transparent
+                else Const.transparent
             }
 
             Selection {
@@ -73,7 +80,7 @@ TreeView {
                 id: statusText
                 width: Const.elementHeight
                 height: parent.height
-                text: typeof(model) !== "undefined" ? model.status : ""
+                text: model !== null && typeof model !== "undefined" ? model.status : ""
             }
 
             ElideText {
@@ -81,7 +88,7 @@ TreeView {
                 anchors.left: statusText.right
                 anchors.right: parent.right
                 height: parent.height
-                text: typeof(model) !== "undefined" ? model.fileName : ""
+                text: model !== null && typeof model !== "undefined" ? model.fileName : ""
             }
         }
     }
