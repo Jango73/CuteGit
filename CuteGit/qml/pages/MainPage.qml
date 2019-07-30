@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4 as QC14
+import QtQuick.Controls 1.5 as QC15
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtQuick.Dialogs 1.2
@@ -53,18 +53,31 @@ Item {
         }
     }
 
-    QC14.TabView {
+    QC15.TabView {
         id: container
         anchors.top: toolBar.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        style: StandardTabViewStyle { }
+
+        style: StandardTabViewStyle {
+            canClose: true
+            closeAction: tabCloseAction
+        }
+
+        Action {
+            id: tabCloseAction
+
+            onTriggered: {
+                root.controller.removeRepository(source.index)
+                // container.removeTab(source.index)
+            }
+        }
 
         Repeater {
             model: root.controller.openRepositoryModel
 
-            QC14.Tab {
+            QC15.Tab {
                 title: model.repository.repositoryName
 
                 RepositoryView {

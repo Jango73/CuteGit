@@ -119,6 +119,9 @@ public:
     //! Opens a repository
     Q_INVOKABLE void openRepository(QString sRepositoryPath);
 
+    //!
+    Q_INVOKABLE void removeRepository(int iRepositoryIndex);
+
     //-------------------------------------------------------------------------------------------------
     // Slots
     //-------------------------------------------------------------------------------------------------

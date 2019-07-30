@@ -70,6 +70,19 @@ void CRepositoryModel::addRepository(CRepository* pRepository)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepositoryModel::removeRepository(int iRepositoryIndex)
+{
+    if (iRepositoryIndex < rowCount())
+    {
+        beginRemoveRows(QModelIndex(), iRepositoryIndex, iRepositoryIndex);
+        delete m_lRepositories[iRepositoryIndex];
+        m_lRepositories.removeAt(iRepositoryIndex);
+        endRemoveRows();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 bool CRepositoryModel::hasRepository(const QString& sPath)
 {
     for (CRepository* pRepository : m_lRepositories)

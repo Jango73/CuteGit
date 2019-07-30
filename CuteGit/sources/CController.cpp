@@ -427,6 +427,13 @@ void CController::openRepository(QString sRepositoryPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::removeRepository(int iRepositoryIndex)
+{
+    m_pOpenRepositoryModel->removeRepository(iRepositoryIndex);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOutput)
 {
     Q_UNUSED(eCommand);

@@ -53,6 +53,9 @@ public:
     void addRepository(CRepository* pRepository);
 
     //!
+    void removeRepository(int iRepositoryIndex);
+
+    //!
     bool hasRepository(const QString& sPath);
 
     //!
