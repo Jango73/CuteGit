@@ -126,7 +126,11 @@ QStringList CRepository::labelsForCommit(const QString& sCommitId) const
 {
     QStringList lReturnValue;
     lReturnValue << m_pBranchModel->labelsForCommit(sCommitId);
-    lReturnValue << m_pTagModel->labelsForCommit(sCommitId);
+
+    QStringList lTags = m_pTagModel->labelsForCommit(sCommitId);
+    for (QString sTag : lTags)
+        lReturnValue << "Tag: " + sTag;
+
     return lReturnValue;
 }
 
