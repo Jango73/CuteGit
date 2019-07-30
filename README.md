@@ -110,3 +110,25 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 ### CDiffLine
 
 * A line of diff between two files
+
+## Code summary
+
+As of 2019-07-30:
+
+```
+      94 text files.                                                                                                       
+      94 unique files.                                                                                                     
+      15 files ignored.                                                                                                    
+
+http://cloc.sourceforge.net v 1.64  T=0.22 s (364.8 files/s, 40039.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+C++                             17            910            474           2624
+QML                             39            449             47           2162
+C/C++ Header                    21            579            625            772
+Qt Project                       2              8              4             17
+-------------------------------------------------------------------------------
+SUM:                            79           1946           1150           5575
+-------------------------------------------------------------------------------
+```
