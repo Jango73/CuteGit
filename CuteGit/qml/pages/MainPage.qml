@@ -29,7 +29,7 @@ Item {
         onRequestShortcuts: shortcuts.open()
 
         Component.onCompleted: {
-            repositoryView = Qt.binding(function() { return container.getTab(container.index).item })
+            repositoryView = Qt.binding(function() { return container.getTab(container.currentIndex).item })
         }
     }
 

@@ -9,8 +9,15 @@ Rectangle {
     radius: Const.mainRadius
     border.width: 2
     border.color: borderOnly ? Material.primary : Const.transparent
+    opacity: visible
 
     property bool borderOnly: false
     property int targetWidth: 100
     property int targetHeight: 100
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 250
+        }
+    }
 }

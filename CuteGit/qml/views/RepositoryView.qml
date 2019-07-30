@@ -214,7 +214,7 @@ Item {
     }
 
     function requestRefresh() {
-        root.repository.resfresh()
+        root.repository.refresh()
     }
 
     function requestFetch() {
