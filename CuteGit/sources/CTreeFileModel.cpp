@@ -90,7 +90,7 @@ QVariant CTreeFileModel::data(const QModelIndex& qIndex, int iRole) const
         case eStatusRole:
         {
             QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-            CRepoFile* pFile = fileByFullName(m_pRepository->repoFiles(), sFileFullName);
+            CRepoFile* pFile = m_pRepository->fileByFullName(sFileFullName);
 
             if (pFile != nullptr)
                 return pFile->statusToString();
@@ -101,7 +101,7 @@ QVariant CTreeFileModel::data(const QModelIndex& qIndex, int iRole) const
         case eStagedRole:
         {
             QString sFileFullName = fileInfo(qIndex).absoluteFilePath();
-            CRepoFile* pFile = fileByFullName(m_pRepository->repoFiles(), sFileFullName);
+            CRepoFile* pFile = m_pRepository->fileByFullName(sFileFullName);
 
             if (pFile != nullptr)
                 return pFile->stagedToString();

@@ -78,7 +78,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    CRepoFile* fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const;
+    CRepoFile* fileByFullName(const QString& sFullName) const;
 
     //!
     QStringList labelsForCommit(const QString& sCommitId) const;
@@ -163,13 +163,13 @@ public:
     // Static control methods
     //-------------------------------------------------------------------------------------------------
 
-    //!
+    //! Returns the type of repository from a folder
     static CEnums::ERepositoryType getRepositoryTypeFromFolder(const QString& sPath);
 
-    //! Returns the type of repository using URL
+    //! Returns the type of repository from an URL
     static CEnums::ERepositoryType getRepositoryTypeFromURL(const QString& sRepositoryURL);
 
-    //!
+    //! Returns a command interface for a given repository type
     static CCommands* getCommandsForRepositoryType(CEnums::ERepositoryType eType);
 
     //-------------------------------------------------------------------------------------------------
@@ -194,16 +194,13 @@ protected:
     void getGraph(QString sPath = "");
 
     //!
-    void getLog(QString sPath = "");
+    void getBranchLog(QString sPath = "");
 
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------
 
 signals:
-
-    //!
-    void currentFileFullName(QString sFileFullName);
 
     //!
     void newOutput(QString sOutput);
@@ -214,7 +211,7 @@ signals:
 
 protected slots:
 
-    //!
+    //! Called when a file has been highlighted
     void onCurrentFileFullName(QString sFileFullName);
 
     //!

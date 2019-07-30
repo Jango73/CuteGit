@@ -214,51 +214,72 @@ void CController::setRepositoryPath(QString sPath)
     if (sPath.startsWith("file:"))
         sPath = QUrl(sPath).toLocalFile();
 
-    if (QDir(sPath).exists())
+    if (m_pRepository != nullptr && sPath == m_pRepository->repositoryPath())
+        return;
+
+    if (sPath.isEmpty())
     {
-        CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromFolder(sPath);
-
-        // If specified directory is a repository
-        if (eType != CEnums::UnknownRepositoryType)
+        // Delete the current repository item
+        if (m_pRepository != nullptr)
         {
-            // Delete the current repository item
-            if (m_pRepository != nullptr)
-                delete m_pRepository;
-
-            // Create a new repository item
-            m_pRepository = new CRepository(sPath, this, this);
-
-            // Add this path to repository model
-            QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
-
-            if (lRepositoryPaths.contains(sPath) == false)
-                lRepositoryPaths << sPath;
-
-            m_pRepositoryModel->setStringList(lRepositoryPaths);
-
-            // Clear command output
-            m_pCommandOutputModel->setStringList(QStringList());
-
-            connect(m_pRepository, &CRepository::newOutput, this, &CController::onNewOutput);
-
-            emit repositoryChanged();
-            emit repositoryPathChanged();
-
-            onNewOutput(QString(tr("Now working on %1.")).arg(sPath));
+            delete m_pRepository;
+            m_pRepository = nullptr;
         }
-        else
-        {
-            onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
-        }
+
+        // Clear command output
+        clearOutput();
+
+        emit repositoryChanged();
+        emit repositoryPathChanged();
+
+        onNewOutput(tr("No repository set."));
     }
     else
     {
-        // Clears this path from repository model
-        QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
-        lRepositoryPaths.removeAll(sPath);
-        m_pRepositoryModel->setStringList(lRepositoryPaths);
+        if (QDir(sPath).exists())
+        {
+            CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromFolder(sPath);
 
-        onNewOutput(QString(tr("%1 does not exist. Ignoring.")).arg(sPath));
+            // If specified directory is a repository
+            if (eType != CEnums::UnknownRepositoryType)
+            {
+                // Delete the current repository item
+                if (m_pRepository != nullptr)
+                    delete m_pRepository;
+
+                // Create a new repository item
+                m_pRepository = new CRepository(sPath, this, this);
+
+                // Clear command output
+                clearOutput();
+
+                connect(m_pRepository, &CRepository::newOutput, this, &CController::onNewOutput);
+
+                emit repositoryChanged();
+                emit repositoryPathChanged();
+
+                // Add this path to repository model
+                QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+                if (lRepositoryPaths.contains(sPath) == false)
+                    lRepositoryPaths << sPath;
+                m_pRepositoryModel->setStringList(lRepositoryPaths);
+
+                onNewOutput(QString(tr("Now working on %1.")).arg(sPath));
+            }
+            else
+            {
+                onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
+            }
+        }
+        else
+        {
+            // Clears this path from repository model
+            QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
+            lRepositoryPaths.removeAll(sPath);
+            m_pRepositoryModel->setStringList(lRepositoryPaths);
+
+            onNewOutput(QString(tr("%1 does not exist. Ignoring.")).arg(sPath));
+        }
     }
 }
 

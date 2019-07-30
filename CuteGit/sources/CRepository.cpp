@@ -99,9 +99,9 @@ void CRepository::setCurrentBranch(QString sValue)
 
 //-------------------------------------------------------------------------------------------------
 
-CRepoFile* CRepository::fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const
+CRepoFile* CRepository::fileByFullName(const QString& sFullName) const
 {
-    for (CRepoFile* pFile : vFiles)
+    for (CRepoFile* pFile : m_lRepoFiles)
     {
         if (pFile->fullName() == sFullName)
             return pFile;
@@ -152,7 +152,7 @@ void CRepository::refresh()
     checkAllFileStatus();
     getBranches();
     getTags();
-    getLog();
+    getBranchLog();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -434,7 +434,7 @@ void CRepository::getGraph(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::getLog(QString sPath)
+void CRepository::getBranchLog(QString sPath)
 {
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
@@ -512,7 +512,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         onNewOutput(sOutput);
         getBranchHeadCommits();
         checkAllFileStatus();
-        getLog();
+        getBranchLog();
         break;
     }
 
