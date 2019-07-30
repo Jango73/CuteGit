@@ -45,7 +45,7 @@ static const char* sCommandFileLog            = "git log --pretty=format:\"%h &&
 static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
 static const char* sCommandGraph              = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
-static const char* sCommandHeadCommit         = "git rev-parse \"%1\"";
+static const char* sCommandHeadCommit         = "git rev-parse --short \"%1\"";
 static const char* sCommandPull               = "git pull";
 static const char* sCommandPush               = "git push";
 static const char* sCommandRebaseOnCommit     = "git rebase --interactive %1~1";
@@ -59,7 +59,7 @@ static const char* sCommandStashSave          = "git stash save";
 static const char* sCommandStatus             = "git status --porcelain --ignored --untracked-files=all";
 static const char* sCommandStatusForFile      = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 static const char* sCommandTags               = "git tag";
-static const char* sCommandTagCommit          = "git rev-list -n 1 \"%1\"";
+static const char* sCommandTagCommit          = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
 static const char* sCommandUnstage            = "git reset HEAD \"%1\"";
 static const char* sCommandUnstageAll         = "git reset .";
 static const char* sCommandUnstagedDiff       = "git diff --no-color --ignore-all-space HEAD \"%1\"";
