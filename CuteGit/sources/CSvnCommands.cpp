@@ -5,6 +5,18 @@
 // Application
 #include "CSvnCommands.h"
 
+/*!
+    \class CSvnCommands
+    \inmodule CuteGit
+    \section1 General
+    This is the repository control interface for Apache Subversion (SVN).
+
+         .-"""-.__     ltb
+        /      ' o'\
+     ,-;  '.  :   _c
+    :_."\._ ) ::-"
+           ""m "m*/
+
 //-------------------------------------------------------------------------------------------------
 
 CSvnCommands::CSvnCommands()

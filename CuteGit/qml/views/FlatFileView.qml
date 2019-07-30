@@ -7,12 +7,12 @@ import "../components"
 StandardListView {
     id: root
 
-    property variant controller: null
+    property variant repository: null
     property bool mouseActive: true
 
-    model: root.controller !== null ? root.controller.repository.flatFileModelProxy : undefined
+    model: root.repository !== null ? root.repository.flatFileModelProxy : undefined
 
-    onCurrentIndexChanged: root.controller.repository.flatFileModelProxy.handleCurrentIndex(currentModelIndex())
+    onCurrentIndexChanged: root.repository.flatFileModelProxy.handleCurrentIndex(currentModelIndex())
 
     delegate: Item {
         width: parent.width
@@ -102,7 +102,7 @@ StandardListView {
 
     Keys.onPressed: {
         if (event.key === Qt.Key_Space) {
-            root.controller.repository.toggleStaged(currentItem.fullName)
+            root.repository.toggleStaged(currentItem.fullName)
         }
     }
 

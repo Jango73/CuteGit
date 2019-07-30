@@ -4,11 +4,13 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
 import "../components"
+import "../views"
+import "../popups"
 
 TitlePane {
     id: root
 
-    property variant controller: null
+    property variant repository: null
 
     signal requestCommitDiffPrevious(var commitId)
     signal requestCommitBranchFrom(var commitId)
@@ -22,11 +24,17 @@ TitlePane {
     content: Item {
         anchors.fill: parent
 
+        StandardLabel {
+            anchors.fill: parent
+            text: Const.nothingToDisplayText
+            visible: root.repository === null | logView.count === 0
+        }
+
         LogView {
             id: logView
             anchors.fill: parent
 
-            model: root.controller !== null ? root.controller.repository.logModel : undefined
+            model: root.repository !== null ? root.repository.logModel : undefined
 
             onItemRightClicked: {
                 menu.commitId = commitId
@@ -37,7 +45,7 @@ TitlePane {
 
         LogMenu {
             id: menu
-            controller: root.controller
+            repository: root.repository
 
             onRequestCommitDiffPrevious: {
                 root.requestCommitDiffPrevious(commitId)

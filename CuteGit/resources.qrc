@@ -13,32 +13,38 @@
         <file>qml/components/StandardButton.qml</file>
         <file>qml/components/StandardLabel.qml</file>
         <file>qml/components/StandardListView.qml</file>
+        <file>qml/components/StandardListViewItem.qml</file>
         <file>qml/components/StandardPopup.qml</file>
         <file>qml/components/StandardStringListView.qml</file>
+        <file>qml/components/StandardTabViewStyle.qml</file>
         <file>qml/components/StandardText.qml</file>
         <file>qml/components/StandardTextEdit.qml</file>
         <file>qml/components/StandardTextField.qml</file>
         <file>qml/components/StandardToolBar.qml</file>
         <file>qml/components/TitlePane.qml</file>
         <file>qml/components/TitleTextField.qml</file>
-        <file>qml/pages/BranchFromPopup.qml</file>
+
         <file>qml/pages/BranchLogPane.qml</file>
         <file>qml/pages/BranchMenu.qml</file>
         <file>qml/pages/BranchPane.qml</file>
-        <file>qml/pages/ClonePopup.qml</file>
-        <file>qml/pages/CommitPopup.qml</file>
-        <file>qml/pages/ConfirmPopup.qml</file>
-        <file>qml/pages/DiffView.qml</file>
         <file>qml/pages/FileLogPane.qml</file>
         <file>qml/pages/FilePane.qml</file>
-        <file>qml/pages/FlatFileView.qml</file>
         <file>qml/pages/LogMenu.qml</file>
-        <file>qml/pages/LogView.qml</file>
         <file>qml/pages/MainMenu.qml</file>
         <file>qml/pages/MainPage.qml</file>
         <file>qml/pages/OutputPane.qml</file>
         <file>qml/pages/RepoPane.qml</file>
         <file>qml/pages/ToolPane.qml</file>
-        <file>qml/pages/TreeFileView.qml</file>
-    </qresource>
+
+        <file>qml/views/DiffView.qml</file>
+        <file>qml/views/FlatFileView.qml</file>
+        <file>qml/views/LogView.qml</file>
+        <file>qml/views/RepositoryView.qml</file>
+        <file>qml/views/TreeFileView.qml</file>
+
+        <file>qml/popups/BranchFromPopup.qml</file>
+        <file>qml/popups/ClonePopup.qml</file>
+        <file>qml/popups/CommitPopup.qml</file>
+        <file>qml/popups/ConfirmPopup.qml</file>
+        </qresource>
 </RCC>

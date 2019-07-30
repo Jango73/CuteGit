@@ -7,18 +7,18 @@ Pane {
     id: root
     padding: Const.mainPadding
 
-    property variant controller: null
+    property variant repository: null
 
     StandardLabel {
         anchors.fill: parent
         text: Const.nothingToDisplayText
-        visible: root.controller === null | list.count === 0
+        visible: root.repository === null | list.count === 0
     }
 
     StandardListView {
         id: list
         anchors.fill: parent
-        model: root.controller !== null ? root.controller.repository.fileDiffModel : undefined
+        model: root.repository !== null ? root.repository.fileDiffModel : undefined
 
         delegate: Item {
             width: parent.width

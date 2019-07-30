@@ -7,6 +7,23 @@
 // Application
 #include "CCommands.h"
 
+/*!
+    \class CCommands
+    \inmodule CuteGit
+    \section1 General
+    This is the base class for all repository control interfaces.
+    It allows execution of a process in background.
+
+    \code
+        _.-._         ..-..         _.-._
+       (_-.-_)       /|'.'|\       (_'.'_)
+     mrf.\-/.        \)\-/(/        ,-.-.
+     __/ /-. \__   __/ ' ' \__   __/'-'-'\__
+    ( (___/___) ) ( (_/-._\_) ) ( (_/   \_) )
+     '.Oo___oO.'   '.Oo___oO.'   '.Oo___oO.'
+    \endcode
+*/
+
 //-------------------------------------------------------------------------------------------------
 
 CCommands::CCommands()

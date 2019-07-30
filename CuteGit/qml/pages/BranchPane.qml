@@ -1,76 +1,76 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
+import QtQuick.Controls 1.4 as QC14
 import QtQuick.Controls.Material 2.12
 import "../components"
 
-// TODO : Make this a tab view and add tags
-
-TitlePane {
+QC14.TabView {
     id: root
+    style: StandardTabViewStyle { }
 
-    property variant controller: null
+    property variant repository: null
     property string branchName: ""
 
     signal requestDeleteBranch(var name)
 
-    title: Const.branchesText
-
-    content: Item {
-        anchors.fill: parent
+    QC14.Tab {
+        title: Const.branchesText
 
         StandardListView {
-            id: list
+            id: branchList
             anchors.fill: parent
             visible: count > 0
 
-            model: root.controller.repository.branchModel
+            model: root.repository.branchModel
 
-            delegate: Item {
+            delegate: StandardListViewItem {
                 width: parent.width
                 height: Const.elementHeight
+                text: model.name
+                selectionVisible: model.name === root.repository.currentBranch
 
-                Item {
-                    anchors.fill: parent
-                    anchors.margins: Const.smallPadding
-
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.AllButtons
-                        onClicked: {
-                            if (mouse.button === Qt.RightButton) {
-                                root.branchName = model.name
-                                menu.popup()
-                            }
-                        }
-                        onDoubleClicked: {
-                            root.controller.repository.currentBranch = model.name
-                        }
+                onClicked: {
+                    if (mouse.button === Qt.RightButton) {
+                        root.branchName = model.name
+                        branchMenu.popup()
                     }
+                }
 
-                    Selection {
-                        id: selection
-                        targetWidth: text.width
-                        targetHeight: text.height
-                        anchors.centerIn: text
-                        visible: model.name === root.controller.repository.currentBranch
-                    }
+                onDoubleClicked: {
+                    root.repository.currentBranch = model.name
+                }
+            }
 
-                    ElideText {
-                        id: text
-                        width: parent.width - Const.smallPadding
-                        text: model.name
-                        color: selection.visible ? Material.background : Material.foreground
-                    }
+            BranchMenu {
+                id: branchMenu
+
+                onRequestSwitchToBranch: {
+                    root.repository.currentBranch = root.branchName
+                }
+
+                onRequestDeleteBranch: {
+                    root.requestDeleteBranch(root.branchName)
                 }
             }
         }
+    }
 
-        BranchMenu {
-            id: menu
+    QC14.Tab {
+        title: Const.tagsText
 
-            onRequestDeleteBranch: {
-                root.requestDeleteBranch(root.branchName)
+        StandardListView {
+            id: tagList
+            anchors.fill: parent
+            visible: count > 0
+
+            model: root.repository.tagModel
+
+            delegate: StandardListViewItem {
+                width: parent.width
+                height: Const.elementHeight
+                text: model.name
+                selectionVisible: false
             }
         }
     }

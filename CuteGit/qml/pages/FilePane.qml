@@ -4,11 +4,13 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import CuteGit 1.0
 import "../components"
+import "../views"
+import "../popups"
 
 TitlePane {
     id: root
 
-    property variant controller: null
+    property variant repository: null
     property variant selection: null
     property bool filesAsTree: false
 
@@ -24,7 +26,7 @@ TitlePane {
             enabled: visible
             activeFocusOnTab: true
 
-            controller: root.controller
+            repository: root.repository
         }
 
         Item {
@@ -51,7 +53,7 @@ TitlePane {
                 anchors.right: parent.right
                 visible: root.filesAsTree
 
-                controller: root.controller
+                repository: root.repository
                 selection: root.selection
             }
         }

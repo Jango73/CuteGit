@@ -9,11 +9,13 @@ MenuBar {
 
     Material.elevation: 4
 
+    property Item repositoryView: null
     property variant controller: null
+    property variant repository: null
     property bool filesAsTree: false
 
-    property bool rebaseInProgress: controller.repository.repositoryStatus === CEnums.Rebase
-    || controller.repository.repositoryStatus === CEnums.InteractiveRebase
+    property bool rebaseInProgress: root.repository.repositoryStatus === CEnums.Rebase
+    || root.repository.repositoryStatus === CEnums.InteractiveRebase
 
     property alias cloneRepositoryAction: cloneRepository
     property alias openRepositoryAction: openRepository
@@ -24,13 +26,6 @@ MenuBar {
 
     signal requestCloneRepository()
     signal requestOpenRepository()
-    signal requestStageSelection()
-    signal requestUnstageSelection()
-    signal requestRevertSelection()
-    signal requestCommit()
-    signal requestAmend()
-    signal requestContinueRebase()
-    signal requestAbortRebase()
     signal requestShortcuts()
 
     Menu {
@@ -39,7 +34,7 @@ MenuBar {
         Action {
             id: cloneRepository
             text: qsTr("&Clone")
-            enabled: root.controller.repository.can(CEnums.Clone)
+            enabled: root.repository.can(CEnums.Clone)
             onTriggered: root.requestCloneRepository()
         }
 
@@ -70,24 +65,24 @@ MenuBar {
             id: fetch
             text: qsTr("&Fetch")
             shortcut: "Ctrl+F"
-            enabled: root.controller.repository.can(CEnums.Fetch)
-            onTriggered: root.controller.repository.fetch()
+            enabled: root.repository.can(CEnums.Fetch)
+            onTriggered: repositoryView.requestFetch()
         }
 
         Action {
             id: pull
             text: qsTr("&Pull")
             shortcut: "Ctrl+L"
-            enabled: root.controller.repository.can(CEnums.Pull)
-            onTriggered: root.controller.repository.pull()
+            enabled: root.repository.can(CEnums.Pull)
+            onTriggered: repositoryView.requestPull()
         }
 
         Action {
             id: push
             text: qsTr("Pus&h")
             shortcut: "Ctrl+P"
-            enabled: root.controller.repository.can(CEnums.Push)
-            onTriggered: root.controller.repository.push()
+            enabled: root.repository.can(CEnums.Push)
+            onTriggered: repositoryView.requestPush()
         }
     }
 
@@ -97,73 +92,73 @@ MenuBar {
         Action {
             text: qsTr("Stage a&ll")
             shortcut: "Ctrl+shift++"
-            onTriggered: root.controller.repository.stageAll()
+            onTriggered: repositoryView.requestStageAll()
         }
 
         Action {
             text: qsTr("Usta&ge all")
             shortcut: "Ctrl+shift+-"
-            onTriggered: root.controller.repository.unstageAll()
+            onTriggered: repositoryView.requestUnstageAll()
         }
 
         Action {
             text: qsTr("&Stage selection")
             shortcut: "Ctrl++"
-            onTriggered: root.requestStageSelection()
+            onTriggered: repositoryView.requestStageSelection()
         }
 
         Action {
             text: qsTr("&Unstage selection")
             shortcut: "Ctrl+-"
-            onTriggered: root.requestUnstageSelection()
+            onTriggered: repositoryView.requestUnstageSelection()
         }
 
         Action {
             text: qsTr("&Revert selection")
             shortcut: "Ctrl+Z"
-            onTriggered: root.requestRevertSelection()
+            onTriggered: repositoryView.requestRevertSelection()
         }
 
         Action {
             text: qsTr("Save stash")
-            enabled: root.controller.repository.can(CEnums.Stash)
-            onTriggered: root.controller.repository.stashSave()
+            enabled: root.repository.can(CEnums.Stash)
+            onTriggered: repositoryView.requestStashSave()
         }
 
         Action {
             text: qsTr("Pop stash")
-            enabled: root.controller.repository.can(CEnums.Stash)
-            onTriggered: root.controller.repository.stashPop()
+            enabled: root.repository.can(CEnums.Stash)
+            onTriggered: repositoryView.requestStashPop()
         }
 
         Action {
             id: commit
             text: qsTr("&Commit")
             shortcut: "Ctrl+C"
-            enabled: root.controller.repository.can(CEnums.Commit) && root.controller.repository.hasCommitableFiles
-            onTriggered: root.requestCommit()
+            enabled: root.repository.can(CEnums.Commit) && root.repository.hasCommitableFiles
+            onTriggered: repositoryView.requestCommit()
         }
 
         Action {
             id: amend
             text: qsTr("&Amend")
             shortcut: "Ctrl+A"
-            enabled: root.controller.repository.can(CEnums.Amend) && root.controller.repository.hasCommitableFiles
-            onTriggered: root.requestAmend()
+            enabled: root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles
+            onTriggered: repositoryView.requestAmend()
         }
 
         Action {
             text: qsTr("C&ontinue rebase")
             shortcut: "Ctrl+R"
-            enabled: root.rebaseInProgress && root.controller.repository.can(CEnums.ContinueRebase)
-            onTriggered: root.requestContinueRebase()
+            enabled: root.rebaseInProgress && root.repository.can(CEnums.ContinueRebase)
+            onTriggered: repositoryView.requestContinueRebase()
         }
 
         Action {
             text: qsTr("Abor&t rebase")
             shortcut: "Ctrl+T"
-            enabled: root.rebaseInProgress && root.controller.repository.can(CEnums.AbortRebase)
-            onTriggered: root.requestAbortRebase()
+            enabled: root.rebaseInProgress && root.repository.can(CEnums.AbortRebase)
+            onTriggered: repositoryView.requestAbortRebase()
         }
     }
 
@@ -173,7 +168,7 @@ MenuBar {
         Action {
             text: qsTr("&Refresh")
             shortcut: "F5"
-            onTriggered: root.controller.repository.refresh()
+            onTriggered: repositoryView.requestRefresh()
         }
 
         MenuItem {

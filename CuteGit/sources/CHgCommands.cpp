@@ -7,6 +7,20 @@
 // Application
 #include "CHgCommands.h"
 
+/*!
+    \class CHgCommands
+    \inmodule CuteGit
+    \section1 General
+    This is the repository control interface for Mercurial.
+
+    /  \.-"""-./  \
+    \    -   -    /
+     |   o   o   |
+     \  .-'''-.  /
+      '-\__Y__/-'
+         `---`
+*/
+
 //-------------------------------------------------------------------------------------------------
 // Command strings
 

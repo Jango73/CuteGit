@@ -7,7 +7,7 @@ Menu {
     id: root
     title: ""
 
-    property variant controller: null
+    property variant repository: null
     property string commitId: ""
     property string commitMessage: ""
 
@@ -31,7 +31,7 @@ Menu {
 
     Action {
         text: qsTr("&Branch from")
-        enabled: root.controller.repository.can(CEnums.BranchFromCommit)
+        enabled: root.repository.can(CEnums.BranchFromCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -42,7 +42,7 @@ Menu {
 
     Action {
         text: qsTr("Reset &to")
-        enabled: root.controller.repository.can(CEnums.ResetToCommit)
+        enabled: root.repository.can(CEnums.ResetToCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -53,7 +53,7 @@ Menu {
 
     Action {
         text: qsTr("&Rebase")
-        enabled: root.controller.repository.can(CEnums.RebaseOnCommit)
+        enabled: root.repository.can(CEnums.RebaseOnCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -64,7 +64,7 @@ Menu {
 
     Action {
         text: qsTr("&Squash")
-        enabled: root.controller.repository.can(CEnums.SquashCommit)
+        enabled: root.repository.can(CEnums.SquashCommit)
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -75,7 +75,7 @@ Menu {
 
     Action {
         text: qsTr("&Change message")
-        enabled: root.controller.repository.can(CEnums.ChangeCommitMessage)
+        enabled: root.repository.can(CEnums.ChangeCommitMessage)
 
         onTriggered: {
             if (root.commitId !== "") {

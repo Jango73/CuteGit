@@ -13,6 +13,9 @@
 /*!
     \class CController
     \inmodule CuteGit
+    \section1 General
+    This is the high level controller of the application.
+    It also servers as the interface between UI and business logic.
     \section1 The workflow of Git interactive rebase
     * CuteGit-1-A runs (1 is first instance, A is main thread)
     * CuteGit-1-A calls CCommands::exec with "git rebase --interactive" and "GIT_SEQUENCE_EDITOR=<path-to-cutegit>"
@@ -33,16 +36,21 @@
     * Git quits
     * CuteGit-1-B returns
 
-    (\../)
-    ( *.*)
-    (")_(")
+    \code
+                      /)-._
+                     Y. ' _]
+              ,.._   |`--"=
+             /    "-/   \
+    /)  sk  |   |_     `\|___
+    \:::::::\___/_\__\_______\
+    \endcode
 */
 
 //-------------------------------------------------------------------------------------------------
 
 const QString sParamConfiguration = "Configuration";
-const QString sParamCurrentRepository = "CurrentRepository";
-const QString sParamRepositories = "Repositories";
+const QString sParamOpenRepositories = "OpenRepositories";
+const QString sParamKnownRepositories = "KnownRepositories";
 const QString sParamRepository = "Repository";
 const QString sParamPath = "Path";
 const QString sParamHistory = "History";
@@ -55,9 +63,10 @@ const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 
 CController::CController(QObject* parent)
     : QObject(parent)
-    , m_pRepositoryModel(new QStringListModel(this))
-    , m_pCommandOutputModel(new QStringListModel(this))
-    , m_pRepository(new CRepository("", this, this))
+    , m_pKnownRepositoryModel(new QStringListModel(this))
+    , m_pOpenRepositoryModel(new CRepositoryModel(this))
+    , m_pCurrentRepository(nullptr)
+    , m_iCurrentRepositoryIndex(-1)
     , m_bShowClean(false)
     , m_bShowAdded(true)
     , m_bShowModified(true)
@@ -86,9 +95,10 @@ CController::CController(QObject* parent)
 
 CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
-    , m_pRepositoryModel(nullptr)
-    , m_pCommandOutputModel(nullptr)
-    , m_pRepository(nullptr)
+    , m_pKnownRepositoryModel(nullptr)
+    , m_pOpenRepositoryModel(nullptr)
+    , m_pCurrentRepository(nullptr)
+    , m_iCurrentRepositoryIndex(-1)
     , m_bShowClean(false)
     , m_bShowAdded(true)
     , m_bShowModified(true)
@@ -129,17 +139,33 @@ CController::~CController()
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::setCurrentRepositoryIndex(int iValue)
+{
+    if (m_iCurrentRepositoryIndex != iValue)
+    {
+        m_iCurrentRepositoryIndex = iValue;
+        emit currentRepositoryIndexChanged();
+
+        if (m_iCurrentRepositoryIndex != -1 && m_pOpenRepositoryModel->rowCount() > 0)
+        {
+            CRepository* pRepository = m_pOpenRepositoryModel->repositories()[m_iCurrentRepositoryIndex];
+
+            if (pRepository != nullptr)
+                setCurrentRepository(pRepository);
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::setShowClean(bool bValue)
 {
     if (m_bShowClean != bValue)
     {
         m_bShowClean = bValue;
-        if (m_pRepository != nullptr)
-        {
-            m_pRepository->treeFileModelProxy()->filterChanged();
-            m_pRepository->flatFileModelProxy()->filterChanged();
-        }
         emit showCleanChanged();
+
+        m_pOpenRepositoryModel->fileFiltersChanged();
     }
 }
 
@@ -150,12 +176,9 @@ void CController::setShowAdded(bool bValue)
     if (m_bShowAdded != bValue)
     {
         m_bShowAdded = bValue;
-        if (m_pRepository != nullptr)
-        {
-            m_pRepository->treeFileModelProxy()->filterChanged();
-            m_pRepository->flatFileModelProxy()->filterChanged();
-        }
         emit showAddedChanged();
+
+        m_pOpenRepositoryModel->fileFiltersChanged();
     }
 }
 
@@ -166,12 +189,9 @@ void CController::setShowModified(bool bValue)
     if (m_bShowModified != bValue)
     {
         m_bShowModified = bValue;
-        if (m_pRepository != nullptr)
-        {
-            m_pRepository->treeFileModelProxy()->filterChanged();
-            m_pRepository->flatFileModelProxy()->filterChanged();
-        }
         emit showModifiedChanged();
+
+        m_pOpenRepositoryModel->fileFiltersChanged();
     }
 }
 
@@ -182,12 +202,9 @@ void CController::setShowDeleted(bool bValue)
     if (m_bShowDeleted != bValue)
     {
         m_bShowDeleted = bValue;
-        if (m_pRepository != nullptr)
-        {
-            m_pRepository->treeFileModelProxy()->filterChanged();
-            m_pRepository->flatFileModelProxy()->filterChanged();
-        }
         emit showDeletedChanged();
+
+        m_pOpenRepositoryModel->fileFiltersChanged();
     }
 }
 
@@ -198,88 +215,9 @@ void CController::setShowUntracked(bool bValue)
     if (m_bShowUntracked != bValue)
     {
         m_bShowUntracked = bValue;
-        if (m_pRepository != nullptr)
-        {
-            m_pRepository->treeFileModelProxy()->filterChanged();
-            m_pRepository->flatFileModelProxy()->filterChanged();
-        }
         emit showUntrackedChanged();
-    }
-}
 
-//-------------------------------------------------------------------------------------------------
-
-void CController::setRepositoryPath(QString sPath)
-{
-    if (sPath.startsWith("file:"))
-        sPath = QUrl(sPath).toLocalFile();
-
-    if (m_pRepository != nullptr && sPath == m_pRepository->repositoryPath())
-        return;
-
-    if (sPath.isEmpty())
-    {
-        // Delete the current repository item
-        if (m_pRepository != nullptr)
-        {
-            delete m_pRepository;
-            m_pRepository = nullptr;
-        }
-
-        // Clear command output
-        clearOutput();
-
-        emit repositoryChanged();
-        emit repositoryPathChanged();
-
-        onNewOutput(tr("No repository set."));
-    }
-    else
-    {
-        if (QDir(sPath).exists())
-        {
-            CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromFolder(sPath);
-
-            // If specified directory is a repository
-            if (eType != CEnums::UnknownRepositoryType)
-            {
-                // Delete the current repository item
-                if (m_pRepository != nullptr)
-                    delete m_pRepository;
-
-                // Create a new repository item
-                m_pRepository = new CRepository(sPath, this, this);
-
-                // Clear command output
-                clearOutput();
-
-                connect(m_pRepository, &CRepository::newOutput, this, &CController::onNewOutput);
-
-                emit repositoryChanged();
-                emit repositoryPathChanged();
-
-                // Add this path to repository model
-                QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
-                if (lRepositoryPaths.contains(sPath) == false)
-                    lRepositoryPaths << sPath;
-                m_pRepositoryModel->setStringList(lRepositoryPaths);
-
-                onNewOutput(QString(tr("Now working on %1.")).arg(sPath));
-            }
-            else
-            {
-                onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
-            }
-        }
-        else
-        {
-            // Clears this path from repository model
-            QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
-            lRepositoryPaths.removeAll(sPath);
-            m_pRepositoryModel->setStringList(lRepositoryPaths);
-
-            onNewOutput(QString(tr("%1 does not exist. Ignoring.")).arg(sPath));
-        }
+        m_pOpenRepositoryModel->fileFiltersChanged();
     }
 }
 
@@ -305,17 +243,6 @@ void CController::setSequenceFileName(const QString& sSequenceFileName)
         strcpy(pData->sSequenceFileName, sSequenceFileName.toUtf8().constData());
         m_tShared.unlock();
     }
-}
-
-
-//-------------------------------------------------------------------------------------------------
-
-QString CController::repositoryPath() const
-{
-    if (m_pRepository != nullptr)
-        return m_pRepository->repositoryPath();
-
-    return "";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -362,25 +289,26 @@ void CController::saveConfiguration()
     xHistory.attributes()[sParamLastBrowsedRepositoryPath] = m_sLastBrowsedRepositoryPath;
     xConfig << xHistory;
 
-    // Save current repository
-    CXMLNode xCurrentRepository(sParamCurrentRepository);
-    xCurrentRepository.attributes()[sParamPath] = repository()->repositoryPath();
-    xConfig << xCurrentRepository;
-
     // Save known repository list
-    CXMLNode xRepositories(sParamRepositories);
-
-    // Add repository to model
-    QStringList lRepositoryPaths = m_pRepositoryModel->stringList();
-
-    for (QString sPath : lRepositoryPaths)
+    CXMLNode xKnownRepositories(sParamKnownRepositories);
+    QStringList lKnownRepositoryPaths = m_pKnownRepositoryModel->stringList();
+    for (QString sPath : lKnownRepositoryPaths)
     {
         CXMLNode xRepository(sParamRepository);
         xRepository.attributes()[sParamPath] = sPath;
-        xRepositories << xRepository;
+        xKnownRepositories << xRepository;
     }
+    xConfig << xKnownRepositories;
 
-    xConfig << xRepositories;
+    // Save open repository list
+    CXMLNode xOpenRepositories(sParamOpenRepositories);
+    for (CRepository* pRepository : m_pOpenRepositoryModel->repositories())
+    {
+        CXMLNode xOpenRepository(sParamRepository);
+        xOpenRepository.attributes()[sParamPath] = pRepository->repositoryPath();
+        xOpenRepositories << xOpenRepository;
+    }
+    xConfig << xOpenRepositories;
 
     xConfig.saveXMLToFile(CONFIG_FILE_NAME);
 }
@@ -396,34 +324,24 @@ void CController::loadConfiguration()
     m_sLastBrowsedRepositoryURL = xHistory.attributes()[sParamLastBrowsedRepositoryURL];
     m_sLastBrowsedRepositoryPath = xHistory.attributes()[sParamLastBrowsedRepositoryPath];
 
-    // Load current repository
-    CXMLNode xCurrentRepository = xConfig.getNodeByTagName(sParamCurrentRepository);
-    QString sCurrentPath = xCurrentRepository.attributes()[sParamPath];
-
     // Load known repository list
-    CXMLNode xRepositories = xConfig.getNodeByTagName(sParamRepositories);
-    QVector<CXMLNode> xRepositoryList = xRepositories.getNodesByTagName(sParamRepository);
+    CXMLNode xKnownRepositories = xConfig.getNodeByTagName(sParamKnownRepositories);
+    QVector<CXMLNode> xKnownRepositoryList = xKnownRepositories.getNodesByTagName(sParamRepository);
 
-    QStringList lRepositoryPaths;
-
-    for (CXMLNode xRepository : xRepositoryList)
+    QStringList lKnownRepositoryPaths;
+    for (CXMLNode xRepository : xKnownRepositoryList)
     {
-        lRepositoryPaths << xRepository.attributes()[sParamPath];
+        lKnownRepositoryPaths << xRepository.attributes()[sParamPath];
     }
+    m_pKnownRepositoryModel->setStringList(lKnownRepositoryPaths);
 
-    m_pRepositoryModel->setStringList(lRepositoryPaths);
-
-    if (sCurrentPath.isEmpty() == false)
+    // Load open repositories
+    CXMLNode xOpenRepositories = xConfig.getNodeByTagName(sParamOpenRepositories);
+    QVector<CXMLNode> xOpenRepositoryList = xOpenRepositories.getNodesByTagName(sParamRepository);
+    for (CXMLNode xOpenRepository : xOpenRepositoryList)
     {
-        setRepositoryPath(sCurrentPath);
-    }
-    else if (lRepositoryPaths.count() > 0)
-    {
-        setRepositoryPath(lRepositoryPaths[0]);
-    }
-    else
-    {
-        setRepositoryPath("");
+        QString sPath = xOpenRepository.attributes()[sParamPath];
+        openRepository(sPath);
     }
 }
 
@@ -448,13 +366,6 @@ void CController::quit()
 
 //-------------------------------------------------------------------------------------------------
 
-void CController::clearOutput()
-{
-    m_pCommandOutputModel->setStringList(QStringList());
-}
-
-//-------------------------------------------------------------------------------------------------
-
 void CController::cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath)
 {
     CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromURL(sRepositoryURL);
@@ -467,46 +378,66 @@ void CController::cloneRepository(const QString& sRepositoryURL, const QString& 
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::openRepository(QString sRepositoryPath)
+{
+    if (sRepositoryPath.startsWith("file:"))
+        sRepositoryPath = QUrl(sRepositoryPath).toLocalFile();
+
+    if (m_pOpenRepositoryModel->hasRepository(sRepositoryPath))
+        return;
+
+    if (not sRepositoryPath.isEmpty())
+    {
+        if (QDir(sRepositoryPath).exists())
+        {
+            CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromFolder(sRepositoryPath);
+
+            // If specified directory is a repository
+            if (eType != CEnums::UnknownRepositoryType)
+            {
+                // Create a new repository item
+                CRepository* pRepository = new CRepository(sRepositoryPath, this, this);
+
+                m_pOpenRepositoryModel->addRepository(pRepository);
+
+                // Add this path to known repository model
+                QStringList lRepositoryPaths = m_pKnownRepositoryModel->stringList();
+                if (lRepositoryPaths.contains(sRepositoryPath) == false)
+                    lRepositoryPaths << sRepositoryPath;
+                m_pKnownRepositoryModel->setStringList(lRepositoryPaths);
+
+//                onNewOutput(QString(tr("Now working on %1.")).arg(sPath));
+            }
+            else
+            {
+//                onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
+            }
+        }
+        else
+        {
+            // Clears this path from known repository model
+            QStringList lKnownRepositoryPaths = m_pKnownRepositoryModel->stringList();
+            lKnownRepositoryPaths.removeAll(sRepositoryPath);
+            m_pKnownRepositoryModel->setStringList(lKnownRepositoryPaths);
+
+//            onNewOutput(QString(tr("%1 does not exist. Ignoring.")).arg(sPath));
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOutput)
 {
     Q_UNUSED(eCommand);
+    Q_UNUSED(sOutput);
 
     if (m_pCloneCommands != nullptr)
         delete m_pCloneCommands;
 
     m_pCloneCommands = nullptr;
 
-    onNewOutput(sOutput);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CController::onNewOutput(QString sOutput)
-{
-    QStringList lNewList = sOutput.split("\n");
-    QStringList lData = m_pCommandOutputModel->stringList();
-    bool bHasNewLine = false;
-
-    for (QString sLine : lNewList)
-    {
-        sLine = sLine.trimmed();
-
-        if (sLine.isEmpty() == false)
-        {
-            bHasNewLine = true;
-            lData << sLine;
-        }
-    }
-
-    if (bHasNewLine)
-    {
-        lData << "----------------------------------------------------------------------------------------------------";
-
-        while (lData.count() > 50)
-            lData.removeFirst();
-
-        m_pCommandOutputModel->setStringList(lData);
-    }
+//    onNewOutput(sOutput);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -519,8 +450,8 @@ void CController::onSharedTimerTick()
         {
             QString sFileName = sequenceFileName();
 
-            if (m_pRepository != nullptr && m_pRepository->commands() != nullptr)
-                m_pRepository->commands()->editSequenceFile(sFileName);
+            if (m_pCurrentRepository != nullptr && m_pCurrentRepository->commands() != nullptr)
+                m_pCurrentRepository->commands()->editSequenceFile(sFileName);
 
             setSharedOperation(eSOMasterFinishedEdit);
         }

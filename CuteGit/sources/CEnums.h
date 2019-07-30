@@ -46,7 +46,7 @@ public:
         GIT,
         CVS,
         SVN,
-        HG,		// Mercurial
+        HG,     // Mercurial
     };
 
     // Status of a repository

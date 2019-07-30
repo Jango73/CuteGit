@@ -41,7 +41,7 @@ TitlePane {
                     MouseArea {
                         anchors.fill: selection
                         onDoubleClicked: {
-                            root.controller.repositoryPath = display
+                            root.controller.openRepository(display)
                         }
                     }
 
@@ -50,7 +50,7 @@ TitlePane {
                         targetWidth: text.width
                         targetHeight: text.height
                         anchors.centerIn: text
-                        visible: display === root.controller.repositoryPath
+                        visible: display === root.controller.currentRepository.repositoryPath
                     }
 
                     ElideText {
@@ -61,9 +61,6 @@ TitlePane {
                     }
 
                     function getDisplayName() {
-                        // var type = root.controller.repository.repositoryType
-                        // var repoString = type === CEnums.GIT ? "Git" : type === CEnums.SVN ? "SVN" : ""
-                        // return display.split("/").slice(-1)[0] + "(" + repoString + ")"
                         return display.split("/").slice(-1)[0]
                     }
                 }

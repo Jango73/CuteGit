@@ -1,24 +1,26 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import "../components"
+import "../views"
+import "../popups"
 
 Pane {
     id: root
     padding: Const.mainPadding
 
-    property variant controller: null
+    property variant repository: null
 
     StandardLabel {
         anchors.fill: parent
         text: Const.nothingToDisplayText
-        visible: root.controller === null | list.count === 0
+        visible: root.repository === null | logView.count === 0
     }
 
     LogView {
-        id: list
+        id: logView
         anchors.fill: parent
 
-        model: root.controller !== null ? root.controller.repository.fileLogModel : undefined
+        model: root.repository !== null ? root.repository.fileLogModel : undefined
 
         onItemRightClicked: {
             menu.commitId = commitId

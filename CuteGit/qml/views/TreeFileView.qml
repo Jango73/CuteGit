@@ -9,15 +9,15 @@ TreeView {
     id: root
     enabled: visible
 
-    property variant controller: null
+    property variant repository: null
     property bool mouseActive: true
 
-    model: root.controller !== null && root.controller.repository !== null
-           ? root.controller.repository.treeFileModelProxy
+    model: root.repository !== null
+           ? root.repository.treeFileModelProxy
            : undefined
 
-    rootIndex: root.controller !== null && root.controller.repository !== null
-               ? root.controller.repository.treeFileModelProxy.rootPathIndex
+    rootIndex: root.repository !== null
+               ? root.repository.treeFileModelProxy.rootPathIndex
                : undefined
 
     backgroundVisible: false
@@ -96,7 +96,7 @@ TreeView {
     Keys.onPressed: {
         if (event.key === Qt.Key_Space) {
             var currentFileFullName = model.fullNameForIndex(currentIndex)
-            root.controller.repository.toggleStaged(currentFileFullName)
+            root.repository.toggleStaged(currentFileFullName)
         }
     }
 

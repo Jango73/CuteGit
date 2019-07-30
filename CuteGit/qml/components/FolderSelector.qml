@@ -30,6 +30,7 @@ Item {
             id: folderName
             anchors.left: parent.left
             anchors.right: okButton.left
+            anchors.rightMargin: Const.mainPadding
         }
 
         StandardButton {

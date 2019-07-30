@@ -41,6 +41,7 @@ public:
     Q_FAST_PROPERTY(CEnums::ERepositoryType, e, repositoryType, RepositoryType)
     Q_FAST_PROPERTY(CEnums::ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
+    Q_FAST_PROPERTY(QString, s, repositoryName, RepositoryName)
     Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
     Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
@@ -52,9 +53,9 @@ public:
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
     Q_FAST_PROPERTY(CGraphModel*, p, graphModel, GraphModel)
+    Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
-
     Q_FAST_PROPERTY(bool, b, hasCommitableFiles, HasCommitableFiles)
 
 public:
@@ -87,19 +88,22 @@ public:
     // Invokable control methods
     //-------------------------------------------------------------------------------------------------
 
+    //! Clears the list of output lines
+    Q_INVOKABLE void clearOutput();
+
     //!
     Q_INVOKABLE bool can(CEnums::ECapability eWhat);
 
-    //!
-    Q_INVOKABLE void checkAllFileStatus(QString sPath = "");
-
-    //!
+    //! Checks the status of the repo at sPath
     Q_INVOKABLE void checkRepositoryStatus(QString sPath = "");
+
+    //! Creates a list of CRepoFile from the repo at sPath
+    Q_INVOKABLE void checkAllFileStatus(QString sPath = "");
 
     //!
     Q_INVOKABLE void refresh();
 
-    //!
+    //! Toggles the 'staged' flag of a file
     Q_INVOKABLE void toggleStaged(QString sFullName);
 
     //!
@@ -108,55 +112,55 @@ public:
     //!
     Q_INVOKABLE void unstageSelection(QStringList lFileFullNames);
 
-    //!
+    //! Stages all modified files
     Q_INVOKABLE void stageAll();
 
-    //!
+    //! Unstages all staged files
     Q_INVOKABLE void unstageAll();
 
-    //!
+    //! Does a revert on all selected files
     Q_INVOKABLE void revertSelection(QStringList lFileFullNames);
 
-    //!
+    //! Commits (or amends) all staged files
     Q_INVOKABLE void commit(const QString& sMessage, bool bAmend);
 
-    //!
+    //! Continues any ongoing rebase
     Q_INVOKABLE void continueRebase();
 
-    //!
+    //! Aborts any ongoing rebase
     Q_INVOKABLE void abortRebase();
 
-    //!
+    //! Pushes local work to remote
     Q_INVOKABLE void push();
 
-    //!
+    //! Pulls remote commits
     Q_INVOKABLE void pull();
 
     //!
     Q_INVOKABLE void fetch();
 
-    //!
+    //! Saves stash
     Q_INVOKABLE void stashSave();
 
-    //!
+    //! Pops stash
     Q_INVOKABLE void stashPop();
 
-    //!
+    //! Resets current branch to a commit
     Q_INVOKABLE void commitReset(const QString& sCommitId);
 
-    //!
+    //! Rebases current branch on a commit
     Q_INVOKABLE void commitRebase(const QString& sCommitId);
 
-    //!
+    //! Squashes a commit
     Q_INVOKABLE void commitSquash(const QString& sCommitId);
 
-    //!
+    //! Branches from a commit
     Q_INVOKABLE void commitBranchFrom(const QString& sCommitId, const QString& sBranchName);
 
-    //!
+    //! Changes the message of a commit
     Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
 
-    //!
+    //! Deletes a branch
     Q_INVOKABLE void deleteBranch(const QString& sName);
 
     //-------------------------------------------------------------------------------------------------
@@ -195,15 +199,6 @@ protected:
 
     //!
     void getBranchLog(QString sPath = "");
-
-    //-------------------------------------------------------------------------------------------------
-    // Signals
-    //-------------------------------------------------------------------------------------------------
-
-signals:
-
-    //!
-    void newOutput(QString sOutput);
 
     //-------------------------------------------------------------------------------------------------
     // Slots

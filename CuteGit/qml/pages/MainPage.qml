@@ -1,13 +1,14 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4 as QC14
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtQuick.Dialogs 1.2
-import QtQml.Models 2.2
 import Qt.labs.platform 1.1 as QLP
-import Qt.labs.folderlistmodel 2.1
 import CuteGit 1.0
 import "../components"
+import "../views"
+import "../popups"
 
 Item {
     id: root
@@ -21,42 +22,15 @@ Item {
         anchors.top: parent.top
 
         controller: root.controller
+        repository: root.controller.currentRepository
 
-        onRequestCloneRepository: clone.open()
-        onRequestOpenRepository: folderDialog.open()
-
-        onRequestStageSelection: {
-            root.controller.repository.stageSelection(fileView.getSelectedFiles())
-        }
-
-        onRequestUnstageSelection: {
-            root.controller.repository.unstageSelection(fileView.getSelectedFiles())
-        }
-
-        onRequestRevertSelection: {
-            root.controller.repository.revertSelection(fileView.getSelectedFiles())
-        }
-
-        onRequestCommit: {
-            commit.messageEnabled = true
-            commit.messageText = ""
-            commit.showFileList = true
-            commit.amend = false
-            commit.open()
-        }
-
-        onRequestAmend: {
-            commit.messageEnabled = false
-            commit.messageText = Const.amendingText
-            commit.showFileList = true
-            commit.amend = true
-            commit.open()
-        }
-
-        onRequestContinueRebase: root.controller.repository.continueRebase()
-        onRequestAbortRebase:  root.controller.repository.abortRebase()
-
+        onRequestCloneRepository: cloneDialog.open()
+        onRequestOpenRepository: openDialog.open()
         onRequestShortcuts: shortcuts.open()
+
+        Component.onCompleted: {
+            repositoryView = Qt.binding(function() { return container.getTab(container.index).item })
+        }
     }
 
     StandardToolBar {
@@ -79,205 +53,38 @@ Item {
         }
     }
 
-    Item {
+    QC14.TabView {
         id: container
         anchors.top: toolBar.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        style: StandardTabViewStyle { }
 
-        Item {
-            id: rightPart
-            anchors.top: parent.top
-            anchors.bottom: bottomPart.top
-            anchors.right: parent.right
-            width: parent.width * 0.15
+        Repeater {
+            model: root.controller.openRepositoryModel
 
-            RepoPane {
-                id: repositoryView
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: Const.paneMargins
-                height: parent.height * 0.5
+            QC14.Tab {
+                title: model.repository.repositoryName
 
-                controller: root.controller
-            }
-
-            BranchPane {
-                id: branchView
-                anchors.top: repositoryView.bottom
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-
-                controller: root.controller
-
-                onRequestDeleteBranch: {
-                    deleteBranchAction.branchName = name
-                    confirm.titleText = Const.deleteBranchText + " " + name
-                    confirm.messageText = Const.deleteBranchMessage
-                    confirm.action = deleteBranchAction
-                    confirm.open()
-                }
-
-                Action {
-                    id: deleteBranchAction
-                    property string branchName: ""
-                    onTriggered: root.controller.repository.deleteBranch(branchName)
+                RepositoryView {
+                    repository: model.repository
+                    filesAsTree: menu.filesAsTree
                 }
             }
         }
 
-        Pane {
-            id: repositoryStatus
-            padding: 2
-            anchors.margins: Const.paneMargins
-            anchors.left: parent.left
-            anchors.right: rightPart.left
-            anchors.top: parent.top
-            height: Const.elementHeight * 1.5
-
-            Material.elevation: Const.paneElevation
-
-            Rectangle {
-                anchors.fill: parent
-                color: root.controller.repository.repositoryStatus === CEnums.NoMerge
-                       ? Const.transparent
-                       : Material.accent
-            }
-
-            StandardText {
-                anchors.fill: parent
-                verticalAlignment: Text.AlignVCenter
-                color: root.controller.repository.repositoryStatus === CEnums.NoMerge
-                       ? Material.foreground
-                       : Material.background
-                text: {
-                    if (root.controller.repository.repositoryStatus === CEnums.InteractiveRebase)
-                        qsTr("Interactive rebase in progress...")
-                    else if (root.controller.repository.repositoryStatus === CEnums.Rebase)
-                        qsTr("Rebase in progress...")
-                    else if (root.controller.repository.repositoryStatus === CEnums.Merge)
-                        qsTr("Merge in progress...")
-                    else
-                        ""
-                }
-            }
+        onCountChanged: {
+            root.controller.currentRepositoryIndex = currentIndex
         }
 
-        Item {
-            id: centralPart
-            anchors.top: repositoryStatus.bottom
-            anchors.bottom: bottomPart.top
-            anchors.left: parent.left
-            anchors.right: rightPart.left
-
-            ItemSelectionModel {
-                id: fileSelection
-                model: root.controller.repository.treeFileModelProxy
-
-                onCurrentIndexChanged: {
-                    root.controller.repository.treeFileModelProxy.handleCurrentIndex(currentIndex)
-                }
-            }
-
-            FilePane {
-                id: fileView
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                width: parent.width * 0.5
-                anchors.margins: Const.paneMargins
-                filesAsTree: menu.filesAsTree
-
-                controller: root.controller
-                selection: fileSelection
-            }
-
-            ToolPane {
-                id: toolView
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: fileView.right
-                anchors.right: parent.right
-                anchors.margins: Const.paneMargins
-
-                Material.elevation: Const.paneElevation
-
-                controller: root.controller
-            }
+        onCurrentIndexChanged: {
+            root.controller.currentRepositoryIndex = currentIndex
         }
-
-        Item {
-            id: bottomPart
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            height: parent.height * 0.33
-
-            BranchLogPane {
-                id: logView
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                width: parent.width * 0.6
-
-                controller: root.controller
-
-                onRequestCommitDiffPrevious: {
-                    root.controller.repository.commitDiffPrevious(commitId)
-                }
-
-                onRequestCommitBranchFrom: {
-                    branchFrom.commitId = commitId
-                    branchFrom.open()
-                }
-
-                onRequestCommitReset: {
-                    root.controller.repository.commitReset(commitId)
-                }
-
-                onRequestCommitRebase: {
-                    root.controller.repository.commitRebase(commitId)
-                }
-
-                onRequestCommitSquash: {
-                    root.controller.repository.commitSquash(commitId)
-                }
-
-                onRequestCommitMessageChange: {
-                    commit.messageEnabled = true
-                    commit.messageText = commitMessage
-                    commit.showFileList = false
-                    commit.amend = false
-                    commit.commitId = commitId
-                    commit.open()
-                }
-            }
-
-            OutputPane {
-                id: outputView
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: logView.right
-                anchors.right: parent.right
-                anchors.margins: Const.paneMargins
-
-                controller: root.controller
-            }
-        }
-    }
-
-    ConfirmPopup {
-        id: confirm
-        width: root.width * Const.popupWidthSmall
-        height: root.height * Const.popupHeightSmall
-        anchors.centerIn: parent
     }
 
     ClonePopup {
-        id: clone
+        id: cloneDialog
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightSmall
         anchors.centerIn: parent
@@ -285,22 +92,12 @@ Item {
         controller: root.controller
     }
 
-    CommitPopup {
-        id: commit
-        width: root.width * Const.popupWidthNorm
-        height: root.height * Const.popupHeightNorm
-        anchors.centerIn: parent
+    QLP.FolderDialog {
+        id: openDialog
 
-        controller: root.controller
-    }
-
-    BranchFromPopup {
-        id: branchFrom
-        width: root.width * Const.popupWidthSmall
-        height: root.height * Const.popupHeightSmall
-        anchors.centerIn: parent
-
-        controller: root.controller
+        onAccepted: {
+            root.controller.openRepository(folder)
+        }
     }
 
     Popup {
@@ -315,14 +112,6 @@ Item {
         StandardText {
             anchors.fill: parent
             text: Const.shortcutsText
-        }
-    }
-
-    QLP.FolderDialog {
-        id: folderDialog
-
-        onAccepted: {
-            root.controller.repositoryPath = folder
         }
     }
 }

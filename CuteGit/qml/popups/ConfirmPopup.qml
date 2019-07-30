@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import CuteGit 1.0
 import "../components"
@@ -6,13 +7,10 @@ import "../components"
 StandardPopup {
     id: root
 
-    property variant controller: null
-    property string commitId: ""
-    property bool showFileList: true
-    property bool amend: false
+    property Action actionToTrigger: null
 
+    property alias titleText: title.text
     property alias messageText: message.text
-    property alias messageEnabled: message.enabled
 
     contentItem: Item {
         anchors.fill: parent
@@ -23,45 +21,22 @@ StandardPopup {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: Const.mainPadding
-
             horizontalAlignment: Text.AlignHCenter
-            text: root.showFileList ? root.amend ? qsTr("Amend") : qsTr("Commit") : qsTr("Change commit message")
         }
 
-        StandardTextEdit {
+        StandardText {
             id: message
             anchors.top: title.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: Const.mainPadding
-            height: parent.height * 0.3
-
-            placeHolderText: Const.enterMessageHereText
-            focus: true
-        }
-
-        TitlePane {
-            id: filePane
-            anchors.top: message.bottom
             anchors.bottom: buttons.top
             anchors.left: parent.left
             anchors.right: parent.right
-
-            title: Const.filesText
-
-            content: FlatFileView {
-                id: fileList
-                anchors.fill: parent
-                anchors.margins: Const.mainPadding
-                controller: root.controller
-                visible: root.showFileList
-                mouseActive: false
-            }
+            anchors.margins: Const.mainPadding
         }
 
         StandardToolBar {
             id: buttons
             width: parent.width
+            height: cancelButton.height + Const.mainPadding
             anchors.bottom: parent.bottom
 
             Row {
@@ -71,14 +46,10 @@ StandardPopup {
                     action: Action {
                         id: okButton
                         text: Const.okText
-                        enabled: message.text != "" || root.controller.repository.repositoryStatus !== CEnums.NoMerge
                         onTriggered: {
-                            root.close()
-
-                            if (root.showFileList) {
-                                root.controller.repository.commit(message.text, root.amend)
-                            } else {
-                                root.controller.repository.changeCommitMessage(commitId, message.text)
+                            if (root.actionToTrigger !== null) {
+                                root.close()
+                                root.actionToTrigger.trigger()
                             }
                         }
                     }

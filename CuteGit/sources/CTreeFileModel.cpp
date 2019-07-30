@@ -27,7 +27,6 @@ CTreeFileModel::CTreeFileModel(CRepository *pRepository, QObject* parent)
     , m_pRepository(pRepository)
     , m_pFileSystemWatcher(new QFileSystemWatcher(this))
 {
-    setRootPath(QDir::homePath());
     setResolveSymlinks(true);
 
     connect(this, &QFileSystemModel::rootPathChanged, this, &CTreeFileModel::onRootPathChanged);
@@ -164,4 +163,6 @@ void CTreeFileModel::onRootPathChanged(const QString& sNewPath)
 void CTreeFileModel::onFileChanged(const QString& path)
 {
     Q_UNUSED(path);
+
+    // Tell the repository to refresh
 }

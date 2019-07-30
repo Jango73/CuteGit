@@ -14,7 +14,7 @@ Popup {
 
     Material.elevation: Const.popupElevation
 
-    property variant controller: null
+    property variant repository: null
     property string commitId: ""
 
     Component.onCompleted: {
@@ -59,7 +59,7 @@ Popup {
 
                 onClicked: {
                     root.close()
-                    root.controller.repository.commitBranchFrom(root.commitId, name.text)
+                    root.repository.commitBranchFrom(root.commitId, name.text)
                 }
             }
 

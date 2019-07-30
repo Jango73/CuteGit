@@ -13,7 +13,7 @@
 //-------------------------------------------------------------------------------------------------
 
 /*!
-    \class CController
+    \class CRepository
     \inmodule CuteGit
     \section1 How this class works
     Whenever the user triggers a repository command from the UI:
@@ -23,6 +23,13 @@
     \li CCommands executes some process and emits a result.
     \li The result is caught in this class' slots, like onNewOutputString.
     \li The data is put into models which in turn notify the UI.
+
+        ___
+     __/_  `.  .-"""-.
+     \_,` | \-'  /   )`-')
+      "") `"`    \  ((`"`
+     ___Y  ,    .'7 /|
+    (_,___/...-` (_/_/ sk
 */
 
 //-------------------------------------------------------------------------------------------------
@@ -43,9 +50,12 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileLogModel(new CLogModel(this))
     , m_pGraphModel(new CGraphModel(this))
+    , m_pCommandOutputModel(new QStringListModel(this))
     , m_bHasCommitableFiles(false)
 {
     m_eRepositoryType = getRepositoryTypeFromFolder(sPath);
+
+    m_sRepositoryName = sPath.split("/").last();
 
     // Create the command interface
     m_pCommands = getCommandsForRepositoryType(m_eRepositoryType);
@@ -114,7 +124,17 @@ CRepoFile* CRepository::fileByFullName(const QString& sFullName) const
 
 QStringList CRepository::labelsForCommit(const QString& sCommitId) const
 {
-    return m_pBranchModel->labelsForCommit(sCommitId);
+    QStringList lReturnValue;
+    lReturnValue << m_pBranchModel->labelsForCommit(sCommitId);
+    lReturnValue << m_pTagModel->labelsForCommit(sCommitId);
+    return lReturnValue;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::clearOutput()
+{
+    m_pCommandOutputModel->setStringList(QStringList());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -126,22 +146,22 @@ bool CRepository::can(CEnums::ECapability eWhat)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::checkAllFileStatus(QString sPath)
-{
-    if (sPath.isEmpty())
-        sPath = m_sRepositoryPath;
-
-    m_pCommands->allFileStatus(sPath);
-}
-
-//-------------------------------------------------------------------------------------------------
-
 void CRepository::checkRepositoryStatus(QString sPath)
 {
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
     m_pCommands->repositoryStatus(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::checkAllFileStatus(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pCommands->allFileStatus(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -457,7 +477,30 @@ void CRepository::onCurrentFileFullName(QString sFileFullName)
 
 void CRepository::onNewOutput(QString sOutput)
 {
-    emit newOutput(sOutput);
+    QStringList lNewList = sOutput.split("\n");
+    QStringList lData = m_pCommandOutputModel->stringList();
+    bool bHasNewLine = false;
+
+    for (QString sLine : lNewList)
+    {
+        sLine = sLine.trimmed();
+
+        if (sLine.isEmpty() == false)
+        {
+            bHasNewLine = true;
+            lData << sLine;
+        }
+    }
+
+    if (bHasNewLine)
+    {
+        lData << "----------------------------------------------------------------------------------------------------";
+
+        while (lData.count() > 50)
+            lData.removeFirst();
+
+        m_pCommandOutputModel->setStringList(lData);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -594,6 +637,13 @@ void CRepository::onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QLi
     {
         m_pBranchModel->setBranchList(lNewBranches);
         getBranchHeadCommits();
+        break;
+    }
+
+    case CEnums::eTags:
+    {
+        m_pTagModel->setBranchList(lNewBranches);
+        getTagCommits();
         break;
     }
 

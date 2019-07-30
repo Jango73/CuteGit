@@ -8,6 +8,20 @@
 // Application
 #include "CGitCommands.h"
 
+/*!
+    \class CGitCommands
+    \inmodule CuteGit
+    \section1 General
+    This is the repository control interface for Git.
+
+    \code
+          |\      _,,,---,,_
+    ZZZzz /,`.-'`'    -.  ;-;;,_
+         |,4-  ) )-,_. ,\ (  `'-'
+        '---''(_/--'  `-'\_)  Felix Lee
+    \endcode
+*/
+
 //-------------------------------------------------------------------------------------------------
 // Constant numbers
 

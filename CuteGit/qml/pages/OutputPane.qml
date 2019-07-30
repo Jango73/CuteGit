@@ -7,7 +7,7 @@ import "../components"
 TitlePane {
     id: root
 
-    property variant controller: null
+    property variant repository: null
 
     title: Const.outputText
 
@@ -27,7 +27,7 @@ TitlePane {
                         id: clearButton
                         text: Const.clearText
                         onTriggered: {
-                            root.controller.clearOutput()
+                            root.repository.clearOutput()
                         }
                     }
                 }
@@ -40,7 +40,7 @@ TitlePane {
             anchors.left: parent.left
             anchors.right: parent.right
             autoScrollToEnd: true
-            model: root.controller.commandOutputModel
+            model: root.repository.commandOutputModel
         }
     }
 }

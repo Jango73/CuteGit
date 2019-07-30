@@ -20,6 +20,7 @@ HEADERS += \
     sources/CDiffModel.h \
     sources/CDiffLine.h \
     sources/CRepository.h \
+    sources/CRepositoryModel.h \
     sources/CController.h \
     sources/CuteGit.h \
 
@@ -39,6 +40,7 @@ SOURCES += \
     sources/CGraphModel.cpp \
     sources/CDiffModel.cpp \
     sources/CRepository.cpp \
+    sources/CRepositoryModel.cpp \
     sources/CController.cpp \
     sources/CuteGit.cpp \
     sources/main.cpp \

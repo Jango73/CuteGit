@@ -14,6 +14,21 @@
 #include "CTreeFileModelProxy.h"
 #include "CDiffLine.h"
 
+/*!
+    \class CuteGit
+    \inmodule CuteGit
+    \section1 General
+    This is the base class for all repository control interfaces.
+    It allows execution of a process in background.
+
+                .''
+      ._.-.___.' (`\
+     //(        ( `'
+    '/ )\ ).__. ) 
+    ' <' `\ ._/'\
+       `   \     \
+*/
+
 //-------------------------------------------------------------------------------------------------
 
 CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)

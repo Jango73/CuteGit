@@ -9,10 +9,19 @@ Menu {
 
     property variant controller: null
 
+    signal requestSwitchToBranch()
     signal requestDeleteBranch()
 
     Action {
-        text: qsTr("&Delete")
+        text: Const.switchToText
+
+        onTriggered: {
+            root.requestSwitchToBranch()
+        }
+    }
+
+    Action {
+        text: Const.deleteText
 
         onTriggered: {
             root.requestDeleteBranch()
