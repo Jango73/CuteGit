@@ -56,7 +56,7 @@ Item {
     property string repositoriesText: qsTr("Repositories")
     property string repositoryURLText: qsTr("Repository URL")
     property string cloneRepositoryText: qsTr("Clone repository")
-    property string nothingToDisplayText: qsTr("Nothing to display")
+    property string listEmptyText: qsTr("List empty")
     property string enterMessageHereText: qsTr("Enter your message here...")
     property string destinationFolderText: qsTr("Destination folder")
     property string enterBranchNameHereText: qsTr("Enter branch name here...")

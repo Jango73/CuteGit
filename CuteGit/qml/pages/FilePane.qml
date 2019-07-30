@@ -19,6 +19,12 @@ TitlePane {
     content: Item {
         anchors.fill: parent
 
+        StandardLabel {
+            anchors.fill: parent
+            text: Const.listEmptyText
+            visible: root.repository === null | listView.count === 0
+        }
+
         FlatFileView {
             id: listView
             anchors.fill: parent

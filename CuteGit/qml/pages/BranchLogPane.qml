@@ -26,7 +26,7 @@ TitlePane {
 
         StandardLabel {
             anchors.fill: parent
-            text: Const.nothingToDisplayText
+            text: Const.listEmptyText
             visible: root.repository === null | logView.count === 0
         }
 
