@@ -458,7 +458,7 @@ void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOu
 //    onNewOutput(sOutput);
 
     QMessageBox msgBox;
-    msgBox.setText(tr("Clone"));
+    msgBox.setText(tr("Clone / checkout"));
     msgBox.setInformativeText(sOutput);
     msgBox.exec();
 }

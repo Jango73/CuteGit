@@ -37,6 +37,18 @@ Item {
     property real popupHeightSmall: 0.25
 
     // Text
+    property string repositoryMenuText: qsTr("&Repository")
+    property string cloneMenuText: qsTr("&Clone / checkout")
+    property string openMenuText: qsTr("&Open")
+    property string removeMenuText: qsTr("&Remove")
+    property string knownMenuText: qsTr("&Known")
+    property string quitMenuText: qsTr("&Quit")
+
+    property string remoteMenuText: qsTr("Re&mote")
+    property string fetchMenuText: qsTr("&Fetch")
+    property string pullMenuText: qsTr("&Pull")
+    property string pushMenuText: qsTr("Pus&h")
+
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
     property string tagsText: qsTr("Tags")

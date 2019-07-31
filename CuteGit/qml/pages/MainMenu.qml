@@ -31,29 +31,29 @@ MenuBar {
 
     Menu {
         id: repositoryMenu
-        title: qsTr("&Repository")
+        title: Const.repositoryMenuText
 
         Action {
             id: cloneRepository
-            text: qsTr("&Clone")
+            text: Const.cloneMenuText
             enabled: root.repository.can(CEnums.Clone)
             onTriggered: root.requestCloneRepository()
         }
 
         Action {
             id: openRepository
-            text: qsTr("&Open")
+            text: Const.openMenuText
             shortcut: "Ctrl+O"
             onTriggered: root.requestOpenRepository()
         }
 
         Action {
-            text: qsTr("&Remove")
+            text: Const.removeMenuText
         }
 
         Menu {
             id: knownRepos
-            title: qsTr("Known")
+            title: Const.knownMenuText
 
             Instantiator {
                 model: root.controller.knownRepositoryModel
@@ -83,18 +83,18 @@ MenuBar {
         MenuSeparator { }
 
         Action {
-            text: qsTr("&Quit")
+            text: Const.quitMenuText
             shortcut: "Ctrl+Q"
             onTriggered: root.controller.quit()
         }
     }
 
     Menu {
-        title: qsTr("Re&mote")
+        title: Const.remoteMenuText
 
         Action {
             id: fetch
-            text: qsTr("&Fetch")
+            text: Const.fetchMenuText
             shortcut: "Ctrl+F"
             enabled: root.repository.can(CEnums.Fetch)
             onTriggered: repositoryView.requestFetch()
@@ -102,7 +102,7 @@ MenuBar {
 
         Action {
             id: pull
-            text: qsTr("&Pull")
+            text: Const.pullMenuText
             shortcut: "Ctrl+L"
             enabled: root.repository.can(CEnums.Pull)
             onTriggered: repositoryView.requestPull()
@@ -110,7 +110,7 @@ MenuBar {
 
         Action {
             id: push
-            text: qsTr("Pus&h")
+            text: Const.pushMenuText
             shortcut: "Ctrl+P"
             enabled: root.repository.can(CEnums.Push)
             onTriggered: repositoryView.requestPush()
