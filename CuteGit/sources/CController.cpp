@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QUrl>
+#include <QMessageBox>
 
 // Application
 #include "CController.h"
@@ -366,8 +367,11 @@ void CController::quit()
 
 //-------------------------------------------------------------------------------------------------
 
-void CController::cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath)
+void CController::cloneRepository(QString sRepositoryURL, QString sRepositoryPath)
 {
+    if (sRepositoryPath.startsWith("file:"))
+        sRepositoryPath = QUrl(sRepositoryPath).toLocalFile();
+
     CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromURL(sRepositoryURL);
 
     m_pCloneCommands = CRepository::getCommandsForRepositoryType(eType);
@@ -452,6 +456,11 @@ void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOu
     m_pCloneCommands = nullptr;
 
 //    onNewOutput(sOutput);
+
+    QMessageBox msgBox;
+    msgBox.setText(tr("Clone"));
+    msgBox.setInformativeText(sOutput);
+    msgBox.exec();
 }
 
 //-------------------------------------------------------------------------------------------------

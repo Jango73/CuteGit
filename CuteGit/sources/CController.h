@@ -114,7 +114,7 @@ public:
     Q_INVOKABLE void quit();
 
     //! Clones a repository
-    Q_INVOKABLE void cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath);
+    Q_INVOKABLE void cloneRepository(QString sRepositoryURL, QString sRepositoryPath);
 
     //! Opens a repository
     Q_INVOKABLE void openRepository(QString sRepositoryPath);
