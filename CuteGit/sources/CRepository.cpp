@@ -55,7 +55,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
 {
     m_eRepositoryType = getRepositoryTypeFromFolder(sPath);
 
-    m_sRepositoryName = sPath.split("/").last();
+    m_sRepositoryName = sPath.split(PATH_SEP).last();
 
     // Create the command interface
     m_pCommands = getCommandsForRepositoryType(m_eRepositoryType);

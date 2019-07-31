@@ -97,7 +97,7 @@ CRepoFile* CHgCommands::repoFileForLine(const QString &sPath, QString sLine)
     {
         QString sStatus = tRegExp.cap(1).trimmed();
         QString sRelativeName = tRegExp.cap(2).split("->").last().trimmed();
-        QString sFullName = sPath + "/" + sRelativeName;
+        QString sFullName = sPath + PATH_SEP + sRelativeName;
         QString sFileName = QFileInfo(sFullName).fileName();
         bool bStaged = false;
 

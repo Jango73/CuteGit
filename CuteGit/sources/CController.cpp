@@ -434,6 +434,13 @@ void CController::removeRepository(int iRepositoryIndex)
 
 //-------------------------------------------------------------------------------------------------
 
+QString CController::repositoryNameFromPath(const QString& sPath)
+{
+    return sPath.split(PATH_SEP).last();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOutput)
 {
     Q_UNUSED(eCommand);

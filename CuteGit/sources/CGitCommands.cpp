@@ -547,7 +547,7 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
         QString sStaged = tRegExp.cap(1).trimmed();
         QString sUnstaged = tRegExp.cap(2).trimmed();
         QString sRelativeName = tRegExp.cap(3).split("->").last().trimmed();
-        QString sFullName = sPath + "/" + sRelativeName;
+        QString sFullName = sPath + PATH_SEP + sRelativeName;
         QString sFileName = QFileInfo(sFullName).fileName();
         bool bStaged = false;
 

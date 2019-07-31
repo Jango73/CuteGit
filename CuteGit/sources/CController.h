@@ -122,6 +122,9 @@ public:
     //!
     Q_INVOKABLE void removeRepository(int iRepositoryIndex);
 
+    //!
+    Q_INVOKABLE QString repositoryNameFromPath(const QString& sPath);
+
     //-------------------------------------------------------------------------------------------------
     // Slots
     //-------------------------------------------------------------------------------------------------

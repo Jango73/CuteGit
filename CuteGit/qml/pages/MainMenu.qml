@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
+import QtQml 2.12
 import CuteGit 1.0
 import "../components"
 
@@ -15,7 +16,7 @@ MenuBar {
     property bool filesAsTree: false
 
     property bool rebaseInProgress: root.repository.repositoryStatus === CEnums.Rebase
-    || root.repository.repositoryStatus === CEnums.InteractiveRebase
+                                    || root.repository.repositoryStatus === CEnums.InteractiveRebase
 
     property alias cloneRepositoryAction: cloneRepository
     property alias openRepositoryAction: openRepository
@@ -29,6 +30,7 @@ MenuBar {
     signal requestShortcuts()
 
     Menu {
+        id: repositoryMenu
         title: qsTr("&Repository")
 
         Action {
@@ -47,6 +49,35 @@ MenuBar {
 
         Action {
             text: qsTr("&Remove")
+        }
+
+        Menu {
+            id: knownRepos
+            title: qsTr("Known")
+
+            Instantiator {
+                model: root.controller.knownRepositoryModel
+
+                MenuItem {
+                    text: root.controller.repositoryNameFromPath(model.display)
+
+                    onClicked: {
+                        // If calling root.controller.openRepository(model.display) here, menu does not close...
+                        // It must be missing some signal
+                        openRepositoryTimer.start()
+                    }
+
+                    Timer {
+                        id: openRepositoryTimer
+                        repeat: false
+                        interval: 500
+                        onTriggered: root.controller.openRepository(model.display)
+                    }
+                }
+
+                onObjectAdded: knownRepos.insertItem(index, object)
+                onObjectRemoved: knownRepos.removeItem(object)
+            }
         }
 
         MenuSeparator { }
