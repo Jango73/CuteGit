@@ -94,11 +94,20 @@ Item {
         anchors.right: rightPart.left
 
         ItemSelectionModel {
-            id: fileSelection
+            id: treeFileSelection
             model: root.repository.treeFileModelProxy
 
             onCurrentIndexChanged: {
                 root.repository.treeFileModelProxy.handleCurrentIndex(currentIndex)
+            }
+        }
+
+        ItemSelectionModel {
+            id: flatFileSelection
+            model: root.repository.flatFileModelProxy
+
+            onCurrentIndexChanged: {
+                root.repository.flatFileModelProxy.handleCurrentIndex(currentIndex)
             }
         }
 
@@ -112,7 +121,8 @@ Item {
             filesAsTree: root.filesAsTree
 
             repository: root.repository
-            selection: fileSelection
+            treeSelection: treeFileSelection
+            flatSelection: flatFileSelection
         }
 
         ToolPane {

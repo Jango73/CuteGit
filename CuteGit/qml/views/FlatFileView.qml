@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
+import QtQml.Models 2.2
 import CuteGit 1.0
 import "../components"
 
@@ -8,17 +9,21 @@ StandardListView {
     id: root
 
     property variant repository: null
+    property variant selection: null
     property bool mouseActive: true
 
     model: root.repository !== null ? root.repository.flatFileModelProxy : undefined
 
-    onCurrentIndexChanged: root.repository.flatFileModelProxy.handleCurrentIndex(currentModelIndex())
-
     delegate: Item {
+        id: dlg
         width: parent.width
         height: Const.treeElementHeight + Const.mainPadding * 0.25
 
         property string fullName: model.fullName
+        property bool selected: root.selection.hasSelection && root.selection.isSelected(dlg.modelIndex)
+        property var modelIndex: root.model.index(index, 0)
+        property var prevModelIndex: root.model.index(index - 1, 0)
+        property var nextModelIndex: root.model.index(index + 1, 0)
 
         MouseArea {
             anchors.fill: parent
@@ -26,6 +31,8 @@ StandardListView {
             enabled: root.mouseActive
             onClicked: {
                 root.currentIndex = index
+                root.selection.setCurrentIndex(dlg.modelIndex, ItemSelectionModel.Current)
+                root.selection.select(dlg.modelIndex, ItemSelectionModel.Toggle)
                 root.forceActiveFocus()
             }
         }
@@ -67,12 +74,12 @@ StandardListView {
                 targetHeight: listViewFileNameText.height
                 anchors.centerIn: listViewFileNameText
                 borderOnly: true
-                visible: index === root.currentIndex
+                visible: dlg.selected
+            }
 
-                FocusIndicator {
-                    anchors.fill: parent
-                    visible: root.activeFocus
-                }
+            FocusIndicator {
+                anchors.fill: parent
+                visible: root.activeFocus && index === root.currentIndex
             }
 
             ElideText {

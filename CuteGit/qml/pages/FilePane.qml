@@ -11,7 +11,8 @@ TitlePane {
     id: root
 
     property variant repository: null
-    property variant selection: null
+    property variant treeSelection: null
+    property variant flatSelection: null
     property bool filesAsTree: false
 
     title: Const.filesText
@@ -33,6 +34,7 @@ TitlePane {
             activeFocusOnTab: true
 
             repository: root.repository
+            selection: root.flatSelection
         }
 
         Item {
@@ -60,7 +62,7 @@ TitlePane {
                 visible: root.filesAsTree
 
                 repository: root.repository
-                selection: root.selection
+                selection: root.treeSelection
             }
         }
     }
@@ -68,8 +70,9 @@ TitlePane {
     function getSelectedFiles() {
         var files
         if (filesAsTree) {
-            files = treeView.model.selectionToFullNameList(selection.selectedIndexes)
+            files = treeView.model.selectionToFullNameList(treeSelection.selectedIndexes)
         } else {
+            files = listView.model.selectionToFullNameList(flatSelection.selectedIndexes)
         }
         return files
     }
