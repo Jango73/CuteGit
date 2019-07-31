@@ -68,7 +68,7 @@ StandardPopup {
             Row {
                 spacing: Const.mainPadding
 
-                ToolButton {
+                StandardToolButton {
                     action: Action {
                         id: okButton
                         text: Const.okText
@@ -85,7 +85,7 @@ StandardPopup {
                     }
                 }
 
-                ToolButton {
+                StandardToolButton {
                     action: Action {
                         id: cancelButton
                         text: Const.cancelText

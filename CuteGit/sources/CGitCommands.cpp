@@ -15,10 +15,12 @@
     This is the repository control interface for Git.
 
     \code
-          |\      _,,,---,,_
-    ZZZzz /,`.-'`'    -.  ;-;;,_
-         |,4-  ) )-,_. ,\ (  `'-'
-        '---''(_/--'  `-'\_)  Felix Lee
+
+     _._     _,-'""`-._
+    (,-.`._,'(       |\`-/|
+        `-.-' \ )-`( , o o)
+              `-    \`_`"'-
+
     \endcode
 */
 
@@ -121,7 +123,15 @@ bool CGitCommands::can(CEnums::ECapability eWhat) const
 void CGitCommands::cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath)
 {
     QString sCommand = QString(sCommandClone).arg(sRepositoryURL);
-    exec(new CProcessCommand(CEnums::eCloneRepository, sRepositoryPath, sCommand));
+    exec(new CProcessCommand(
+             CEnums::eCloneRepository,
+             sRepositoryPath,
+             sCommand,
+             false,
+             QMap<QString, QString>(),
+             "",
+             CEnums::eCloneRepositoryFinished)
+         );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -452,7 +462,7 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
         file.close();
 
         // Get a list of lines
-        QStringList sLines = sInputText.split("\n");
+        QStringList sLines = sInputText.split(NEW_LINE);
 
         switch (m_eRebaseStep)
         {
@@ -507,7 +517,7 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
 
         case eRSChangeCommitEditMessage:
         {
-            lOutputLines = m_sCommitMessage.split("\n");
+            lOutputLines = m_sCommitMessage.split(NEW_LINE);
             break;
         }
         }
@@ -518,7 +528,7 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
         for (QString sLine : lOutputLines)
         {
             sOutputText += sLine;
-            sOutputText += "\n";
+            sOutputText += NEW_LINE;
         }
 
         // Rewrite sequence file
@@ -537,8 +547,10 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
 {
     QRegExp tRegExp(sStatusRegExp);
 
-    if (sLine.isEmpty() == false && sLine.back() == '/')
+#ifdef HAVE_QSTRING_BACK
+    if (not sLine.isEmpty() && sLine.back() == '/')
         sLine.chop(1);
+#endif
 
     // TODO : Handle quoted file names
 
@@ -553,7 +565,7 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
 
         CEnums::ERepoFileStatus eStatus = CEnums::eClean;
 
-        if (sStaged.isEmpty() == false)
+        if (not sStaged.isEmpty())
         {
             bStaged = true;
 
@@ -574,7 +586,7 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
             }
         }
 
-        if (sUnstaged.isEmpty() == false)
+        if (not sUnstaged.isEmpty())
         {
             if (sUnstaged == sStatusAdded)
             {
@@ -627,12 +639,14 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     switch (eCommand)
     {
 
+    case CEnums::eNothing:
     case CEnums::eNotification:
     case CEnums::eCurrentBranch:
     case CEnums::eRepositoryStatus:
         break;
 
     case CEnums::eCloneRepository:
+    case CEnums::eCloneRepositoryFinished:
     case CEnums::eStageFile:
     case CEnums::eStageAll:
     case CEnums::eRevertFile:
@@ -671,8 +685,8 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         // Create CDiffLines with the returned string of the process
 
         QList<CDiffLine*> lReturnValue;
-        QStringList lLines = sValue.split("\n");
-        bool bAtLeastOneLineNotEmpty = false;
+        QStringList lLines = sValue.split(NEW_LINE);
+        bool bAtLeastOneLineOK = false;
 
         for (QString sLine : lLines)
         {
@@ -680,7 +694,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
             if (not sTrimmedLine.isEmpty())
             {
-                bAtLeastOneLineNotEmpty = true;
+                bAtLeastOneLineOK = true;
 
                 CDiffLine* pDiffLine = new CDiffLine();
                 pDiffLine->setText(sLine);
@@ -694,7 +708,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
             }
         }
 
-        if (bAtLeastOneLineNotEmpty == false)
+        if (not bAtLeastOneLineOK)
         {
             qDeleteAll(lReturnValue);
             lReturnValue.clear();
@@ -709,7 +723,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         // Create CBranchs with the returned string of the process
 
         QList<CBranch*> lReturnValue;
-        QStringList lLines = sValue.split("\n");
+        QStringList lLines = sValue.split(NEW_LINE);
 
         for (QString sLine : lLines)
         {
@@ -743,7 +757,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eTags:
     {
         QList<CBranch*> lReturnValue;
-        QStringList lLines = sValue.split("\n");
+        QStringList lLines = sValue.split(NEW_LINE);
 
         for (QString sLine : lLines)
         {
@@ -766,7 +780,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         // Create CRepoFiles with the returned string of the process
 
         QList<CRepoFile*> lReturnValue;
-        QStringList lStrings = sValue.split("\n");
+        QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
         {
@@ -786,7 +800,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         // Create CLogLines with the returned string of the process
 
         QList<CLogLine*> lReturnValue;
-        QStringList lStrings = sValue.split("\n");
+        QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
         {
@@ -814,7 +828,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         // Create CGraphLines with the returned string of the process
 
         QList<CGraphLine*> lReturnValue;
-        QStringList lStrings = sValue.split("\n");
+        QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
         {

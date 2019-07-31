@@ -5,7 +5,7 @@ import QtQuick.Controls 2.5
 Item {
     id: root
     anchors.margins: Const.paneMargins
-    implicitHeight: Const.elementHeight * 2
+    implicitHeight: title.height + theText.height
 
     property alias title: title.text
     property alias text: theText.text
@@ -15,13 +15,11 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: parent.height * 0.5
     }
 
     StandardTextField {
         id: theText
         anchors.top: title.bottom
-        anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
     }

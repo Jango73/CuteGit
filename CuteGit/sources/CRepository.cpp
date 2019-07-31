@@ -375,6 +375,9 @@ CEnums::ERepositoryType CRepository::getRepositoryTypeFromURL(const QString& sRe
     if (sRepositoryURL.contains(".git"))
         return CEnums::GIT;
 
+    if (sRepositoryURL.contains("gerrit"))
+        return CEnums::GIT;
+
     if (sRepositoryURL.contains("/svn"))
         return CEnums::SVN;
 
@@ -481,7 +484,7 @@ void CRepository::onCurrentFileFullName(QString sFileFullName)
 
 void CRepository::onNewOutput(QString sOutput)
 {
-    QStringList lNewList = sOutput.split("\n");
+    QStringList lNewList = sOutput.split(NEW_LINE);
     QStringList lData = m_pCommandOutputModel->stringList();
     bool bHasNewLine = false;
 
@@ -668,32 +671,32 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
 
     case CEnums::eAllFileStatus:
     {
-// TODO : Use a smart algorithm to update the model
+        // TODO : Use a smart algorithm to update the model
 
-//        QStringList changedFiles;
+        //        QStringList changedFiles;
 
-//        for (CRepoFile* pExistingFile : m_lRepoFiles)
-//        {
-//            CRepoFile* pNewFile = fileByFullName(lNewRepoFiles, pExistingFile->fullName());
+        //        for (CRepoFile* pExistingFile : m_lRepoFiles)
+        //        {
+        //            CRepoFile* pNewFile = fileByFullName(lNewRepoFiles, pExistingFile->fullName());
 
-//            if (pNewFile == nullptr)
-//            {
-//                changedFiles << pNewFile->fullName();
-//            }
-//        }
+        //            if (pNewFile == nullptr)
+        //            {
+        //                changedFiles << pNewFile->fullName();
+        //            }
+        //        }
 
-//        for (CRepoFile* pFile : lNewRepoFiles)
-//        {
-//            CRepoFile* pExistingFile = fileByFullName(m_lRepoFiles, pFile->fullName());
+        //        for (CRepoFile* pFile : lNewRepoFiles)
+        //        {
+        //            CRepoFile* pExistingFile = fileByFullName(m_lRepoFiles, pFile->fullName());
 
-//            if (pExistingFile != nullptr)
-//            {
-//                if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
-//                {
-//                    changedFiles << pExistingFile->fullName();
-//                }
-//            }
-//        }
+        //            if (pExistingFile != nullptr)
+        //            {
+        //                if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
+        //                {
+        //                    changedFiles << pExistingFile->fullName();
+        //                }
+        //            }
+        //        }
 
         qDeleteAll(m_lRepoFiles);
         m_lRepoFiles.clear();

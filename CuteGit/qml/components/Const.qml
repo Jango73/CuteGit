@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick 2.12
 import QtQuick.Controls.Material 2.12
+import QtQuick.Window 2.12
 
 Item {
     // Constants
@@ -8,10 +9,9 @@ Item {
 
     // Main font
     property string mainFontFamily: "Calibri"
-    property int mainFontSize: 16
+    property int mainFontSize: Screen.desktopAvailableHeight / 65
 
     // Colors
-    property color foregroundLighter: "gray"
     property color transparent: "transparent"
     property color fileStagedColor: "#80008000"
     property color fileModifiedColor: "#80800000"
@@ -80,6 +80,7 @@ Item {
 
     property string shortcutsText: qsTr(
                                        "Shortcuts\n" +
+                                       "\n" +
                                        "Open a repository\t\tControl + 'O'\n" +
                                        "Quit\t\t\tControl + 'Q'\n" +
                                        "\n" +
@@ -98,11 +99,25 @@ Item {
                                        "\n" +
                                        "Fetch\t\t\tControl + 'F'\n" +
                                        "Pull\t\t\tControl + 'L'\n" +
-                                       "Push\t\t\tControl + 'P'\n"
+                                       "Push\t\t\tControl + 'P'\n" +
+                                       "\n" +
+                                       "Copyright (c) 2019 Jango73\n" +
+                                       "Some icons are copyright Freepik from www.flaticon.com\n"
                                        )
 
     //
     property string statusModified: "*"
     property string statusAdded: "+"
     property string statusDeleted: "-"
+
+    // Icons
+
+    // By Freepik from www.flaticon.com
+    property string cloneIcon: "qrc:/qml/images/copy-documents-option.svg"
+    property string openIcon: "qrc:/qml/images/open-folder-black-and-white-variant"
+    property string fetchIcon: "qrc:/qml/images/loop.svg"
+    property string commitIcon: "qrc:/qml/images/seal.svg"
+    property string amendIcon: "qrc:/qml/images/plus-sign.svg"
+    property string stageIcon: "qrc:/qml/images/plus-sign.svg"
+    property string exitIcon: "qrc:/qml/images/door-exit.svg"
 }

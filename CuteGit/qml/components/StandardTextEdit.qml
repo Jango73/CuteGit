@@ -38,6 +38,6 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         visible: text.text === ""
-        color: Const.foregroundLighter
+        color: Material.backgroundDimColor
     }
 }

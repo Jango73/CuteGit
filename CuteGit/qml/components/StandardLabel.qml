@@ -8,5 +8,5 @@ Label {
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignTop
     wrapMode: Text.WordWrap
-    color: Const.foregroundLighter
+    color: Material.backgroundDimColor
 }

@@ -22,7 +22,7 @@ TitlePane {
             Row {
                 spacing: Const.mainPadding
 
-                ToolButton {
+                StandardToolButton {
                     action: Action {
                         id: clearButton
                         text: Const.clearText

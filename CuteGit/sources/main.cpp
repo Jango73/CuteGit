@@ -1,6 +1,7 @@
 
 // Qt
 #include <QApplication>
+#include <QtSvg>
 
 // Application
 #include "CuteGit.h"

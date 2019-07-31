@@ -21,6 +21,7 @@
         <file>qml/components/StandardTextEdit.qml</file>
         <file>qml/components/StandardTextField.qml</file>
         <file>qml/components/StandardToolBar.qml</file>
+        <file>qml/components/StandardToolButton.qml</file>
         <file>qml/components/TitlePane.qml</file>
         <file>qml/components/TitleTextField.qml</file>
 
@@ -46,5 +47,16 @@
         <file>qml/popups/ClonePopup.qml</file>
         <file>qml/popups/CommitPopup.qml</file>
         <file>qml/popups/ConfirmPopup.qml</file>
-        </qresource>
+
+        <file>qml/images/check.svg</file>
+        <file>qml/images/copy-documents-option.svg</file>
+        <file>qml/images/delete.svg</file>
+        <file>qml/images/door-exit.svg</file>
+        <file>qml/images/garbage-container.svg</file>
+        <file>qml/images/loop.svg</file>
+        <file>qml/images/open-folder-black-and-white-variant.svg</file>
+        <file>qml/images/plus-sign.svg</file>
+        <file>qml/images/seal.svg</file>
+        <file>qml/images/tag.svg</file>
+    </qresource>
 </RCC>

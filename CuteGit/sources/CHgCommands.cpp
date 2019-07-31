@@ -13,18 +13,22 @@
     \section1 General
     This is the repository control interface for Mercurial.
 
+    \code
+
     /  \.-"""-./  \
     \    -   -    /
      |   o   o   |
      \  .-'''-.  /
       '-\__Y__/-'
          `---`
+
+    \endcode
 */
 
 //-------------------------------------------------------------------------------------------------
 // Command strings
 
-static const char* sCommandGraph  = "hg log -G";
+// static const char* sCommandGraph  = "hg log -G";
 static const char* sCommandStatus = "hg status --ignored --porcelain";
 
 //-------------------------------------------------------------------------------------------------
@@ -90,8 +94,10 @@ CRepoFile* CHgCommands::repoFileForLine(const QString &sPath, QString sLine)
 {
     QRegExp tRegExp(sStatusRegExp);
 
-    if (sLine.isEmpty() == false && sLine.back() == '/')
+#ifdef HAVE_QSTRING_BACK
+    if (not sLine.isEmpty() && sLine.back() == '/')
         sLine.chop(1);
+#endif
 
     if (tRegExp.indexIn(sLine) != -1)
     {
@@ -103,7 +109,7 @@ CRepoFile* CHgCommands::repoFileForLine(const QString &sPath, QString sLine)
 
         CEnums::ERepoFileStatus eStatus = CEnums::eClean;
 
-        if (sStatus.isEmpty() == false)
+        if (not sStatus.isEmpty())
         {
             if (sStatus == sStatusClean)
                 eStatus = CEnums::eClean;
@@ -154,7 +160,7 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
         // Create CRepoFiles with the returned string of the process
 
         QList<CRepoFile*> lReturnValue;
-        QStringList lStrings = sValue.split("\n");
+        QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
         {

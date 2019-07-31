@@ -24,8 +24,17 @@ class CProcessCommand : public QObject
 
 public:
 
-    CProcessCommand(CEnums::EProcessCommand eCommand, QString sWorkPath, QString sCommand, bool bAllowStack = false, QMap<QString, QString> mEnvironment = QMap<QString, QString>(), QString sUserData = "")
+    CProcessCommand(
+            CEnums::EProcessCommand eCommand,
+            QString sWorkPath,
+            QString sCommand,
+            bool bAllowStack = false,
+            QMap<QString, QString> mEnvironment = QMap<QString, QString>(),
+            QString sUserData = "",
+            CEnums::EProcessCommand eEndSignal = CEnums::eNothing
+            )
         : m_eCommand(eCommand)
+        , m_eEndSignal(eEndSignal)
         , m_bAllowStack(bAllowStack)
         , m_sWorkPath(sWorkPath)
         , m_sCommand(sCommand)
@@ -35,6 +44,7 @@ public:
     }
 
     CEnums::EProcessCommand m_eCommand;
+    CEnums::EProcessCommand m_eEndSignal;
     bool                    m_bAllowStack;
     QString                 m_sWorkPath;
     QString                 m_sCommand;
@@ -177,7 +187,18 @@ protected:
     void exec(CProcessCommand* pCommand);
 
     //!
-    QString execNow(QString m_sWorkPath, QString m_sCommand, QMap<QString, QString> m_mEnvironment = QMap<QString, QString>());
+    QString execNow(QString sWorkPath,
+                    QString sCommand,
+                    QMap<QString, QString> mEnvironment = QMap<QString, QString>()
+                    );
+
+    //!
+    QString execNowLiveFeed(
+            CEnums::EProcessCommand eCommand,
+            QString sWorkPath,
+            QString sCommand,
+            QMap<QString, QString> mEnvironment = QMap<QString, QString>()
+            );
 
     //-------------------------------------------------------------------------------------------------
     // Private control methods

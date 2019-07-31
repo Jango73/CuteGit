@@ -38,12 +38,14 @@
     * CuteGit-1-B returns
 
     \code
+
                       /)-._
                      Y. ' _]
               ,.._   |`--"=
              /    "-/   \
     /)  sk  |   |_     `\|___
     \:::::::\___/_\__\_______\
+
     \endcode
 */
 
@@ -64,6 +66,7 @@ const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 
 CController::CController(QObject* parent)
     : QObject(parent)
+    , m_pCloneOutputModel(new QStringListModel(this))
     , m_pKnownRepositoryModel(new QStringListModel(this))
     , m_pOpenRepositoryModel(new CRepositoryModel(this))
     , m_pCurrentRepository(nullptr)
@@ -96,6 +99,7 @@ CController::CController(QObject* parent)
 
 CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
+    , m_pCloneOutputModel(nullptr)
     , m_pKnownRepositoryModel(nullptr)
     , m_pOpenRepositoryModel(nullptr)
     , m_pCurrentRepository(nullptr)
@@ -132,7 +136,7 @@ CController::~CController()
     if (m_bMasterMode)
         saveConfiguration();
 
-    if (m_tShared.detach() == false)
+    if (not m_tShared.detach())
     {
         qWarning() << "Could not detach from shared memory segment";
     }
@@ -374,10 +378,15 @@ void CController::cloneRepository(QString sRepositoryURL, QString sRepositoryPat
 
     CEnums::ERepositoryType eType = CRepository::getRepositoryTypeFromURL(sRepositoryURL);
 
-    m_pCloneCommands = CRepository::getCommandsForRepositoryType(eType);
+    if (eType != CEnums::UnknownRepositoryType)
+    {
+        m_sCloneCommandsRepositoryPath = sRepositoryPath;
+        m_pCloneCommands = CRepository::getCommandsForRepositoryType(eType);
 
-    connect(m_pCloneCommands, &CCommands::newOutputString, this, &CController::onNewCloneOutput);
-    m_pCloneCommands->cloneRepository(sRepositoryURL, sRepositoryPath);
+        connect(m_pCloneCommands, &CCommands::newOutputString, this, &CController::onNewCloneOutput);
+
+        m_pCloneCommands->cloneRepository(sRepositoryURL, sRepositoryPath);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -406,15 +415,15 @@ void CController::openRepository(QString sRepositoryPath)
 
                 // Add this path to known repository model
                 QStringList lRepositoryPaths = m_pKnownRepositoryModel->stringList();
-                if (lRepositoryPaths.contains(sRepositoryPath) == false)
+                if (not lRepositoryPaths.contains(sRepositoryPath))
                     lRepositoryPaths << sRepositoryPath;
                 m_pKnownRepositoryModel->setStringList(lRepositoryPaths);
 
-//                onNewOutput(QString(tr("Now working on %1.")).arg(sPath));
+                setStatusText(QString(tr("%1 opened.")).arg(pRepository->repositoryName()));
             }
             else
             {
-//                onNewOutput(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sPath));
+                setStatusText(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sRepositoryPath));
             }
         }
         else
@@ -424,7 +433,7 @@ void CController::openRepository(QString sRepositoryPath)
             lKnownRepositoryPaths.removeAll(sRepositoryPath);
             m_pKnownRepositoryModel->setStringList(lKnownRepositoryPaths);
 
-//            onNewOutput(QString(tr("%1 does not exist. Ignoring.")).arg(sPath));
+            setStatusText(QString(tr("%1 does not exist. Ignoring.")).arg(sRepositoryPath));
         }
     }
 }
@@ -450,17 +459,31 @@ void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOu
     Q_UNUSED(eCommand);
     Q_UNUSED(sOutput);
 
-    if (m_pCloneCommands != nullptr)
-        delete m_pCloneCommands;
+    switch (eCommand)
+    {
+    default:
+    case CEnums::eCloneRepository:
+    {
+        setStatusText(sOutput.split(NEW_LINE).last());
+        break;
+    }
 
-    m_pCloneCommands = nullptr;
+    case CEnums::eCloneRepositoryFinished:
+    {
+        if (m_pCloneCommands != nullptr)
+            delete m_pCloneCommands;
 
-//    onNewOutput(sOutput);
+        m_pCloneCommands = nullptr;
 
-    QMessageBox msgBox;
-    msgBox.setText(tr("Clone / checkout"));
-    msgBox.setInformativeText(sOutput);
-    msgBox.exec();
+        // Open the cloned repository
+        if (true)
+        {
+            openRepository(m_sCloneCommandsRepositoryPath);
+        }
+
+        break;
+    }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -42,21 +42,44 @@ Item {
         Row {
             spacing: Const.mainPadding
 
-            ToolButton { action: menu.cloneRepositoryAction }
-            ToolButton { action: menu.openRepositoryAction }
+            StandardToolButton {
+                action: menu.cloneRepositoryAction
+                icon.source: Const.cloneIcon
+            }
+
+            StandardToolButton {
+                action: menu.openRepositoryAction
+                icon.source: Const.openIcon
+            }
+
             ToolSeparator {}
-            ToolButton { action: menu.pullAction }
-            ToolButton { action: menu.pushAction }
+
+            StandardToolButton {
+                action: menu.fetchAction
+                icon.source: Const.fetchIcon
+            }
+
+            StandardToolButton { action: menu.pullAction }
+            StandardToolButton { action: menu.pushAction }
+
             ToolSeparator {}
-            ToolButton { action: menu.commitAction }
-            ToolButton { action: menu.amendAction }
+
+            StandardToolButton {
+                action: menu.commitAction
+                icon.source: Const.commitIcon
+            }
+
+            StandardToolButton {
+                action: menu.amendAction
+                icon.source: Const.commitIcon
+            }
         }
     }
 
     QC15.TabView {
         id: container
         anchors.top: toolBar.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: statusBar.top
         anchors.left: parent.left
         anchors.right: parent.right
 
@@ -70,7 +93,7 @@ Item {
 
             onTriggered: {
                 root.controller.removeRepository(source.index)
-                // container.removeTab(source.index)
+                container.removeTab(source.index)
             }
         }
 
@@ -88,11 +111,26 @@ Item {
         }
 
         onCountChanged: {
+            currentIndex = count - 1
             root.controller.currentRepositoryIndex = currentIndex
         }
 
         onCurrentIndexChanged: {
             root.controller.currentRepositoryIndex = currentIndex
+        }
+    }
+
+    Item {
+        id: statusBar
+        anchors.bottom: parent.bottom
+        width: parent.width
+        height: Const.elementHeight
+
+        RowLayout {
+            anchors.fill: parent
+            StandardLabel {
+                text: root.controller.statusText
+            }
         }
     }
 

@@ -15,12 +15,14 @@
     It allows execution of a process in background.
 
     \code
+
         _.-._         ..-..         _.-._
        (_-.-_)       /|'.'|\       (_'.'_)
      mrf.\-/.        \)\-/(/        ,-.-.
      __/ /-. \__   __/ ' ' \__   __/'-'-'\__
     ( (___/___) ) ( (_/-._\_) ) ( (_/   \_) )
      '.Oo___oO.'   '.Oo___oO.'   '.Oo___oO.'
+
     \endcode
 */
 
@@ -60,7 +62,9 @@ void CCommands::run()
         bool bStackEmpty = true;
         CProcessCommand* pCommand = nullptr;
 
+        // Open a scope for the mutex locker
         {
+            // Lock access to the command stack
             QMutexLocker locker(&m_mMutex);
 
             if (m_lCommandStack.count() > 0)
@@ -73,9 +77,27 @@ void CCommands::run()
 
         if (pCommand != nullptr)
         {
-            QString sOutput = execNow(pCommand->m_sWorkPath, pCommand->m_sCommand, pCommand->m_mEnvironment);
+            if (pCommand->m_eEndSignal == CEnums::eNothing)
+            {
+                QString sOutput = execNow(
+                            pCommand->m_sWorkPath,
+                            pCommand->m_sCommand,
+                            pCommand->m_mEnvironment
+                            );
 
-            emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData);
+                emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData);
+            }
+            else
+            {
+                QString sOutput = execNowLiveFeed(
+                            pCommand->m_eCommand,
+                            pCommand->m_sWorkPath,
+                            pCommand->m_sCommand,
+                            pCommand->m_mEnvironment
+                            );
+
+                emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData);
+            }
 
             delete pCommand;
         }
@@ -88,11 +110,12 @@ void CCommands::run()
 
 void CCommands::exec(CProcessCommand* pCommand)
 {
+    // Lock access to the command stack
     QMutexLocker locker(&m_mMutex);
 
     // Leave only one command of a given type in the stack
     // if not allowed to stack the type
-    if (pCommand->m_bAllowStack == false)
+    if (not pCommand->m_bAllowStack)
     {
         for (int index = 0; index < m_lCommandStack.count(); index++)
         {
@@ -110,26 +133,67 @@ void CCommands::exec(CProcessCommand* pCommand)
 
 //-------------------------------------------------------------------------------------------------
 
-QString CCommands::execNow(QString m_sWorkPath, QString m_sCommand, QMap<QString, QString> m_mEnvironment)
+QString CCommands::execNow(QString sWorkPath, QString sCommand, QMap<QString, QString> mEnvironment)
 {
     QProcess process;
 
-    if (not m_sWorkPath.isEmpty())
-        process.setWorkingDirectory(m_sWorkPath);
+    if (not sWorkPath.isEmpty())
+        process.setWorkingDirectory(sWorkPath);
 
-    if (not m_mEnvironment.isEmpty())
+    if (not mEnvironment.isEmpty())
     {
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
-        for (QString sKey : m_mEnvironment.keys())
-            env.insert(sKey, m_mEnvironment[sKey]);
+        for (QString sKey : mEnvironment.keys())
+            env.insert(sKey, mEnvironment[sKey]);
 
         process.setProcessEnvironment(env);
     }
 
-    process.start(m_sCommand);
+    process.start(sCommand);
     process.waitForFinished();
 
+    QString sOutput = process.readAllStandardOutput();
+    sOutput += process.readAllStandardError();
+
+    return sOutput;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CCommands::execNowLiveFeed(CEnums::EProcessCommand eCommand, QString sWorkPath, QString sCommand, QMap<QString, QString> mEnvironment)
+{
+    QProcess process;
+
+    if (not sWorkPath.isEmpty())
+        process.setWorkingDirectory(sWorkPath);
+
+    if (not mEnvironment.isEmpty())
+    {
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+
+        for (QString sKey : mEnvironment.keys())
+            env.insert(sKey, mEnvironment[sKey]);
+
+        process.setProcessEnvironment(env);
+    }
+
+    process.start(sCommand);
+    msleep(1000);
+
+    while (process.state() == QProcess::Running)
+    {
+        QString sOutput = process.readAllStandardOutput();
+
+        if (not sOutput.isEmpty())
+        {
+            emit newOutputString(eCommand, sOutput);
+        }
+
+        msleep(20);
+    }
+
+    process.waitForFinished();
     QString sOutput = process.readAllStandardOutput();
     sOutput += process.readAllStandardError();
 

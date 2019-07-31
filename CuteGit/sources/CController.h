@@ -28,11 +28,13 @@ class CController : public QObject
 {
     Q_OBJECT
 
+    Q_FAST_PROPERTY(QStringListModel*, p, cloneOutputModel, CloneOutputModel)
     Q_FAST_PROPERTY(QStringListModel*, p, knownRepositoryModel, KnownRepositoryModel)
     Q_FAST_PROPERTY(CRepositoryModel*, p, openRepositoryModel, OpenRepositoryModel)
     Q_FAST_PROPERTY(CRepository*, p, currentRepository, CurrentRepository)
     Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryURL, LastBrowsedRepositoryURL)
     Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryPath, LastBrowsedRepositoryPath)
+    Q_FAST_PROPERTY(QString, s, statusText, StatusText)
 
     Q_FAST_PROPERTY_NO_SET_IMPL(int, i, currentRepositoryIndex, CurrentRepositoryIndex)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
@@ -146,6 +148,7 @@ protected:
     bool                    m_bMasterMode;
     QSharedMemory           m_tShared;
     QTimer                  m_tSharedTimer;
+    QString					m_sCloneCommandsRepositoryPath;
     CCommands*              m_pCloneCommands;
 
     static const QString    m_sSharedKey;

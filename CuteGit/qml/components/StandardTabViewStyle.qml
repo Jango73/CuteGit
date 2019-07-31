@@ -13,11 +13,19 @@ TabViewStyle {
     property bool canClose: false
     property int minSize: 80
 
-    tab: Rectangle {
-        color: styleData.selected ? Material.primary : Material.background
+    tab: Item {
         implicitWidth: root.canClose ? Math.max(text.width + Const.elementHeight + Const.mainPadding, root.minSize) : Math.max(text.width + Const.mainPadding, root.minSize)
         implicitHeight: Const.elementHeight
-        radius: Const.mainRadius
+        clip: true
+
+        Rectangle {
+            width: parent.width
+            height: parent.height + 10
+            color: styleData.selected ? Material.primary : Material.background
+            radius: Const.mainRadius
+            border.width: 1
+            border.color: Material.primary
+        }
 
         FocusIndicator {
             anchors.fill: parent

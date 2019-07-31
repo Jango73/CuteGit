@@ -3,10 +3,19 @@
 
 // Qt
 #include <QObject>
+#include <QtGlobal>
 
 //-------------------------------------------------------------------------------------------------
 
+// Character constants
 #define PATH_SEP    "/"
+#define NEW_LINE	"\n"
+
+// Qt features
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+#else
+#define HAVE_QSTRING_BACK
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -82,8 +91,10 @@ public:
     // Command identifiers
     enum EProcessCommand
     {
+        eNothing,
         eNotification,
         eCloneRepository,
+        eCloneRepositoryFinished,
         eAllFileStatus,
         eRepositoryStatus,
         eBranches,

@@ -20,6 +20,7 @@ MenuBar {
 
     property alias cloneRepositoryAction: cloneRepository
     property alias openRepositoryAction: openRepository
+    property alias fetchAction: fetch
     property alias pullAction: pull
     property alias pushAction: push
     property alias commitAction: commit
