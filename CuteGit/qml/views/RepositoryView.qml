@@ -155,6 +155,10 @@ Item {
 
             repository: root.repository
 
+            onRequestCopy: {
+                root.repository.copy(commitId)
+            }
+
             onRequestCommitDiffPrevious: {
                 root.repository.commitDiffPrevious(commitId)
             }

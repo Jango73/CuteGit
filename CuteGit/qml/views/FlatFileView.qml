@@ -11,8 +11,16 @@ StandardListView {
     property variant repository: null
     property variant selection: null
     property bool mouseActive: true
+    property variant modelIndices: ({})
 
-    model: root.repository !== null ? root.repository.flatFileModelProxy : undefined
+    model: root.repository !== null
+           ? root.repository.flatFileModelProxy
+           : undefined
+
+    onCurrentIndexChanged: {
+        if (root.selection !== null)
+            root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
+    }
 
     delegate: Item {
         id: dlg
@@ -20,20 +28,23 @@ StandardListView {
         height: Const.treeElementHeight + Const.mainPadding * 0.25
 
         property string fullName: model.fullName
-        property bool selected: root.selection.hasSelection && root.selection.isSelected(dlg.modelIndex)
-        property var modelIndex: root.model.index(index, 0)
-        property var prevModelIndex: root.model.index(index - 1, 0)
-        property var nextModelIndex: root.model.index(index + 1, 0)
+        property bool selected: root.selection !== null
+                                ? root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
+                                : false
+
+        Component.onCompleted: root.modelIndices[index] = root.model.index(index, 0)
+        onFullNameChanged: root.modelIndices[index] = root.model.index(index, 0)
 
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
             enabled: root.mouseActive
-            onClicked: {
+            onPressed: {
                 root.currentIndex = index
-                root.selection.setCurrentIndex(dlg.modelIndex, ItemSelectionModel.Current)
-                root.selection.select(dlg.modelIndex, ItemSelectionModel.Toggle)
                 root.forceActiveFocus()
+                if (mouse.modifiers & Qt.ControlModifier) {
+                    root.selection.select(root.modelIndices[index], ItemSelectionModel.Toggle)
+                }
             }
         }
 
@@ -73,7 +84,6 @@ StandardListView {
                 targetWidth: listViewFileNameText.width
                 targetHeight: listViewFileNameText.height
                 anchors.centerIn: listViewFileNameText
-                borderOnly: true
                 visible: dlg.selected
             }
 
@@ -82,12 +92,13 @@ StandardListView {
                 visible: root.activeFocus && index === root.currentIndex
             }
 
-            ElideText {
+            TextOverSelection {
                 id: listViewFileNameText
                 width: parent.width - Const.smallPadding
                 anchors.centerIn: parent
-                color: Material.foreground
                 text: model.fileName
+
+                selection: listSelection
             }
         }
 

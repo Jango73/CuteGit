@@ -115,6 +115,9 @@ public:
     //! Quits the application
     Q_INVOKABLE void quit();
 
+	//! Copies a string to clipboard
+	Q_INVOKABLE void copy(const QString& sText);
+
     //! Clones a repository
     Q_INVOKABLE void cloneRepository(QString sRepositoryURL, QString sRepositoryPath);
 

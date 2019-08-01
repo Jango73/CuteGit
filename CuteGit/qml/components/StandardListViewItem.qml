@@ -29,10 +29,10 @@ Item {
             anchors.centerIn: theText
         }
 
-        ElideText {
+        TextOverSelection {
             id: theText
             width: parent.width - Const.smallPadding
-            color: selection.visible ? Material.background : Material.foreground
+            selection: selection
         }
     }
 }

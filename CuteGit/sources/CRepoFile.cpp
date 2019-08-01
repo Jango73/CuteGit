@@ -12,8 +12,8 @@ const QString CRepoFile::sTokenAdded = "+";
 const QString CRepoFile::sTokenModified = "*";
 const QString CRepoFile::sTokenRenamed = "=";
 const QString CRepoFile::sTokenDeleted = "-";
-const QString CRepoFile::sTokenMissing = "?";
-const QString CRepoFile::sTokenUntracked = "<";
+const QString CRepoFile::sTokenMissing = "???";
+const QString CRepoFile::sTokenUntracked = "?";
 const QString CRepoFile::sTokenIgnored = "!";
 
 const QString CRepoFile::sTokenStaged = "X";

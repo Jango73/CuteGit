@@ -53,11 +53,12 @@ TitlePane {
                         visible: display === root.controller.currentRepository.repositoryPath
                     }
 
-                    ElideText {
+                    TextOverSelection {
                         id: text
                         width: parent.width - Const.smallPadding
                         text: item.getDisplayName()
-                        color: selection.visible ? Material.background : Material.foreground
+
+                        selection: selection
                     }
 
                     function getDisplayName() {

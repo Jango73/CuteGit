@@ -67,7 +67,6 @@ TreeView {
                 targetWidth: fileNameText.width
                 targetHeight: fileNameText.height
                 anchors.centerIn: fileNameText
-                borderOnly: true
                 visible: styleData.selected
 
                 FocusIndicator {
@@ -76,19 +75,23 @@ TreeView {
                 }
             }
 
-            ElideText {
+            TextOverSelection {
                 id: statusText
                 width: Const.elementHeight
                 height: parent.height
                 text: model !== null && typeof model !== "undefined" ? model.status : ""
+
+                selection: selectionIndicator
             }
 
-            ElideText {
+            TextOverSelection {
                 id: fileNameText
                 anchors.left: statusText.right
                 anchors.right: parent.right
                 height: parent.height
                 text: model !== null && typeof model !== "undefined" ? model.fileName : ""
+
+                selection: selectionIndicator
             }
         }
     }

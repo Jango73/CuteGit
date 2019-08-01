@@ -12,6 +12,7 @@ TitlePane {
 
     property variant repository: null
 
+    signal requestCopy(var commitId)
     signal requestCommitDiffPrevious(var commitId)
     signal requestCommitBranchFrom(var commitId)
     signal requestCommitReset(var commitId)
@@ -46,6 +47,10 @@ TitlePane {
         LogMenu {
             id: menu
             repository: root.repository
+
+            onRequestCopy: {
+                root.requestCopy(commitId)
+            }
 
             onRequestCommitDiffPrevious: {
                 root.requestCommitDiffPrevious(commitId)

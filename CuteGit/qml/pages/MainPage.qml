@@ -73,6 +73,18 @@ Item {
                 action: menu.amendAction
                 icon.source: Const.commitIcon
             }
+
+            ToolSeparator {}
+
+            StandardToolButton {
+                action: menu.saveStashAction
+                icon.source: Const.saveStashIcon
+            }
+
+            StandardToolButton {
+                action: menu.popStashAction
+                icon.source: Const.popStashIcon
+            }
         }
     }
 
@@ -101,7 +113,7 @@ Item {
             model: root.controller.openRepositoryModel
 
             QC15.Tab {
-                title: model.repository.repositoryName
+                title: model.repository.repositoryName + " - " + model.repository.repositoryTypeString
 
                 RepositoryView {
                     repository: model.repository
