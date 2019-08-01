@@ -11,12 +11,23 @@ Menu {
     property string commitId: ""
     property string commitMessage: ""
 
+    signal requestCopy(var commitId)
     signal requestCommitDiffPrevious(var commitId)
     signal requestCommitBranchFrom(var commitId)
     signal requestCommitReset(var commitId)
     signal requestCommitRebase(var commitId)
     signal requestCommitSquash(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
+
+    Action {
+        text: qsTr("&Copy commit Id")
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCopy(root.commitId)
+            }
+        }
+    }
 
     Action {
         text: qsTr("&View diff with previous commit")
@@ -74,7 +85,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("&Change message")
+        text: qsTr("Change &message")
         enabled: root.repository.can(CEnums.ChangeCommitMessage)
 
         onTriggered: {

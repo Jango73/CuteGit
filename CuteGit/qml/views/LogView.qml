@@ -13,7 +13,9 @@ StandardListView {
     delegate: Item {
         id: delegateItem
         width: parent.width
-        height: Const.elementHeight + Const.smallPadding
+        height: typeof model.labels !== "undefined" && model.labels !== null
+                ? Const.elementHeight * (model.labels.length + 1)
+                : Const.elementHeight
 
         property variant labels: model.labels
 
@@ -22,6 +24,7 @@ StandardListView {
             acceptedButtons: Qt.AllButtons
             onClicked: {
                 root.currentIndex = index
+                root.forceActiveFocus()
 
                 if (mouse.button === Qt.RightButton) {
                     root.itemRightClicked(model.commitId, model.message)
@@ -46,67 +49,67 @@ StandardListView {
             id: dataZone
             anchors.centerIn: parent
             width: parent.width - Const.smallPadding
-            height: parent.height - Const.smallPadding
+            height: parent.height
 
             Item {
                 id: messageField
                 width: parent.width * 0.6
                 height: parent.height
 
-                RowLayout {
-                    id: labels
-                    width: addedWidth
-                    height: parent.height
+                TextOverSelection {
+                    id: messageFieldText
+                    anchors.top: parent.top
+                    width: parent.width
+                    height: Const.elementHeight
+                    verticalAlignment: Text.AlignVCenter
+                    text: model.message
 
-                    property int addedWidth: 0
+                    selection: selection
+                }
+
+                // The column containing labels
+                Column {
+                    id: labelLayout
+                    anchors.top: messageFieldText.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    spacing: 0
 
                     Repeater {
+                        id: labelsRepeater
+
                         model: delegateItem.labels
 
                         LogLabel {
-                            height: parent.height
+                            x: Const.mainPadding
+                            height: Const.elementHeight
                             text: modelData
-
-                            Component.onCompleted: {
-                                labels.addedWidth += width
-                            }
-
-                            Component.onDestruction: {
-                                labels.addedWidth -= width
-                            }
                         }
                     }
                 }
-
-                ElideText {
-                    height: dataZone.height
-                    anchors.left: labels.right
-                    anchors.right: parent.right
-                    anchors.leftMargin: Const.mainPadding
-                    verticalAlignment: Text.AlignVCenter
-                    color: selection.visible ? Material.background : Material.foreground
-                    text: model.message
-                }
             }
 
-            ElideText {
+            TextOverSelection {
                 id: authorField
                 anchors.left: messageField.right
                 width: parent.width * 0.2
-                height: dataZone.height
+                height: parent.height
                 verticalAlignment: Text.AlignVCenter
-                color: selection.visible ? Material.background : Material.foreground
                 text: model.author
+
+                selection: selection
             }
 
-            ElideText {
+            TextOverSelection {
                 id: dateField
                 anchors.left: authorField.right
                 width: parent.width * 0.2
-                height: dataZone.height
+                height: parent.height
                 verticalAlignment: Text.AlignVCenter
-                color: selection.visible ? Material.background : Material.foreground
                 text: model.date
+
+                selection: selection
             }
         }
     }

@@ -39,6 +39,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_eRepositoryType(CEnums::UnknownRepositoryType)
     , m_eRepositoryStatus(CEnums::NoMerge)
     , m_sRepositoryPath(sPath)
+    , m_pController(pController)
     , m_pCommands(nullptr)
     , m_pTreeFileModel(new CTreeFileModel(this, this))
     , m_pTreeFileModelProxy(new CTreeFileModelProxy(pController, this))
@@ -136,9 +137,32 @@ QStringList CRepository::labelsForCommit(const QString& sCommitId) const
 
 //-------------------------------------------------------------------------------------------------
 
+QString CRepository::repositoryTypeString() const
+{
+    switch(m_eRepositoryType)
+    {
+    case CEnums::UnknownRepositoryType: return "?";
+    case CEnums::GIT: return "Git";
+    case CEnums::CVS: return "CVS";
+    case CEnums::SVN: return "SVN";
+    case CEnums::HG: return "Mercurial";
+    }
+
+    return "";
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::clearOutput()
 {
     m_pCommandOutputModel->setStringList(QStringList());
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::copy(const QString& sText)
+{
+    m_pController->copy(sText);
 }
 
 //-------------------------------------------------------------------------------------------------

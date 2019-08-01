@@ -52,7 +52,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //!
-    virtual void cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath) ;
+    virtual void cloneRepository(const QString& sRepositoryURL, const QString& sRepositoryPath) override;
 
     //!
     virtual void repositoryStatus(const QString& sPath) override;

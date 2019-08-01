@@ -22,6 +22,7 @@
         <file>qml/components/StandardTextField.qml</file>
         <file>qml/components/StandardToolBar.qml</file>
         <file>qml/components/StandardToolButton.qml</file>
+		<file>qml/components/TextOverSelection.qml</file>
         <file>qml/components/TitlePane.qml</file>
         <file>qml/components/TitleTextField.qml</file>
 

@@ -19,5 +19,23 @@ ListView {
     onCountChanged: {
         if (autoScrollToEnd)
             positionTimer.start()
+
+        if (count > 0 && currentIndex == -1)
+            currentIndex = 0
+    }
+
+    Keys.onPressed: {
+        if (event.key === Qt.Key_PageUp) {
+            root.currentIndex = root.currentIndex - 5
+        }
+        else if (event.key === Qt.Key_PageDown) {
+            root.currentIndex = root.currentIndex + 5
+        }
+        else if (event.key === Qt.Key_Home) {
+            root.currentIndex = 0
+        }
+        else if (event.key === Qt.Key_End) {
+            root.currentIndex = root.count - 1
+        }
     }
 }

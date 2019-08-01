@@ -42,6 +42,30 @@ public:
     //!
     virtual void allFileStatus(const QString& sPath) override;
 
+    //!
+    virtual void branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
+
+    //!
+    virtual void fileLog(const QString& sPath, const QString& sFullName) override;
+
+    //!
+    virtual void toggleStaged(const QString& sPath, const QString& sFullName) override;
+
+    //!
+    virtual void stageFile(const QString& sPath, const QString& sFullName, bool bStage) override;
+
+    //!
+    virtual void commit(const QString& sPath, const QString& sMessage) override;
+
+    //!
+    virtual void amend(const QString& sPath) override;
+
+    //!
+    virtual void push(const QString& sPath) override;
+
+    //!
+    virtual void pull(const QString& sPath) override;
+
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
     //-------------------------------------------------------------------------------------------------

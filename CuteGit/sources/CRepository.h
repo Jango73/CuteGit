@@ -42,7 +42,8 @@ public:
     Q_FAST_PROPERTY(CEnums::ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
     Q_FAST_PROPERTY(QString, s, repositoryName, RepositoryName)
-    Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
+	Q_FAST_PROPERTY(CController*, p, controller, Controller)
+	Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
     Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
@@ -57,6 +58,8 @@ public:
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
     Q_FAST_PROPERTY(bool, b, hasCommitableFiles, HasCommitableFiles)
+
+    Q_PROPERTY(QString repositoryTypeString READ repositoryTypeString NOTIFY repositoryTypeStringChanged)
 
 public:
 
@@ -84,12 +87,18 @@ public:
     //!
     QStringList labelsForCommit(const QString& sCommitId) const;
 
+    //!
+    QString repositoryTypeString() const;
+
     //-------------------------------------------------------------------------------------------------
     // Invokable control methods
     //-------------------------------------------------------------------------------------------------
 
     //! Clears the list of output lines
     Q_INVOKABLE void clearOutput();
+
+	//! Copies a string to clipboard
+	Q_INVOKABLE void copy(const QString& sText);
 
     //!
     Q_INVOKABLE bool can(CEnums::ECapability eWhat);
@@ -199,6 +208,14 @@ protected:
 
     //!
     void getBranchLog(QString sPath = "");
+
+    //-------------------------------------------------------------------------------------------------
+    // Signals
+    //-------------------------------------------------------------------------------------------------
+
+signals:
+
+    void repositoryTypeStringChanged();
 
     //-------------------------------------------------------------------------------------------------
     // Slots

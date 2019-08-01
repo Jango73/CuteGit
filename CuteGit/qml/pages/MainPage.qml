@@ -113,7 +113,7 @@ Item {
             model: root.controller.openRepositoryModel
 
             QC15.Tab {
-                title: model.repository.repositoryName
+                title: model.repository.repositoryName + " - " + model.repository.repositoryTypeString
 
                 RepositoryView {
                     repository: model.repository

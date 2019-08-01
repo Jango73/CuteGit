@@ -65,7 +65,7 @@ MenuBar {
                     text: root.controller.repositoryNameFromPath(model.display)
 
                     onClicked: {
-                        // If calling root.controller.openRepository(model.display) here, menu does not close...
+                        // When calling root.controller.openRepository(model.display) from here, the menu does not close...
                         // It must be missing some signal
                         openRepositoryTimer.start()
                     }
