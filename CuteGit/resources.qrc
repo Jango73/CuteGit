@@ -48,15 +48,20 @@
         <file>qml/popups/CommitPopup.qml</file>
         <file>qml/popups/ConfirmPopup.qml</file>
 
+        <file>qml/images/blank.svg</file>
         <file>qml/images/check.svg</file>
+        <file>qml/images/clipboard.svg</file>
         <file>qml/images/copy-documents-option.svg</file>
         <file>qml/images/delete.svg</file>
         <file>qml/images/door-exit.svg</file>
+        <file>qml/images/exclamation-point.svg</file>
         <file>qml/images/garbage-container.svg</file>
+        <file>qml/images/info.svg</file>
         <file>qml/images/loop.svg</file>
         <file>qml/images/open-folder-black-and-white-variant.svg</file>
         <file>qml/images/plus-sign.svg</file>
         <file>qml/images/seal.svg</file>
+        <file>qml/images/star.svg</file>
         <file>qml/images/tag.svg</file>
     </qresource>
 </RCC>

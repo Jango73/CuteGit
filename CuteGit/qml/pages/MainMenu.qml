@@ -25,6 +25,8 @@ MenuBar {
     property alias pushAction: push
     property alias commitAction: commit
     property alias amendAction: amend
+    property alias saveStashAction: saveStash
+    property alias popStashAction: popStash
 
     signal requestCloneRepository()
     signal requestOpenRepository()
@@ -145,23 +147,31 @@ MenuBar {
             onTriggered: repositoryView.requestUnstageSelection()
         }
 
+        MenuSeparator { }
+
         Action {
             text: qsTr("&Revert selection")
             shortcut: "Ctrl+Z"
             onTriggered: repositoryView.requestRevertSelection()
         }
 
+        MenuSeparator { }
+
         Action {
+            id: saveStash
             text: qsTr("Save stash")
             enabled: root.repository.can(CEnums.Stash)
             onTriggered: repositoryView.requestStashSave()
         }
 
         Action {
+            id: popStash
             text: qsTr("Pop stash")
             enabled: root.repository.can(CEnums.Stash)
             onTriggered: repositoryView.requestStashPop()
         }
+
+        MenuSeparator { }
 
         Action {
             id: commit
@@ -178,6 +188,8 @@ MenuBar {
             enabled: root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles
             onTriggered: repositoryView.requestAmend()
         }
+
+        MenuSeparator { }
 
         Action {
             text: qsTr("C&ontinue rebase")

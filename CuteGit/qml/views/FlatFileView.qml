@@ -11,8 +11,14 @@ StandardListView {
     property variant repository: null
     property variant selection: null
     property bool mouseActive: true
+    property variant modelIndices: ({})
 
     model: root.repository !== null ? root.repository.flatFileModelProxy : undefined
+
+    onCurrentIndexChanged: {
+        console.log(root.modelIndices[currentIndex])
+        root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
+    }
 
     delegate: Item {
         id: dlg
@@ -20,10 +26,10 @@ StandardListView {
         height: Const.treeElementHeight + Const.mainPadding * 0.25
 
         property string fullName: model.fullName
-        property bool selected: root.selection.hasSelection && root.selection.isSelected(dlg.modelIndex)
-        property var modelIndex: root.model.index(index, 0)
-        property var prevModelIndex: root.model.index(index - 1, 0)
-        property var nextModelIndex: root.model.index(index + 1, 0)
+        property bool selected: root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
+
+        Component.onCompleted: root.modelIndices[inddex] = root.model.index(index, 0)
+        onFullNameChanged: root.modelIndices[inddex] = root.model.index(index, 0)
 
         MouseArea {
             anchors.fill: parent
@@ -31,8 +37,7 @@ StandardListView {
             enabled: root.mouseActive
             onClicked: {
                 root.currentIndex = index
-                root.selection.setCurrentIndex(dlg.modelIndex, ItemSelectionModel.Current)
-                root.selection.select(dlg.modelIndex, ItemSelectionModel.Toggle)
+                root.selection.select(root.modelIndices[index], ItemSelectionModel.Toggle)
                 root.forceActiveFocus()
             }
         }
