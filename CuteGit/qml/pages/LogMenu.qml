@@ -63,7 +63,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("&Rebase")
+        text: qsTr("&Rebase here")
         enabled: root.repository.can(CEnums.RebaseOnCommit)
 
         onTriggered: {

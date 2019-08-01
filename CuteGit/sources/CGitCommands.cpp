@@ -33,38 +33,39 @@ static int iGraphFormatValueCount = 5;
 //-------------------------------------------------------------------------------------------------
 // Command strings
 
-static const char* sCommandAbortRebase        = "git rebase --abort";
-static const char* sCommandAmend              = "git commit --amend --reset-author --no-edit";
-static const char* sCommandBranches           = "git branch -a";
-static const char* sCommandBranchFromCommit   = "git checkout -b \"%1\" \"%2\"";
-static const char* sCommandBranchLog          = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
-static const char* sCommandClone              = "git clone \"%1\"";
-static const char* sCommandCommit             = "git commit -m \"%1\"";
-static const char* sCommandContinueRebase     = "git rebase --continue";
-static const char* sCommandDeleteBranch       = "git branch --delete \"%1\"";
-static const char* sCommandFetch              = "git fetch";
-static const char* sCommandFileLog            = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
-static const char* sCommandGetRebaseApplyPath = "git rev-parse --git-path rebase-apply";
-static const char* sCommandGetRebaseMergePath = "git rev-parse --git-path rebase-merge";
-static const char* sCommandGraph              = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
-static const char* sCommandHeadCommit         = "git rev-parse --short \"%1\"";
-static const char* sCommandPull               = "git pull";
-static const char* sCommandPush               = "git push";
-static const char* sCommandRebaseOnCommit     = "git rebase --interactive %1~1";
-static const char* sCommandResetOnCommit      = "git reset %1";
-static const char* sCommandRevert             = "git checkout \"%1\"";
-static const char* sCommandSetCurrentBranch   = "git checkout \"%1\"";
-static const char* sCommandStage              = "git add -f \"%1\"";
-static const char* sCommandStageAll           = "git add -u";
-static const char* sCommandStashPop           = "git stash pop";
-static const char* sCommandStashSave          = "git stash save";
-static const char* sCommandStatus             = "git status --porcelain --ignored --untracked-files=all";
-static const char* sCommandStatusForFile      = "git status --porcelain --ignored --untracked-files=all \"%1\"";
-static const char* sCommandTags               = "git tag";
-static const char* sCommandTagCommit          = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
-static const char* sCommandUnstage            = "git reset HEAD \"%1\"";
-static const char* sCommandUnstageAll         = "git reset .";
-static const char* sCommandUnstagedDiff       = "git diff --no-color --ignore-all-space HEAD \"%1\"";
+static const char* sCommandAbortRebase          = "git rebase --abort";
+static const char* sCommandAmend                = "git commit --amend --reset-author --no-edit";
+static const char* sCommandBranches             = "git branch -a";
+static const char* sCommandBranchFromCommit     = "git checkout -b \"%1\" \"%2\"";
+static const char* sCommandBranchLog            = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
+static const char* sCommandClone                = "git clone \"%1\"";
+static const char* sCommandCommit               = "git commit -m \"%1\"";
+static const char* sCommandContinueRebase       = "git rebase --continue";
+static const char* sCommandDeleteBranch         = "git branch --delete \"%1\"";
+static const char* sCommandFetch                = "git fetch";
+static const char* sCommandFileLog              = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
+static const char* sCommandGetRebaseApplyPath   = "git rev-parse --git-path rebase-apply";
+static const char* sCommandGetRebaseMergePath   = "git rev-parse --git-path rebase-merge";
+static const char* sCommandGraph                = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
+static const char* sCommandHeadCommit           = "git rev-parse --short \"%1\"";
+static const char* sCommandPull                 = "git pull";
+static const char* sCommandPush                 = "git push";
+static const char* sCommandRebaseOnCommit       = "git rebase --interactive %1~1";
+static const char* sCommandResetOnCommit        = "git reset %1";
+static const char* sCommandRevert               = "git checkout \"%1\"";
+static const char* sCommandSetCurrentBranch     = "git checkout \"%1\"";
+static const char* sCommandSquashCommit       =   "git rebase --interactive %1~2";
+static const char* sCommandStage                = "git add -f \"%1\"";
+static const char* sCommandStageAll             = "git add -u";
+static const char* sCommandStashPop             = "git stash pop";
+static const char* sCommandStashSave            = "git stash save";
+static const char* sCommandStatus               = "git status --porcelain --ignored --untracked-files=all";
+static const char* sCommandStatusForFile        = "git status --porcelain --ignored --untracked-files=all \"%1\"";
+static const char* sCommandTags                 = "git tag";
+static const char* sCommandTagCommit            = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
+static const char* sCommandUnstage              = "git reset HEAD \"%1\"";
+static const char* sCommandUnstageAll           = "git reset .";
+static const char* sCommandUnstagedDiff         = "git diff --no-color --ignore-all-space HEAD \"%1\"";
 
 //-------------------------------------------------------------------------------------------------
 // Regular expressions
@@ -81,6 +82,7 @@ static const char* sSequenceEditorToken = "GIT_SEQUENCE_EDITOR";
 static const char* sTextEditorToken     = "GIT_EDITOR";
 static const char* sRebaseEditCommit    = "edit %1 %2";
 static const char* sRebaseRewordCommit  = "reword %1 %2";
+static const char* sRebaseSquashCommit  = "squash %1 %2";
 static const char* sComment             = "#";
 
 //-------------------------------------------------------------------------------------------------
@@ -357,7 +359,7 @@ void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 
 void CGitCommands::commitReset(const QString& sPath, const QString& sCommitId)
 {
-    emit newOutputString(CEnums::eNotification, tr("Doing reset..."));
+    emit newOutputString(CEnums::eNotification, QString(tr("Doing reset on %1...")).arg(sCommitId));
 
     QString sCommand = QString(sCommandResetOnCommit).arg(sCommitId);
     exec(new CProcessCommand(CEnums::eResetToCommit, sPath, sCommand, true));
@@ -367,7 +369,7 @@ void CGitCommands::commitReset(const QString& sPath, const QString& sCommitId)
 
 void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 {
-    emit newOutputString(CEnums::eNotification, tr("Doing rebase..."));
+    emit newOutputString(CEnums::eNotification, QString(tr("Doing rebase on %1...")).arg(sCommitId));
 
     m_eRebaseType = eRTEdit;
     m_eRebaseStep = eRSChangeCommitEditSequence;
@@ -386,10 +388,20 @@ void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
 
 void CGitCommands::commitSquash(const QString& sPath, const QString& sCommitId)
 {
-    Q_UNUSED(sPath);
-    Q_UNUSED(sCommitId);
+    emit newOutputString(CEnums::eNotification, QString(tr("Squashing %1...")).arg(sCommitId));
 
-    // TODO
+    m_eRebaseType = eRTSquash;
+    m_eRebaseStep = eRSSquashCommitEditSequence;
+    m_sCommitId = sCommitId;
+    m_sCommitMessage = "";
+
+    QMap<QString, QString> mEnvironment;
+    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
+    mEnvironment[sTextEditorToken] = QCoreApplication::applicationFilePath();
+
+    QString sCommand = QString(sCommandSquashCommit).arg(sCommitId);
+
+    exec(new CProcessCommand(CEnums::eSquashCommit, sPath, sCommand, true, mEnvironment));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -458,22 +470,24 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
         // Read in the file provided by GIT
         QTextStream stream(&file);
         QString sInputText = stream.readAll();
-        QStringList lOutputLines;
         file.close();
 
+        QStringList lOutputLines;
+
         // Get a list of lines
-        QStringList sLines = sInputText.split(NEW_LINE);
+        QStringList lLines = sInputText.split(NEW_LINE);
 
         switch (m_eRebaseStep)
         {
         // In case we're modifyng the sequence file
         // Most often .git/rebase-merge/git-rebase-todo
         case eRSChangeCommitEditSequence:
+        case eRSSquashCommitEditSequence:
         {
             // Setup a "pick nnnn aaaa" reg exp
             QRegExp tRegExp(sPickCommitRegExp);
 
-            for (QString sLine : sLines)
+            for (QString sLine : lLines)
             {
                 // Process only non-comment lines
                 if (not sLine.startsWith(sComment))
@@ -498,6 +512,14 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
                             case eRTReword:
                             {
                                 lOutputLines << QString(sRebaseRewordCommit).arg(sCommitID).arg(sMessage);
+                                m_eRebaseStep = eRSChangeCommitEditMessage;
+                                break;
+                            }
+
+                            case eRTSquash:
+                            {
+                                lOutputLines << QString(sRebaseSquashCommit).arg(sCommitID).arg(sMessage);
+                                m_eRebaseStep = eRSSquashCommitEditMessage;
                                 break;
                             }
 
@@ -511,13 +533,18 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
                 }
             }
 
-            m_eRebaseStep = eRSChangeCommitEditMessage;
             break;
         }
 
         case eRSChangeCommitEditMessage:
         {
             lOutputLines = m_sCommitMessage.split(NEW_LINE);
+            break;
+        }
+
+        case eRSSquashCommitEditMessage:
+        {
+            lOutputLines = lLines;
             break;
         }
         }

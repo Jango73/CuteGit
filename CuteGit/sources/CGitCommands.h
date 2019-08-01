@@ -22,13 +22,16 @@ public:
     enum ERebaseType
     {
         eRTReword,
-        eRTEdit
+        eRTEdit,
+        eRTSquash
     };
 
     enum ERebaseStep
     {
         eRSChangeCommitEditSequence,
-        eRSChangeCommitEditMessage
+        eRSChangeCommitEditMessage,
+        eRSSquashCommitEditSequence,
+        eRSSquashCommitEditMessage
     };
 
     //-------------------------------------------------------------------------------------------------
