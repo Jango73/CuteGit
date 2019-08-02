@@ -374,7 +374,7 @@ void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
     m_eRebaseType = eRTEdit;
     m_eRebaseStep = eRSChangeCommitEditSequence;
     m_sCommitId = sCommitId;
-    m_sCommitMessage = "";
+    m_sCommitMessage.clear();
 
     QMap<QString, QString> mEnvironment;
     mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
@@ -393,7 +393,7 @@ void CGitCommands::commitSquash(const QString& sPath, const QString& sCommitId)
     m_eRebaseType = eRTSquash;
     m_eRebaseStep = eRSSquashCommitEditSequence;
     m_sCommitId = sCommitId;
-    m_sCommitMessage = "";
+    m_sCommitMessage.clear();
 
     QMap<QString, QString> mEnvironment;
     mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();

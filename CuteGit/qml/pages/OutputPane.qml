@@ -40,7 +40,7 @@ TitlePane {
             anchors.left: parent.left
             anchors.right: parent.right
             autoScrollToEnd: true
-            model: root.repository.commandOutputModel
+            model: root.repository ? root.repository.commandOutputModel : undefined
         }
     }
 }

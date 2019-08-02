@@ -125,7 +125,10 @@ public:
     Q_INVOKABLE void removeRepository(int iRepositoryIndex);
 
     //!
-    Q_INVOKABLE QString repositoryNameFromPath(const QString& sPath);
+    Q_INVOKABLE int currentRepositoryIndexToSet();
+
+    //!
+    Q_INVOKABLE QString repositoryNameFromPath(const QString& sPath) const;
 
     //-------------------------------------------------------------------------------------------------
     // Slots
@@ -148,8 +151,9 @@ protected:
     bool                    m_bMasterMode;
     QSharedMemory           m_tShared;
     QTimer                  m_tSharedTimer;
-    QString					m_sCloneCommandsRepositoryPath;
+    QString                 m_sCloneCommandsRepositoryPath;
     CCommands*              m_pCloneCommands;
+    QString                 m_sCurrentRepositoryPath;       // This is temporary, used for tab index
 
     static const QString    m_sSharedKey;
 };

@@ -85,10 +85,7 @@ QString CTreeFileModelProxy::fullNameForIndex(QModelIndex qIndex)
 
             if (pModel != nullptr)
             {
-                QString sPath = pModel->data(qSourceIndex, CTreeFileModel::FilePathRole).toString();
-                QString sName = pModel->data(qSourceIndex, CTreeFileModel::FileNameRole).toString();
-
-                return QString("%1/%2").arg(sPath).arg(sName);
+                return pModel->data(qSourceIndex, CTreeFileModel::FilePathRole).toString();
             }
         }
     }

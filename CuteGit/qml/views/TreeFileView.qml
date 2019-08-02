@@ -75,13 +75,11 @@ TreeView {
                 }
             }
 
-            TextOverSelection {
+            StandardText {
                 id: statusText
                 width: Const.elementHeight
                 height: parent.height
                 text: model !== null && typeof model !== "undefined" ? model.status : ""
-
-                selection: selectionIndicator
             }
 
             TextOverSelection {
@@ -97,9 +95,8 @@ TreeView {
     }
 
     onDoubleClicked: {
-        // TODO : fix this
-        var fullName = model.data(index, "fullName")
-        root.repository.openFile(fullName)
+        var currentFileFullName = model.fullNameForIndex(currentIndex)
+        root.repository.openFile(currentFileFullName)
     }
 
     Keys.onPressed: {
@@ -112,6 +109,7 @@ TreeView {
     function expandAll() {
         for (var i = 0; i < root.model.rowCount(); i++) {
             var index = root.model.index(i, 0)
+            console.log(index)
 
 //                    if (!treeView.isExpanded(index)) {
                 root.expand(index)

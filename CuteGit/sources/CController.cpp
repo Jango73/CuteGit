@@ -15,8 +15,8 @@
     \inmodule CuteGit
     \section1 General
     This is the high level controller of the application.
-    It also servers as the interface between UI and business logic.
-    \section1 The workflow of Git interactive rebase
+    It also servers as the unique interface between UI and business logic.
+    \section1 Workflow of Git interactive rebase
     * CuteGit-1-A runs (1 is first instance, A is main thread)
     * CuteGit-1-A calls CCommands::exec with "git rebase --interactive" and "GIT_SEQUENCE_EDITOR=<path-to-cutegit>"
     * CuteGit-1-B launches process (1 is first instance, B is process execution thread)
@@ -27,7 +27,7 @@
     * CuteGit-1-A edits the sequence file for slave and notifies it
     * CuteGit-1-B is still waiting for Git process to end
     * CuteGit-2 quits
-    * If changing a commit:
+    * If changing a commit message or squashing a commit:
     ** Git launches process : <path-to-cutegit> <path-to-commit-file>
     ** CuteGit-2 starts in slave mode (because it has one argument)
     ** CuteGit-2-A asks (via shared memory) for commit file edition
@@ -53,6 +53,7 @@
 const QString sParamConfiguration = "Configuration";
 const QString sParamOpenRepositories = "OpenRepositories";
 const QString sParamKnownRepositories = "KnownRepositories";
+const QString sParamCurrentRepository = "CurrentRepository";
 const QString sParamRepository = "Repository";
 const QString sParamPath = "Path";
 const QString sParamHistory = "History";
@@ -314,6 +315,11 @@ void CController::saveConfiguration()
     }
     xConfig << xOpenRepositories;
 
+    // Save current repository
+    CXMLNode xCurrentRepository(sParamCurrentRepository);
+    xCurrentRepository.attributes()[sParamPath] = m_pCurrentRepository->repositoryPath();
+    xConfig << xCurrentRepository;
+
     xConfig.saveXMLToFile(CONFIG_FILE_NAME);
 }
 
@@ -347,6 +353,10 @@ void CController::loadConfiguration()
         QString sPath = xOpenRepository.attributes()[sParamPath];
         openRepository(sPath);
     }
+
+    // Load current repository
+    CXMLNode xCurrentRepository = xConfig.getNodeByTagName(sParamCurrentRepository);
+    m_sCurrentRepositoryPath = xCurrentRepository.attributes()[sParamPath];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -379,6 +389,9 @@ void CController::cloneRepository(QString sRepositoryURL, QString sRepositoryPat
 
     if (eType != CEnums::UnknownRepositoryType)
     {
+        // Remember the repository to show in the tab view
+        m_sCurrentRepositoryPath = sRepositoryPath;
+
         m_sCloneCommandsRepositoryPath = sRepositoryPath;
         m_pCloneCommands = CRepository::getCommandsForRepositoryType(eType);
 
@@ -407,6 +420,9 @@ void CController::openRepository(QString sRepositoryPath)
             // If specified directory is a repository
             if (eType != CEnums::UnknownRepositoryType)
             {
+                // Remember the repository to show in the tab view
+                m_sCurrentRepositoryPath = sRepositoryPath;
+
                 // Create a new repository item
                 CRepository* pRepository = new CRepository(sRepositoryPath, this, this);
 
@@ -446,7 +462,29 @@ void CController::removeRepository(int iRepositoryIndex)
 
 //-------------------------------------------------------------------------------------------------
 
-QString CController::repositoryNameFromPath(const QString& sPath)
+int CController::currentRepositoryIndexToSet()
+{
+    int iReturnValue = -1;
+
+    if (not m_sCurrentRepositoryPath.isEmpty())
+    {
+        for (int iIndex = 0; iIndex < m_pOpenRepositoryModel->repositories().count(); iIndex++)
+        {
+            if (m_pOpenRepositoryModel->repositories()[iIndex]->repositoryPath() == m_sCurrentRepositoryPath)
+            {
+                m_sCurrentRepositoryPath.clear();
+                iReturnValue = iIndex;
+                break;
+            }
+        }
+    }
+
+    return iReturnValue;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CController::repositoryNameFromPath(const QString& sPath) const
 {
     return sPath.split(PATH_SEP).last();
 }

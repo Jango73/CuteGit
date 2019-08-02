@@ -26,7 +26,7 @@ QC14.TabView {
                 anchors.fill: parent
                 visible: count > 0
 
-                model: root.repository.branchModel
+                model: root.repository ? root.repository.branchModel : undefined
 
                 delegate: StandardListViewItem {
                     width: parent.width

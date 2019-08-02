@@ -6,7 +6,7 @@ import QtQuick.Controls.Material 2.12
 Pane {
     id: root
     anchors.margins: Const.paneMargins
-    padding: Const.smallPadding
+    padding: Const.panePadding
 
     Material.elevation: Const.paneElevation
 

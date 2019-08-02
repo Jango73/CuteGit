@@ -42,7 +42,7 @@ Menu {
 
     Action {
         text: qsTr("&Branch from")
-        enabled: root.repository.can(CEnums.BranchFromCommit)
+        enabled: root.repository ? root.repository.can(CEnums.BranchFromCommit) : false
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -53,7 +53,7 @@ Menu {
 
     Action {
         text: qsTr("Reset &to")
-        enabled: root.repository.can(CEnums.ResetToCommit)
+        enabled: root.repository ? root.repository.can(CEnums.ResetToCommit) : false
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -64,7 +64,7 @@ Menu {
 
     Action {
         text: qsTr("&Rebase here")
-        enabled: root.repository.can(CEnums.RebaseOnCommit)
+        enabled: root.repository ? root.repository.can(CEnums.RebaseOnCommit) : false
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -75,7 +75,7 @@ Menu {
 
     Action {
         text: qsTr("&Squash")
-        enabled: root.repository.can(CEnums.SquashCommit)
+        enabled: root.repository ? root.repository.can(CEnums.SquashCommit) : false
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -86,7 +86,7 @@ Menu {
 
     Action {
         text: qsTr("Change &message")
-        enabled: root.repository.can(CEnums.ChangeCommitMessage)
+        enabled: root.repository ? root.repository.can(CEnums.ChangeCommitMessage) : false
 
         onTriggered: {
             if (root.commitId !== "") {

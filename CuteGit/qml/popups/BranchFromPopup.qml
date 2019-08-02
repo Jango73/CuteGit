@@ -42,6 +42,7 @@ Popup {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: Const.mainPadding
+
             placeHolderText: Const.enterBranchNameHereText
             focus: true
         }

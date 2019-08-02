@@ -6,6 +6,7 @@
 
 CRepositoryModel::CRepositoryModel(QObject* parent)
     : QAbstractListModel(parent)
+    , m_iCount(0)
 {
 }
 
@@ -66,6 +67,8 @@ void CRepositoryModel::addRepository(CRepository* pRepository)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_lRepositories << pRepository;
     endInsertRows();
+
+    setCount(m_lRepositories.count());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -78,6 +81,8 @@ void CRepositoryModel::removeRepository(int iRepositoryIndex)
         delete m_lRepositories[iRepositoryIndex];
         m_lRepositories.removeAt(iRepositoryIndex);
         endRemoveRows();
+
+        setCount(m_lRepositories.count());
     }
 }
 

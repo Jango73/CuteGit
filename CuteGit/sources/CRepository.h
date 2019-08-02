@@ -85,6 +85,9 @@ public:
     CRepoFile* fileByFullName(const QString& sFullName) const;
 
     //!
+    CRepoFile* fileByFullName(QList<CRepoFile*> lRepoFiles, const QString& sFullName) const;
+
+    //!
     QStringList labelsForCommit(const QString& sCommitId) const;
 
     //!

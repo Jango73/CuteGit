@@ -29,7 +29,11 @@ Item {
         onRequestShortcuts: shortcuts.open()
 
         Component.onCompleted: {
-            repositoryView = Qt.binding(function() { return container.getTab(container.currentIndex).item })
+            repositoryView = Qt.binding(function() {
+                return container.count > 0
+                        ? container.getTab(container.currentIndex).item
+                        : null
+            })
         }
     }
 
@@ -65,6 +69,20 @@ Item {
             ToolSeparator {}
 
             StandardToolButton {
+                action: menu.stageSelectionAction
+                text: Const.stageText
+                icon.source: Const.stageIcon
+            }
+
+            StandardToolButton {
+                action: menu.revertSelectionAction
+                text: Const.revertText
+                icon.source: Const.revertIcon
+            }
+
+            ToolSeparator {}
+
+            StandardToolButton {
                 action: menu.commitAction
                 icon.source: Const.commitIcon
             }
@@ -88,47 +106,63 @@ Item {
         }
     }
 
-    QC15.TabView {
-        id: container
+    Item {
+        id: clientZone
         anchors.top: toolBar.bottom
         anchors.bottom: statusBar.top
         anchors.left: parent.left
         anchors.right: parent.right
 
-        style: StandardTabViewStyle {
-            canClose: true
-            closeAction: tabCloseAction
-        }
+        QC15.TabView {
+            id: container
+            anchors.fill: parent
 
-        Action {
-            id: tabCloseAction
-
-            onTriggered: {
-                root.controller.removeRepository(source.index)
-                container.removeTab(source.index)
+            style: StandardTabViewStyle {
+                canClose: true
+                closeAction: tabCloseAction
             }
-        }
 
-        Repeater {
-            model: root.controller.openRepositoryModel
+            Action {
+                id: tabCloseAction
 
-            QC15.Tab {
-                title: model.repository.repositoryName + " - " + model.repository.repositoryTypeString
-
-                RepositoryView {
-                    repository: model.repository
-                    filesAsTree: menu.filesAsTree
+                onTriggered: {
+                    root.controller.removeRepository(source.index)
+                    container.removeTab(source.index)
                 }
             }
+
+            Repeater {
+                model: root.controller.openRepositoryModel
+
+                QC15.Tab {
+                    title: model.repository.repositoryName + " - " + model.repository.repositoryTypeString
+
+                    RepositoryView {
+                        repository: model.repository
+                        filesAsTree: menu.filesAsTree
+                    }
+                }
+            }
+
+            onCountChanged: {
+                var index = root.controller.currentRepositoryIndexToSet()
+                if (index !== -1)
+                    currentIndex = index
+
+                root.controller.currentRepositoryIndex = currentIndex
+            }
+
+            onCurrentIndexChanged: {
+                root.controller.currentRepositoryIndex = currentIndex
+            }
         }
 
-        onCountChanged: {
-            currentIndex = count - 1
-            root.controller.currentRepositoryIndex = currentIndex
-        }
-
-        onCurrentIndexChanged: {
-            root.controller.currentRepositoryIndex = currentIndex
+        StandardLabel {
+            anchors.fill: parent
+            visible: root.controller.openRepositoryModel.count === 0
+            text: Const.emptyRepositoryTabText
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
     }
 

@@ -13,7 +13,10 @@ class CRepositoryModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_FAST_PROPERTY(int, i, count, Count)
+
 public:
+
     enum ERoles
     {
         eRepositoryRole = Qt::UserRole + 1

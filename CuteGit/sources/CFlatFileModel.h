@@ -37,6 +37,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
+    Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
 
 public:
 
@@ -48,20 +49,23 @@ public:
     CFlatFileModel(CRepository* pRepository, QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CFlatFileModel();
+    virtual ~CFlatFileModel() override;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
     //! Returns role names
-    virtual QHash<int, QByteArray> roleNames() const;
+    virtual QHash<int, QByteArray> roleNames() const override;
 
     //! Returns row count
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
     //! Returns data
-    virtual QVariant data(const QModelIndex& qIndex, int iRole) const;
+    virtual QVariant data(const QModelIndex& qIndex, int iRole) const override;
+
+    //! Sets data
+    virtual bool setData(const QModelIndex& qIndex, const QVariant& vValue, int iRole = Qt::EditRole) override;
 
     //!
     void handleRepoFilesChanged();

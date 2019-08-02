@@ -13,12 +13,12 @@ StandardListView {
     property bool mouseActive: true
     property variant modelIndices: ({})
 
-    model: root.repository !== null
+    model: root.repository
            ? root.repository.flatFileModelProxy
            : undefined
 
     onCurrentIndexChanged: {
-        if (root.selection !== null)
+        if (root.selection)
             root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
     }
 
@@ -28,7 +28,7 @@ StandardListView {
         height: Const.treeElementHeight + Const.mainPadding * 0.25
 
         property string fullName: model.fullName
-        property bool selected: root.selection !== null
+        property bool selected: root.selection
                                 ? root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
                                 : false
 
@@ -39,6 +39,7 @@ StandardListView {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
             enabled: root.mouseActive
+
             onPressed: {
                 root.currentIndex = index
                 root.forceActiveFocus()
@@ -47,6 +48,7 @@ StandardListView {
                     root.selection.select(root.modelIndices[index], ItemSelectionModel.Toggle)
                 }
             }
+
             onDoubleClicked: {
                 root.repository.openFile(model.fullName)
             }

@@ -127,6 +127,19 @@ CRepoFile* CRepository::fileByFullName(const QString& sFullName) const
 
 //-------------------------------------------------------------------------------------------------
 
+CRepoFile* CRepository::fileByFullName(QList<CRepoFile*> lRepoFiles, const QString& sFullName) const
+{
+    for (CRepoFile* pFile : lRepoFiles)
+    {
+        if (pFile->fullName() == sFullName)
+            return pFile;
+    }
+
+    return nullptr;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 QStringList CRepository::labelsForCommit(const QString& sCommitId) const
 {
     QStringList lReturnValue;
@@ -708,33 +721,6 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
 
     case CEnums::eAllFileStatus:
     {
-        // TODO : Use a smart algorithm to update the model
-
-        //        QStringList changedFiles;
-
-        //        for (CRepoFile* pExistingFile : m_lRepoFiles)
-        //        {
-        //            CRepoFile* pNewFile = fileByFullName(lNewRepoFiles, pExistingFile->fullName());
-
-        //            if (pNewFile == nullptr)
-        //            {
-        //                changedFiles << pNewFile->fullName();
-        //            }
-        //        }
-
-        //        for (CRepoFile* pFile : lNewRepoFiles)
-        //        {
-        //            CRepoFile* pExistingFile = fileByFullName(m_lRepoFiles, pFile->fullName());
-
-        //            if (pExistingFile != nullptr)
-        //            {
-        //                if (pExistingFile->status() != pFile->status() || pExistingFile->staged() != pFile->staged())
-        //                {
-        //                    changedFiles << pExistingFile->fullName();
-        //                }
-        //            }
-        //        }
-
         qDeleteAll(m_lRepoFiles);
         m_lRepoFiles.clear();
 
@@ -753,6 +739,11 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
         }
 
         setHasCommitableFiles(bHasCommitableFiles);
+
+        std::sort(m_lRepoFiles.begin(), m_lRepoFiles.end(),
+                  [] (CRepoFile* left, CRepoFile* right) {
+            return left->fullName() < right->fullName();
+        });
 
         // Update the models
         m_pTreeFileModel->handleRepoFilesChanged();

@@ -11,8 +11,9 @@ import "../components"
 import "../pages"
 import "../popups"
 
-Item {
+Pane {
     id: root
+    padding: Const.panePadding
 
     property variant repository: null
     property bool filesAsTree: false
@@ -30,26 +31,34 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            color: root.repository.repositoryStatus === CEnums.NoMerge
-                   ? Const.transparent
-                   : Material.accent
+
+            color: root.repository
+                   ? root.repository.repositoryStatus === CEnums.NoMerge
+                     ? Const.transparent
+                     : Material.accent
+            : "black"
         }
 
         StandardText {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
-            color: root.repository.repositoryStatus === CEnums.NoMerge
-                   ? Material.foreground
-                   : Material.background
+
+            color: root.repository ?
+                       root.repository.repositoryStatus === CEnums.NoMerge
+                       ? Material.foreground
+                       : Material.background
+            : "black"
+
             text: {
-                if (root.repository.repositoryStatus === CEnums.InteractiveRebase)
-                    qsTr("Interactive rebase in progress...")
-                else if (root.repository.repositoryStatus === CEnums.Rebase)
-                    qsTr("Rebase in progress...")
-                else if (root.repository.repositoryStatus === CEnums.Merge)
-                    qsTr("Merge in progress...")
-                else
-                    ""
+                if (root.repository)
+                    if (root.repository.repositoryStatus === CEnums.InteractiveRebase)
+                        qsTr("Interactive rebase in progress...")
+                    else if (root.repository.repositoryStatus === CEnums.Rebase)
+                        qsTr("Rebase in progress...")
+                    else if (root.repository.repositoryStatus === CEnums.Merge)
+                        qsTr("Merge in progress...")
+                    else ""
+                else ""
             }
         }
     }
@@ -63,7 +72,7 @@ Item {
 
         ItemSelectionModel {
             id: treeFileSelection
-            model: root.repository.treeFileModelProxy
+            model: root.repository ? root.repository.treeFileModelProxy : null
 
             onCurrentIndexChanged: {
                 root.repository.treeFileModelProxy.handleCurrentIndex(currentIndex)
@@ -72,7 +81,7 @@ Item {
 
         ItemSelectionModel {
             id: flatFileSelection
-            model: root.repository.flatFileModelProxy
+            model: root.repository ? root.repository.flatFileModelProxy : null
 
             onCurrentIndexChanged: {
                 root.repository.flatFileModelProxy.handleCurrentIndex(currentIndex)

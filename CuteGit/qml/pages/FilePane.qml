@@ -41,15 +41,15 @@ TitlePane {
             anchors.fill: parent
             visible: root.filesAsTree
 
-            ToolBar {
+            StandardToolBar {
                 id: toolbar
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
 
                 Row {
-                    ToolButton { text: Const.expandAllText; action: Action { onTriggered: treeView.expandAll() } }
-                    ToolButton { text: Const.collapseAllText; action: Action { onTriggered: treeView.collapseAll() } }
+                    StandardToolButton { text: Const.expandAllText; action: Action { onTriggered: treeView.expandAll() } }
+                    StandardToolButton { text: Const.collapseAllText; action: Action { onTriggered: treeView.collapseAll() } }
                 }
             }
 

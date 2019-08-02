@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     QStringList lArgList;
-    QString sSequenceFile = "";
+    QString sSequenceFile;
     bool bMasterMode = true;
 
     // Check arguments

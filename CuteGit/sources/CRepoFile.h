@@ -37,6 +37,9 @@ public:
     //! Constructor
     CRepoFile(QObject* parent = nullptr);
 
+    //! Copy constructor
+    CRepoFile(const CRepoFile& target, QObject* parent = nullptr);
+
     //! Destructor
     virtual ~CRepoFile() override;
 
@@ -47,8 +50,10 @@ public:
     QString stagedToString() const;
 
     //-------------------------------------------------------------------------------------------------
-    // Control methods
+    // Operators
     //-------------------------------------------------------------------------------------------------
+
+    bool operator < (const CRepoFile& target);
 
     //-------------------------------------------------------------------------------------------------
     // Constants

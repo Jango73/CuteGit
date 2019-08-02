@@ -15,14 +15,18 @@ MenuBar {
     property variant repository: null
     property bool filesAsTree: false
 
-    property bool rebaseInProgress: root.repository.repositoryStatus === CEnums.Rebase
-                                    || root.repository.repositoryStatus === CEnums.InteractiveRebase
+    property bool rebaseInProgress: repository
+                                    ? repository.repositoryStatus === CEnums.Rebase
+                                      || repository.repositoryStatus === CEnums.InteractiveRebase
+                                    : false
 
     property alias cloneRepositoryAction: cloneRepository
     property alias openRepositoryAction: openRepository
     property alias fetchAction: fetch
     property alias pullAction: pull
     property alias pushAction: push
+    property alias stageSelectionAction: stageSelection
+    property alias revertSelectionAction: revertSelection
     property alias commitAction: commit
     property alias amendAction: amend
     property alias saveStashAction: saveStash
@@ -39,7 +43,6 @@ MenuBar {
         Action {
             id: cloneRepository
             text: Const.cloneMenuText
-            enabled: root.repository.can(CEnums.Clone)
             onTriggered: root.requestCloneRepository()
         }
 
@@ -99,7 +102,7 @@ MenuBar {
             id: fetch
             text: Const.fetchMenuText
             shortcut: "Ctrl+F"
-            enabled: root.repository.can(CEnums.Fetch)
+            enabled: root.repository ? root.repository.can(CEnums.Fetch) : false
             onTriggered: repositoryView.requestFetch()
         }
 
@@ -107,7 +110,7 @@ MenuBar {
             id: pull
             text: Const.pullMenuText
             shortcut: "Ctrl+L"
-            enabled: root.repository.can(CEnums.Pull)
+            enabled: root.repository ? root.repository.can(CEnums.Pull) : false
             onTriggered: repositoryView.requestPull()
         }
 
@@ -115,7 +118,7 @@ MenuBar {
             id: push
             text: Const.pushMenuText
             shortcut: "Ctrl+P"
-            enabled: root.repository.can(CEnums.Push)
+            enabled: root.repository ? root.repository.can(CEnums.Push) : false
             onTriggered: repositoryView.requestPush()
         }
     }
@@ -136,6 +139,7 @@ MenuBar {
         }
 
         Action {
+            id: stageSelection
             text: qsTr("&Stage selection")
             shortcut: "Ctrl++"
             onTriggered: repositoryView.requestStageSelection()
@@ -150,6 +154,7 @@ MenuBar {
         MenuSeparator { }
 
         Action {
+            id: revertSelection
             text: qsTr("&Revert selection")
             shortcut: "Ctrl+Z"
             onTriggered: repositoryView.requestRevertSelection()
@@ -160,14 +165,14 @@ MenuBar {
         Action {
             id: saveStash
             text: qsTr("Save stash")
-            enabled: root.repository.can(CEnums.Stash)
+            enabled: root.repository ? root.repository.can(CEnums.Stash) : false
             onTriggered: repositoryView.requestStashSave()
         }
 
         Action {
             id: popStash
             text: qsTr("Pop stash")
-            enabled: root.repository.can(CEnums.Stash)
+            enabled: root.repository ? root.repository.can(CEnums.Stash) : false
             onTriggered: repositoryView.requestStashPop()
         }
 
@@ -177,7 +182,7 @@ MenuBar {
             id: commit
             text: qsTr("&Commit")
             shortcut: "Ctrl+C"
-            enabled: root.repository.can(CEnums.Commit) && root.repository.hasCommitableFiles
+            enabled: root.repository ? root.repository.can(CEnums.Commit) && root.repository.hasCommitableFiles : false
             onTriggered: repositoryView.requestCommit()
         }
 
@@ -185,7 +190,7 @@ MenuBar {
             id: amend
             text: qsTr("&Amend")
             shortcut: "Ctrl+A"
-            enabled: root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles
+            enabled: root.repository ? root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles : false
             onTriggered: repositoryView.requestAmend()
         }
 
@@ -194,14 +199,14 @@ MenuBar {
         Action {
             text: qsTr("C&ontinue rebase")
             shortcut: "Ctrl+R"
-            enabled: root.rebaseInProgress && root.repository.can(CEnums.ContinueRebase)
+            enabled: root.repository ? root.rebaseInProgress && root.repository.can(CEnums.ContinueRebase) : false
             onTriggered: repositoryView.requestContinueRebase()
         }
 
         Action {
             text: qsTr("Abor&t rebase")
             shortcut: "Ctrl+T"
-            enabled: root.rebaseInProgress && root.repository.can(CEnums.AbortRebase)
+            enabled: root.repository ? root.rebaseInProgress && root.repository.can(CEnums.AbortRebase) : false
             onTriggered: repositoryView.requestAbortRebase()
         }
     }

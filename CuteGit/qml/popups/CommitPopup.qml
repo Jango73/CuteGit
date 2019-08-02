@@ -72,7 +72,9 @@ StandardPopup {
                     action: Action {
                         id: okButton
                         text: Const.okText
-                        enabled: message.text != "" || root.repository.repositoryStatus !== CEnums.NoMerge
+                        enabled: root.repository
+                                 ? message.text != "" || root.repository.repositoryStatus !== CEnums.NoMerge
+                                 : false
                         onTriggered: {
                             root.close()
 

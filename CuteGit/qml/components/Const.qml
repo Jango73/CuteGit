@@ -23,6 +23,7 @@ Item {
     property int mainPadding: 8
     property int mainRadius: 4
     property int smallPadding: mainPadding / 2
+    property int panePadding: smallPadding
     property int paneMargins: smallPadding
     property int paneElevation: 2
     property int popupElevation: 8
@@ -54,6 +55,8 @@ Item {
     property string tagsText: qsTr("Tags")
     property string clearText: qsTr("Clear")
     property string filesText: qsTr("Files")
+    property string stageText: qsTr("Stage")
+    property string revertText: qsTr("Revert")
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
     property string browseText: qsTr("Browse")
@@ -61,6 +64,7 @@ Item {
     property string branchesText: qsTr("Branches")
     property string switchToText: qsTr("Switch to")
     property string amendingText: qsTr("Amending...")
+    property string listEmptyText: qsTr("List empty")
     property string expandAllText: qsTr("Expand all")
     property string branchFromText: qsTr("Branch from")
     property string collapseAllText: qsTr("Collapse all")
@@ -68,10 +72,14 @@ Item {
     property string repositoriesText: qsTr("Repositories")
     property string repositoryURLText: qsTr("Repository URL")
     property string cloneRepositoryText: qsTr("Clone repository")
-    property string listEmptyText: qsTr("List empty")
     property string enterMessageHereText: qsTr("Enter your message here...")
     property string destinationFolderText: qsTr("Destination folder")
     property string enterBranchNameHereText: qsTr("Enter branch name here...")
+
+    property string emptyRepositoryTabText: qsTr(
+                                                "There is no open repository at the moment.\n" +
+                                                "Please open or clone a repository to fill this view."
+                                                )
 
     property string deleteBranchMessage: qsTr(
                                              "You are about to delete a branch.\n\n" +
@@ -117,6 +125,7 @@ Item {
     property string openIcon: "qrc:/qml/images/open-folder-black-and-white-variant"
     property string fetchIcon: "qrc:/qml/images/loop.svg"
     property string stageIcon: "qrc:/qml/images/check.svg"
+    property string revertIcon: "qrc:/qml/images/garbage-container.svg"
     property string commitIcon: "qrc:/qml/images/seal.svg"
     property string amendIcon: "qrc:/qml/images/plus-sign.svg"
     property string saveStashIcon: "qrc:/qml/images/clipboard.svg"

@@ -6,4 +6,5 @@ TextField {
     id: root
     font.family: Const.mainFontFamily
     font.pixelSize: Const.mainFontSize
+    selectByMouse: true
 }

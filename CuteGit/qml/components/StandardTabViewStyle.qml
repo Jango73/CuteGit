@@ -15,7 +15,7 @@ TabViewStyle {
 
     tab: Item {
         implicitWidth: root.canClose ? Math.max(text.width + Const.elementHeight + Const.mainPadding, root.minSize) : Math.max(text.width + Const.mainPadding, root.minSize)
-        implicitHeight: Const.elementHeight
+        implicitHeight: Const.elementHeight + Const.mainPadding * 0.5
         clip: true
 
         Rectangle {

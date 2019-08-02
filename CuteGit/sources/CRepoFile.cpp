@@ -35,6 +35,18 @@ CRepoFile::CRepoFile(QObject* parent)
 
 //-------------------------------------------------------------------------------------------------
 
+CRepoFile::CRepoFile(const CRepoFile& target, QObject* parent)
+    : QObject(parent)
+    , m_sFullName(target.m_sFullName)
+    , m_sFileName(target.m_sFileName)
+    , m_sRelativeName(target.m_sRelativeName)
+    , m_eStatus(target.m_eStatus)
+    , m_bStaged(target.m_bStaged)
+{
+}
+
+//-------------------------------------------------------------------------------------------------
+
 CRepoFile::~CRepoFile()
 {
 }
@@ -71,4 +83,11 @@ QString CRepoFile::statusToString() const
 QString CRepoFile::stagedToString() const
 {
     return m_bStaged ? sTokenStaged : sTokenUnstaged;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool CRepoFile::operator < (const CRepoFile& target)
+{
+    return m_sFullName < target.m_sFullName;
 }
