@@ -89,10 +89,10 @@ public:
     // Getters
     //-------------------------------------------------------------------------------------------------
 
-    //!
+    //! Returns the interprocess operation running
     ESharedOperation sharedOperation();
 
-    //!
+    //! Returns the name of the Git sequence file
     QString sequenceFileName();
 
     //-------------------------------------------------------------------------------------------------
