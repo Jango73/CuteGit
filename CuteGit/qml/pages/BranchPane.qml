@@ -17,40 +17,46 @@ QC14.TabView {
     QC14.Tab {
         title: Const.branchesText
 
-        StandardListView {
-            id: branchList
+        Pane {
             anchors.fill: parent
-            visible: count > 0
+            padding: Const.mainPadding
 
-            model: root.repository.branchModel
+            StandardListView {
+                id: branchList
+                anchors.fill: parent
+                visible: count > 0
 
-            delegate: StandardListViewItem {
-                width: parent.width
-                height: Const.elementHeight
-                text: model.name
-                selectionVisible: model.name === root.repository.currentBranch
+                model: root.repository.branchModel
 
-                onClicked: {
-                    if (mouse.button === Qt.RightButton) {
-                        root.branchName = model.name
-                        branchMenu.popup()
+                delegate: StandardListViewItem {
+                    width: parent.width
+                    height: Const.elementHeight + Const.mainPadding * 0.25
+                    text: model.name
+                    selectionVisible: model.name === root.repository.currentBranch
+                    listView: branchList
+
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) {
+                            root.branchName = model.name
+                            branchMenu.popup()
+                        }
+                    }
+
+                    onDoubleClicked: {
+                        root.repository.currentBranch = model.name
                     }
                 }
 
-                onDoubleClicked: {
-                    root.repository.currentBranch = model.name
-                }
-            }
+                BranchMenu {
+                    id: branchMenu
 
-            BranchMenu {
-                id: branchMenu
+                    onRequestSwitchToBranch: {
+                        root.repository.currentBranch = root.branchName
+                    }
 
-                onRequestSwitchToBranch: {
-                    root.repository.currentBranch = root.branchName
-                }
-
-                onRequestDeleteBranch: {
-                    root.requestDeleteBranch(root.branchName)
+                    onRequestDeleteBranch: {
+                        root.requestDeleteBranch(root.branchName)
+                    }
                 }
             }
         }
@@ -59,18 +65,24 @@ QC14.TabView {
     QC14.Tab {
         title: Const.tagsText
 
-        StandardListView {
-            id: tagList
+        Pane {
             anchors.fill: parent
-            visible: count > 0
+            padding: Const.mainPadding
 
-            model: root.repository.tagModel
+            StandardListView {
+                id: tagList
+                anchors.fill: parent
+                visible: count > 0
 
-            delegate: StandardListViewItem {
-                width: parent.width
-                height: Const.elementHeight
-                text: model.name
-                selectionVisible: false
+                model: root.repository.tagModel
+
+                delegate: StandardListViewItem {
+                    width: parent.width
+                    height: Const.elementHeight + Const.mainPadding * 0.25
+                    text: model.name
+                    selectionVisible: false
+                    listView: tagList
+                }
             }
         }
     }

@@ -17,38 +17,6 @@ Item {
     property variant repository: null
     property bool filesAsTree: false
 
-    Item {
-        id: rightPart
-        anchors.top: parent.top
-        anchors.bottom: bottomPart.top
-        anchors.right: parent.right
-        width: parent.width * 0.15
-
-        BranchPane {
-            id: branchView
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            repository: root.repository
-
-            onRequestDeleteBranch: {
-                deleteBranchAction.branchName = name
-                confirm.titleText = Const.deleteBranchText + " " + name
-                confirm.messageText = Const.deleteBranchMessage
-                confirm.actionToTrigger = deleteBranchAction
-                confirm.open()
-            }
-
-            Action {
-                id: deleteBranchAction
-                property string branchName: ""
-                onTriggered: root.repository.deleteBranch(branchName)
-            }
-        }
-    }
-
     Pane {
         id: repositoryStatus
         padding: 2
@@ -136,6 +104,38 @@ Item {
             Material.elevation: Const.paneElevation
 
             repository: root.repository
+        }
+    }
+
+    Item {
+        id: rightPart
+        anchors.top: parent.top
+        anchors.bottom: bottomPart.top
+        anchors.right: parent.right
+        width: parent.width * 0.15
+
+        BranchPane {
+            id: branchView
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            repository: root.repository
+
+            onRequestDeleteBranch: {
+                deleteBranchAction.branchName = name
+                confirm.titleText = Const.deleteBranchText + " " + name
+                confirm.messageText = Const.deleteBranchMessage
+                confirm.actionToTrigger = deleteBranchAction
+                confirm.open()
+            }
+
+            Action {
+                id: deleteBranchAction
+                property string branchName: ""
+                onTriggered: root.repository.deleteBranch(branchName)
+            }
         }
     }
 

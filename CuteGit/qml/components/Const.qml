@@ -27,8 +27,8 @@ Item {
     property int paneElevation: 2
     property int popupElevation: 8
     property int elementHeight: mainFontSize * 1.5
-    property int buttonHeight: mainFontSize * 2.5
     property int treeElementHeight: mainFontSize * 1.3
+    property int buttonHeight: mainFontSize * 2.5
 
     property real popupWidthNorm: 0.50
     property real popupHeightNorm: 0.75

@@ -5,6 +5,7 @@ import QtQuick.Controls.Material 2.12
 Item {
     id: root
 
+    property Item listView: null
     property alias text: theText.text
     property alias selectionVisible: selection.visible
 
@@ -16,10 +17,18 @@ Item {
         anchors.margins: Const.smallPadding
 
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: selection
             acceptedButtons: Qt.AllButtons
-            onClicked: root.clicked(mouse)
-            onDoubleClicked: root.doubleClicked(mouse)
+            onClicked: {
+                root.listView.currentIndex = index
+                root.listView.forceActiveFocus()
+                root.clicked(mouse)
+            }
+            onDoubleClicked: {
+                root.listView.currentIndex = index
+                root.listView.forceActiveFocus()
+                root.doubleClicked(mouse)
+            }
         }
 
         Selection {
@@ -27,6 +36,11 @@ Item {
             targetWidth: theText.width
             targetHeight: theText.height
             anchors.centerIn: theText
+        }
+
+        FocusIndicator {
+            anchors.fill: selection
+            visible: root.listView.activeFocus && index === root.listView.currentIndex
         }
 
         TextOverSelection {
