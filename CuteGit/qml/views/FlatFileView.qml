@@ -42,9 +42,13 @@ StandardListView {
             onPressed: {
                 root.currentIndex = index
                 root.forceActiveFocus()
+
                 if (mouse.modifiers & Qt.ControlModifier) {
                     root.selection.select(root.modelIndices[index], ItemSelectionModel.Toggle)
                 }
+            }
+            onDoubleClicked: {
+                root.repository.openFile(model.fullName)
             }
         }
 

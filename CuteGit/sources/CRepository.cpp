@@ -1,6 +1,10 @@
 
 // Qt
 #include <QDebug>
+#include <QApplication>
+#include <QClipboard>
+#include <QDesktopServices>
+#include <QUrl>
 
 // Application
 #include "CTreeFileModel.h"
@@ -162,7 +166,16 @@ void CRepository::clearOutput()
 
 void CRepository::copy(const QString& sText)
 {
-    m_pController->copy(sText);
+    QClipboard* pClipboard = QGuiApplication::clipboard();
+    pClipboard->setText(sText);
+}
+
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::openFile(const QString& sFullName)
+{
+    QDesktopServices::openUrl(QUrl(sFullName));
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -100,6 +100,9 @@ public:
 	//! Copies a string to clipboard
 	Q_INVOKABLE void copy(const QString& sText);
 
+    //! Opens a file for edit
+    Q_INVOKABLE void openFile(const QString& sFullName);
+
     //!
     Q_INVOKABLE bool can(CEnums::ECapability eWhat);
 

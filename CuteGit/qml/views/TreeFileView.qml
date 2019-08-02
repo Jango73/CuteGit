@@ -96,6 +96,12 @@ TreeView {
         }
     }
 
+    onDoubleClicked: {
+        // TODO : fix this
+        var fullName = model.data(index, "fullName")
+        root.repository.openFile(fullName)
+    }
+
     Keys.onPressed: {
         if (event.key === Qt.Key_Space) {
             var currentFileFullName = model.fullNameForIndex(currentIndex)

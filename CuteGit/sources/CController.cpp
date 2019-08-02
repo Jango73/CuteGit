@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QApplication>
 #include <QUrl>
-#include <QClipboard>
 
 // Application
 #include "CController.h"
@@ -367,14 +366,6 @@ void CController::clearSharedMemory()
 void CController::quit()
 {
     QApplication::quit();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CController::copy(const QString& sText)
-{
-	QClipboard* pClipboard = QGuiApplication::clipboard();
-	pClipboard->setText(sText);
 }
 
 //-------------------------------------------------------------------------------------------------
