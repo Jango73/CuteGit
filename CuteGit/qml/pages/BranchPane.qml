@@ -32,7 +32,7 @@ QC14.TabView {
                     width: parent.width
                     height: Const.elementHeight + Const.mainPadding * 0.25
                     text: model.name
-                    selectionVisible: model.name === root.repository.currentBranch
+                    selectionShown: model.name === root.repository.currentBranch
                     listView: branchList
 
                     onClicked: {
@@ -80,7 +80,7 @@ QC14.TabView {
                     width: parent.width
                     height: Const.elementHeight + Const.mainPadding * 0.25
                     text: model.name
-                    selectionVisible: false
+                    selectionShown: false
                     listView: tagList
                 }
             }

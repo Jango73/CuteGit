@@ -50,7 +50,7 @@ TitlePane {
                         targetWidth: text.width
                         targetHeight: text.height
                         anchors.centerIn: text
-                        visible: display === root.controller.currentRepository.repositoryPath
+                        show: display === root.controller.currentRepository.repositoryPath
                     }
 
                     TextOverSelection {

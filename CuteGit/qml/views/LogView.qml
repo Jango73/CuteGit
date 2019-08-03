@@ -37,7 +37,7 @@ StandardListView {
             anchors.centerIn: dataZone
             targetWidth: dataZone.width
             targetHeight: dataZone.height
-            visible: index === root.currentIndex
+            show: index === root.currentIndex
 
             FocusIndicator {
                 anchors.fill: parent

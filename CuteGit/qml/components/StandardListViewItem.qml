@@ -7,7 +7,7 @@ Item {
 
     property Item listView: null
     property alias text: theText.text
-    property alias selectionVisible: selection.visible
+    property alias selectionShown: selection.show
 
     signal clicked(var mouse)
     signal doubleClicked(var mouse)

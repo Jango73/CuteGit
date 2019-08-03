@@ -224,6 +224,14 @@ void CCommands::allFileStatus(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::fileStatus(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::branches(const QString& sPath)
 {
     Q_UNUSED(sPath);

@@ -13,6 +13,7 @@ Item {
         targetWidth: labelText.width
         targetHeight: labelText.height
         color: Material.accent
+        show: true
     }
 
     StandardText {

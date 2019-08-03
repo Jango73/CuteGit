@@ -4,7 +4,6 @@ import "."
 
 ListView {
     id: root
-    interactive: true
     clip: true
 
     property bool autoScrollToEnd: false

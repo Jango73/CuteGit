@@ -64,6 +64,9 @@ public:
     virtual void allFileStatus(const QString& sPath) override;
 
     //!
+    virtual void fileStatus(const QString& sPath, const QString& sFullName) override;
+
+    //!
     virtual void branches(const QString& sPath) override;
 
     //!

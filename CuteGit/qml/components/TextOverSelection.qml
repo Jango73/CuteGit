@@ -7,5 +7,5 @@ ElideText {
 
     property Item selection: null
 
-    color: selection.visible ? Material.background : Material.foreground
+    color: selection.show ? Material.background : Material.foreground
 }

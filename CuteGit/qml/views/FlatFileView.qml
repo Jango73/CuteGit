@@ -7,6 +7,7 @@ import "../components"
 
 StandardListView {
     id: root
+    interactive: !selecting
 
     property variant repository: null
     property variant selection: null
@@ -16,11 +17,6 @@ StandardListView {
     model: root.repository
            ? root.repository.flatFileModelProxy
            : undefined
-
-    onCurrentIndexChanged: {
-        if (root.selection)
-            root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
-    }
 
     delegate: Item {
         id: dlg
@@ -32,21 +28,21 @@ StandardListView {
                                 ? root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
                                 : false
 
-        Component.onCompleted: root.modelIndices[index] = root.model.index(index, 0)
-        onFullNameChanged: root.modelIndices[index] = root.model.index(index, 0)
-
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
             enabled: root.mouseActive
+            hoverEnabled : true
 
             onPressed: {
+                if (mouse.modifiers & Qt.ShiftModifier) {
+                    root.selectTo(index)
+                } else {
+                    root.selectOnly(index)
+                }
+
                 root.currentIndex = index
                 root.forceActiveFocus()
-
-                if (mouse.modifiers & Qt.ControlModifier) {
-                    root.selection.select(root.modelIndices[index], ItemSelectionModel.Toggle)
-                }
             }
 
             onDoubleClicked: {
@@ -90,7 +86,7 @@ StandardListView {
                 targetWidth: listViewFileNameText.width
                 targetHeight: listViewFileNameText.height
                 anchors.centerIn: listViewFileNameText
-                visible: dlg.selected
+                show: dlg.selected
             }
 
             FocusIndicator {
@@ -122,6 +118,14 @@ StandardListView {
                 text: model.relativeName
             }
         }
+
+        Component.onCompleted: root.modelIndices[index] = root.model.index(index, 0)
+        onFullNameChanged: root.modelIndices[index] = root.model.index(index, 0)
+    }
+
+    onCurrentIndexChanged: {
+        if (root.selection)
+            root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
     }
 
     Keys.onPressed: {
@@ -130,7 +134,30 @@ StandardListView {
         }
     }
 
-    function currentModelIndex() {
-        return root.model.index(currentIndex, 0)
+    Keys.onReleased: {
+    }
+
+    function selectTo(targetIndex) {
+        var selIndex
+        selection.clear()
+
+        if (targetIndex === root.currentIndex) {
+            root.selection.select(root.modelIndices[targetIndex], ItemSelectionModel.ToggleCurrent)
+        }
+        else if (targetIndex > root.currentIndex) {
+            for (selIndex = root.currentIndex; selIndex <= targetIndex; selIndex++) {
+                root.selection.select(root.modelIndices[selIndex], ItemSelectionModel.Select)
+            }
+        }
+        else {
+            for (selIndex = root.currentIndex; selIndex >= targetIndex; selIndex--) {
+                root.selection.select(root.modelIndices[selIndex], ItemSelectionModel.Select)
+            }
+        }
+    }
+
+    function selectOnly(targetIndex) {
+        selection.clear()
+        root.selection.select(root.modelIndices[targetIndex], ItemSelectionModel.SelectCurrent)
     }
 }

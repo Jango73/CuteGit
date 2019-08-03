@@ -44,6 +44,7 @@ static const char* sCommandContinueRebase       = "git rebase --continue";
 static const char* sCommandDeleteBranch         = "git branch --delete \"%1\"";
 static const char* sCommandFetch                = "git fetch";
 static const char* sCommandFileLog              = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
+static const char* sCommandFileStatus           = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 static const char* sCommandGetRebaseApplyPath   = "git rev-parse --git-path rebase-apply";
 static const char* sCommandGetRebaseMergePath   = "git rev-parse --git-path rebase-merge";
 static const char* sCommandGraph                = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
@@ -54,13 +55,12 @@ static const char* sCommandRebaseOnCommit       = "git rebase --interactive %1~1
 static const char* sCommandResetOnCommit        = "git reset %1";
 static const char* sCommandRevert               = "git checkout \"%1\"";
 static const char* sCommandSetCurrentBranch     = "git checkout \"%1\"";
-static const char* sCommandSquashCommit       =   "git rebase --interactive %1~2";
+static const char* sCommandSquashCommit         = "git rebase --interactive %1~2";
 static const char* sCommandStage                = "git add -f \"%1\"";
 static const char* sCommandStageAll             = "git add -u";
 static const char* sCommandStashPop             = "git stash pop";
 static const char* sCommandStashSave            = "git stash save";
 static const char* sCommandStatus               = "git status --porcelain --ignored --untracked-files=all";
-static const char* sCommandStatusForFile        = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 static const char* sCommandTags                 = "git tag";
 static const char* sCommandTagCommit            = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
 static const char* sCommandUnstage              = "git reset HEAD \"%1\"";
@@ -175,6 +175,14 @@ void CGitCommands::allFileStatus(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::fileStatus(const QString& sPath, const QString& sFullName)
+{
+    QString sFileStatusCommand = QString(sCommandFileStatus).arg(sFullName);
+    exec(new CProcessCommand(CEnums::eAllFileStatus, sPath, sFileStatusCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::branches(const QString& sPath)
 {
     exec(new CProcessCommand(CEnums::eBranches, sPath, sCommandBranches));
@@ -238,8 +246,8 @@ void CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
 
 void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
 {
-    QString sCommand = QString(sCommandStatusForFile).arg(sFullName);
-    QString sLine = execNow(sPath, sCommand);
+    QString sFileStatusCommand = QString(sCommandFileStatus).arg(sFullName);
+    QString sLine = execNow(sPath, sFileStatusCommand);
 
     CRepoFile* pFile = repoFileForLine(sPath, sLine);
 

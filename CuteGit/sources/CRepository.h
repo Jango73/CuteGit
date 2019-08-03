@@ -115,6 +115,9 @@ public:
     //! Creates a list of CRepoFile from the repo at sPath
     Q_INVOKABLE void checkAllFileStatus(QString sPath = "");
 
+    //! Creates a list of CRepoFile from the repo at sPath
+    Q_INVOKABLE void checkFileStatus(const QString& sFileFullName);
+
     //!
     Q_INVOKABLE void refresh();
 

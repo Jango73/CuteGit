@@ -220,6 +220,13 @@ void CRepository::checkAllFileStatus(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::checkFileStatus(const QString& sFileFullName)
+{
+    m_pCommands->fileStatus(m_sRepositoryPath, sFileFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::refresh()
 {
     checkRepositoryStatus();
@@ -236,8 +243,8 @@ void CRepository::toggleStaged(QString sFullName)
     if (not sFullName.isEmpty())
     {
         m_pCommands->toggleStaged(m_sRepositoryPath, sFullName);
-        checkAllFileStatus();
     }
+    checkAllFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -247,7 +254,9 @@ void CRepository::stageSelection(QStringList lFileFullNames)
     for (QString sFullName : lFileFullNames)
     {
         if (not sFullName.isEmpty())
+        {
             m_pCommands->stageFile(m_sRepositoryPath, sFullName, true);
+        }
     }
     checkAllFileStatus();
 }
@@ -259,7 +268,9 @@ void CRepository::unstageSelection(QStringList lFileFullNames)
     for (QString sFullName : lFileFullNames)
     {
         if (not sFullName.isEmpty())
+        {
             m_pCommands->stageFile(m_sRepositoryPath, sFullName, false);
+        }
     }
     checkAllFileStatus();
 }
