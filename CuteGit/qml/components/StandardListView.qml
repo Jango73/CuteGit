@@ -5,8 +5,20 @@ import "."
 ListView {
     id: root
     clip: true
+    contentWidth: width - scrollBarWidth
+
+    ScrollBar.vertical: ScrollBar {
+        width: scrollBarWidth
+        active: true;
+
+        onActiveChanged: {
+            if (!active)
+                active = true;
+        }
+    }
 
     property bool autoScrollToEnd: false
+    property int scrollBarWidth: Const.mainPadding * 2
 
     Timer {
         id: positionTimer

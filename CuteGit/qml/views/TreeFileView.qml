@@ -106,17 +106,20 @@ TreeView {
         }
     }
 
+    /*
+    TODO: make those work
     function expandAll() {
         for (var i = 0; i < root.model.rowCount(); i++) {
             var index = root.model.index(i, 0)
             console.log(index)
 
-//                    if (!treeView.isExpanded(index)) {
+            if (!treeView.isExpanded(index)) {
                 root.expand(index)
-//                    }
+            }
         }
     }
 
     function collapseAll() {
     }
+    */
 }

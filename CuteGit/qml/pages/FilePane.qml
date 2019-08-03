@@ -41,6 +41,8 @@ TitlePane {
             anchors.fill: parent
             visible: root.filesAsTree
 
+            /*
+            TODO: make expand and collapse all functions work
             StandardToolBar {
                 id: toolbar
                 anchors.top: parent.top
@@ -52,10 +54,12 @@ TitlePane {
                     StandardToolButton { text: Const.collapseAllText; action: Action { onTriggered: treeView.collapseAll() } }
                 }
             }
+            */
 
             TreeFileView {
                 id: treeView
-                anchors.top: toolbar.bottom
+                // anchors.top: toolbar.bottom
+                anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
