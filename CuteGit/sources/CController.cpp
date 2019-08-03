@@ -66,7 +66,7 @@ const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 
 CController::CController(QObject* parent)
     : QObject(parent)
-    , m_pCloneOutputModel(new QStringListModel(this))
+    , m_pStatusTextHistory(new QStringListModel(this))
     , m_pKnownRepositoryModel(new QStringListModel(this))
     , m_pOpenRepositoryModel(new CRepositoryModel(this))
     , m_pCurrentRepository(nullptr)
@@ -99,7 +99,7 @@ CController::CController(QObject* parent)
 
 CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
-    , m_pCloneOutputModel(nullptr)
+    , m_pStatusTextHistory(nullptr)
     , m_pKnownRepositoryModel(nullptr)
     , m_pOpenRepositoryModel(nullptr)
     , m_pCurrentRepository(nullptr)
@@ -157,6 +157,10 @@ void CController::setCurrentRepositoryIndex(int iValue)
 
             if (pRepository != nullptr)
                 setCurrentRepository(pRepository);
+        }
+        else
+        {
+            setCurrentRepository(nullptr);
         }
     }
 }
@@ -316,9 +320,12 @@ void CController::saveConfiguration()
     xConfig << xOpenRepositories;
 
     // Save current repository
-    CXMLNode xCurrentRepository(sParamCurrentRepository);
-    xCurrentRepository.attributes()[sParamPath] = m_pCurrentRepository->repositoryPath();
-    xConfig << xCurrentRepository;
+    if (m_pCurrentRepository != nullptr)
+    {
+        CXMLNode xCurrentRepository(sParamCurrentRepository);
+        xCurrentRepository.attributes()[sParamPath] = m_pCurrentRepository->repositoryPath();
+        xConfig << xCurrentRepository;
+    }
 
     xConfig.saveXMLToFile(CONFIG_FILE_NAME);
 }
@@ -392,7 +399,10 @@ void CController::cloneRepository(QString sRepositoryURL, QString sRepositoryPat
         // Remember the repository to show in the tab view
         m_sCurrentRepositoryPath = sRepositoryPath;
 
-        m_sCloneCommandsRepositoryPath = sRepositoryPath;
+        QUrl url(sRepositoryURL);
+        QString sRepositoryName = url.fileName().split(".").first();
+
+        m_sCloneCommandsRepositoryPath = sRepositoryPath + "/" + sRepositoryName;
         m_pCloneCommands = CRepository::getCommandsForRepositoryType(eType);
 
         connect(m_pCloneCommands, &CCommands::newOutputString, this, &CController::onNewCloneOutput);
@@ -501,7 +511,12 @@ void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOu
     default:
     case CEnums::eCloneRepository:
     {
-        setStatusText(sOutput.split(NEW_LINE).last());
+        QStringList lNewTextLines = sOutput.split(NEW_LINE);
+        setStatusText(lNewTextLines.last());
+
+        QStringList lHistory = m_pStatusTextHistory->stringList();
+        lHistory << lNewTextLines;
+        m_pStatusTextHistory->setStringList(lHistory);
         break;
     }
 

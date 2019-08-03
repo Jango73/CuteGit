@@ -38,7 +38,7 @@ static const char* sCommandAmend                = "git commit --amend --reset-au
 static const char* sCommandBranches             = "git branch -a";
 static const char* sCommandBranchFromCommit     = "git checkout -b \"%1\" \"%2\"";
 static const char* sCommandBranchLog            = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
-static const char* sCommandClone                = "git clone \"%1\"";
+static const char* sCommandClone                = "git clone --progress \"%1\"";
 static const char* sCommandCommit               = "git commit -m \"%1\"";
 static const char* sCommandContinueRebase       = "git rebase --continue";
 static const char* sCommandDeleteBranch         = "git branch --delete \"%1\"";

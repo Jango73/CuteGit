@@ -8,6 +8,8 @@ StandardPopup {
 
     property variant controller: null
 
+    signal cloneBegins()
+
     contentItem: Item {
         anchors.fill: parent
 
@@ -50,6 +52,7 @@ StandardPopup {
                         id: okButton
                         text: Const.okText
                         onTriggered: {
+                            root.cloneBegins()
                             root.controller.cloneRepository(repositoryURL.text, repositoryPath.text)
                             root.close()
                         }

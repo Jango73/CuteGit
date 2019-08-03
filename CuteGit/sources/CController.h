@@ -28,7 +28,7 @@ class CController : public QObject
 {
     Q_OBJECT
 
-    Q_FAST_PROPERTY(QStringListModel*, p, cloneOutputModel, CloneOutputModel)
+    Q_FAST_PROPERTY(QStringListModel*, p, statusTextHistory, StatusTextHistory)
     Q_FAST_PROPERTY(QStringListModel*, p, knownRepositoryModel, KnownRepositoryModel)
     Q_FAST_PROPERTY(CRepositoryModel*, p, openRepositoryModel, OpenRepositoryModel)
     Q_FAST_PROPERTY(CRepository*, p, currentRepository, CurrentRepository)

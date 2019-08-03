@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QMutexLocker>
+#include <QCoreApplication>
 
 // Application
 #include "CCommands.h"
@@ -96,7 +97,7 @@ void CCommands::run()
                             pCommand->m_mEnvironment
                             );
 
-                emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData);
+                emit execFinished(pCommand->m_sWorkPath, pCommand->m_eEndSignal, sOutput, pCommand->m_sUserData);
             }
 
             delete pCommand;
@@ -183,12 +184,18 @@ QString CCommands::execNowLiveFeed(CEnums::EProcessCommand eCommand, QString sWo
 
     while (process.state() == QProcess::Running)
     {
+        QCoreApplication::processEvents();
+
         QString sOutput = process.readAllStandardOutput();
+        sOutput += process.readAllStandardError();
 
         if (not sOutput.isEmpty())
         {
             emit newOutputString(eCommand, sOutput);
         }
+
+        if (m_bStop || QThread::currentThread()->isInterruptionRequested())
+            break;
 
         msleep(20);
     }

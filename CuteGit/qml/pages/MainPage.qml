@@ -187,6 +187,8 @@ Item {
         anchors.centerIn: parent
 
         controller: root.controller
+
+        onCloneBegins: statusTextHistory.open()
     }
 
     QLP.FolderDialog {
@@ -209,6 +211,21 @@ Item {
         StandardText {
             anchors.fill: parent
             text: Const.shortcutsText
+        }
+    }
+
+    Popup {
+        id: statusTextHistory
+        width: root.width * Const.popupWidthNorm
+        height: root.height * Const.popupHeightNorm
+        anchors.centerIn: parent
+        modal: true
+        closePolicy: Popup.CloseOnEscape
+        padding: Const.mainPadding
+
+        StandardStringListView {
+            anchors.fill: parent
+            model: root.controller.statusTextHistory
         }
     }
 }
