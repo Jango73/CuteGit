@@ -7,7 +7,6 @@ import "../components"
 
 StandardListView {
     id: root
-    interactive: !selecting
 
     property variant repository: null
     property variant selection: null
