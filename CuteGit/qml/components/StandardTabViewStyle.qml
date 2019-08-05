@@ -14,13 +14,16 @@ TabViewStyle {
     property int minSize: 80
 
     tab: Item {
-        implicitWidth: root.canClose ? Math.max(text.width + Const.elementHeight + Const.mainPadding, root.minSize) : Math.max(text.width + Const.mainPadding, root.minSize)
+        id: tab
+        implicitWidth: root.canClose
+                       ? Math.max(text.width + Const.mainPadding * 2 + Const.elementHeight, root.minSize)
+                       : Math.max(text.width + Const.mainPadding, root.minSize)
         implicitHeight: Const.elementHeight + Const.mainPadding * 0.5
         clip: true
 
         Rectangle {
             width: parent.width
-            height: parent.height + 10
+            height: parent.height + Const.mainRadius
             color: styleData.selected ? Material.primary : Material.background
             radius: Const.mainRadius
             border.width: 1
@@ -34,8 +37,8 @@ TabViewStyle {
 
         StandardText {
             id: text
-            anchors.right: root.canClose ? parent.right : undefined
-            anchors.rightMargin: root.canClose ? Const.mainPadding : 0
+            anchors.left: root.canClose ? parent.left : undefined
+            anchors.leftMargin: root.canClose ? Const.mainPadding : 0
             anchors.horizontalCenter: root.canClose ? undefined : parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             text: styleData.title
@@ -43,7 +46,7 @@ TabViewStyle {
         }
 
         Item {
-            anchors.right: parent.Right
+            anchors.right: parent.right
             width: parent.height
             height: parent.height
             visible: root.canClose && styleData.selected
