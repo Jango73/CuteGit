@@ -71,7 +71,7 @@ TreeView {
 
                 FocusIndicator {
                     anchors.fill: parent
-                    visible: root.activeFocus
+                    visible: root.activeFocus && styleData.index === root.currentIndex
                 }
             }
 
