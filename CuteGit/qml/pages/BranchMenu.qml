@@ -8,8 +8,10 @@ Menu {
     title: ""
 
     property variant controller: null
+    property bool canMerge: false
 
     signal requestSwitchToBranch()
+    signal requestMergeBranch()
     signal requestDeleteBranch()
 
     Action {
@@ -17,6 +19,15 @@ Menu {
 
         onTriggered: {
             root.requestSwitchToBranch()
+        }
+    }
+
+    Action {
+        enabled: root.canMerge
+        text: Const.mergeText
+
+        onTriggered: {
+            root.requestMergeBranch()
         }
     }
 

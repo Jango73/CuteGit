@@ -38,7 +38,7 @@ public:
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
-    Q_FAST_PROPERTY(CEnums::ERepositoryType, e, repositoryType, RepositoryType)
+    Q_FAST_PROPERTY_NO_SET_IMPL(CEnums::ERepositoryType, e, repositoryType, RepositoryType)
     Q_FAST_PROPERTY(CEnums::ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
     Q_FAST_PROPERTY(QString, s, repositoryName, RepositoryName)
@@ -68,7 +68,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CRepository(const QString& sPath, CController* pController, QObject *parent = nullptr);
+    CRepository(const QString& sPath, CController* pController, QObject *parent = nullptr, CEnums::ERepositoryType eType = CEnums::UnknownRepositoryType);
 
     //! Destructor
     virtual ~CRepository() override;
@@ -177,6 +177,9 @@ public:
 
     //! Changes the message of a commit
     Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
+
+    //! Merges a branch
+    Q_INVOKABLE void mergeBranch(const QString& sName);
 
     //! Deletes a branch
     Q_INVOKABLE void deleteBranch(const QString& sName);

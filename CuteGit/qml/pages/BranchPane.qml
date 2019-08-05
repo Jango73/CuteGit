@@ -12,6 +12,7 @@ QC14.TabView {
     property variant repository: null
     property string branchName: ""
 
+    signal requestMergeBranch(var name)
     signal requestDeleteBranch(var name)
 
     QC14.Tab {
@@ -38,6 +39,7 @@ QC14.TabView {
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
                             root.branchName = model.name
+                            branchMenu.canMerge = model.name !== root.repository.currentBranch
                             branchMenu.popup()
                         }
                     }
@@ -52,6 +54,10 @@ QC14.TabView {
 
                     onRequestSwitchToBranch: {
                         root.repository.currentBranch = root.branchName
+                    }
+
+                    onRequestMergeBranch: {
+                        root.requestMergeBranch(root.branchName)
                     }
 
                     onRequestDeleteBranch: {

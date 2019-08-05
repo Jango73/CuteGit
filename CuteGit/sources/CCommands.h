@@ -175,6 +175,9 @@ public:
     virtual void abortRebase(const QString& sPath);
 
     //!
+    virtual void mergeBranch(const QString& sPath, const QString& sBranchName);
+
+    //!
     virtual void deleteBranch(const QString& sPath, const QString& sBranchName);
 
     //!

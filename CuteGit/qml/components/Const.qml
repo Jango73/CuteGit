@@ -56,6 +56,7 @@ Item {
     property string clearText: qsTr("Clear")
     property string filesText: qsTr("Files")
     property string stageText: qsTr("Stage")
+    property string mergeText: qsTr("Merge")
     property string revertText: qsTr("Revert")
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
@@ -69,6 +70,7 @@ Item {
     property string expandAllText: qsTr("Expand all")
     property string branchFromText: qsTr("Branch from")
     property string collapseAllText: qsTr("Collapse all")
+    property string mergeBranchText: qsTr("Merge branch")
     property string deleteBranchText: qsTr("Delete branch")
     property string repositoriesText: qsTr("Repositories")
     property string repositoryURLText: qsTr("Repository URL")
@@ -81,6 +83,11 @@ Item {
                                                 "There is no open repository at the moment.\n" +
                                                 "Please open or clone a repository to fill this view."
                                                 )
+
+    property string mergeBranchMessage: qsTr(
+                                             "You are about to merge {0} on the working directory.\n\n" +
+                                             "Are you sure you want to do this?"
+                                             )
 
     property string deleteBranchMessage: qsTr(
                                              "You are about to delete a branch.\n\n" +

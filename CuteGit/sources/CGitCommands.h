@@ -148,6 +148,9 @@ public:
     virtual void abortRebase(const QString& sPath) override;
 
     //!
+    virtual void mergeBranch(const QString& sPath, const QString& sBranchName) override;
+
+    //!
     virtual void deleteBranch(const QString& sPath, const QString& sBranchName) override;
 
     //!
@@ -170,6 +173,84 @@ protected slots:
 
     //!
     void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
+
+    //-------------------------------------------------------------------------------------------------
+    // Protected constants
+    //-------------------------------------------------------------------------------------------------
+
+protected:
+
+    // Constant numbers
+
+    static const int iLogFormatValueCount;
+    static const int iGraphFormatValueCount;
+
+    // Command strings
+
+    static const QString sCommandAbortMerge;
+    static const QString sCommandAbortRebase;
+    static const QString sCommandAmend;
+    static const QString sCommandBranchAhead;
+    static const QString sCommandBranches;
+    static const QString sCommandBranchFromCommit;
+    static const QString sCommandBranchLog;
+    static const QString sCommandClone;
+    static const QString sCommandCommit;
+    static const QString sCommandContinueMerge;
+    static const QString sCommandContinueRebase;
+    static const QString sCommandCurrentBranch;
+    static const QString sCommandDeleteBranch;
+    static const QString sCommandFetch;
+    static const QString sCommandFileLog;
+    static const QString sCommandFileStatus;
+    static const QString sCommandGetRebaseApplyPath;
+    static const QString sCommandGetRebaseMergePath;
+    static const QString sCommandGraph;
+    static const QString sCommandHeadCommit;
+    static const QString sCommandMergeBranch;
+    static const QString sCommandPull;
+    static const QString sCommandPush;
+    static const QString sCommandRebaseOnCommit;
+    static const QString sCommandResetOnCommit;
+    static const QString sCommandRevert;
+    static const QString sCommandSetCurrentBranch;
+    static const QString sCommandSquashCommit;
+    static const QString sCommandStage;
+    static const QString sCommandStageAll;
+    static const QString sCommandStashPop;
+    static const QString sCommandStashSave;
+    static const QString sCommandStatus;
+    static const QString sCommandTags;
+    static const QString sCommandTagCommit;
+    static const QString sCommandUnstage;
+    static const QString sCommandUnstageAll;
+    static const QString sCommandUnstagedDiff;
+
+    // Regular expressions
+
+    static const QString sStatusBranchRegExp;
+    static const QString sStatusRegExp;
+    static const QString sPickCommitRegExp;
+
+    // Other strings
+
+    static const QString sLogFormatSplitter;
+    static const QString sRemoteBranchPrefix;
+    static const QString sSequenceEditorToken;
+    static const QString sTextEditorToken;
+    static const QString sRebaseEditCommit;
+    static const QString sRebaseRewordCommit;
+    static const QString sRebaseSquashCommit;
+    static const QString sComment;
+
+    static const QString sStatusClean;
+    static const QString sStatusAdded;
+    static const QString sStatusModified;
+    static const QString sStatusRenamed;
+    static const QString sStatusDeleted;
+    static const QString sStatusUnmerged;
+    static const QString sStatusUntracked;
+    static const QString sStatusIgnored;
 
     //-------------------------------------------------------------------------------------------------
     // Properties

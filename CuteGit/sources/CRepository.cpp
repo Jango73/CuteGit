@@ -7,10 +7,12 @@
 #include <QUrl>
 
 // Application
+#include "CUtils.h"
 #include "CTreeFileModel.h"
 #include "CTreeFileModelProxy.h"
 #include "CController.h"
 #include "CGitCommands.h"
+#include "CGerritCommands.h"
 #include "CSvnCommands.h"
 #include "CHgCommands.h"
 
@@ -38,7 +40,7 @@
 
 //-------------------------------------------------------------------------------------------------
 
-CRepository::CRepository(const QString& sPath, CController* pController, QObject* parent)
+CRepository::CRepository(const QString& sPath, CController* pController, QObject* parent, CEnums::ERepositoryType eType)
     : QObject(parent)
     , m_eRepositoryType(CEnums::UnknownRepositoryType)
     , m_eRepositoryStatus(CEnums::NoMerge)
@@ -58,12 +60,14 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_bHasCommitableFiles(false)
 {
-    m_eRepositoryType = getRepositoryTypeFromFolder(sPath);
+    if (eType == CEnums::UnknownRepositoryType)
+    {
+        eType = getRepositoryTypeFromFolder(sPath);
+    }
+
+    setRepositoryType(eType);
 
     m_sRepositoryName = sPath.split(PATH_SEP).last();
-
-    // Create the command interface
-    m_pCommands = getCommandsForRepositoryType(m_eRepositoryType);
 
     // Command return values
     connect(m_pCommands, &CCommands::newOutputString, this, &CRepository::onNewOutputString);
@@ -100,6 +104,25 @@ CRepository::~CRepository()
 
     if (m_pCommands != nullptr)
         delete m_pCommands;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::setRepositoryType(CEnums::ERepositoryType eType)
+{
+    if (m_eRepositoryType != eType)
+    {
+        m_eRepositoryType = eType;
+
+        if (m_pCommands != nullptr)
+            delete m_pCommands;
+
+        // Create the command interface
+        m_pCommands = getCommandsForRepositoryType(m_eRepositoryType);
+
+        emit repositoryTypeChanged();
+        emit repositoryTypeStringChanged();
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -159,7 +182,8 @@ QString CRepository::repositoryTypeString() const
     switch(m_eRepositoryType)
     {
     case CEnums::UnknownRepositoryType: return "?";
-    case CEnums::GIT: return "Git";
+    case CEnums::Git: return "Git";
+    case CEnums::Gerrit: return "Gerrit";
     case CEnums::CVS: return "CVS";
     case CEnums::SVN: return "SVN";
     case CEnums::HG: return "Mercurial";
@@ -402,6 +426,13 @@ void CRepository::changeCommitMessage(const QString& sCommitId, const QString& s
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::mergeBranch(const QString& sName)
+{
+    m_pCommands->mergeBranch(m_sRepositoryPath, sName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::deleteBranch(const QString& sName)
 {
     m_pCommands->deleteBranch(m_sRepositoryPath, sName);
@@ -413,7 +444,13 @@ CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& 
 {
     if (QDir(QString("%1/.git").arg(sPath)).exists())
     {
-        return CEnums::GIT;
+        QString sCommitMsgFile = QString("%1/.git/hooks/commit-msg").arg(sPath);
+        QString sCommitMsgContents = CUtils::getTextFileContents(sCommitMsgFile);
+
+        if (sCommitMsgContents.contains("Gerrit") && sCommitMsgContents.contains("add_ChangeId()"))
+            return CEnums::Gerrit;
+
+        return CEnums::Git;
     }
 
     if (QDir(QString("%1/.svn").arg(sPath)).exists())
@@ -434,10 +471,10 @@ CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& 
 CEnums::ERepositoryType CRepository::getRepositoryTypeFromURL(const QString& sRepositoryURL)
 {
     if (sRepositoryURL.contains(".git"))
-        return CEnums::GIT;
+        return CEnums::Git;
 
     if (sRepositoryURL.contains("gerrit"))
-        return CEnums::GIT;
+        return CEnums::Gerrit;
 
     if (sRepositoryURL.contains("/svn"))
         return CEnums::SVN;
@@ -455,8 +492,11 @@ CCommands* CRepository::getCommandsForRepositoryType(CEnums::ERepositoryType eTy
     switch (eType)
     {
 
-    case CEnums::GIT:
+    case CEnums::Git:
         return new CGitCommands();
+
+    case CEnums::Gerrit:
+        return new CGerritCommands();
 
     case CEnums::SVN:
         return new CSvnCommands();
@@ -632,6 +672,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
     case CEnums::eBranchFromCommit:
+    case CEnums::eMergeBranch:
     case CEnums::eDeleteBranch:
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:

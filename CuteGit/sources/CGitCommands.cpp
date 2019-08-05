@@ -6,6 +6,7 @@
 #include <QCoreApplication>
 
 // Application
+#include "CUtils.h"
 #include "CGitCommands.h"
 
 /*!
@@ -25,77 +26,71 @@
 */
 
 //-------------------------------------------------------------------------------------------------
-// Constant numbers
+// Constants
 
-static int iLogFormatValueCount = 4;
-static int iGraphFormatValueCount = 5;
+const int CGitCommands::iLogFormatValueCount            = 4;
+const int CGitCommands::iGraphFormatValueCount          = 5;
 
-//-------------------------------------------------------------------------------------------------
-// Command strings
+const QString CGitCommands::sCommandAbortMerge          = "git merge --abort";
+const QString CGitCommands::sCommandAbortRebase         = "git rebase --abort";
+const QString CGitCommands::sCommandAmend               = "git commit --amend --reset-author --no-edit";
+const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count master...origin/master";
+const QString CGitCommands::sCommandBranches            = "git branch -a";
+const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\" \"%2\"";
+const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
+const QString CGitCommands::sCommandClone               = "git clone --progress \"%1\"";
+const QString CGitCommands::sCommandCommit              = "git commit -m \"%1\"";
+const QString CGitCommands::sCommandContinueMerge       = "git merge --continue";
+const QString CGitCommands::sCommandContinueRebase      = "git rebase --continue";
+const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbrev-ref HEAD";
+const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
+const QString CGitCommands::sCommandFetch               = "git fetch";
+const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
+const QString CGitCommands::sCommandFileStatus          = "git status --porcelain --ignored --untracked-files=all \"%1\"";
+const QString CGitCommands::sCommandGetRebaseApplyPath  = "git rev-parse --git-path rebase-apply";
+const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-path rebase-merge";
+const QString CGitCommands::sCommandGraph               = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
+const QString CGitCommands::sCommandHeadCommit          = "git rev-parse --short \"%1\"";
+const QString CGitCommands::sCommandMergeBranch         = "git merge \"%1\"";
+const QString CGitCommands::sCommandPull                = "git pull";
+const QString CGitCommands::sCommandPush                = "git push";
+const QString CGitCommands::sCommandRebaseOnCommit      = "git rebase --interactive %1~1";
+const QString CGitCommands::sCommandResetOnCommit       = "git reset %1";
+const QString CGitCommands::sCommandRevert              = "git checkout \"%1\"";
+const QString CGitCommands::sCommandSetCurrentBranch    = "git checkout \"%1\"";
+const QString CGitCommands::sCommandSquashCommit        = "git rebase --interactive %1~2";
+const QString CGitCommands::sCommandStage               = "git add -f \"%1\"";
+const QString CGitCommands::sCommandStageAll            = "git add -u";
+const QString CGitCommands::sCommandStashPop            = "git stash pop";
+const QString CGitCommands::sCommandStashSave           = "git stash save";
+const QString CGitCommands::sCommandStatus              = "git status --porcelain --ignored --untracked-files=all";
+const QString CGitCommands::sCommandTags                = "git tag";
+const QString CGitCommands::sCommandTagCommit           = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
+const QString CGitCommands::sCommandUnstage             = "git reset HEAD \"%1\"";
+const QString CGitCommands::sCommandUnstageAll          = "git reset .";
+const QString CGitCommands::sCommandUnstagedDiff        = "git diff --no-color --ignore-all-space HEAD \"%1\"";
 
-static const char* sCommandAbortRebase          = "git rebase --abort";
-static const char* sCommandAmend                = "git commit --amend --reset-author --no-edit";
-static const char* sCommandBranches             = "git branch -a";
-static const char* sCommandBranchFromCommit     = "git checkout -b \"%1\" \"%2\"";
-static const char* sCommandBranchLog            = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
-static const char* sCommandClone                = "git clone --progress \"%1\"";
-static const char* sCommandCommit               = "git commit -m \"%1\"";
-static const char* sCommandContinueRebase       = "git rebase --continue";
-static const char* sCommandDeleteBranch         = "git branch --delete \"%1\"";
-static const char* sCommandFetch                = "git fetch";
-static const char* sCommandFileLog              = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
-static const char* sCommandFileStatus           = "git status --porcelain --ignored --untracked-files=all \"%1\"";
-static const char* sCommandGetRebaseApplyPath   = "git rev-parse --git-path rebase-apply";
-static const char* sCommandGetRebaseMergePath   = "git rev-parse --git-path rebase-merge";
-static const char* sCommandGraph                = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
-static const char* sCommandHeadCommit           = "git rev-parse --short \"%1\"";
-static const char* sCommandPull                 = "git pull";
-static const char* sCommandPush                 = "git push";
-static const char* sCommandRebaseOnCommit       = "git rebase --interactive %1~1";
-static const char* sCommandResetOnCommit        = "git reset %1";
-static const char* sCommandRevert               = "git checkout \"%1\"";
-static const char* sCommandSetCurrentBranch     = "git checkout \"%1\"";
-static const char* sCommandSquashCommit         = "git rebase --interactive %1~2";
-static const char* sCommandStage                = "git add -f \"%1\"";
-static const char* sCommandStageAll             = "git add -u";
-static const char* sCommandStashPop             = "git stash pop";
-static const char* sCommandStashSave            = "git stash save";
-static const char* sCommandStatus               = "git status --porcelain --ignored --untracked-files=all";
-static const char* sCommandTags                 = "git tag";
-static const char* sCommandTagCommit            = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
-static const char* sCommandUnstage              = "git reset HEAD \"%1\"";
-static const char* sCommandUnstageAll           = "git reset .";
-static const char* sCommandUnstagedDiff         = "git diff --no-color --ignore-all-space HEAD \"%1\"";
+const QString CGitCommands::sStatusBranchRegExp         = "";
+const QString CGitCommands::sStatusRegExp               = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
+const QString CGitCommands::sPickCommitRegExp           = "(pick)\\s+([a-zA-Z0-9]+)\\s+(.*)";
 
-//-------------------------------------------------------------------------------------------------
-// Regular expressions
+const QString CGitCommands::sLogFormatSplitter          = "&&&";
+const QString CGitCommands::sRemoteBranchPrefix         = "remotes/origin/";
+const QString CGitCommands::sSequenceEditorToken        = "GIT_SEQUENCE_EDITOR";
+const QString CGitCommands::sTextEditorToken            = "GIT_EDITOR";
+const QString CGitCommands::sRebaseEditCommit           = "edit %1 %2";
+const QString CGitCommands::sRebaseRewordCommit         = "reword %1 %2";
+const QString CGitCommands::sRebaseSquashCommit         = "squash %1 %2";
+const QString CGitCommands::sComment                    = "#";
 
-static const char* sStatusRegExp     = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
-static const char* sPickCommitRegExp = "(pick)\\s+([a-zA-Z0-9]+)\\s+(.*)";
-
-//-------------------------------------------------------------------------------------------------
-// Other strings
-
-static const char* sLogFormatSplitter   = "&&&";
-static const char* sRemoteBranchPrefix  = "remotes/origin/";
-static const char* sSequenceEditorToken = "GIT_SEQUENCE_EDITOR";
-static const char* sTextEditorToken     = "GIT_EDITOR";
-static const char* sRebaseEditCommit    = "edit %1 %2";
-static const char* sRebaseRewordCommit  = "reword %1 %2";
-static const char* sRebaseSquashCommit  = "squash %1 %2";
-static const char* sComment             = "#";
-
-//-------------------------------------------------------------------------------------------------
-// Status characters
-
-const QString sStatusClean     = " ";
-const QString sStatusAdded     = "A";
-const QString sStatusModified  = "M";
-const QString sStatusRenamed   = "R";
-const QString sStatusDeleted   = "D";
-const QString sStatusUnmerged  = "U";
-const QString sStatusUntracked = "?";
-const QString sStatusIgnored   = "!";
+const QString CGitCommands::sStatusClean                = " ";
+const QString CGitCommands::sStatusAdded                = "A";
+const QString CGitCommands::sStatusModified             = "M";
+const QString CGitCommands::sStatusRenamed              = "R";
+const QString CGitCommands::sStatusDeleted              = "D";
+const QString CGitCommands::sStatusUnmerged             = "U";
+const QString CGitCommands::sStatusUntracked            = "?";
+const QString CGitCommands::sStatusIgnored              = "!";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -460,6 +455,15 @@ void CGitCommands::abortRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::mergeBranch(const QString& sPath, const QString& sBranchName)
+{
+    emit newOutputString(CEnums::eNotification, QString(tr("Merging branch %1...")).arg(sBranchName));
+    QString sCommand = QString(sCommandMergeBranch).arg(sBranchName);
+    exec(new CProcessCommand(CEnums::eMergeBranch, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::deleteBranch(const QString& sPath, const QString& sBranchName)
 {
     emit newOutputString(CEnums::eNotification, QString(tr("Deleting branch %1...")).arg(sBranchName));
@@ -471,15 +475,11 @@ void CGitCommands::deleteBranch(const QString& sPath, const QString& sBranchName
 
 void CGitCommands::editSequenceFile(const QString& sFileName)
 {
-    QFile file(sFileName);
+    // Read in the file provided by GIT
+    QString sInputText = CUtils::getTextFileContents(sFileName);
 
-    if (file.open(QIODevice::ReadOnly))
+    if (not sInputText.isEmpty())
     {
-        // Read in the file provided by GIT
-        QTextStream stream(&file);
-        QString sInputText = stream.readAll();
-        file.close();
-
         QStringList lOutputLines;
 
         // Get a list of lines
@@ -565,6 +565,8 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
             sOutputText += sLine;
             sOutputText += NEW_LINE;
         }
+
+        QFile file(sFileName);
 
         // Rewrite sequence file
         if (file.open(QIODevice::WriteOnly))
@@ -697,6 +699,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
     case CEnums::eBranchFromCommit:
+    case CEnums::eMergeBranch:
     case CEnums::eDeleteBranch:
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:

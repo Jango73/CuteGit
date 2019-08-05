@@ -2,9 +2,11 @@
 HEADERS += \
     ../qt-plus/source/cpp/CXMLNode.h \
     sources/CEnums.h \
+    sources/CUtils.h \
     sources/CBranch.h \
     sources/CCommands.h \
     sources/CGitCommands.h \
+    sources/CGerritCommands.h \
     sources/CSvnCommands.h \
     sources/CHgCommands.h \
     sources/CBranchModel.h \
@@ -26,8 +28,10 @@ HEADERS += \
 
 SOURCES += \
     ../qt-plus/source/cpp/CXMLNode.cpp \
+    sources/CUtils.cpp \
     sources/CCommands.cpp \
     sources/CGitCommands.cpp \
+    sources/CGerritCommands.cpp \
     sources/CSvnCommands.cpp \
     sources/CHgCommands.cpp \
     sources/CBranchModel.cpp \

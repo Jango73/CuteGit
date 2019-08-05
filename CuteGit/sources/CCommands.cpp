@@ -448,6 +448,14 @@ void CCommands::abortRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::mergeBranch(const QString& sPath, const QString& sBranchName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sBranchName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::deleteBranch(const QString& sPath, const QString& sBranchName)
 {
     Q_UNUSED(sPath);

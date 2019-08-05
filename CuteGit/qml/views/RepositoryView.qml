@@ -7,6 +7,7 @@ import QtQml.Models 2.2
 import Qt.labs.platform 1.1 as QLP
 import Qt.labs.folderlistmodel 2.1
 import CuteGit 1.0
+import "../js/Utils.js" as Utils
 import "../components"
 import "../pages"
 import "../popups"
@@ -132,12 +133,26 @@ Pane {
 
             repository: root.repository
 
+            onRequestMergeBranch: {
+                mergeBranchAction.branchName = name
+                confirm.titleText = Const.mergeBranchText + " " + name
+                confirm.messageText = Const.mergeBranchMessage.format(name)
+                confirm.actionToTrigger = mergeBranchAction
+                confirm.open()
+            }
+
             onRequestDeleteBranch: {
                 deleteBranchAction.branchName = name
                 confirm.titleText = Const.deleteBranchText + " " + name
                 confirm.messageText = Const.deleteBranchMessage
                 confirm.actionToTrigger = deleteBranchAction
                 confirm.open()
+            }
+
+            Action {
+                id: mergeBranchAction
+                property string branchName: ""
+                onTriggered: root.repository.mergeBranch(branchName)
             }
 
             Action {

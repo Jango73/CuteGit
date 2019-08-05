@@ -47,6 +47,7 @@ public:
         ResetToCommit,
         RebaseOnCommit,
         BranchFromCommit,
+        MergeBranch,
         DeleteBranch,
         ContinueRebase,
         AbortRebase,
@@ -56,7 +57,8 @@ public:
     enum ERepositoryType
     {
         UnknownRepositoryType,
-        GIT,
+        Git,
+        Gerrit,
         CVS,
         SVN,
         HG,     // Mercurial
@@ -122,6 +124,7 @@ public:
         eSquashCommit,
         eChangeCommitMessage,
         eBranchFromCommit,
+        eMergeBranch,
         eDeleteBranch,
         eContinueRebase,
         eAbortRebase
