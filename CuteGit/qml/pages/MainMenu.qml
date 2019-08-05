@@ -13,6 +13,7 @@ MenuBar {
     property Item repositoryView: null
     property variant controller: null
     property variant repository: null
+    property variant materialTheme: 0
     property bool filesAsTree: false
 
     property bool rebaseInProgress: repository
@@ -34,6 +35,8 @@ MenuBar {
 
     signal requestCloneRepository()
     signal requestOpenRepository()
+    signal requestDarkTheme()
+    signal requestLightTheme()
     signal requestHelp()
 
     Menu {
@@ -260,6 +263,24 @@ MenuBar {
             checkable: true
             checked: root.controller.showUntracked
             onClicked: root.controller.showUntracked = !root.controller.showUntracked
+        }
+    }
+
+    Menu {
+        title: qsTr("&Theme")
+
+        MenuItem {
+            text: qsTr("Dark")
+            checkable: true
+            checked: root.materialTheme === Material.Dark
+            onClicked: root.requestDarkTheme()
+        }
+
+        MenuItem {
+            text: qsTr("Light")
+            checkable: true
+            checked: root.materialTheme === Material.Light
+            onClicked: root.requestLightTheme()
         }
     }
 

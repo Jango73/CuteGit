@@ -18,5 +18,9 @@ ApplicationWindow {
     MainPage {
         anchors.fill: parent
         controller: root.ctrl
+        materialTheme: Material.theme
+
+        onRequestDarkTheme: Material.theme = Material.Dark
+        onRequestLightTheme: Material.theme = Material.Light
     }
 }

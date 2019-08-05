@@ -15,6 +15,10 @@ Item {
     id: root
 
     property variant controller: null
+    property variant materialTheme: 0
+
+    signal requestDarkTheme()
+    signal requestLightTheme()
 
     MainMenu {
         id: menu
@@ -24,9 +28,12 @@ Item {
 
         controller: root.controller
         repository: root.controller.currentRepository
+        materialTheme: root.materialTheme
 
         onRequestCloneRepository: cloneDialog.open()
         onRequestOpenRepository: openDialog.open()
+        onRequestDarkTheme: root.requestDarkTheme()
+        onRequestLightTheme: root.requestLightTheme()
         onRequestHelp: helpDialog.open()
 
         Component.onCompleted: {

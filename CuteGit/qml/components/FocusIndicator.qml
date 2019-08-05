@@ -11,7 +11,7 @@ Item {
         height: parent.height - Const.mainPadding * 0.25
         color: Const.transparent
         border.width: 2
-        border.color: "white"
+        border.color: Material.foreground
         opacity: 0.8
         radius: Const.mainRadius
     }
