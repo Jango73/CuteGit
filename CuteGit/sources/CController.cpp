@@ -66,6 +66,7 @@ const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 
 CController::CController(QObject* parent)
     : QObject(parent)
+    , m_sVersion(VERSION_STRING)
     , m_pStatusTextHistory(new QStringListModel(this))
     , m_pKnownRepositoryModel(new QStringListModel(this))
     , m_pOpenRepositoryModel(new CRepositoryModel(this))
@@ -99,6 +100,7 @@ CController::CController(QObject* parent)
 
 CController::CController(QString sSequenceFileName, QObject* parent)
     : QObject(parent)
+    , m_sVersion(VERSION_STRING)
     , m_pStatusTextHistory(nullptr)
     , m_pKnownRepositoryModel(nullptr)
     , m_pOpenRepositoryModel(nullptr)

@@ -6,6 +6,7 @@ import QtQuick.Controls.Material 2.12
 import QtQuick.Dialogs 1.2
 import Qt.labs.platform 1.1 as QLP
 import CuteGit 1.0
+import "../js/Utils.js" as Utils
 import "../components"
 import "../views"
 import "../popups"
@@ -26,7 +27,7 @@ Item {
 
         onRequestCloneRepository: cloneDialog.open()
         onRequestOpenRepository: openDialog.open()
-        onRequestShortcuts: shortcuts.open()
+        onRequestHelp: helpDialog.open()
 
         Component.onCompleted: {
             repositoryView = Qt.binding(function() {
@@ -199,18 +200,34 @@ Item {
         }
     }
 
-    Popup {
-        id: shortcuts
+    StandardPopup {
+        id: helpDialog
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
         modal: true
         closePolicy: Popup.CloseOnEscape
-        padding: Const.mainPadding
 
         StandardText {
-            anchors.fill: parent
-            text: Const.shortcutsText
+            id: title
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: Const.mainPadding
+
+            horizontalAlignment: Text.AlignHCenter
+            text: Const.helpTitleText
+        }
+
+        StandardText {
+            id: helpText
+            anchors.top: title.bottom
+            anchors.bottom: parent.bottom
+            width: parent.width
+        }
+
+        Component.onCompleted: {
+            helpText.text = Const.helpText.format(root.controller.version)
         }
     }
 

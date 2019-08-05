@@ -34,7 +34,7 @@ MenuBar {
 
     signal requestCloneRepository()
     signal requestOpenRepository()
-    signal requestShortcuts()
+    signal requestHelp()
 
     Menu {
         id: repositoryMenu
@@ -267,8 +267,8 @@ MenuBar {
         title: qsTr("&Help")
 
         Action {
-            text: qsTr("&Shortcuts")
-            onTriggered: root.requestShortcuts()
+            text: qsTr("&About and shortcuts")
+            onTriggered: root.requestHelp()
         }
     }
 }

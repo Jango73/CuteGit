@@ -64,6 +64,7 @@ Item {
     property string branchesText: qsTr("Branches")
     property string switchToText: qsTr("Switch to")
     property string amendingText: qsTr("Amending...")
+    property string helpTitleText: qsTr("Help")
     property string listEmptyText: qsTr("List empty")
     property string expandAllText: qsTr("Expand all")
     property string branchFromText: qsTr("Branch from")
@@ -86,7 +87,12 @@ Item {
                                              "Are you sure you want to do this? It cannot be undone."
                                              )
 
-    property string shortcutsText: qsTr(
+    property string helpText: qsTr(
+                                       "CuteGit\n" +
+                                       "Version {0}\n" +
+                                       "Copyright (c) 2019 Jango73\n" +
+                                       "Some icons are copyright Freepik from www.flaticon.com\n" +
+                                       "\n" +
                                        "Shortcuts\n" +
                                        "\n" +
                                        "Open a repository\t\tControl + 'O'\n" +
@@ -108,9 +114,7 @@ Item {
                                        "Fetch\t\t\tControl + 'F'\n" +
                                        "Pull\t\t\tControl + 'L'\n" +
                                        "Push\t\t\tControl + 'P'\n" +
-                                       "\n" +
-                                       "Copyright (c) 2019 Jango73\n" +
-                                       "Some icons are copyright Freepik from www.flaticon.com\n"
+                                       "\n"
                                        )
 
     //
