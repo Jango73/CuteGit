@@ -50,13 +50,49 @@ StandardPopup {
 
             title: Const.filesText
 
-            content: FlatFileView {
+            content: StandardListView {
                 id: fileList
                 anchors.fill: parent
                 anchors.margins: Const.mainPadding
-                repository: root.repository
                 visible: root.showFileList
-                mouseActive: false
+
+                model: root.repository
+                       ? root.repository.stagedFileModelProxy
+                       : undefined
+
+                delegate: Item {
+                    id: dlg
+                    width: parent.width
+                    height: Const.treeElementHeight + Const.mainPadding * 0.25
+
+                    Item {
+                        id: listViewStatus
+                        width: Const.elementHeight
+                        height: parent.height
+                        anchors.left: parent.left
+
+                        ElideText {
+                            id: listViewStatusText
+                            width: parent.width - Const.smallPadding
+                            anchors.centerIn: parent
+                            text: model.status
+                        }
+                    }
+
+                    Item {
+                        id: listViewFileName
+                        anchors.left: listViewStatus.right
+                        width: parent.width * 0.4
+                        height: parent.height
+
+                        StandardText {
+                            id: listViewFileNameText
+                            width: parent.width - Const.smallPadding
+                            anchors.centerIn: parent
+                            text: model.fileName
+                        }
+                    }
+                }
             }
         }
 

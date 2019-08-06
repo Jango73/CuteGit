@@ -8,8 +8,6 @@
 
 // Application
 #include "CUtils.h"
-#include "CTreeFileModel.h"
-#include "CTreeFileModelProxy.h"
 #include "CController.h"
 #include "CGitCommands.h"
 #include "CGerritCommands.h"
@@ -51,6 +49,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pTreeFileModelProxy(new CTreeFileModelProxy(pController, this))
     , m_pFlatFileModel(new CFlatFileModel(this, this))
     , m_pFlatFileModelProxy(new CFlatFileModelProxy(pController, this))
+    , m_pStagedFileModelProxy(new CStagedFileModelProxy(pController, this))
     , m_pBranchModel(new CBranchModel(this))
     , m_pTagModel(new CBranchModel(this))
     , m_pLogModel(new CLogModel(this))
@@ -90,6 +89,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
     m_pFlatFileModelProxy->setSourceModel(m_pFlatFileModel);
+    m_pStagedFileModelProxy->setSourceModel(m_pFlatFileModel);
     m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
     m_pTreeFileModel->setRootPath(sPath);
 

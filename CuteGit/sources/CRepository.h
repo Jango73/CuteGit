@@ -15,6 +15,7 @@
 #include "CTreeFileModelProxy.h"
 #include "CFlatFileModel.h"
 #include "CFlatFileModelProxy.h"
+#include "CStagedFileModelProxy.h"
 #include "CRepoFile.h"
 #include "CLogModel.h"
 #include "CDiffModel.h"
@@ -48,6 +49,7 @@ public:
     Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(CFlatFileModelProxy*, p, flatFileModelProxy, FlatFileModelProxy)
+    Q_FAST_PROPERTY(CStagedFileModelProxy*, p, stagedFileModelProxy, StagedFileModelProxy)
     Q_FAST_PROPERTY(CBranchModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(CBranchModel*, p, tagModel, TagModel)
     Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
