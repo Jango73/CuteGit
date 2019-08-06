@@ -37,6 +37,9 @@ Item {
     property real popupWidthSmall: 0.25
     property real popupHeightSmall: 0.25
 
+    // Durations
+    property int componentFadingDuration: 200
+
     // Text
     property string repositoryMenuText: qsTr("&Repository")
     property string cloneMenuText: qsTr("&Clone / checkout")

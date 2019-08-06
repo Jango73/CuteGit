@@ -2,6 +2,8 @@
 // Qt
 #include <QDebug>
 #include <QQuickStyle>
+#include <QApplication>
+#include <QCoreApplication>
 
 // qt-plus
 #include <CXMLNode.h>
@@ -37,6 +39,14 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
 {
     if (bMasterMode)
     {
+        QApplication::setAttribute(Qt::AA_EnableHighDpiScaling); // DPI support
+        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); //HiDPI pixmaps
+
+//        qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "0");
+//        qputenv("QT_SCALE_FACTOR", "1.5");
+
+        qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
+
         // Register types
         // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
         qRegisterMetaType<CXMLNode>();
@@ -58,7 +68,7 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         QQuickStyle::setStyle("Material");
 
         // Load UI
-        m_pEngine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+        m_pEngine->load(QUrl(QStringLiteral("qrc:/qml/App.qml")));
     }
     else
     {

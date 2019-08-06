@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>qml/js/Utils.js</file>
 
-        <file>qml/main.qml</file>
+        <file>qml/App.qml</file>
         <file>qml/components/qmldir</file>
         <file>qml/components/Calendar.qml</file>
         <file>qml/components/Const.qml</file>
@@ -18,7 +18,6 @@
         <file>qml/components/StandardListViewItem.qml</file>
         <file>qml/components/StandardPopup.qml</file>
         <file>qml/components/StandardStringListView.qml</file>
-        <file>qml/components/StandardTabViewStyle.qml</file>
         <file>qml/components/StandardText.qml</file>
         <file>qml/components/StandardTextEdit.qml</file>
         <file>qml/components/StandardTextField.qml</file>
@@ -35,7 +34,6 @@
         <file>qml/pages/FilePane.qml</file>
         <file>qml/pages/LogMenu.qml</file>
         <file>qml/pages/MainMenu.qml</file>
-        <file>qml/pages/MainPage.qml</file>
         <file>qml/pages/OutputPane.qml</file>
         <file>qml/pages/RepoPane.qml</file>
         <file>qml/pages/ToolPane.qml</file>

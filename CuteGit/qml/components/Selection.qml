@@ -37,7 +37,7 @@ Rectangle {
 
     Behavior on opacity {
         NumberAnimation {
-            duration: 200
+            duration: Const.componentFadingDuration
         }
     }
 }

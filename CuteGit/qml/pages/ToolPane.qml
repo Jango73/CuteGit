@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import QtQuick.Controls 1.4 as QC14
 import QtQuick.Controls.Material 2.12
 import "../components"
 import "../views"
@@ -8,30 +7,43 @@ import "../popups"
 
 Pane {
     id: root
-    anchors.margins: Const.paneMargins
+    padding: Const.mainPadding
 
     Material.elevation: Const.paneElevation
 
     property variant repository: null
 
-    QC14.TabView {
-        anchors.fill: parent
-        style: StandardTabViewStyle { }
+    TabBar {
+        id: tabBar
+        anchors.top: parent.top
 
-        QC14.Tab {
-            title: qsTr("Diff")
-
-            DiffView {
-                repository: root.repository
-            }
+        TabButton {
+            width: implicitWidth
+            text: qsTr("Diff")
         }
 
-        QC14.Tab {
-            title: qsTr("Log")
+        TabButton {
+            width: implicitWidth
+            text: qsTr("Log")
+        }
+    }
 
-            FileLogPane {
-                repository: root.repository
-            }
+    SwipeView {
+        id: swipeView
+        anchors.top: tabBar.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        interactive: false
+        clip: true
+        currentIndex: tabBar.currentIndex
+
+        DiffView {
+            repository: root.repository
+        }
+
+        FileLogPane {
+            repository: root.repository
         }
     }
 }

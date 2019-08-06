@@ -1,51 +1,48 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.5 as QC15
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
-import QtQuick.Dialogs 1.2
 import Qt.labs.platform 1.1 as QLP
-import CuteGit 1.0
-import "../js/Utils.js" as Utils
-import "../components"
-import "../views"
-import "../popups"
+import "js/Utils.js" as Utils
+import "components"
+import "pages"
+import "views"
+import "popups"
 
-Item {
+ApplicationWindow {
     id: root
+    width: 1024
+    height: 768
+    visible: true
 
-    property variant controller: null
-    property variant materialTheme: 0
+    property var ctrl: controller
+    property var materialTheme: Material.theme
 
-    signal requestDarkTheme()
-    signal requestLightTheme()
+    Material.theme: Material.Dark
+    Material.primary: Material.Teal
+    Material.accent: Material.Green
 
-    MainMenu {
+    menuBar: MainMenu {
         id: menu
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
 
-        controller: root.controller
-        repository: root.controller.currentRepository
+        controller: root.ctrl
+        repository: root.ctrl.currentRepository
         materialTheme: root.materialTheme
 
         onRequestCloneRepository: cloneDialog.open()
         onRequestOpenRepository: openDialog.open()
-        onRequestDarkTheme: root.requestDarkTheme()
-        onRequestLightTheme: root.requestLightTheme()
+        onRequestDarkTheme: root.setTheme(Material.Dark)
+        onRequestLightTheme: root.setTheme(Material.Light)
         onRequestHelp: helpDialog.open()
 
         Component.onCompleted: {
             repositoryView = Qt.binding(function() {
-                return container.count > 0
-                        ? container.getTab(container.currentIndex).item
-                        : null
+                return mainSwipeView.count > 0 ? mainSwipeView.currentItem : null
             })
         }
     }
 
-    StandardToolBar {
+    header: StandardToolBar {
         id: toolBar
         anchors.left: parent.left
         anchors.right: parent.right
@@ -116,74 +113,71 @@ Item {
 
     Item {
         id: clientZone
-        anchors.top: toolBar.bottom
-        anchors.bottom: statusBar.top
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.fill: parent
 
-        QC15.TabView {
-            id: container
-            anchors.fill: parent
-
-            style: StandardTabViewStyle {
-                canClose: true
-                closeAction: tabCloseAction
-            }
-
-            Action {
-                id: tabCloseAction
-
-                onTriggered: {
-                    root.controller.removeRepository(source.index)
-                    container.removeTab(source.index)
-                }
-            }
+        TabBar {
+            id: mainTabBar
+            anchors.top: parent.top
 
             Repeater {
-                model: root.controller.openRepositoryModel
+                model: root.ctrl.openRepositoryModel
 
-                QC15.Tab {
-                    title: model.repository.repositoryName + " - " + model.repository.repositoryTypeString
-
-                    RepositoryView {
-                        repository: model.repository
-                        filesAsTree: menu.filesAsTree
-                    }
+                TabButton {
+                    width: implicitWidth
+                    text: model.repository.repositoryName + " - " + model.repository.repositoryTypeString
                 }
             }
 
             onCountChanged: {
-                var index = root.controller.currentRepositoryIndexToSet()
-                if (index !== -1)
-                    currentIndex = index
+                var indexToSet = root.ctrl.currentRepositoryIndexToSet()
+                if (indexToSet !== -1)
+                    currentIndex = indexToSet
 
-                root.controller.currentRepositoryIndex = currentIndex
+                root.ctrl.currentRepositoryIndex = currentIndex
             }
 
             onCurrentIndexChanged: {
-                root.controller.currentRepositoryIndex = currentIndex
+                root.ctrl.currentRepositoryIndex = currentIndex
+            }
+        }
+
+        SwipeView {
+            id: mainSwipeView
+            anchors.top: mainTabBar.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            interactive: false
+            currentIndex: mainTabBar.currentIndex
+
+            Repeater {
+                model: root.ctrl.openRepositoryModel
+
+                RepositoryView {
+                    repository: model.repository
+                    filesAsTree: menu.filesAsTree
+                }
             }
         }
 
         StandardLabel {
             anchors.fill: parent
-            visible: root.controller.openRepositoryModel.count === 0
+            visible: root.ctrl.openRepositoryModel.count === 0
             text: Const.emptyRepositoryTabText
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
     }
 
-    Item {
+    footer: Item {
         id: statusBar
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: Const.elementHeight
+        height: Const.elementHeight * 1.5
 
         RowLayout {
             anchors.fill: parent
+
             StandardLabel {
-                text: root.controller.statusText
+                text: root.ctrl.statusText
             }
         }
     }
@@ -194,7 +188,7 @@ Item {
         height: root.height * Const.popupHeightSmall
         anchors.centerIn: parent
 
-        controller: root.controller
+        controller: root.ctrl
 
         onCloneBegins: statusTextHistory.open()
     }
@@ -203,7 +197,7 @@ Item {
         id: openDialog
 
         onAccepted: {
-            root.controller.openRepository(folder)
+            root.ctrl.openRepository(folder)
         }
     }
 
@@ -234,7 +228,7 @@ Item {
         }
 
         Component.onCompleted: {
-            helpText.text = Const.helpText.format(root.controller.version)
+            helpText.text = Const.helpText.format(root.ctrl.version)
         }
     }
 
@@ -249,7 +243,11 @@ Item {
 
         StandardStringListView {
             anchors.fill: parent
-            model: root.controller.statusTextHistory
+            model: root.ctrl.statusTextHistory
         }
+    }
+
+    function setTheme(theme) {
+        Material.theme = theme
     }
 }
