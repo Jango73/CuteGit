@@ -518,6 +518,8 @@ void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOu
 
         QStringList lHistory = m_pStatusTextHistory->stringList();
         lHistory << lNewTextLines;
+        while (lHistory.count() > 50)
+            lHistory.takeFirst();
         m_pStatusTextHistory->setStringList(lHistory);
         break;
     }

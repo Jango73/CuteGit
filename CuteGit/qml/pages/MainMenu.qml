@@ -132,12 +132,14 @@ MenuBar {
         Action {
             text: qsTr("Stage a&ll")
             shortcut: "Ctrl+shift++"
+            enabled: root.repository
             onTriggered: repositoryView.requestStageAll()
         }
 
         Action {
             text: qsTr("Usta&ge all")
             shortcut: "Ctrl+shift+-"
+            enabled: root.repository
             onTriggered: repositoryView.requestUnstageAll()
         }
 
@@ -145,12 +147,14 @@ MenuBar {
             id: stageSelection
             text: qsTr("&Stage selection")
             shortcut: "Ctrl++"
+            enabled: root.repository
             onTriggered: repositoryView.requestStageSelection()
         }
 
         Action {
             text: qsTr("&Unstage selection")
             shortcut: "Ctrl+-"
+            enabled: root.repository
             onTriggered: repositoryView.requestUnstageSelection()
         }
 
@@ -160,6 +164,7 @@ MenuBar {
             id: revertSelection
             text: qsTr("&Revert selection")
             shortcut: "Ctrl+Z"
+            enabled: root.repository
             onTriggered: repositoryView.requestRevertSelection()
         }
 

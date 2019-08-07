@@ -289,6 +289,7 @@ ApplicationWindow {
         StandardStringListView {
             anchors.fill: parent
             model: root.ctrl.statusTextHistory
+            autoScrollToEnd: true
         }
     }
 
