@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/Jango73/CuteGit/blob/master/Media/Screenshot01.jpg)
 
-This is a simple UI for the GIT executable.
+This is a simple UI for the GIT executable (and other versioning systems in a near future).
 I decided to make my own because the only efficient GIT UIs on Linux are paywares.
 It is however not meant to compete with paywares, just provide minimal GIT functionality.
 
@@ -11,6 +11,11 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 - Make sure to update submodules
 - Open /CuteGit.pro in QtCreator
 - Build and run
+
+## Caution
+
+Do not use this software on very large repositories, where you can have hundreds of modified files at once.
+It is not *yet* able to handle massive repositories.
 
 ## Things it does
 
@@ -43,36 +48,51 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 ### CController
 
 * Creates and provides access to
-  * the interface to the versioning system
+  * the list of known repositories
+  * the list of open repositories
+  * the current repository
+  * the Git interactive rebase editing
+
+### CRepository
+
+* Represents a repository
+* Creates and provides access to
+  * the corresponding versioning system commands
   * the file system model
   * the filter for the file system model
-  * the model for the list of repositories
   * the model for lines of output when executing a process
+  * the name of the current branch
+  * the repository status (normal, rebasing, merging, ...)
+  * the list of branches
+  * the current branch log
+  * the diff of the selected folder / file
+  * the log of the selected folder / file
+* Exposes to QML / JS the versioning methods: stage, unstage, commit, push, ...
 
 ### CTreeFileModel
 
 * Inherits QFileSystemModel
+* Shows changed files as a tree
 * Provides access to
-  * the name of the current branch
-  * the repository status (normal, rebasing, merging, ...)
   * the repository files
-  * the model for the list of branches
-  * the model for the current branch log
-  * the model for the diff of the selected folder / file
-  * the model for the log of the selected folder / file
-* Exposes to C++ the versioning methods: stage, unstage, commit, push, ...
 
-### CFileModelProxy
+### CTreeFileModelProxy
 
 * Inherits QSortFilterProxyModel
 * Encapsulates CTreeFileModel
 * Enables showing/hiding the files using their GIT status property
-* Exposes to QML / JS the versioning methods: stage, unstage, commit, push, ...
 
 ### CFlatFileModel
 
 * Inherits QAbstractListModel
 * Shows changed files as a list
+* Provides access to
+  * the repository files
+
+### CFlatFileModelProxy
+
+* Inherits QSortFilterProxyModel
+* Encapsulates CFlatFileModel
 
 ### CRepoFile
 
@@ -92,8 +112,13 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 
 ### CSVNCommands
 
-* Will inherit CCommands
+* Inherits CCommands
 * Will implements SVN versioning commands
+
+### CHGCommands
+
+* Inherits CCommands
+* Will implements Mercurial versioning commands
 
 ### CLogModel
 
