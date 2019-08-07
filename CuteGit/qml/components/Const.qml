@@ -101,8 +101,7 @@ Item {
                                              )
 
     property string copyrightText: qsTr(
-                                  "CuteGit\n" +
-                                  "Version {0}\n" +
+                                  "CuteGit - version {0}\n" +
                                   "Copyright (c) 2019 Jango73\n" +
                                   "Some icons are copyright Freepik from www.flaticon.com\n"
                                   )
@@ -130,25 +129,25 @@ Item {
     property string shortcutHelpText: qsTr(
                                           "Shortcuts\n" +
                                           "\n" +
-                                          "Open a repository\t\tControl + 'O'\n" +
-                                          "Quit\t\t\tControl + 'Q'\n" +
+                                          "Open a repository\t\tControl O\n" +
+                                          "Quit\t\t\tControl Q\n" +
                                           "\n" +
                                           "Refresh\t\t\tF5\n" +
                                           "\n" +
-                                          "Stage all\t\t\tControl + Shift + '+'\n" +
-                                          "Unstage all\t\t\tControl + Shift + '-'\n" +
+                                          "Stage all\t\t\tControl Shift +\n" +
+                                          "Unstage all\t\t\tControl Shift -\n" +
                                           "Toggle staged\t\tSpace\n" +
-                                          "Stage selection\t\tControl + '+'\n" +
-                                          "Unstage selection\t\tControl + '-'\n" +
-                                          "Revert selection\t\tControl + 'Z'\n" +
-                                          "Commit\t\t\tControl + 'C'\n" +
-                                          "Amend\t\t\tControl + 'A'\n" +
-                                          "Continue rebase\t\tControl + 'R'\n" +
-                                          "Abort rebase\t\t\tControl + 'T'\n" +
+                                          "Stage selection\t\tControl +\n" +
+                                          "Unstage selection\t\tControl -\n" +
+                                          "Revert selection\t\tControl Z\n" +
+                                          "Commit\t\t\tControl C\n" +
+                                          "Amend\t\t\tControl A\n" +
+                                          "Continue rebase\t\tControl R\n" +
+                                          "Abort rebase\t\tControl T\n" +
                                           "\n" +
-                                          "Fetch\t\t\tControl + 'F'\n" +
-                                          "Pull\t\t\tControl + 'L'\n" +
-                                          "Push\t\t\tControl + 'P'\n" +
+                                          "Fetch\t\t\tControl F\n" +
+                                          "Pull\t\t\tControl L\n" +
+                                          "Push\t\t\tControl P\n" +
                                           "\n"
                                           )
 

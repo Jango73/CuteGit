@@ -666,6 +666,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eStashPop:
     {
         onNewOutput(sOutput);
+
         checkAllFileStatus();
         break;
     }
@@ -677,7 +678,9 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eFetch:
     {
         onNewOutput(sOutput);
+
         getBranchHeadCommits();
+        getBranchesCommitCountAheadBehind();
         checkAllFileStatus();
         getBranchLog();
         getGraph();
@@ -696,6 +699,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eAbortRebase:
     {
         onNewOutput(sOutput);
+
         refresh();
         break;
     }

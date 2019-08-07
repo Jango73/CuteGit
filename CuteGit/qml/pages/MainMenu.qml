@@ -185,7 +185,9 @@ MenuBar {
             id: commit
             text: qsTr("&Commit")
             shortcut: "Ctrl+C"
-            enabled: root.repository ? root.repository.can(CEnums.Commit) && root.repository.hasCommitableFiles : false
+            enabled: root.repository
+                     ? root.repository.can(CEnums.Commit) && root.repository.hasCommitableFiles
+                     : false
             onTriggered: repositoryView.requestCommit()
         }
 
@@ -193,7 +195,9 @@ MenuBar {
             id: amend
             text: qsTr("&Amend")
             shortcut: "Ctrl+A"
-            enabled: root.repository ? root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles : false
+            enabled: root.repository
+                     ? root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles && root.repository.commitCountAhead > 0
+                     : false
             onTriggered: repositoryView.requestAmend()
         }
 

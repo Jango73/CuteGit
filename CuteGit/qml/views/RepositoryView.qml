@@ -50,17 +50,15 @@ Pane {
                        : Material.background
             : "black"
 
-            text: {
-                if (root.repository)
-                    if (root.repository.repositoryStatus === CEnums.InteractiveRebase)
-                        qsTr("Interactive rebase in progress...")
-                    else if (root.repository.repositoryStatus === CEnums.Rebase)
-                        qsTr("Rebase in progress...")
-                    else if (root.repository.repositoryStatus === CEnums.Merge)
-                        qsTr("Merge in progress...")
-                    else ""
-                else ""
-            }
+            text: (root.repository.repositoryStatus === CEnums.InteractiveRebase
+                   ? qsTr("Interactive rebase in progress...")
+                   : root.repository.repositoryStatus === CEnums.Rebase
+                     ? qsTr("Rebase in progress...")
+                     : root.repository.repositoryStatus === CEnums.Merge
+                       ? qsTr("Merge in progress...")
+                       : "")
+                  + " - " + root.repository.repositoryTypeString
+                  + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(", behind ") + root.repository.commitCountBehind + ")"
         }
     }
 

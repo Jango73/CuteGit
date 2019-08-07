@@ -126,8 +126,6 @@ ApplicationWindow {
                 TabButton {
                     width: implicitWidth
                     text: model.repository.repositoryName
-                          + " (" + model.repository.commitCountAhead + ", " + model.repository.commitCountBehind + ")"
-                          + " - " + model.repository.repositoryTypeString
                 }
             }
 
@@ -182,10 +180,18 @@ ApplicationWindow {
 
             Material.elevation: Const.popupElevation
 
-            property bool mayCommit: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Commit) && root.ctrl.currentRepository.hasCommitableFiles : false
-            property bool mayPush: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Push) && root.ctrl.currentRepository.hasPushableCommits : false
-            property bool mayPull: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Pull) && root.ctrl.currentRepository.hasPullableCommits : false
-            property bool mayFetch: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Fetch) : false
+            property bool mayCommit: root.ctrl.currentRepository
+                                     ? root.ctrl.currentRepository.can(CEnums.Commit) && root.ctrl.currentRepository.hasCommitableFiles
+                                     : false
+            property bool mayPush: root.ctrl.currentRepository
+                                   ? root.ctrl.currentRepository.can(CEnums.Push) && root.ctrl.currentRepository.hasPushableCommits
+                                   : false
+            property bool mayPull: root.ctrl.currentRepository
+                                   ? root.ctrl.currentRepository.can(CEnums.Pull) && root.ctrl.currentRepository.hasPullableCommits
+                                   : false
+            property bool mayFetch: root.ctrl.currentRepository
+                                    ? root.ctrl.currentRepository.can(CEnums.Fetch)
+                                    : false
 
             property string currentIconSource: ""
             property string currentText: ""
