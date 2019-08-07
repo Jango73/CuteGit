@@ -58,6 +58,7 @@
         <file>qml/images/copy-documents-option.svg</file>
         <file>qml/images/delete.svg</file>
         <file>qml/images/door-exit.svg</file>
+        <file>qml/images/down.svg</file>
         <file>qml/images/exclamation-point.svg</file>
         <file>qml/images/garbage-container.svg</file>
         <file>qml/images/info.svg</file>
@@ -67,5 +68,6 @@
         <file>qml/images/seal.svg</file>
         <file>qml/images/star.svg</file>
         <file>qml/images/tag.svg</file>
+        <file>qml/images/up-arrow.svg</file>
     </qresource>
 </RCC>

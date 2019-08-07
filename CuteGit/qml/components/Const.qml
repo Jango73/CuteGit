@@ -161,8 +161,8 @@ Item {
     // By Freepik from www.flaticon.com
     property string cloneIcon: "qrc:/qml/images/copy-documents-option.svg"
     property string openIcon: "qrc:/qml/images/open-folder-black-and-white-variant"
-    property string pushIcon: "qrc:/qml/images/check.svg"
-    property string pullIcon: "qrc:/qml/images/door-exit.svg"
+    property string pushIcon: "qrc:/qml/images/up-arrow.svg"
+    property string pullIcon: "qrc:/qml/images/down.svg"
     property string fetchIcon: "qrc:/qml/images/loop.svg"
     property string stageIcon: "qrc:/qml/images/check.svg"
     property string revertIcon: "qrc:/qml/images/garbage-container.svg"

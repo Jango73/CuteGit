@@ -69,8 +69,14 @@ ApplicationWindow {
                 icon.source: Const.fetchIcon
             }
 
-            StandardToolButton { action: menu.pullAction }
-            StandardToolButton { action: menu.pushAction }
+            StandardToolButton {
+                action: menu.pullAction
+                icon.source: Const.pullIcon
+            }
+            StandardToolButton {
+                action: menu.pushAction
+                icon.source: Const.pushIcon
+            }
 
             ToolSeparator {}
 
