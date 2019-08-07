@@ -29,12 +29,12 @@ Item {
         StandardTextField {
             id: folderName
             anchors.left: parent.left
-            anchors.right: okButton.left
+            anchors.right: browseButton.left
             anchors.rightMargin: Const.mainPadding
         }
 
         StandardButton {
-            id: okButton
+            id: browseButton
             text: Const.browseText
             anchors.right: parent.right
 

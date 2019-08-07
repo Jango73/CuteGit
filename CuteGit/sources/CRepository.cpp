@@ -57,7 +57,12 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pFileLogModel(new CLogModel(this))
     , m_pGraphModel(new CGraphModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
+    , m_iCommitCountAhead(0)
+    , m_iCommitCountBehind(0)
     , m_bHasCommitableFiles(false)
+    , m_bHasPushableCommits(false)
+    , m_bHasPullableCommits(false)
+    , m_bHasStashableFiles(false)
 {
     if (eType == CEnums::UnknownRepositoryType)
     {
@@ -258,6 +263,7 @@ void CRepository::refresh()
     getBranches();
     getTags();
     getBranchLog();
+    getGraph();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -532,6 +538,16 @@ void CRepository::getBranchHeadCommits(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::getBranchesCommitCountAheadBehind(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pCommands->branchCommitCountAheadBehind(sPath, m_pBranchModel->branchNames());
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::getTags(QString sPath)
 {
     if (sPath.isEmpty())
@@ -664,6 +680,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         getBranchHeadCommits();
         checkAllFileStatus();
         getBranchLog();
+        getGraph();
         break;
     }
 
@@ -719,6 +736,26 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
         break;
     }
 
+    case CEnums::eBranchCommitCountAhead:
+    {
+        if (sKey == m_sCurrentBranch)
+        {
+            setCommitCountAhead(sValue.toInt());
+            setHasPushableCommits(m_iCommitCountAhead > 0);
+        }
+        break;
+    }
+
+    case CEnums::eBranchCommitCountBehind:
+    {
+        if (sKey == m_sCurrentBranch)
+        {
+            setCommitCountBehind(sValue.toInt());
+            setHasPullableCommits(m_iCommitCountBehind > 0);
+        }
+        break;
+    }
+
     default:
     {
         break;
@@ -746,6 +783,7 @@ void CRepository::onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QLi
     {
         m_pBranchModel->setBranchList(lNewBranches);
         getBranchHeadCommits();
+        getBranchesCommitCountAheadBehind();
         break;
     }
 

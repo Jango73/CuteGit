@@ -101,6 +101,8 @@ public:
         eRepositoryStatus,
         eBranches,
         eBranchHeadCommit,
+        eBranchCommitCountAhead,
+        eBranchCommitCountBehind,
         eTags,
         eTagCommit,
         eCurrentBranch,

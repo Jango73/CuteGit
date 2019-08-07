@@ -34,7 +34,7 @@ const int CGitCommands::iGraphFormatValueCount          = 5;
 const QString CGitCommands::sCommandAbortMerge          = "git merge --abort";
 const QString CGitCommands::sCommandAbortRebase         = "git rebase --abort";
 const QString CGitCommands::sCommandAmend               = "git commit --amend --reset-author --no-edit";
-const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count master...origin/master";
+const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count \"%1\"...\"origin/%1\"";
 const QString CGitCommands::sCommandBranches            = "git branch -a";
 const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\" \"%2\"";
 const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
@@ -49,7 +49,7 @@ const QString CGitCommands::sCommandFileLog             = "git log --pretty=form
 const QString CGitCommands::sCommandFileStatus          = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 const QString CGitCommands::sCommandGetRebaseApplyPath  = "git rev-parse --git-path rebase-apply";
 const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-path rebase-merge";
-const QString CGitCommands::sCommandGraph               = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\"";
+const QString CGitCommands::sCommandGraph               = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\" --max-count=50";
 const QString CGitCommands::sCommandHeadCommit          = "git rev-parse --short \"%1\"";
 const QString CGitCommands::sCommandMergeBranch         = "git merge \"%1\"";
 const QString CGitCommands::sCommandPull                = "git pull";
@@ -191,6 +191,20 @@ void CGitCommands::branchHeadCommits(const QString& sPath, QStringList lBranches
     {
         QString sCommand = QString(sCommandHeadCommit).arg(sBranch);
         exec(new CProcessCommand(CEnums::eBranchHeadCommit, sPath, sCommand, true, QMap<QString, QString>(), sBranch));
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::branchCommitCountAheadBehind(const QString& sPath, QStringList lBranches)
+{
+    for (QString sBranch: lBranches)
+    {
+        if (not sBranch.startsWith(sRemoteBranchPrefix))
+        {
+            QString sCommand = QString(sCommandBranchAhead).arg(sBranch);
+            exec(new CProcessCommand(CEnums::eBranchCommitCountAhead, sPath, sCommand, true, QMap<QString, QString>(), sBranch));
+        }
     }
 }
 
@@ -487,7 +501,7 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
 
         switch (m_eRebaseStep)
         {
-        // In case we're modifyng the sequence file
+        // In case we're modifying the sequence file
         // Most often .git/rebase-merge/git-rebase-todo
         case eRSChangeCommitEditSequence:
         case eRSSquashCommitEditSequence:
@@ -718,6 +732,20 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         break;
     }
 
+    // toto
+    case CEnums::eBranchCommitCountAhead:
+    case CEnums::eBranchCommitCountBehind:
+    {
+        QStringList sAheadOutputLines = sValue.split("\t");
+        QString sAheadCount = sAheadOutputLines.count() > 0 ? sAheadOutputLines[0].trimmed() : "0";
+        QString sBehindCount = sAheadOutputLines.count() > 1 ? sAheadOutputLines[1].trimmed() : "0";
+
+        emit newOutputKeyValue(CEnums::eBranchCommitCountAhead, sUserData, sAheadCount);
+        emit newOutputKeyValue(CEnums::eBranchCommitCountBehind, sUserData, sBehindCount);
+
+        break;
+    }
+
     case CEnums::eUnstagedFileDiff:
     {
         // Create CDiffLines with the returned string of the process
@@ -776,6 +804,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                     sLine.remove(0, 2);
                     pNewBranch->setName(sLine);
 
+                    // Tell the world about the current branch
                     emit newOutputString(CEnums::eCurrentBranch, sLine);
                 }
                 else
@@ -881,6 +910,14 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 pLine->setMessage(sValues[2].trimmed());
                 pLine->setAuthor(sValues[3].trimmed());
                 pLine->setDate(QDateTime::fromString(sValues[4].trimmed(), Qt::ISODate));
+
+                lReturnValue << pLine;
+            }
+            else if (sValues.count() == 1)
+            {
+                CGraphLine* pLine = new CGraphLine();
+
+                pLine->setGraphSymbol(sValues[0].trimmed());
 
                 lReturnValue << pLine;
             }

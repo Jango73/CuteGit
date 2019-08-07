@@ -20,4 +20,6 @@ class CBranch : public QObject
 
     Q_FAST_PROPERTY(QString, s, name, Name)
     Q_FAST_PROPERTY(QString, s, commitId, CommitId)
+    Q_FAST_PROPERTY(int, i, commitCountAhead, CommitCountAhead)
+    Q_FAST_PROPERTY(int, i, commitCountBehind, CommitCountBehind)
 };

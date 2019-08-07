@@ -254,6 +254,14 @@ void CCommands::branchHeadCommits(const QString& sPath, QStringList lBranches)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::branchCommitCountAheadBehind(const QString& sPath, QStringList lBranches)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(lBranches);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::tags(const QString& sPath)
 {
     Q_UNUSED(sPath);

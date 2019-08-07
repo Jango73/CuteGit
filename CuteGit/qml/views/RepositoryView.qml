@@ -168,7 +168,7 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        height: parent.height * 0.33
+        height: parent.height * 0.4
 
         BranchLogPane {
             id: logView

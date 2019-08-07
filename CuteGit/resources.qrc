@@ -11,6 +11,7 @@
         <file>qml/components/FocusIndicator.qml</file>
         <file>qml/components/FolderSelector.qml</file>
         <file>qml/components/LogLabel.qml</file>
+        <file>qml/components/SecondaryButton.qml</file>
         <file>qml/components/Selection.qml</file>
         <file>qml/components/StandardButton.qml</file>
         <file>qml/components/StandardLabel.qml</file>
@@ -40,6 +41,7 @@
 
         <file>qml/views/DiffView.qml</file>
         <file>qml/views/FlatFileView.qml</file>
+        <file>qml/views/GraphView.qml</file>
         <file>qml/views/LogView.qml</file>
         <file>qml/views/RepositoryView.qml</file>
         <file>qml/views/TreeFileView.qml</file>

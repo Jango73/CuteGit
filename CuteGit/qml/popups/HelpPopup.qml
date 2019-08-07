@@ -28,20 +28,40 @@ StandardPopup {
             height: parent.height * 0.15
         }
 
-        StandardText {
-            id: generalText
+        TabBar {
+            id: tabBar
             anchors.top: copyrightText.bottom
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            width: parent.width * 0.5
+
+            TabButton {
+                width: implicitWidth
+                text: qsTr("General")
+            }
+
+            TabButton {
+                width: implicitWidth
+                text: qsTr("Shortcuts")
+            }
         }
 
-        StandardText {
-            id: shortcutText
-            anchors.top: copyrightText.bottom
+        SwipeView {
+            id: swipeView
+            anchors.top: tabBar.bottom
             anchors.bottom: parent.bottom
-            anchors.left: generalText.right
-            width: parent.width * 0.5
+            anchors.left: parent.left
+            anchors.right: parent.right
+            interactive: false
+            clip: true
+            currentIndex: tabBar.currentIndex
+
+            StandardText {
+                id: generalText
+                padding: Const.mainPadding * 2
+            }
+
+            StandardText {
+                id: shortcutText
+                padding: Const.mainPadding * 2
+            }
         }
 
         Component.onCompleted: {

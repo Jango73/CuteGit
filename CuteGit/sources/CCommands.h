@@ -98,6 +98,9 @@ public:
     //! Creates a list of head commits for branches of the repo at sPath
     virtual void branchHeadCommits(const QString& sPath, QStringList lBranches);
 
+    //! Creates a list of commit ahead counts for branches of the repo at sPath
+    virtual void branchCommitCountAheadBehind(const QString& sPath, QStringList lBranches);
+
     //! Creates a list of tags of the repo at sPath
     virtual void tags(const QString& sPath);
 

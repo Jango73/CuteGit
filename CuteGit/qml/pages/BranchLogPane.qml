@@ -7,7 +7,7 @@ import "../components"
 import "../views"
 import "../popups"
 
-TitlePane {
+Pane {
     id: root
 
     property variant repository: null
@@ -20,60 +20,91 @@ TitlePane {
     signal requestCommitSquash(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
 
-    title: Const.logText
+    TabBar {
+        id: tabBar
+        anchors.top: parent.top
 
-    content: Item {
-        anchors.fill: parent
-
-        StandardLabel {
-            anchors.fill: parent
-            text: Const.listEmptyText
-            visible: root.repository === null | logView.count === 0
+        TabButton {
+            width: implicitWidth
+            text: Const.branchLogText
         }
 
-        LogView {
-            id: logView
-            anchors.fill: parent
+        TabButton {
+            width: implicitWidth
+            text: Const.graphText
+        }
+    }
 
-            model: root.repository !== null ? root.repository.logModel : undefined
+    SwipeView {
+        id: swipeView
+        anchors.top: tabBar.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        interactive: false
+        clip: true
+        currentIndex: tabBar.currentIndex
 
-            onItemRightClicked: {
-                menu.commitId = commitId
-                menu.commitMessage = message
-                menu.popup()
+        Item {
+            StandardLabel {
+                anchors.fill: parent
+                text: Const.listEmptyText
+                visible: root.repository === null | logView.count === 0
+            }
+
+            LogView {
+                id: logView
+                anchors.fill: parent
+
+                model: root.repository !== null ? root.repository.logModel : undefined
+
+                onItemRightClicked: {
+                    menu.commitId = commitId
+                    menu.commitMessage = message
+                    menu.popup()
+                }
+            }
+
+            LogMenu {
+                id: menu
+                repository: root.repository
+
+                onRequestCopy: {
+                    root.requestCopy(commitId)
+                }
+
+                onRequestCommitDiffPrevious: {
+                    root.requestCommitDiffPrevious(commitId)
+                }
+
+                onRequestCommitBranchFrom: {
+                    root.requestCommitBranchFrom(commitId)
+                }
+
+                onRequestCommitReset: {
+                    root.requestCommitReset(commitId)
+                }
+
+                onRequestCommitRebase: {
+                    root.requestCommitRebase(commitId)
+                }
+
+                onRequestCommitSquash: {
+                    root.requestCommitSquash(commitId)
+                }
+
+                onRequestCommitMessageChange: {
+                    root.requestCommitMessageChange(commitId, commitMessage)
+                }
             }
         }
 
-        LogMenu {
-            id: menu
-            repository: root.repository
+        Item {
+            GraphView {
+                id: graphView
+                anchors.fill: parent
 
-            onRequestCopy: {
-                root.requestCopy(commitId)
-            }
-
-            onRequestCommitDiffPrevious: {
-                root.requestCommitDiffPrevious(commitId)
-            }
-
-            onRequestCommitBranchFrom: {
-                root.requestCommitBranchFrom(commitId)
-            }
-
-            onRequestCommitReset: {
-                root.requestCommitReset(commitId)
-            }
-
-            onRequestCommitRebase: {
-                root.requestCommitRebase(commitId)
-            }
-
-            onRequestCommitSquash: {
-                root.requestCommitSquash(commitId)
-            }
-
-            onRequestCommitMessageChange: {
-                root.requestCommitMessageChange(commitId, commitMessage)
+                model: root.repository !== null ? root.repository.graphModel : undefined
             }
         }
     }

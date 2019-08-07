@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import Qt.labs.platform 1.1 as QLP
+import CuteGit 1.0
 import "js/Utils.js" as Utils
 import "components"
 import "pages"
@@ -124,7 +125,9 @@ ApplicationWindow {
 
                 TabButton {
                     width: implicitWidth
-                    text: model.repository.repositoryName + " - " + model.repository.repositoryTypeString
+                    text: model.repository.repositoryName
+                          + " (" + model.repository.commitCountAhead + ", " + model.repository.commitCountBehind + ")"
+                          + " - " + model.repository.repositoryTypeString
                 }
             }
 
@@ -166,6 +169,61 @@ ApplicationWindow {
             text: Const.emptyRepositoryTabText
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+        }
+
+        RoundButton {
+            id: magicButton
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.bottomMargin: Const.mainPadding * 2
+            anchors.rightMargin: Const.mainPadding * 2
+            text: currentText
+            icon.source: currentIconSource
+
+            Material.elevation: Const.popupElevation
+
+            property bool mayCommit: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Commit) && root.ctrl.currentRepository.hasCommitableFiles : false
+            property bool mayPush: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Push) && root.ctrl.currentRepository.hasPushableCommits : false
+            property bool mayPull: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Pull) && root.ctrl.currentRepository.hasPullableCommits : false
+            property bool mayFetch: root.ctrl.currentRepository ? root.ctrl.currentRepository.can(CEnums.Fetch) : false
+
+            property string currentIconSource: ""
+            property string currentText: ""
+            property Action currentAction: null
+
+            onClicked: {
+                if (currentAction)
+                    currentAction.trigger()
+            }
+
+            onMayCommitChanged: checkMagicAction()
+            onMayPushChanged: checkMagicAction()
+            onMayPullChanged: checkMagicAction()
+            onMayFetchChanged: checkMagicAction()
+
+            function checkMagicAction() {
+                visible = true
+
+                if (mayCommit) {
+                    currentText = qsTr("Commit")
+                    currentIconSource = Const.commitIcon
+                    currentAction = menu.commitAction
+                } else if (mayPush) {
+                    currentText = qsTr("Push")
+                    currentIconSource = Const.pushIcon
+                    currentAction = menu.pushAction
+                } else if (mayPull) {
+                    currentText = qsTr("Pull")
+                    currentIconSource = Const.pullIcon
+                    currentAction = menu.pullAction
+                } else  if (mayFetch) {
+                    currentText = qsTr("Fetch")
+                    currentIconSource = Const.fetchIcon
+                    currentAction = menu.fetchAction
+                } else {
+                    visible = false
+                }
+            }
         }
     }
 

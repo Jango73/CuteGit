@@ -59,7 +59,12 @@ public:
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
+    Q_FAST_PROPERTY(int, i, commitCountAhead, CommitCountAhead)
+    Q_FAST_PROPERTY(int, i, commitCountBehind, CommitCountBehind)
     Q_FAST_PROPERTY(bool, b, hasCommitableFiles, HasCommitableFiles)
+    Q_FAST_PROPERTY(bool, b, hasPushableCommits, HasPushableCommits)
+    Q_FAST_PROPERTY(bool, b, hasPullableCommits, HasPullableCommits)
+    Q_FAST_PROPERTY(bool, b, hasStashableFiles, HasStashableFiles)
 
     Q_PROPERTY(QString repositoryTypeString READ repositoryTypeString NOTIFY repositoryTypeStringChanged)
 
@@ -210,6 +215,9 @@ protected:
 
     //!
     void getBranchHeadCommits(QString sPath = "");
+
+    //!
+    void getBranchesCommitCountAheadBehind(QString sPath = "");
 
     //!
     void getTags(QString sPath = "");

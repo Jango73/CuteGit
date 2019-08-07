@@ -73,6 +73,9 @@ public:
     virtual void branchHeadCommits(const QString& sPath, QStringList lBranches) override;
 
     //!
+    virtual void branchCommitCountAheadBehind(const QString& sPath, QStringList lBranches) override;
+
+    //!
     virtual void tags(const QString& sPath) override;
 
     //!

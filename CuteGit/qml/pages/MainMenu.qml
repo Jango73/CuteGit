@@ -113,7 +113,7 @@ MenuBar {
             id: pull
             text: Const.pullMenuText
             shortcut: "Ctrl+L"
-            enabled: root.repository ? root.repository.can(CEnums.Pull) : false
+            enabled: root.repository ? root.repository.can(CEnums.Pull) && root.repository.hasPullableCommits : false
             onTriggered: repositoryView.requestPull()
         }
 
@@ -121,7 +121,7 @@ MenuBar {
             id: push
             text: Const.pushMenuText
             shortcut: "Ctrl+P"
-            enabled: root.repository ? root.repository.can(CEnums.Push) : false
+            enabled: root.repository ? root.repository.can(CEnums.Push) && root.repository.hasPushableCommits : false
             onTriggered: repositoryView.requestPush()
         }
     }

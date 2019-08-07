@@ -45,30 +45,34 @@ StandardPopup {
             focus: true
         }
 
-        RowLayout {
+        StandardToolBar {
             id: buttons
             width: parent.width
             height: cancelButton.height + Const.mainPadding
             anchors.bottom: parent.bottom
 
-            StandardButton {
-                id: okButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.okText
+            Row {
+                spacing: Const.mainPadding
 
-                onClicked: {
-                    root.close()
-                    root.repository.commitBranchFrom(root.commitId, name.text)
+                StandardToolButton {
+                    action: Action {
+                        id: okButton
+                        text: Const.okText
+                        onTriggered: {
+                            root.close()
+                            root.repository.commitBranchFrom(root.commitId, name.text)
+                        }
+                    }
                 }
-            }
 
-            StandardButton {
-                id: cancelButton
-                Layout.alignment: Qt.AlignCenter
-                text: Const.cancelText
-
-                onClicked: {
-                    root.close()
+                StandardToolButton {
+                    action: Action {
+                        id: cancelButton
+                        text: Const.cancelText
+                        onTriggered: {
+                            root.close()
+                        }
+                    }
                 }
             }
         }

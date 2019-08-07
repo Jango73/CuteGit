@@ -12,7 +12,7 @@
     \class CGerritCommands
     \inmodule CuteGit
     \section1 General
-    This is the repository control interface for Git.
+    This is the repository control interface for Gerrit, a code review tool based on Git.
 
     \code
 

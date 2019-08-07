@@ -60,6 +60,7 @@ Item {
     property string filesText: qsTr("Files")
     property string stageText: qsTr("Stage")
     property string mergeText: qsTr("Merge")
+    property string graphText: qsTr("Graph")
     property string revertText: qsTr("Revert")
     property string cancelText: qsTr("Cancel")
     property string outputText: qsTr("Output")
@@ -68,6 +69,7 @@ Item {
     property string branchesText: qsTr("Branches")
     property string switchToText: qsTr("Switch to")
     property string amendingText: qsTr("Amending...")
+    property string branchLogText: qsTr("Branch log")
     property string helpTitleText: qsTr("Help")
     property string listEmptyText: qsTr("List empty")
     property string expandAllText: qsTr("Expand all")
@@ -110,13 +112,13 @@ Item {
                                          "\n" +
                                          "Staged files are shown in green, unstaged ones in red.\n" +
                                          "The symbols next to file names are:\n" +
-                                         "  * The file is modified\n" +
-                                         "  + The file is being added\n" +
-                                         "  - The file is being removed\n" +
-                                         "  = The file is being renamed\n" +
-                                         "  ? The file is untracked\n" +
-                                         "  ! The file is ignored\n" +
-                                         "  ??? The file is missing\n" +
+                                         "*\tThe file is modified\n" +
+                                         "+\tThe file is being added\n" +
+                                         "-\tThe file is being removed\n" +
+                                         "=\tThe file is being renamed\n" +
+                                         "?\tThe file is untracked\n" +
+                                         "!\tThe file is ignored\n" +
+                                         "???\tThe file is missing\n" +
                                          "\n" +
                                          "Diff views\n" +
                                          "...\n" +
@@ -142,7 +144,7 @@ Item {
                                           "Commit\t\t\tControl + 'C'\n" +
                                           "Amend\t\t\tControl + 'A'\n" +
                                           "Continue rebase\t\tControl + 'R'\n" +
-                                          "Abort rebase\t\tControl + 'T'\n" +
+                                          "Abort rebase\t\t\tControl + 'T'\n" +
                                           "\n" +
                                           "Fetch\t\t\tControl + 'F'\n" +
                                           "Pull\t\t\tControl + 'L'\n" +
@@ -160,6 +162,8 @@ Item {
     // By Freepik from www.flaticon.com
     property string cloneIcon: "qrc:/qml/images/copy-documents-option.svg"
     property string openIcon: "qrc:/qml/images/open-folder-black-and-white-variant"
+    property string pushIcon: "qrc:/qml/images/check.svg"
+    property string pullIcon: "qrc:/qml/images/door-exit.svg"
     property string fetchIcon: "qrc:/qml/images/loop.svg"
     property string stageIcon: "qrc:/qml/images/check.svg"
     property string revertIcon: "qrc:/qml/images/garbage-container.svg"
