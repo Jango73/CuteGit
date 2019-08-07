@@ -81,6 +81,7 @@ Item {
     property string enterMessageHereText: qsTr("Enter your message here...")
     property string destinationFolderText: qsTr("Destination folder")
     property string enterBranchNameHereText: qsTr("Enter branch name here...")
+    property string stagedFilesForCommitText: qsTr("Staged files for commit")
 
     property string emptyRepositoryTabText: qsTr(
                                                 "There is no open repository at the moment.\n" +
@@ -88,44 +89,66 @@ Item {
                                                 )
 
     property string mergeBranchMessage: qsTr(
-                                             "You are about to merge {0} on the working directory.\n\n" +
-                                             "Are you sure you want to do this?"
-                                             )
+                                            "You are about to merge {0} on the working directory.\n\n" +
+                                            "Are you sure you want to do this?"
+                                            )
 
     property string deleteBranchMessage: qsTr(
                                              "You are about to delete a branch.\n\n" +
                                              "Are you sure you want to do this? It cannot be undone."
                                              )
 
-    property string helpText: qsTr(
-                                       "CuteGit\n" +
-                                       "Version {0}\n" +
-                                       "Copyright (c) 2019 Jango73\n" +
-                                       "Some icons are copyright Freepik from www.flaticon.com\n" +
-                                       "\n" +
-                                       "Shortcuts\n" +
-                                       "\n" +
-                                       "Open a repository\t\tControl + 'O'\n" +
-                                       "Quit\t\t\tControl + 'Q'\n" +
-                                       "\n" +
-                                       "Refresh\t\t\tF5\n" +
-                                       "\n" +
-                                       "Stage all\t\t\tControl + Shift + '+'\n" +
-                                       "Unstage all\t\t\tControl + Shift + '-'\n" +
-                                       "Toggle staged\t\tSpace\n" +
-                                       "Stage selection\t\tControl + '+'\n" +
-                                       "Unstage selection\t\tControl + '-'\n" +
-                                       "Revert selection\t\tControl + 'Z'\n" +
-                                       "Commit\t\t\tControl + 'C'\n" +
-                                       "Amend\t\t\tControl + 'A'\n" +
-                                       "Continue rebase\t\tControl + 'R'\n" +
-                                       "Abort rebase\t\tControl + 'T'\n" +
-                                       "\n" +
-                                       "Fetch\t\t\tControl + 'F'\n" +
-                                       "Pull\t\t\tControl + 'L'\n" +
-                                       "Push\t\t\tControl + 'P'\n" +
-                                       "\n"
-                                       )
+    property string copyrightText: qsTr(
+                                  "CuteGit\n" +
+                                  "Version {0}\n" +
+                                  "Copyright (c) 2019 Jango73\n" +
+                                  "Some icons are copyright Freepik from www.flaticon.com\n"
+                                  )
+
+    property string generalHelpText: qsTr(
+                                         "File views\n" +
+                                         "\n" +
+                                         "Staged files are shown in green, unstaged ones in red.\n" +
+                                         "The symbols next to file names are:\n" +
+                                         "  * The file is modified\n" +
+                                         "  + The file is being added\n" +
+                                         "  - The file is being removed\n" +
+                                         "  = The file is being renamed\n" +
+                                         "  ? The file is untracked\n" +
+                                         "  ! The file is ignored\n" +
+                                         "  ??? The file is missing\n" +
+                                         "\n" +
+                                         "Diff views\n" +
+                                         "...\n" +
+                                         "\n" +
+                                         "Log views\n" +
+                                         "...\n"
+                                         )
+
+    property string shortcutHelpText: qsTr(
+                                          "Shortcuts\n" +
+                                          "\n" +
+                                          "Open a repository\t\tControl + 'O'\n" +
+                                          "Quit\t\t\tControl + 'Q'\n" +
+                                          "\n" +
+                                          "Refresh\t\t\tF5\n" +
+                                          "\n" +
+                                          "Stage all\t\t\tControl + Shift + '+'\n" +
+                                          "Unstage all\t\t\tControl + Shift + '-'\n" +
+                                          "Toggle staged\t\tSpace\n" +
+                                          "Stage selection\t\tControl + '+'\n" +
+                                          "Unstage selection\t\tControl + '-'\n" +
+                                          "Revert selection\t\tControl + 'Z'\n" +
+                                          "Commit\t\t\tControl + 'C'\n" +
+                                          "Amend\t\t\tControl + 'A'\n" +
+                                          "Continue rebase\t\tControl + 'R'\n" +
+                                          "Abort rebase\t\tControl + 'T'\n" +
+                                          "\n" +
+                                          "Fetch\t\t\tControl + 'F'\n" +
+                                          "Pull\t\t\tControl + 'L'\n" +
+                                          "Push\t\t\tControl + 'P'\n" +
+                                          "\n"
+                                          )
 
     //
     property string statusModified: "*"

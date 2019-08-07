@@ -16,8 +16,6 @@ StandardPopup {
     property alias messageEnabled: message.enabled
 
     contentItem: Item {
-        anchors.fill: parent
-
         StandardText {
             id: title
             anchors.top: parent.top
@@ -34,7 +32,6 @@ StandardPopup {
             anchors.top: title.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: Const.mainPadding
             height: parent.height * 0.3
 
             placeHolderText: Const.enterMessageHereText
@@ -48,12 +45,11 @@ StandardPopup {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            title: Const.filesText
+            title: Const.stagedFilesForCommitText
 
             content: StandardListView {
                 id: fileList
                 anchors.fill: parent
-                anchors.margins: Const.mainPadding
                 visible: root.showFileList
 
                 model: root.repository

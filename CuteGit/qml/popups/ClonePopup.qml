@@ -11,8 +11,6 @@ StandardPopup {
     signal cloneBegins()
 
     contentItem: Item {
-        anchors.fill: parent
-
         StandardText {
             id: title
             anchors.top: parent.top

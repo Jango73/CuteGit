@@ -6,7 +6,7 @@ import QtQuick.Controls.Material 2.12
 import CuteGit 1.0
 import "../components"
 
-Popup {
+StandardPopup {
     id: root
     modal: true
     closePolicy: Popup.CloseOnEscape
@@ -22,8 +22,6 @@ Popup {
     }
 
     contentItem: Item {
-        anchors.fill: parent
-
         StandardText {
             id: title
             anchors.top: parent.top

@@ -201,45 +201,20 @@ ApplicationWindow {
         }
     }
 
-    StandardPopup {
+    HelpPopup {
         id: helpDialog
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
-        modal: true
-        closePolicy: Popup.CloseOnEscape
 
-        StandardText {
-            id: title
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: Const.mainPadding
-
-            horizontalAlignment: Text.AlignHCenter
-            text: Const.helpTitleText
-        }
-
-        StandardText {
-            id: helpText
-            anchors.top: title.bottom
-            anchors.bottom: parent.bottom
-            width: parent.width
-        }
-
-        Component.onCompleted: {
-            helpText.text = Const.helpText.format(root.ctrl.version)
-        }
+        controller: root.ctrl
     }
 
-    Popup {
+    StandardPopup {
         id: statusTextHistory
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
-        modal: true
-        closePolicy: Popup.CloseOnEscape
-        padding: Const.mainPadding
 
         StandardStringListView {
             anchors.fill: parent

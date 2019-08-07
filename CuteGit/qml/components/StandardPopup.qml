@@ -11,6 +11,11 @@ Popup {
 
     Material.elevation: Const.popupElevation
 
+    background: Rectangle {
+        anchors.fill: parent
+        color: Material.background
+    }
+
     Component.onCompleted: {
         root.forceActiveFocus()
     }
