@@ -366,6 +366,7 @@ void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullNa
 
 void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
 {
+    emit newOutputString(CEnums::eNotification, QString(tr("Switching to %1...")).arg(sBranch));
     QString sFinalName = sBranch;
     sFinalName.replace(sRemoteBranchPrefix, "");
     QString sCommand = QString(sCommandSetCurrentBranch).arg(sFinalName);
