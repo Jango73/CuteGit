@@ -59,6 +59,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_iCommitCountAhead(0)
     , m_iCommitCountBehind(0)
+    , m_bHasModifiedFiles(false)
     , m_bHasCommitableFiles(false)
     , m_bHasPushableCommits(false)
     , m_bHasPullableCommits(false)
@@ -819,6 +820,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
         m_lRepoFiles.clear();
 
         // Check if there are any commitable files
+        bool bHasModifiedFiles = false;
         bool bHasCommitableFiles = false;
 
         for (CRepoFile* pFile : lNewRepoFiles)
@@ -828,10 +830,14 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
                 if (pFile->staged())
                     bHasCommitableFiles = true;
 
+                if (pFile->status() != CEnums::eClean)
+                    bHasModifiedFiles = true;
+
                 m_lRepoFiles << pFile;
             }
         }
 
+        setHasModifiedFiles(bHasModifiedFiles);
         setHasCommitableFiles(bHasCommitableFiles);
 
         std::sort(m_lRepoFiles.begin(), m_lRepoFiles.end(),

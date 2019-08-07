@@ -61,6 +61,7 @@ public:
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
     Q_FAST_PROPERTY(int, i, commitCountAhead, CommitCountAhead)
     Q_FAST_PROPERTY(int, i, commitCountBehind, CommitCountBehind)
+    Q_FAST_PROPERTY(bool, b, hasModifiedFiles, HasModifiedFiles)
     Q_FAST_PROPERTY(bool, b, hasCommitableFiles, HasCommitableFiles)
     Q_FAST_PROPERTY(bool, b, hasPushableCommits, HasPushableCommits)
     Q_FAST_PROPERTY(bool, b, hasPullableCommits, HasPullableCommits)

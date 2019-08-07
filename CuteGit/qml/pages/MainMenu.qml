@@ -133,6 +133,8 @@ MenuBar {
             text: qsTr("Stage a&ll")
             shortcut: "Ctrl+shift++"
             enabled: root.repository
+                     ? root.repository.hasModifiedFiles
+                     : false
             onTriggered: repositoryView.requestStageAll()
         }
 
@@ -140,6 +142,8 @@ MenuBar {
             text: qsTr("Usta&ge all")
             shortcut: "Ctrl+shift+-"
             enabled: root.repository
+                     ? root.repository.hasModifiedFiles
+                     : false
             onTriggered: repositoryView.requestUnstageAll()
         }
 
@@ -148,6 +152,8 @@ MenuBar {
             text: qsTr("&Stage selection")
             shortcut: "Ctrl++"
             enabled: root.repository
+                     ? root.repository.hasModifiedFiles
+                     : false
             onTriggered: repositoryView.requestStageSelection()
         }
 
@@ -155,6 +161,8 @@ MenuBar {
             text: qsTr("&Unstage selection")
             shortcut: "Ctrl+-"
             enabled: root.repository
+                     ? root.repository.hasModifiedFiles
+                     : false
             onTriggered: repositoryView.requestUnstageSelection()
         }
 
@@ -165,6 +173,8 @@ MenuBar {
             text: qsTr("&Revert selection")
             shortcut: "Ctrl+Z"
             enabled: root.repository
+                     ? root.repository.hasModifiedFiles
+                     : false
             onTriggered: repositoryView.requestRevertSelection()
         }
 
@@ -173,7 +183,9 @@ MenuBar {
         Action {
             id: saveStash
             text: qsTr("Save stash")
-            enabled: root.repository ? root.repository.can(CEnums.Stash) : false
+            enabled: root.repository
+                     ? root.repository.can(CEnums.Stash) && root.repository.hasModifiedFiles
+                     : false
             onTriggered: repositoryView.requestStashSave()
         }
 
