@@ -31,16 +31,7 @@ Menu {
         }
     }
 
-    Action {
-        text: qsTr("&View diff with previous commit")
-        enabled: false
-
-        onTriggered: {
-            if (root.commitId !== "") {
-                root.requestCommitDiffPrevious(root.commitId)
-            }
-        }
-    }
+    MenuSeparator { }
 
     Action {
         text: qsTr("&Branch from")
@@ -75,6 +66,8 @@ Menu {
         }
     }
 
+    MenuSeparator { }
+
     Action {
         text: qsTr("&Squash")
         enabled: root.repository ? root.repository.can(CEnums.SquashCommit) : false
@@ -93,6 +86,19 @@ Menu {
         onTriggered: {
             if (root.commitId !== "") {
                 root.requestCommitMessageChange(root.commitId, root.commitMessage)
+            }
+        }
+    }
+
+    MenuSeparator { }
+
+    Action {
+        text: qsTr("&View diff with previous commit")
+        enabled: false
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitDiffPrevious(root.commitId)
             }
         }
     }
