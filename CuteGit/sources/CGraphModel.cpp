@@ -1,11 +1,13 @@
 
 // Application
 #include "CGraphModel.h"
+#include "CRepository.h"
 
 //-------------------------------------------------------------------------------------------------
 
-CGraphModel::CGraphModel(QObject* parent)
+CGraphModel::CGraphModel(CRepository* pRepository, QObject* parent)
     : QAbstractListModel(parent)
+    , m_pRepository(pRepository)
 {
 }
 
@@ -40,6 +42,7 @@ QHash<int, QByteArray> CGraphModel::roleNames() const
     hRoleNames[eDateRole] = "date";
     hRoleNames[eAuthorRole] = "author";
     hRoleNames[eMessageRole] = "message";
+    hRoleNames[eLabelsRole] = "labels";
     hRoleNames[eGraphSymbolRole] = "graphSymbol";
     return hRoleNames;
 }
@@ -79,9 +82,28 @@ QVariant CGraphModel::data(const QModelIndex& index, int role) const
     case eMessageRole:
         return m_lLines[row]->message();
 
+    case eLabelsRole:
+        return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
+
     case eGraphSymbolRole:
         return m_lLines[row]->graphSymbol();
     }
 
     return QVariant();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGraphModel::commitChanged(const QString& sCommitId)
+{
+    for (int iLineIndex = 0; iLineIndex < m_lLines.count(); iLineIndex++)
+    {
+        CGraphLine* pLine = m_lLines[iLineIndex];
+
+        if (pLine->commitId() == sCommitId)
+        {
+            emit dataChanged(index(iLineIndex), index(iLineIndex));
+            break;
+        }
+    }
 }

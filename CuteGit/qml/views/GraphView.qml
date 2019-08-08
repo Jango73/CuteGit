@@ -51,65 +51,37 @@ StandardListView {
             width: parent.width - Const.smallPadding
             height: parent.height
 
-            Item {
-                id: messageField
-                width: parent.width * 0.6
-                height: parent.height
+            TextOverSelection {
+                id: messageFieldText
+                anchors.top: parent.top
+                width: parent.width
+                height: Const.elementHeight
+                verticalAlignment: Text.AlignVCenter
+                text: model.graphSymbol + " " + model.message
 
-                TextOverSelection {
-                    id: messageFieldText
-                    anchors.top: parent.top
-                    width: parent.width
-                    height: Const.elementHeight
-                    verticalAlignment: Text.AlignVCenter
-                    text: model.graphSymbol + " " + model.message
+                selection: selection
+            }
 
-                    selection: selection
-                }
+            // The column containing labels
+            Column {
+                id: labelLayout
+                anchors.top: messageFieldText.bottom
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                spacing: 0
 
-                // The column containing labels
-                Column {
-                    id: labelLayout
-                    anchors.top: messageFieldText.bottom
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    spacing: 0
+                Repeater {
+                    id: labelsRepeater
 
-                    Repeater {
-                        id: labelsRepeater
+                    model: delegateItem.labels
 
-                        model: delegateItem.labels
-
-                        LogLabel {
-                            x: Const.mainPadding
-                            height: Const.elementHeight
-                            text: modelData
-                        }
+                    LogLabel {
+                        x: Const.mainPadding
+                        height: Const.elementHeight
+                        text: modelData
                     }
                 }
-            }
-
-            TextOverSelection {
-                id: authorField
-                anchors.left: messageField.right
-                width: parent.width * 0.2
-                height: parent.height
-                verticalAlignment: Text.AlignVCenter
-                text: model.author
-
-                selection: selection
-            }
-
-            TextOverSelection {
-                id: dateField
-                anchors.left: authorField.right
-                width: parent.width * 0.2
-                height: parent.height
-                verticalAlignment: Text.AlignVCenter
-                text: model.date
-
-                selection: selection
             }
         }
     }

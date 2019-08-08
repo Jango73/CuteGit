@@ -8,27 +8,42 @@
 #include "CGraphLine.h"
 
 //-------------------------------------------------------------------------------------------------
+// Forward declarations
+
+class CRepository;
+
+//-------------------------------------------------------------------------------------------------
 
 class CGraphModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
+
     enum ERoles
     {
         eCommitIdRole = Qt::UserRole + 1,
         eDateRole,
         eAuthorRole,
         eMessageRole,
+        eLabelsRole,
         eGraphSymbolRole,
     };
+
+    //-------------------------------------------------------------------------------------------------
+    // QML properties
+    //-------------------------------------------------------------------------------------------------
+
+    Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
+
+public:
 
     //-------------------------------------------------------------------------------------------------
     // Constructor & destructor
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CGraphModel(QObject *parent = nullptr);
+    CGraphModel(CRepository* pRepository, QObject *parent = nullptr);
 
     //! Destructor
     virtual ~CGraphModel();
@@ -48,6 +63,9 @@ public:
 
     //! Returns data
     virtual QVariant data(const QModelIndex& index, int role) const;
+
+    //!
+    void commitChanged(const QString& sCommitId);
 
     //-------------------------------------------------------------------------------------------------
     // Properties

@@ -52,10 +52,10 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pStagedFileModelProxy(new CStagedFileModelProxy(pController, this))
     , m_pBranchModel(new CBranchModel(this))
     , m_pTagModel(new CBranchModel(this))
-    , m_pLogModel(new CLogModel(this))
+    , m_pLogModel(new CLogModel(this, this))
     , m_pFileDiffModel(new CDiffModel(this))
-    , m_pFileLogModel(new CLogModel(this))
-    , m_pGraphModel(new CGraphModel(this))
+    , m_pFileLogModel(new CLogModel(this, this))
+    , m_pGraphModel(new CGraphModel(this, this))
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_iCommitCountAhead(0)
     , m_iCommitCountBehind(0)
@@ -731,6 +731,7 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
     {
         m_pBranchModel->setBranchHeadCommit(sKey, sValue);
         m_pLogModel->commitChanged(sValue);
+        m_pGraphModel->commitChanged(sValue);
         break;
     }
 
