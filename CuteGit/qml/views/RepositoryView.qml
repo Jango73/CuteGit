@@ -57,7 +57,7 @@ Pane {
                        ? qsTr("Merge in progress...")
                        : "")
                   + " - " + root.repository.repositoryTypeString
-                  + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(", behind ") + root.repository.commitCountBehind + ")"
+                  + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(" : behind ") + root.repository.commitCountBehind + " )"
         }
     }
 
@@ -210,6 +210,7 @@ Pane {
 
         onRequestCommitDiffPrevious: {
             root.repository.commitDiffPrevious(commitId)
+            root.activateFileDiffView()
         }
 
         onRequestCommitBranchFrom: {
@@ -240,10 +241,12 @@ Pane {
 
         onRequestCommitDiffFrom: {
             root.repository.diffFromCommitId = commitId
+            root.activateFileDiffView()
         }
 
         onRequestCommitDiffTo: {
             root.repository.diffToCommitId = commitId
+            root.activateFileDiffView()
         }
     }
 

@@ -62,9 +62,10 @@ StandardListView {
             height: parent.height
 
             Item {
-                id: messageField
+                id: flickedDataZone
                 width: parent.width * 0.6
                 height: parent.height
+                clip: true
 
                 // The row containing labels
                 Row {
@@ -117,7 +118,7 @@ StandardListView {
 
             TextOverSelection {
                 id: authorField
-                anchors.left: messageField.right
+                anchors.left: flickedDataZone.right
                 width: parent.width * 0.2
                 height: parent.height
                 verticalAlignment: Text.AlignVCenter
