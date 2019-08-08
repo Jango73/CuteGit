@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
+import "../js/Utils.js" as Utils
 import "../components"
 
 StandardListView {
@@ -12,15 +13,25 @@ StandardListView {
     delegate: Item {
         id: delegateItem
         width: parent.width
-        height: typeof model.labels !== "undefined" && model.labels !== null
-                ? Const.elementHeight * (model.labels.length + 1)
-                : Const.elementHeight
+        height: Const.elementHeight
 
         property variant labels: model.labels
+        property bool showLabels: true
 
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
+            hoverEnabled: true
+
+            onEntered: {
+                if (!Utils.itemInsideParent(messageFieldText))
+                    delegateItem.showLabels = false
+            }
+
+            onExited: {
+                delegateItem.showLabels = true
+            }
+
             onClicked: {
                 root.currentIndex = index
                 root.forceActiveFocus()
@@ -55,11 +66,42 @@ StandardListView {
                 width: parent.width * 0.6
                 height: parent.height
 
+                // The row containing labels
+                Row {
+                    id: labelLayout
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    spacing: Const.mainPadding
+                    width: delegateItem.showLabels ? implicitWidth : 0
+
+                    Behavior on width {
+                        NumberAnimation {
+                            duration: Const.componentFadingDuration
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
+
+                    Repeater {
+                        id: labelsRepeater
+
+                        model: delegateItem.labels
+
+                        LogLabel {
+                            x: Const.mainPadding
+                            height: labelLayout.height
+                            text: modelData
+                            visible: delegateItem.showLabels
+                        }
+                    }
+                }
+
                 TextOverSelection {
                     id: messageFieldText
                     anchors.top: parent.top
-                    width: parent.width
-                    height: Const.elementHeight
+                    anchors.left: labelLayout.right
+                    anchors.leftMargin: Const.mainPadding
+                    height: parent.height
                     verticalAlignment: Text.AlignVCenter
                     text: (
                               model.markedAsDiffFrom
@@ -70,28 +112,6 @@ StandardListView {
                               ) + model.message
 
                     selection: selection
-                }
-
-                // The column containing labels
-                Column {
-                    id: labelLayout
-                    anchors.top: messageFieldText.bottom
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    spacing: 0
-
-                    Repeater {
-                        id: labelsRepeater
-
-                        model: delegateItem.labels
-
-                        LogLabel {
-                            x: Const.mainPadding
-                            height: Const.elementHeight
-                            text: modelData
-                        }
-                    }
                 }
             }
 

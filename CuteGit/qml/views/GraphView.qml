@@ -22,7 +22,6 @@ StandardListView {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
             hoverEnabled: true
-            propagateComposedEvents: false
 
             onEntered: {
                 if (!Utils.itemInsideParent(messageFieldText))
