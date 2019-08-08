@@ -18,14 +18,22 @@ ApplicationWindow {
 
     property var ctrl: controller
     property var materialTheme: Material.theme
+    property var currentRepositoryView: null
 
     Material.theme: Material.Dark
     Material.primary: Material.Teal
     Material.accent: Material.Green
 
+    Component.onCompleted: {
+        currentRepositoryView = Qt.binding(function() {
+            return mainSwipeView.count > 0 ? mainSwipeView.currentItem : null
+        })
+    }
+
     menuBar: MainMenu {
         id: menu
 
+        repositoryView: root.currentRepositoryView
         controller: root.ctrl
         repository: root.ctrl.currentRepository
         materialTheme: root.materialTheme
@@ -35,12 +43,6 @@ ApplicationWindow {
         onRequestDarkTheme: root.setTheme(Material.Dark)
         onRequestLightTheme: root.setTheme(Material.Light)
         onRequestHelp: helpDialog.open()
-
-        Component.onCompleted: {
-            repositoryView = Qt.binding(function() {
-                return mainSwipeView.count > 0 ? mainSwipeView.currentItem : null
-            })
-        }
     }
 
     header: StandardToolBar {
@@ -162,7 +164,6 @@ ApplicationWindow {
 
                 RepositoryView {
                     repository: model.repository
-                    filesAsTree: menu.filesAsTree
                 }
             }
         }
@@ -290,6 +291,33 @@ ApplicationWindow {
             anchors.fill: parent
             model: root.ctrl.statusTextHistory
             autoScrollToEnd: true
+        }
+    }
+
+    //--------------------------------------------------
+    // Shortcuts
+
+    Shortcut {
+        sequence: "ALT+SHIFT+G"
+        onActivated: {
+            if (currentRepositoryView)
+                currentRepositoryView.activateGraphView()
+        }
+    }
+
+    Shortcut {
+        sequence: "ALT+SHIFT+L"
+        onActivated: {
+            if (currentRepositoryView)
+                currentRepositoryView.activateBranchLogView()
+        }
+    }
+
+    Shortcut {
+        sequence: "ALT+SHIFT+D"
+        onActivated: {
+            if (currentRepositoryView)
+                currentRepositoryView.activateFileDiffView()
         }
     }
 

@@ -2,26 +2,37 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
+import "../js/Utils.js" as Utils
 import "../components"
 
 StandardListView {
     id: root
-    activeFocusOnTab: true
 
     signal itemRightClicked(var commitId, var message)
 
     delegate: Item {
         id: delegateItem
         width: parent.width
-        height: typeof model.labels !== "undefined" && model.labels !== null
-                ? Const.elementHeight * (model.labels.length + 1)
-                : Const.elementHeight
+        height: Const.elementHeight
 
         property variant labels: model.labels
+        property bool showLabels: true
 
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
+            hoverEnabled: true
+            propagateComposedEvents: false
+
+            onEntered: {
+                if (!Utils.itemInsideParent(messageFieldText))
+                    delegateItem.showLabels = false
+            }
+
+            onExited: {
+                delegateItem.showLabels = true
+            }
+
             onClicked: {
                 root.currentIndex = index
                 root.forceActiveFocus()
@@ -30,6 +41,17 @@ StandardListView {
                     root.itemRightClicked(model.commitId, model.message)
                 }
             }
+        }
+
+        StandardText {
+            id: symbolText
+            anchors.top: parent.top
+            anchors.left: parent.left
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            text: model.graphSymbol
+            font.family: "Courier"
+            font.bold: true
         }
 
         Selection {
@@ -47,40 +69,57 @@ StandardListView {
 
         Item {
             id: dataZone
-            anchors.centerIn: parent
-            width: parent.width - Const.smallPadding
+            anchors.left: symbolText.right
+            width: parent.width - symbolText.width
             height: parent.height
 
-            TextOverSelection {
-                id: messageFieldText
-                anchors.top: parent.top
-                width: parent.width
-                height: Const.elementHeight
-                verticalAlignment: Text.AlignVCenter
-                text: model.graphSymbol + " " + model.message
+            Item {
+                id: flickedDataZone
+                width: parent.width - Const.mainPadding * 2
+                height: parent.height
+                anchors.centerIn: parent
+                clip: true
 
-                selection: selection
-            }
+                // The row containing labels
+                Row {
+                    id: labelLayout
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    spacing: Const.mainPadding
+                    width: delegateItem.showLabels ? implicitWidth : 0
 
-            // The column containing labels
-            Column {
-                id: labelLayout
-                anchors.top: messageFieldText.bottom
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                spacing: 0
-
-                Repeater {
-                    id: labelsRepeater
-
-                    model: delegateItem.labels
-
-                    LogLabel {
-                        x: Const.mainPadding
-                        height: Const.elementHeight
-                        text: modelData
+                    Behavior on width {
+                        NumberAnimation {
+                            duration: Const.componentFadingDuration
+                            easing.type: Easing.InOutQuad
+                        }
                     }
+
+                    Repeater {
+                        id: labelsRepeater
+
+                        model: delegateItem.labels
+
+                        LogLabel {
+                            x: Const.mainPadding
+                            height: labelLayout.height
+                            text: modelData
+                            visible: delegateItem.showLabels
+                        }
+                    }
+                }
+
+                TextOverSelection {
+                    id: messageFieldText
+                    anchors.top: parent.top
+                    anchors.left: labelLayout.right
+                    anchors.leftMargin: Const.mainPadding
+                    height: parent.height
+                    verticalAlignment: Text.AlignVCenter
+                    text: model.message
+
+                    selection: selection
                 }
             }
         }

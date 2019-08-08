@@ -26,7 +26,9 @@ public:
         eDateRole,
         eAuthorRole,
         eMessageRole,
-        eLabelsRole
+        eLabelsRole,
+        eMarkedAsDiffFromRole,
+        eMarkedAsDiffToRole,
     };
 
     //-------------------------------------------------------------------------------------------------

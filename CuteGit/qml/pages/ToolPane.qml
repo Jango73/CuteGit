@@ -35,15 +35,22 @@ Pane {
         anchors.left: parent.left
         anchors.right: parent.right
         interactive: false
-        clip: true
         currentIndex: tabBar.currentIndex
+        clip: true
 
         DiffView {
+            id: diffView
             repository: root.repository
         }
 
         FileLogPane {
+            id: fileLogPane
             repository: root.repository
         }
+    }
+
+    function activateFileDiffView() {
+        tabBar.currentIndex = 0
+        diffView.forceActiveFocus()
     }
 }

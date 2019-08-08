@@ -99,6 +99,9 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
     m_pTreeFileModel->setRootPath(sPath);
 
+    connect(this, &CRepository::diffToCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
+    connect(this, &CRepository::diffFromCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
+
     refresh();
 }
 
@@ -898,6 +901,7 @@ void CRepository::onNewOutputListOfCDiffLine(CEnums::EProcessCommand eCommand, Q
     {
 
     case CEnums::eUnstagedFileDiff:
+    case CEnums::eTwoCommitDiff:
     {
         m_pFileDiffModel->setLines(lNewLines);
         break;
@@ -930,4 +934,25 @@ void CRepository::onNewOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, 
     }
 
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::onDiffCommitIdChanged()
+{
+    QString sDiffFromCommitId = m_sDiffFromCommitId;
+    QString sDiffFromToId = m_sDiffToCommitId;
+
+    if (not m_sDiffFromCommitId.isEmpty() && not m_sDiffToCommitId.isEmpty())
+    {
+        m_pCommands->twoCommitDiff(m_sRepositoryPath, m_sDiffFromCommitId, m_sDiffToCommitId);
+
+        setDiffFromCommitId("");
+        setDiffToCommitId("");
+    }
+
+    m_pLogModel->commitChanged(sDiffFromCommitId);
+    m_pLogModel->commitChanged(sDiffFromToId);
+    m_pGraphModel->commitChanged(sDiffFromCommitId);
+    m_pGraphModel->commitChanged(sDiffFromToId);
 }

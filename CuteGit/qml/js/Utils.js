@@ -176,3 +176,7 @@ function tintedColor(color, tintColor) {
 
     return rgbToHex(rgb1)
 }
+
+function itemInsideParent(item) {
+    return (item.x + item.width <= item.parent.width)
+}

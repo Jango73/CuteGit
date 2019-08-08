@@ -22,10 +22,10 @@ Pane {
 
         model: root.repository !== null ? root.repository.fileLogModel : undefined
 
-        onItemRightClicked: {
-            menu.commitId = commitId
-            menu.commitMessage = message
-            menu.popup()
-        }
+//        onItemRightClicked: {
+//            menu.commitId = commitId
+//            menu.commitMessage = message
+//            menu.popup()
+//        }
     }
 }

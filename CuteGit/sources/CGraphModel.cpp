@@ -83,7 +83,14 @@ QVariant CGraphModel::data(const QModelIndex& index, int role) const
         return m_lLines[row]->message();
 
     case eLabelsRole:
-        return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
+        if (not m_lLines[row]->commitId().isEmpty())
+        {
+            return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
+        }
+        else
+        {
+            return QStringList();
+        }
 
     case eGraphSymbolRole:
         return m_lLines[row]->graphSymbol();

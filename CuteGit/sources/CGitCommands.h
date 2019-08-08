@@ -127,6 +127,9 @@ public:
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
 
     //!
+    virtual void twoCommitDiff(const QString& sPath, const QString& sFromCommitId, const QString& sToCommitId) override;
+
+    //!
     virtual void setCurrentBranch(const QString& sPath, const QString& sBranch) override;
 
     //!
@@ -225,6 +228,7 @@ protected:
     static const QString sCommandStatus;
     static const QString sCommandTags;
     static const QString sCommandTagCommit;
+    static const QString sCommandTwoCommitDiff;
     static const QString sCommandUnstage;
     static const QString sCommandUnstageAll;
     static const QString sCommandUnstagedDiff;
@@ -239,6 +243,7 @@ protected:
 
     static const QString sLogFormatSplitter;
     static const QString sRemoteBranchPrefix;
+    static const QString sRemoteBranchUselessPrefix;
     static const QString sSequenceEditorToken;
     static const QString sTextEditorToken;
     static const QString sRebaseEditCommit;

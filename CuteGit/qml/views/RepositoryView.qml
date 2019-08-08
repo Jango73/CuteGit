@@ -17,7 +17,6 @@ Pane {
     padding: Const.panePadding
 
     property variant repository: null
-    property bool filesAsTree: false
 
     Pane {
         id: repositoryStatus
@@ -88,13 +87,12 @@ Pane {
         }
 
         FilePane {
-            id: fileView
+            id: filePane
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             width: parent.width * 0.5
             anchors.margins: Const.paneMargins
-            filesAsTree: root.filesAsTree
 
             repository: root.repository
             treeSelection: treeFileSelection
@@ -102,10 +100,10 @@ Pane {
         }
 
         ToolPane {
-            id: toolView
+            id: toolPane
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.left: fileView.right
+            anchors.left: filePane.right
             anchors.right: parent.right
             anchors.margins: Const.paneMargins
 
@@ -123,7 +121,7 @@ Pane {
         width: parent.width * 0.15
 
         BranchPane {
-            id: branchView
+            id: branchPane
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -169,7 +167,7 @@ Pane {
         height: parent.height * 0.4
 
         BranchLogPane {
-            id: logView
+            id: branchLogPane
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -210,13 +208,21 @@ Pane {
                 commit.commitId = commitId
                 commit.open()
             }
+
+            onRequestCommitDiffFrom: {
+                root.repository.diffFromCommitId = commitId
+            }
+
+            onRequestCommitDiffTo: {
+                root.repository.diffToCommitId = commitId
+            }
         }
 
         OutputPane {
-            id: outputView
+            id: outputPane
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.left: logView.right
+            anchors.left: branchLogPane.right
             anchors.right: parent.right
             anchors.margins: Const.paneMargins
 
@@ -274,15 +280,15 @@ Pane {
     }
 
     function requestStageSelection() {
-        root.repository.stageSelection(fileView.getSelectedFiles())
+        root.repository.stageSelection(filePane.getSelectedFiles())
     }
 
     function requestUnstageSelection() {
-        root.repository.unstageSelection(fileView.getSelectedFiles())
+        root.repository.unstageSelection(filePane.getSelectedFiles())
     }
 
     function requestRevertSelection() {
-        root.repository.revertSelection(fileView.getSelectedFiles())
+        root.repository.revertSelection(filePane.getSelectedFiles())
     }
 
     function requestStashSave() {
@@ -315,5 +321,17 @@ Pane {
 
     function requestAbortRebase() {
         root.repository.abortRebase()
+    }
+
+    function activateBranchLogView() {
+        branchLogPane.activateBranchLogView()
+    }
+
+    function activateGraphView() {
+        branchLogPane.activateGraphView()
+    }
+
+    function activateFileDiffView() {
+        toolPane.activateFileDiffView()
     }
 }

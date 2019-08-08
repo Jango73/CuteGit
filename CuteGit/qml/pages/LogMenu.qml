@@ -18,6 +18,8 @@ Menu {
     signal requestCommitRebase(var commitId)
     signal requestCommitSquash(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
+    signal requestCommitDiffFrom(var commitId)
+    signal requestCommitDiffTo(var commitId)
 
     Action {
         text: qsTr("&Copy commit Id")
@@ -91,6 +93,26 @@ Menu {
         onTriggered: {
             if (root.commitId !== "") {
                 root.requestCommitMessageChange(root.commitId, root.commitMessage)
+            }
+        }
+    }
+
+    Action {
+        text: qsTr("Mark as diff from")
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitDiffFrom(root.commitId)
+            }
+        }
+    }
+
+    Action {
+        text: qsTr("Mark as diff to")
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitDiffTo(root.commitId)
             }
         }
     }

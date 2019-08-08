@@ -66,6 +66,7 @@ const QString CGitCommands::sCommandStashSave           = "git stash save";
 const QString CGitCommands::sCommandStatus              = "git status --porcelain --ignored --untracked-files=all";
 const QString CGitCommands::sCommandTags                = "git tag";
 const QString CGitCommands::sCommandTagCommit           = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
+const QString CGitCommands::sCommandTwoCommitDiff       = "git diff --no-color --ignore-all-space \"%1\" \"%2\"";
 const QString CGitCommands::sCommandUnstage             = "git reset HEAD \"%1\"";
 const QString CGitCommands::sCommandUnstageAll          = "git reset .";
 const QString CGitCommands::sCommandUnstagedDiff        = "git diff --no-color --ignore-all-space HEAD \"%1\"";
@@ -76,6 +77,7 @@ const QString CGitCommands::sPickCommitRegExp           = "(pick)\\s+([a-zA-Z0-9
 
 const QString CGitCommands::sLogFormatSplitter          = "&&&";
 const QString CGitCommands::sRemoteBranchPrefix         = "remotes/origin/";
+const QString CGitCommands::sRemoteBranchUselessPrefix  = "remotes/";
 const QString CGitCommands::sSequenceEditorToken        = "GIT_SEQUENCE_EDITOR";
 const QString CGitCommands::sTextEditorToken            = "GIT_EDITOR";
 const QString CGitCommands::sRebaseEditCommit           = "edit %1 %2";
@@ -360,6 +362,14 @@ void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullNa
 {
     QString sCommand = QString(sCommandUnstagedDiff).arg(sFullName);
     exec(new CProcessCommand(CEnums::eUnstagedFileDiff, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::twoCommitDiff(const QString& sPath, const QString& sFromCommitId, const QString& sToCommitId)
+{
+    QString sCommand = QString(sCommandTwoCommitDiff).arg(sFromCommitId).arg(sToCommitId);
+    exec(new CProcessCommand(CEnums::eTwoCommitDiff, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -733,7 +743,6 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
         break;
     }
 
-    // toto
     case CEnums::eBranchCommitCountAhead:
     case CEnums::eBranchCommitCountBehind:
     {
@@ -748,6 +757,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     }
 
     case CEnums::eUnstagedFileDiff:
+    case CEnums::eTwoCommitDiff:
     {
         // Create CDiffLines with the returned string of the process
 
@@ -803,6 +813,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 if (sLine.startsWith("*"))
                 {
                     sLine.remove(0, 2);
+                    sLine.replace(sRemoteBranchUselessPrefix, "");
                     pNewBranch->setName(sLine);
 
                     // Tell the world about the current branch
@@ -811,6 +822,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 else
                 {
                     sLine.remove(0, 2);
+                    sLine.replace(sRemoteBranchUselessPrefix, "");
                     pNewBranch->setName(sLine);
                 }
 

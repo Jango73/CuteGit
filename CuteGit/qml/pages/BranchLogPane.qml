@@ -19,17 +19,21 @@ Pane {
     signal requestCommitRebase(var commitId)
     signal requestCommitSquash(var commitId)
     signal requestCommitMessageChange(var commitId, var commitMessage)
+    signal requestCommitDiffFrom(var commitId)
+    signal requestCommitDiffTo(var commitId)
 
     TabBar {
         id: tabBar
         anchors.top: parent.top
 
         TabButton {
+            id: branchLogTab
             width: implicitWidth
             text: Const.branchLogText
         }
 
         TabButton {
+            id: graphTab
             width: implicitWidth
             text: Const.graphText
         }
@@ -96,6 +100,14 @@ Pane {
                 onRequestCommitMessageChange: {
                     root.requestCommitMessageChange(commitId, commitMessage)
                 }
+
+                onRequestCommitDiffFrom: {
+                    root.requestCommitDiffFrom(commitId)
+                }
+
+                onRequestCommitDiffTo: {
+                    root.requestCommitDiffTo(commitId)
+                }
             }
         }
 
@@ -107,5 +119,15 @@ Pane {
                 model: root.repository !== null ? root.repository.graphModel : undefined
             }
         }
+    }
+
+    function activateBranchLogView() {
+        tabBar.currentIndex = 0
+        logView.forceActiveFocus()
+    }
+
+    function activateGraphView() {
+        tabBar.currentIndex = 1
+        graphView.forceActiveFocus()
     }
 }

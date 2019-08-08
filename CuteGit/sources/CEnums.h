@@ -120,6 +120,7 @@ public:
         eStashSave,
         eStashPop,
         eUnstagedFileDiff,
+        eTwoCommitDiff,
         eSetCurrentBranch,
         eResetToCommit,
         eRebaseOnCommit,

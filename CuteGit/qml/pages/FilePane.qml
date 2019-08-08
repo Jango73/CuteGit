@@ -13,60 +13,81 @@ TitlePane {
     property variant repository: null
     property variant treeSelection: null
     property variant flatSelection: null
-    property bool filesAsTree: false
 
     title: Const.filesText
 
     content: Item {
         anchors.fill: parent
 
-        StandardLabel {
-            anchors.fill: parent
-            text: Const.listEmptyText
-            visible: root.repository === null | listView.count === 0
+        TabBar {
+            id: tabBar
+            anchors.top: parent.top
+
+            TabButton {
+                width: implicitWidth
+                text: qsTr("Flat")
+            }
+
+            TabButton {
+                width: implicitWidth
+                text: qsTr("Tree")
+            }
         }
 
-        FlatFileView {
-            id: listView
-            anchors.fill: parent
-            visible: !root.filesAsTree
-            enabled: visible
-            activeFocusOnTab: true
+        SwipeView {
+            id: swipeView
+            anchors.top: tabBar.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            interactive: false
+            currentIndex: tabBar.currentIndex
+            clip: true
 
-            repository: root.repository
-            selection: root.flatSelection
-        }
+            Item {
+                StandardLabel {
+                    anchors.fill: parent
+                    text: Const.listEmptyText
+                    visible: root.repository === null | listView.count === 0
+                }
 
-        Item {
-            anchors.fill: parent
-            visible: root.filesAsTree
+                FlatFileView {
+                    id: listView
+                    anchors.fill: parent
+                    visible: !root.filesAsTree
+                    enabled: visible
 
-            /*
-            TODO: make expand and collapse all functions work
-            StandardToolBar {
-                id: toolbar
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-
-                Row {
-                    StandardToolButton { text: Const.expandAllText; action: Action { onTriggered: treeView.expandAll() } }
-                    StandardToolButton { text: Const.collapseAllText; action: Action { onTriggered: treeView.collapseAll() } }
+                    repository: root.repository
+                    selection: root.flatSelection
                 }
             }
-            */
 
-            TreeFileView {
-                id: treeView
-                // anchors.top: toolbar.bottom
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                visible: root.filesAsTree
+            Item {
+                /*
+                TODO: make expand and collapse all functions work
+                StandardToolBar {
+                    id: toolbar
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
 
-                repository: root.repository
-                selection: root.treeSelection
+                    Row {
+                        StandardToolButton { text: Const.expandAllText; action: Action { onTriggered: treeView.expandAll() } }
+                        StandardToolButton { text: Const.collapseAllText; action: Action { onTriggered: treeView.collapseAll() } }
+                    }
+                }
+                */
+
+                TreeFileView {
+                    id: treeView
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    repository: root.repository
+                    selection: root.treeSelection
+                }
             }
         }
     }

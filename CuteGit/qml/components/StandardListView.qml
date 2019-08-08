@@ -5,6 +5,7 @@ import "."
 ListView {
     id: root
     clip: true
+    activeFocusOnTab: true
     contentWidth: width - scrollBarWidth
 
     ScrollBar.vertical: ScrollBar {

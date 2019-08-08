@@ -43,7 +43,9 @@ public:
     Q_FAST_PROPERTY(CEnums::ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
     Q_FAST_PROPERTY(QString, s, repositoryName, RepositoryName)
-	Q_FAST_PROPERTY(CController*, p, controller, Controller)
+    Q_FAST_PROPERTY(QString, s, diffFromCommitId, DiffFromCommitId)
+    Q_FAST_PROPERTY(QString, s, diffToCommitId, DiffToCommitId)
+    Q_FAST_PROPERTY(CController*, p, controller, Controller)
 	Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
     Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
     Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
@@ -275,4 +277,7 @@ protected slots:
 
     //!
     void onNewOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
+
+    //!
+    void onDiffCommitIdChanged();
 };

@@ -43,6 +43,8 @@ QHash<int, QByteArray> CLogModel::roleNames() const
     hRoleNames[eAuthorRole] = "author";
     hRoleNames[eMessageRole] = "message";
     hRoleNames[eLabelsRole] = "labels";
+    hRoleNames[eMarkedAsDiffFromRole] = "markedAsDiffFrom";
+    hRoleNames[eMarkedAsDiffToRole] = "markedAsDiffTo";
     return hRoleNames;
 }
 
@@ -83,6 +85,12 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
 
     case eLabelsRole:
         return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
+
+    case eMarkedAsDiffFromRole:
+        return m_pRepository->diffFromCommitId() == m_lLines[row]->commitId();
+
+    case eMarkedAsDiffToRole:
+        return m_pRepository->diffToCommitId() == m_lLines[row]->commitId();
     }
 
     return QVariant();

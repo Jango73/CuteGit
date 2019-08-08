@@ -6,7 +6,6 @@ import "../components"
 
 StandardListView {
     id: root
-    activeFocusOnTab: true
 
     signal itemRightClicked(var commitId, var message)
 
@@ -62,7 +61,13 @@ StandardListView {
                     width: parent.width
                     height: Const.elementHeight
                     verticalAlignment: Text.AlignVCenter
-                    text: model.message
+                    text: (
+                              model.markedAsDiffFrom
+                              ? "[F]  "
+                              : model.markedAsDiffTo
+                                ? "[T] "
+                                : ""
+                              ) + model.message
 
                     selection: selection
                 }

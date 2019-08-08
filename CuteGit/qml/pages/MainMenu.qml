@@ -14,7 +14,6 @@ MenuBar {
     property variant controller: null
     property variant repository: null
     property variant materialTheme: 0
-    property bool filesAsTree: false
 
     property bool rebaseInProgress: repository
                                     ? repository.repositoryStatus === CEnums.Rebase
@@ -242,13 +241,6 @@ MenuBar {
             text: qsTr("&Refresh")
             shortcut: "F5"
             onTriggered: repositoryView.requestRefresh()
-        }
-
-        MenuItem {
-            text: qsTr("Files as a tree")
-            checkable: true
-            checked: root.filesAsTree
-            onClicked: root.filesAsTree = !root.filesAsTree
         }
 
         MenuItem {
