@@ -13,6 +13,8 @@ Pane {
 
     property variant repository: null
 
+    signal requestMenu(var commitId, var message)
+
     TabBar {
         id: tabBar
         anchors.top: parent.top
@@ -46,6 +48,10 @@ Pane {
         FileLogPane {
             id: fileLogPane
             repository: root.repository
+
+            onRequestMenu: {
+                root.requestMenu(commitId, message)
+            }
         }
     }
 

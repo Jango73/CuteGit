@@ -12,15 +12,7 @@ Pane {
 
     property variant repository: null
 
-    signal requestCopy(var commitId)
-    signal requestCommitDiffPrevious(var commitId)
-    signal requestCommitBranchFrom(var commitId)
-    signal requestCommitReset(var commitId)
-    signal requestCommitRebase(var commitId)
-    signal requestCommitSquash(var commitId)
-    signal requestCommitMessageChange(var commitId, var commitMessage)
-    signal requestCommitDiffFrom(var commitId)
-    signal requestCommitDiffTo(var commitId)
+    signal requestMenu(var commitId, var message)
 
     TabBar {
         id: tabBar
@@ -63,50 +55,7 @@ Pane {
                 model: root.repository !== null ? root.repository.logModel : undefined
 
                 onItemRightClicked: {
-                    menu.commitId = commitId
-                    menu.commitMessage = message
-                    menu.popup()
-                }
-            }
-
-            LogMenu {
-                id: menu
-                repository: root.repository
-
-                onRequestCopy: {
-                    root.requestCopy(commitId)
-                }
-
-                onRequestCommitDiffPrevious: {
-                    root.requestCommitDiffPrevious(commitId)
-                }
-
-                onRequestCommitBranchFrom: {
-                    root.requestCommitBranchFrom(commitId)
-                }
-
-                onRequestCommitReset: {
-                    root.requestCommitReset(commitId)
-                }
-
-                onRequestCommitRebase: {
-                    root.requestCommitRebase(commitId)
-                }
-
-                onRequestCommitSquash: {
-                    root.requestCommitSquash(commitId)
-                }
-
-                onRequestCommitMessageChange: {
-                    root.requestCommitMessageChange(commitId, commitMessage)
-                }
-
-                onRequestCommitDiffFrom: {
-                    root.requestCommitDiffFrom(commitId)
-                }
-
-                onRequestCommitDiffTo: {
-                    root.requestCommitDiffTo(commitId)
+                    root.requestMenu(commitId, message)
                 }
             }
         }

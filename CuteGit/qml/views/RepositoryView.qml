@@ -110,6 +110,13 @@ Pane {
             Material.elevation: Const.paneElevation
 
             repository: root.repository
+
+            onRequestMenu: {
+                console.log(commitId, message)
+                logMenu.commitId = commitId
+                logMenu.commitMessage = message
+                logMenu.popup()
+            }
         }
     }
 
@@ -175,46 +182,10 @@ Pane {
 
             repository: root.repository
 
-            onRequestCopy: {
-                root.repository.copy(commitId)
-            }
-
-            onRequestCommitDiffPrevious: {
-                root.repository.commitDiffPrevious(commitId)
-            }
-
-            onRequestCommitBranchFrom: {
-                branchFrom.commitId = commitId
-                branchFrom.open()
-            }
-
-            onRequestCommitReset: {
-                root.repository.commitReset(commitId)
-            }
-
-            onRequestCommitRebase: {
-                root.repository.commitRebase(commitId)
-            }
-
-            onRequestCommitSquash: {
-                root.repository.commitSquash(commitId)
-            }
-
-            onRequestCommitMessageChange: {
-                commit.messageEnabled = true
-                commit.messageText = commitMessage
-                commit.showFileList = false
-                commit.amend = false
-                commit.commitId = commitId
-                commit.open()
-            }
-
-            onRequestCommitDiffFrom: {
-                root.repository.diffFromCommitId = commitId
-            }
-
-            onRequestCommitDiffTo: {
-                root.repository.diffToCommitId = commitId
+            onRequestMenu: {
+                logMenu.commitId = commitId
+                logMenu.commitMessage = message
+                logMenu.popup()
             }
         }
 
@@ -227,6 +198,53 @@ Pane {
             anchors.margins: Const.paneMargins
 
             repository: root.repository
+        }
+    }
+
+    LogMenu {
+        id: logMenu
+        repository: root.repository
+
+        onRequestCopy: {
+            root.repository.copy(commitId)
+        }
+
+        onRequestCommitDiffPrevious: {
+            root.repository.commitDiffPrevious(commitId)
+        }
+
+        onRequestCommitBranchFrom: {
+            branchFrom.commitId = commitId
+            branchFrom.open()
+        }
+
+        onRequestCommitReset: {
+            root.repository.commitReset(commitId)
+        }
+
+        onRequestCommitRebase: {
+            root.repository.commitRebase(commitId)
+        }
+
+        onRequestCommitSquash: {
+            root.repository.commitSquash(commitId)
+        }
+
+        onRequestCommitMessageChange: {
+            commit.messageEnabled = true
+            commit.messageText = commitMessage
+            commit.showFileList = false
+            commit.amend = false
+            commit.commitId = commitId
+            commit.open()
+        }
+
+        onRequestCommitDiffFrom: {
+            root.repository.diffFromCommitId = commitId
+        }
+
+        onRequestCommitDiffTo: {
+            root.repository.diffToCommitId = commitId
         }
     }
 

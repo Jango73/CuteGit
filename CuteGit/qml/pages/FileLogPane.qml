@@ -10,6 +10,8 @@ Pane {
 
     property variant repository: null
 
+    signal requestMenu(var commitId, var message)
+
     StandardLabel {
         anchors.fill: parent
         text: Const.listEmptyText
@@ -22,10 +24,8 @@ Pane {
 
         model: root.repository !== null ? root.repository.fileLogModel : undefined
 
-//        onItemRightClicked: {
-//            menu.commitId = commitId
-//            menu.commitMessage = message
-//            menu.popup()
-//        }
+        onItemRightClicked: {
+            root.requestMenu(commitId, message)
+        }
     }
 }
