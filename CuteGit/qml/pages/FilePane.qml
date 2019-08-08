@@ -94,10 +94,10 @@ TitlePane {
 
     function getSelectedFiles() {
         var files
-        if (filesAsTree) {
-            files = treeView.model.selectionToFullNameList(treeSelection.selectedIndexes)
-        } else {
+        if (tabBar.currentIndex === 0) {
             files = listView.model.selectionToFullNameList(flatSelection.selectedIndexes)
+        } else {
+            files = treeView.model.selectionToFullNameList(treeSelection.selectedIndexes)
         }
         return files
     }

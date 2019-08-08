@@ -194,6 +194,9 @@ public:
     //! Deletes a branch
     Q_INVOKABLE void deleteBranch(const QString& sName);
 
+    //! View diff with previous commit
+    Q_INVOKABLE void commitDiffPrevious(const QString& sCommitId);
+
     //-------------------------------------------------------------------------------------------------
     // Static control methods
     //-------------------------------------------------------------------------------------------------

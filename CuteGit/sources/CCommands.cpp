@@ -392,6 +392,14 @@ void CCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::commitDiffPrevious(const QString& sPath, const QString& sCommitId)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::twoCommitDiff(const QString& sPath, const QString& sFromCommitId, const QString& sToCommitId)
 {
     Q_UNUSED(sPath);

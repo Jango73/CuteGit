@@ -116,7 +116,13 @@ StandardListView {
                     anchors.leftMargin: Const.mainPadding
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
-                    text: model.message
+                    text: (
+                              model.markedAsDiffFrom
+                              ? "[F]  "
+                              : model.markedAsDiffTo
+                                ? "[T] "
+                                : ""
+                              ) + model.message
 
                     selection: selection
                 }

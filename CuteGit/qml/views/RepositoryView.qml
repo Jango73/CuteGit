@@ -112,7 +112,6 @@ Pane {
             repository: root.repository
 
             onRequestMenu: {
-                console.log(commitId, message)
                 logMenu.commitId = commitId
                 logMenu.commitMessage = message
                 logMenu.popup()

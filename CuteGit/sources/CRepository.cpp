@@ -450,6 +450,13 @@ void CRepository::deleteBranch(const QString& sName)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::commitDiffPrevious(const QString& sCommitId)
+{
+    m_pCommands->commitDiffPrevious(m_sRepositoryPath, sCommitId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& sPath)
 {
     if (QDir(QString("%1/.git").arg(sPath)).exists())

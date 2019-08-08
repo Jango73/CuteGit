@@ -40,6 +40,7 @@ const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\
 const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
 const QString CGitCommands::sCommandClone               = "git clone --progress \"%1\"";
 const QString CGitCommands::sCommandCommit              = "git commit -m \"%1\"";
+const QString CGitCommands::sCommandCommitDiffPrevious  = "git diff %1~1 %1";
 const QString CGitCommands::sCommandContinueMerge       = "git merge --continue";
 const QString CGitCommands::sCommandContinueRebase      = "git rebase --continue";
 const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbrev-ref HEAD";
@@ -362,6 +363,14 @@ void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullNa
 {
     QString sCommand = QString(sCommandUnstagedDiff).arg(sFullName);
     exec(new CProcessCommand(CEnums::eUnstagedFileDiff, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::commitDiffPrevious(const QString& sPath, const QString& sCommitId)
+{
+    QString sCommand = QString(sCommandCommitDiffPrevious).arg(sCommitId);
+    exec(new CProcessCommand(CEnums::eTwoCommitDiff, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------

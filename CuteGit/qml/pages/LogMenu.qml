@@ -94,7 +94,6 @@ Menu {
 
     Action {
         text: qsTr("&View diff with previous commit")
-        enabled: false
 
         onTriggered: {
             if (root.commitId !== "") {

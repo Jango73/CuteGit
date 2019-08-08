@@ -154,6 +154,9 @@ public:
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);
 
     //!
+    virtual void commitDiffPrevious(const QString& sPath, const QString& sCommitId);
+
+    //!
     virtual void twoCommitDiff(const QString& sPath, const QString& sFromCommitId, const QString& sToCommitId);
 
     //!
