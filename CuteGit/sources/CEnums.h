@@ -98,6 +98,7 @@ public:
         eCloneRepository,
         eCloneRepositoryFinished,
         eAllFileStatus,
+        eChangedFileStatus,
         eRepositoryStatus,
         eBranches,
         eBranchHeadCommit,

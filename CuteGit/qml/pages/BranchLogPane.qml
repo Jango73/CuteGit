@@ -70,6 +70,9 @@ Pane {
         }
     }
 
+    //--------------------------------------------------------------------------------
+    // Functions
+
     function activateBranchLogView() {
         tabBar.currentIndex = 0
         logView.forceActiveFocus()

@@ -109,6 +109,9 @@ signals:
     //!
     void currentFileFullName(QString sFileFullName);
 
+    //!
+    void shouldRefreshFileStatus();
+
     //-------------------------------------------------------------------------------------------------
     // Slots
     //-------------------------------------------------------------------------------------------------
@@ -120,4 +123,7 @@ protected slots:
 
     //!
     void onFileChanged(const QString& path);
+
+    //!
+    void onDirectoryChanged(const QString& path);
 };

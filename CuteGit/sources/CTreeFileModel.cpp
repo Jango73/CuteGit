@@ -31,7 +31,7 @@ CTreeFileModel::CTreeFileModel(CRepository *pRepository, QObject* parent)
 
     connect(this, &QFileSystemModel::rootPathChanged, this, &CTreeFileModel::onRootPathChanged);
 
-    connect(m_pFileSystemWatcher, &QFileSystemWatcher::directoryChanged, this, &CTreeFileModel::onFileChanged);
+    connect(m_pFileSystemWatcher, &QFileSystemWatcher::directoryChanged, this, &CTreeFileModel::onDirectoryChanged);
     connect(m_pFileSystemWatcher, &QFileSystemWatcher::fileChanged, this, &CTreeFileModel::onFileChanged);
 }
 
@@ -121,6 +121,7 @@ QVariant CTreeFileModel::data(const QModelIndex& qIndex, int iRole) const
 
 void CTreeFileModel::handleRepoFilesChanged()
 {
+    // TODO : fill this
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -165,4 +166,14 @@ void CTreeFileModel::onFileChanged(const QString& path)
     Q_UNUSED(path);
 
     // Tell the repository to refresh
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CTreeFileModel::onDirectoryChanged(const QString& path)
+{
+    Q_UNUSED(path);
+
+    // Tell the repository to refresh
+    emit shouldRefreshFileStatus();
 }

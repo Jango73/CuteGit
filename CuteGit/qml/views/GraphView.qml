@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
-import "../js/Utils.js" as Utils
+import "../generalUtils.js" as Utils
 import "../components"
 
 StandardListView {
@@ -74,9 +74,8 @@ StandardListView {
 
             Item {
                 id: flickedDataZone
-                width: parent.width - Const.mainPadding * 2
+                width: parent.width
                 height: parent.height
-                anchors.centerIn: parent
                 clip: true
 
                 // The row containing labels
@@ -85,6 +84,7 @@ StandardListView {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
+                    anchors.leftMargin: labelsRepeater.count > 0 ? Const.mainPadding : 0
                     spacing: Const.mainPadding
                     width: delegateItem.showLabels ? implicitWidth : 0
 

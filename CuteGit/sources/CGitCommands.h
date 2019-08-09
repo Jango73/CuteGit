@@ -3,6 +3,8 @@
 
 // Qt
 #include <QObject>
+#include <QThreadPool>
+#include <QRunnable>
 
 // Application
 #include "CCommands.h"
@@ -62,6 +64,9 @@ public:
 
     //!
     virtual void allFileStatus(const QString& sPath) override;
+
+    //!
+    virtual void changedFileStatus(const QString& sPath) override;
 
     //!
     virtual void fileStatus(const QString& sPath, const QString& sFullName) override;
@@ -183,6 +188,10 @@ protected slots:
     //!
     void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
 
+    //!
+    //!
+    void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+
     //-------------------------------------------------------------------------------------------------
     // Protected constants
     //-------------------------------------------------------------------------------------------------
@@ -270,8 +279,34 @@ protected:
 
 protected:
 
+    QThreadPool     m_tPool;
     ERebaseType     m_eRebaseType;
     ERebaseStep     m_eRebaseStep;
     QString         m_sCommitId;
     QString         m_sCommitMessage;
+};
+
+//-------------------------------------------------------------------------------------------------
+
+class CCleanFileLister : public QObject, public QRunnable
+{
+    Q_OBJECT
+
+public:
+
+    CEnums::EProcessCommand     m_eCommand;
+    QString                     m_sRootPath;
+
+protected:
+
+    //!
+    virtual void run() override;
+
+    //!
+    void getAllFiles(QList<CRepoFile*>& lFileList, const QString& sRootPath, const QString& sCurrentPath);
+
+signals:
+
+    //!
+    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 };

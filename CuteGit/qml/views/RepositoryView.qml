@@ -7,7 +7,7 @@ import QtQml.Models 2.2
 import Qt.labs.platform 1.1 as QLP
 import Qt.labs.folderlistmodel 2.1
 import CuteGit 1.0
-import "../js/Utils.js" as Utils
+import "../generalUtils.js" as Utils
 import "../components"
 import "../pages"
 import "../popups"
@@ -17,6 +17,9 @@ Pane {
     padding: Const.panePadding
 
     property variant repository: null
+
+    //--------------------------------------------------------------------------------
+    // Status
 
     Pane {
         id: repositoryStatus
@@ -60,6 +63,9 @@ Pane {
                   + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(" : behind ") + root.repository.commitCountBehind + " )"
         }
     }
+
+    //--------------------------------------------------------------------------------
+    // File view and tools
 
     Item {
         id: centralPart
@@ -200,6 +206,9 @@ Pane {
         }
     }
 
+    //--------------------------------------------------------------------------------
+    // Menu
+
     LogMenu {
         id: logMenu
         repository: root.repository
@@ -250,6 +259,9 @@ Pane {
         }
     }
 
+    //--------------------------------------------------------------------------------
+    // Popups
+
     ConfirmPopup {
         id: confirm
         width: root.width * Const.popupWidthSmall
@@ -274,6 +286,9 @@ Pane {
 
         repository: root.repository
     }
+
+    //--------------------------------------------------------------------------------
+    // Functions
 
     function requestRefresh() {
         root.repository.refresh()
@@ -341,6 +356,10 @@ Pane {
 
     function requestAbortRebase() {
         root.repository.abortRebase()
+    }
+
+    function activateFlatFileView() {
+        filePane.activateFlatFileView()
     }
 
     function activateBranchLogView() {

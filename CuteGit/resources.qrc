@@ -1,10 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/js/Utils.js</file>
+        <file alias="qml/generalUtils.js">../qt-plus/source/js/generalUtils.js</file>
+        <file alias="qml/Tracer.js">../qt-plus/source/qml/Tracer.qml</file>
 
         <file>qml/App.qml</file>
         <file>qml/components/qmldir</file>
         <file>qml/components/Calendar.qml</file>
+        <file>qml/components/ClosableTabButton.qml</file>
         <file>qml/components/Const.qml</file>
         <file>qml/components/DatePicker.qml</file>
         <file>qml/components/ElideText.qml</file>

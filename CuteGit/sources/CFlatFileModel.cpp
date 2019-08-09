@@ -18,6 +18,7 @@ CFlatFileModel::CFlatFileModel(CRepository* pRepository, QObject* parent)
 
 CFlatFileModel::~CFlatFileModel()
 {
+    qDeleteAll(m_lRepoFiles);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -86,13 +87,13 @@ bool CFlatFileModel::setData(const QModelIndex& qIndex, const QVariant& vValue, 
         {
         case eStatusRole:
             m_lRepoFiles[qIndex.row()]->setStatus(static_cast<CEnums::ERepoFileStatus>(vValue.toInt()));
-            roles <<iRole;
+            roles << iRole;
             emit dataChanged(qIndex, qIndex, roles);
             break;
 
         case eStagedRole:
             m_lRepoFiles[qIndex.row()]->setStaged(vValue.toBool());
-            roles <<iRole;
+            roles << iRole;
             emit dataChanged(qIndex, qIndex, roles);
             break;
         }

@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
-import "../js/Utils.js" as Utils
+import "../generalUtils.js" as Utils
 import "../components"
 
 StandardListView {
@@ -73,6 +73,7 @@ StandardListView {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
+                    anchors.leftMargin: Const.mainPadding
                     spacing: Const.mainPadding
                     width: delegateItem.showLabels ? implicitWidth : 0
 

@@ -20,8 +20,14 @@ bool CStagedFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &s
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
 
     CFlatFileModel* pModel = dynamic_cast<CFlatFileModel*>(sourceModel());
+
     if (pModel != nullptr)
-        return pModel->data(index, CFlatFileModel::eStagedRole).toString() == CRepoFile::sTokenStaged;
+    {
+        QString sStatus = pModel->data(index, CFlatFileModel::eStatusRole).toString();
+        QString sStaged = pModel->data(index, CFlatFileModel::eStagedRole).toString();
+
+        return sStatus != CRepoFile::sTokenIgnored && sStaged == CRepoFile::sTokenStaged;
+    }
 
     return false;
 }

@@ -92,6 +92,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     m_pGraphModel->setLines(QList<CGraphLine*>());
 
     connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
+    connect(m_pTreeFileModel, &CTreeFileModel::shouldRefreshFileStatus, this, &CRepository::onShouldRefreshFileStatus);
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
     m_pFlatFileModelProxy->setSourceModel(m_pFlatFileModel);
@@ -102,6 +103,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(this, &CRepository::diffToCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
     connect(this, &CRepository::diffFromCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
 
+    checkAllFileStatus();
     refresh();
 }
 
@@ -148,11 +150,10 @@ void CRepository::setCurrentBranch(QString sValue)
 
 CRepoFile* CRepository::fileByFullName(const QString& sFullName) const
 {
-    for (CRepoFile* pFile : m_lRepoFiles)
-    {
-        if (pFile->fullName() == sFullName)
-            return pFile;
-    }
+    auto itr = std::find_if(m_lRepoFiles.begin(), m_lRepoFiles.end(), [sFullName](CRepoFile* pFile) { return pFile->fullName() == sFullName; });
+
+    if (itr != m_lRepoFiles.end())
+        return *itr;
 
     return nullptr;
 }
@@ -161,11 +162,10 @@ CRepoFile* CRepository::fileByFullName(const QString& sFullName) const
 
 CRepoFile* CRepository::fileByFullName(QList<CRepoFile*> lRepoFiles, const QString& sFullName) const
 {
-    for (CRepoFile* pFile : lRepoFiles)
-    {
-        if (pFile->fullName() == sFullName)
-            return pFile;
-    }
+    auto itr = std::find_if(lRepoFiles.begin(), lRepoFiles.end(), [sFullName](CRepoFile* pFile) { return pFile->fullName() == sFullName; });
+
+    if (itr != lRepoFiles.end())
+        return *itr;
 
     return nullptr;
 }
@@ -253,6 +253,16 @@ void CRepository::checkAllFileStatus(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::checkChangedFileStatus(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pCommands->changedFileStatus(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::checkFileStatus(const QString& sFileFullName)
 {
     m_pCommands->fileStatus(m_sRepositoryPath, sFileFullName);
@@ -263,7 +273,7 @@ void CRepository::checkFileStatus(const QString& sFileFullName)
 void CRepository::refresh()
 {
     checkRepositoryStatus();
-    checkAllFileStatus();
+    checkChangedFileStatus();
     getBranches();
     getTags();
     getBranchLog();
@@ -278,7 +288,7 @@ void CRepository::toggleStaged(QString sFullName)
     {
         m_pCommands->toggleStaged(m_sRepositoryPath, sFullName);
     }
-    checkAllFileStatus();
+    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -292,7 +302,7 @@ void CRepository::stageSelection(QStringList lFileFullNames)
             m_pCommands->stageFile(m_sRepositoryPath, sFullName, true);
         }
     }
-    checkAllFileStatus();
+    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -306,7 +316,7 @@ void CRepository::unstageSelection(QStringList lFileFullNames)
             m_pCommands->stageFile(m_sRepositoryPath, sFullName, false);
         }
     }
-    checkAllFileStatus();
+    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -314,7 +324,7 @@ void CRepository::unstageSelection(QStringList lFileFullNames)
 void CRepository::stageAll()
 {
     m_pCommands->stageAll(m_sRepositoryPath, true);
-    checkAllFileStatus();
+    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -322,7 +332,7 @@ void CRepository::stageAll()
 void CRepository::unstageAll()
 {
     m_pCommands->stageAll(m_sRepositoryPath, false);
-    checkAllFileStatus();
+    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -333,7 +343,7 @@ void CRepository::revertSelection(QStringList lFileFullNames)
     {
         m_pCommands->revertFile(m_sRepositoryPath, sFullName);
     }
-    checkAllFileStatus();
+    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -678,7 +688,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     {
         onNewOutput(sOutput);
 
-        checkAllFileStatus();
+        checkChangedFileStatus();
         break;
     }
 
@@ -692,7 +702,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
 
         getBranchHeadCommits();
         getBranchesCommitCountAheadBehind();
-        checkAllFileStatus();
+        checkChangedFileStatus();
         getBranchLog();
         getGraph();
         break;
@@ -820,39 +830,50 @@ void CRepository::onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QLi
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
+void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewFiles)
 {
     switch (eCommand)
     {
 
     case CEnums::eAllFileStatus:
+    case CEnums::eChangedFileStatus:
     {
-        qDeleteAll(m_lRepoFiles);
-        m_lRepoFiles.clear();
-
-        // Check if there are any commitable files
         bool bHasModifiedFiles = false;
         bool bHasCommitableFiles = false;
 
-        for (CRepoFile* pFile : lNewRepoFiles)
+        for (CRepoFile* pNewFile : lNewFiles)
         {
-            if (pFile->status() != CEnums::eIgnored)
+            if (pNewFile->staged())
+                bHasCommitableFiles = true;
+
+            if (pNewFile->status() != CEnums::eIgnored && pNewFile->status() != CEnums::eClean)
+                bHasModifiedFiles = true;
+
+            CRepoFile* pExistingFile = fileByFullName(pNewFile->fullName());
+
+            if (pExistingFile != nullptr)
             {
-                if (pFile->staged())
-                    bHasCommitableFiles = true;
+                m_lRepoFiles.removeAll(pExistingFile);
+                delete pExistingFile;
+            }
 
-                if (pFile->status() != CEnums::eClean)
-                    bHasModifiedFiles = true;
+            m_lRepoFiles << pNewFile;
+        }
 
-                m_lRepoFiles << pFile;
+        for (CRepoFile* pExistingFile : m_lRepoFiles)
+        {
+            CRepoFile* pNewFile = fileByFullName(lNewFiles, pExistingFile->fullName());
+
+            if (pNewFile == nullptr) {
+                pExistingFile->setStaged(false);
+                pExistingFile->setStatus(CEnums::eClean);
             }
         }
 
         setHasModifiedFiles(bHasModifiedFiles);
         setHasCommitableFiles(bHasCommitableFiles);
 
-        std::sort(m_lRepoFiles.begin(), m_lRepoFiles.end(),
-                  [] (CRepoFile* left, CRepoFile* right) {
+        std::sort(m_lRepoFiles.begin(), m_lRepoFiles.end(), [] (CRepoFile* left, CRepoFile* right) {
             return left->fullName() < right->fullName();
         });
 
@@ -962,4 +983,12 @@ void CRepository::onDiffCommitIdChanged()
     m_pLogModel->commitChanged(sDiffFromToId);
     m_pGraphModel->commitChanged(sDiffFromCommitId);
     m_pGraphModel->commitChanged(sDiffFromToId);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::onShouldRefreshFileStatus()
+{
+    checkRepositoryStatus();
+    checkChangedFileStatus();
 }

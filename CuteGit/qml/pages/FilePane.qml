@@ -48,11 +48,11 @@ TitlePane {
                 StandardLabel {
                     anchors.fill: parent
                     text: Const.listEmptyText
-                    visible: root.repository === null | listView.count === 0
+                    visible: root.repository === null | flatFileView.count === 0
                 }
 
                 FlatFileView {
-                    id: listView
+                    id: flatFileView
                     anchors.fill: parent
                     visible: !root.filesAsTree
                     enabled: visible
@@ -79,7 +79,7 @@ TitlePane {
                 */
 
                 TreeFileView {
-                    id: treeView
+                    id: treeFileView
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
@@ -95,10 +95,15 @@ TitlePane {
     function getSelectedFiles() {
         var files
         if (tabBar.currentIndex === 0) {
-            files = listView.model.selectionToFullNameList(flatSelection.selectedIndexes)
+            files = flatFileView.model.selectionToFullNameList(flatSelection.selectedIndexes)
         } else {
-            files = treeView.model.selectionToFullNameList(treeSelection.selectedIndexes)
+            files = treeFileView.model.selectionToFullNameList(treeSelection.selectedIndexes)
         }
         return files
+    }
+
+    function activateFlatFileView() {
+        tabBar.currentIndex = 0
+        flatFileView.forceActiveFocus()
     }
 }

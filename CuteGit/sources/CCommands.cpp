@@ -231,6 +231,13 @@ void CCommands::allFileStatus(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::changedFileStatus(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::fileStatus(const QString& sPath, const QString& sFullName)
 {
     Q_UNUSED(sPath);

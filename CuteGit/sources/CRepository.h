@@ -126,6 +126,9 @@ public:
     Q_INVOKABLE void checkAllFileStatus(QString sPath = "");
 
     //! Creates a list of CRepoFile from the repo at sPath
+    Q_INVOKABLE void checkChangedFileStatus(QString sPath = "");
+
+    //! Creates a list of CRepoFile from the repo at sPath
     Q_INVOKABLE void checkFileStatus(const QString& sFileFullName);
 
     //!
@@ -283,4 +286,7 @@ protected slots:
 
     //!
     void onDiffCommitIdChanged();
+
+    //!
+    void onShouldRefreshFileStatus();
 };

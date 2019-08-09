@@ -89,6 +89,9 @@ public:
     //! Creates a list of CRepoFile from the repo at sPath
     virtual void allFileStatus(const QString& sPath);
 
+    //!
+    virtual void changedFileStatus(const QString& sPath);
+
     //! Creates a list of CRepoFile from the repo at sPath
     virtual void fileStatus(const QString& sPath, const QString& sFullName);
 

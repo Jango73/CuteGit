@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import Qt.labs.platform 1.1 as QLP
 import CuteGit 1.0
-import "js/Utils.js" as Utils
+import "generalUtils.js" as Utils
 import "components"
 import "pages"
 import "views"
@@ -30,6 +30,9 @@ ApplicationWindow {
         })
     }
 
+    //--------------------------------------------------------------------------------
+    // Menu
+
     menuBar: MainMenu {
         id: menu
 
@@ -44,6 +47,9 @@ ApplicationWindow {
         onRequestLightTheme: root.setTheme(Material.Light)
         onRequestHelp: helpDialog.open()
     }
+
+    //--------------------------------------------------------------------------------
+    // Toolbar
 
     header: StandardToolBar {
         id: toolBar
@@ -120,6 +126,9 @@ ApplicationWindow {
         }
     }
 
+    //--------------------------------------------------------------------------------
+    // Work area
+
     Item {
         id: clientZone
         anchors.fill: parent
@@ -128,12 +137,23 @@ ApplicationWindow {
             id: mainTabBar
             anchors.top: parent.top
 
+            Action {
+                id: tabCloseAction
+
+                onTriggered: {
+                    console.log(source.tabIndex)
+                    root.ctrl.removeRepository(source.tabIndex)
+                }
+            }
+
             Repeater {
                 model: root.ctrl.openRepositoryModel
 
-                TabButton {
+                ClosableTabButton {
                     width: implicitWidth
                     text: model.repository.repositoryName
+                    closeAction: tabCloseAction
+                    tabIndex: index
                 }
             }
 
@@ -190,12 +210,15 @@ ApplicationWindow {
             property bool mayCommit: root.ctrl.currentRepository
                                      ? root.ctrl.currentRepository.can(CEnums.Commit) && root.ctrl.currentRepository.hasCommitableFiles
                                      : false
+
             property bool mayPush: root.ctrl.currentRepository
                                    ? root.ctrl.currentRepository.can(CEnums.Push) && root.ctrl.currentRepository.hasPushableCommits
                                    : false
+
             property bool mayPull: root.ctrl.currentRepository
                                    ? root.ctrl.currentRepository.can(CEnums.Pull) && root.ctrl.currentRepository.hasPullableCommits
                                    : false
+
             property bool mayFetch: root.ctrl.currentRepository
                                     ? root.ctrl.currentRepository.can(CEnums.Fetch)
                                     : false
@@ -240,6 +263,9 @@ ApplicationWindow {
         }
     }
 
+    //--------------------------------------------------------------------------------
+    // Status bar
+
     footer: Item {
         id: statusBar
         height: Const.elementHeight * 1.5
@@ -252,6 +278,9 @@ ApplicationWindow {
             }
         }
     }
+
+    //--------------------------------------------------------------------------------
+    // Popups
 
     ClonePopup {
         id: cloneDialog
@@ -294,8 +323,16 @@ ApplicationWindow {
         }
     }
 
-    //--------------------------------------------------
+    //--------------------------------------------------------------------------------
     // Shortcuts
+
+    Shortcut {
+        sequence: "ALT+SHIFT+F"
+        onActivated: {
+            if (currentRepositoryView)
+                currentRepositoryView.activateFlatFileView()
+        }
+    }
 
     Shortcut {
         sequence: "ALT+SHIFT+G"
@@ -320,6 +357,9 @@ ApplicationWindow {
                 currentRepositoryView.activateFileDiffView()
         }
     }
+
+    //--------------------------------------------------------------------------------
+    // Functions
 
     function setTheme(theme) {
         Material.theme = theme

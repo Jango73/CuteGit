@@ -74,6 +74,8 @@ public:
     // Invokables
     //-------------------------------------------------------------------------------------------------
 
+public:
+
     //!
     Q_INVOKABLE void handleCurrentIndex(QModelIndex qIndex);
 

@@ -50,6 +50,7 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         // Register types
         // qmlRegisterType<CUINotification>("CuteGit", 1, 0, "SomeClass");
         qRegisterMetaType<CXMLNode>();
+        qRegisterMetaType<QList<CRepoFile*> >();
         qRegisterMetaType<CEnums::EProcessCommand>("CEnums::EProcessCommand");
         qRegisterMetaType<CEnums::ECapability>("CEnums::ECapability");
         qRegisterMetaType<CEnums::ERepositoryType>("CEnums::ERepositoryType");
