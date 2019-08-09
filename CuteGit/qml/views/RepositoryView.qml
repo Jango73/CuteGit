@@ -53,11 +53,11 @@ Pane {
             : "black"
 
             text: (root.repository.repositoryStatus === CEnums.InteractiveRebase
-                   ? qsTr("Interactive rebase in progress...")
+                   ? Const.interactiveRebaseProgressText
                    : root.repository.repositoryStatus === CEnums.Rebase
-                     ? qsTr("Rebase in progress...")
+                     ? Const.rebaseProgressText
                      : root.repository.repositoryStatus === CEnums.Merge
-                       ? qsTr("Merge in progress...")
+                       ? Const.mergeProgressText
                        : "")
                   + " - " + root.repository.repositoryTypeString
                   + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(" : behind ") + root.repository.commitCountBehind + " )"

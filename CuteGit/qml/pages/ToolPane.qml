@@ -21,12 +21,12 @@ Pane {
 
         TabButton {
             width: implicitWidth
-            text: qsTr("Diff")
+            text: Const.diffText
         }
 
         TabButton {
             width: implicitWidth
-            text: qsTr("Log")
+            text: Const.logText
         }
     }
 

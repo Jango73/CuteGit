@@ -25,12 +25,12 @@ TitlePane {
 
             TabButton {
                 width: implicitWidth
-                text: qsTr("Flat")
+                text: Const.flatText
             }
 
             TabButton {
                 width: implicitWidth
-                text: qsTr("Tree")
+                text: Const.treeText
             }
         }
 
@@ -47,7 +47,7 @@ TitlePane {
             Item {
                 StandardLabel {
                     anchors.fill: parent
-                    text: Const.listEmptyText
+                    text: Const.allFilesCleanText
                     visible: root.repository === null | flatFileView.count === 0
                 }
 

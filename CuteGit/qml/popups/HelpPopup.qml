@@ -34,12 +34,12 @@ StandardPopup {
 
             TabButton {
                 width: implicitWidth
-                text: qsTr("General")
+                text: Const.generalText
             }
 
             TabButton {
                 width: implicitWidth
-                text: qsTr("Shortcuts")
+                text: Const.shortcutsText
             }
         }
 

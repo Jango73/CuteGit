@@ -24,7 +24,7 @@ StandardPopup {
             anchors.margins: Const.mainPadding
 
             horizontalAlignment: Text.AlignHCenter
-            text: root.showFileList ? root.amend ? qsTr("Amend") : qsTr("Commit") : qsTr("Change commit message")
+            text: root.showFileList ? root.amend ? Const.amendText : Const.commitText : Const.changeCommitMessageText
         }
 
         StandardTextEdit {
