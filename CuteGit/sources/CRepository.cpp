@@ -843,11 +843,13 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
 
         for (CRepoFile* pNewFile : lNewFiles)
         {
-            if (pNewFile->staged())
-                bHasCommitableFiles = true;
-
             if (pNewFile->status() != CEnums::eIgnored && pNewFile->status() != CEnums::eClean)
+            {
                 bHasModifiedFiles = true;
+
+                if (pNewFile->staged())
+                    bHasCommitableFiles = true;
+            }
 
             CRepoFile* pExistingFile = fileByFullName(pNewFile->fullName());
 

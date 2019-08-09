@@ -7,63 +7,63 @@ import "../components"
 import "../views"
 import "../popups"
 
-TitlePane {
+Pane {
     id: root
+    padding: Const.mainPadding
+
+    Material.elevation: Const.paneElevation
 
     property variant repository: null
     property variant treeSelection: null
     property variant flatSelection: null
 
-    title: Const.filesText
+    TabBar {
+        id: tabBar
+        anchors.top: parent.top
 
-    content: Item {
-        anchors.fill: parent
+        TabButton {
+            width: implicitWidth
+            text: Const.flatText
+        }
 
-        TabBar {
-            id: tabBar
-            anchors.top: parent.top
+        TabButton {
+            width: implicitWidth
+            text: Const.treeText
+        }
+    }
 
-            TabButton {
-                width: implicitWidth
-                text: Const.flatText
+    SwipeView {
+        id: swipeView
+        anchors.top: tabBar.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        interactive: false
+        currentIndex: tabBar.currentIndex
+        clip: true
+
+        Item {
+            StandardLabel {
+                anchors.fill: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: Const.allFilesCleanText
+                visible: root.repository === null | flatFileView.count === 0
             }
 
-            TabButton {
-                width: implicitWidth
-                text: Const.treeText
+            FlatFileView {
+                id: flatFileView
+                anchors.fill: parent
+                visible: !root.filesAsTree
+                enabled: visible
+
+                repository: root.repository
+                selection: root.flatSelection
             }
         }
 
-        SwipeView {
-            id: swipeView
-            anchors.top: tabBar.bottom
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            interactive: false
-            currentIndex: tabBar.currentIndex
-            clip: true
-
-            Item {
-                StandardLabel {
-                    anchors.fill: parent
-                    text: Const.allFilesCleanText
-                    visible: root.repository === null | flatFileView.count === 0
-                }
-
-                FlatFileView {
-                    id: flatFileView
-                    anchors.fill: parent
-                    visible: !root.filesAsTree
-                    enabled: visible
-
-                    repository: root.repository
-                    selection: root.flatSelection
-                }
-            }
-
-            Item {
-                /*
+        Item {
+            /*
                 TODO: make expand and collapse all functions work
                 StandardToolBar {
                     id: toolbar
@@ -78,16 +78,15 @@ TitlePane {
                 }
                 */
 
-                TreeFileView {
-                    id: treeFileView
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
+            TreeFileView {
+                id: treeFileView
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
 
-                    repository: root.repository
-                    selection: root.treeSelection
-                }
+                repository: root.repository
+                selection: root.treeSelection
             }
         }
     }
