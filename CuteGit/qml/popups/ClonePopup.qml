@@ -2,67 +2,78 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import "../components"
+import ".."
 
 StandardPopup {
     id: root
+    width: parent.width * Const.popupWidthNorm
+    height: content.computedHeight + Const.mainPadding * 2
 
     property variant controller: null
 
     signal cloneBegins()
 
     contentItem: Item {
-        StandardText {
-            id: title
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: Const.mainPadding
+        id: content
 
-            horizontalAlignment: Text.AlignHCenter
-            text: Const.cloneRepositoryText
-        }
+        property int computedHeight: title.height + repositoryURL.height + repositoryPath.height + buttons.height
 
-        TitleTextField {
-            id: repositoryURL
-            anchors.top: title.bottom
-            width: parent.width
-            title: Const.repositoryURLText
-        }
+        Column {
+            id: layout
+            anchors.fill: parent
 
-        FolderSelector {
-            id: repositoryPath
-            anchors.top: repositoryURL.bottom
-            width: parent.width
-            title: Const.destinationFolderText
-        }
+            StandardText {
+                id: title
+                width: parent.width
+                height: Const.elementHeight * 2
 
-        StandardToolBar {
-            id: buttons
-            width: parent.width
-            height: cancelButton.height + Const.mainPadding
-            anchors.bottom: parent.bottom
+                horizontalAlignment: Text.AlignHCenter
+                text: Const.cloneRepositoryText
+            }
 
-            Row {
-                spacing: Const.mainPadding
+            TitleTextField {
+                id: repositoryURL
+                width: parent.width
+                height: implicitHeight
 
-                StandardToolButton {
-                    action: Action {
-                        id: okButton
-                        text: Const.okText
-                        onTriggered: {
-                            root.cloneBegins()
-                            root.controller.cloneRepository(repositoryURL.text, repositoryPath.text)
-                            root.close()
+                title: Const.repositoryURLText
+            }
+
+            FolderSelector {
+                id: repositoryPath
+                width: parent.width
+                height: implicitHeight
+
+                title: Const.destinationFolderText
+            }
+
+            StandardToolBar {
+                id: buttons
+                width: parent.width
+                height: implicitHeight
+
+                Row {
+                    spacing: Const.mainPadding
+
+                    StandardToolButton {
+                        action: Action {
+                            id: okButton
+                            text: Const.okText
+                            onTriggered: {
+                                root.cloneBegins()
+                                root.controller.cloneRepository(repositoryURL.text, repositoryPath.text)
+                                root.close()
+                            }
                         }
                     }
-                }
 
-                StandardToolButton {
-                    action: Action {
-                        id: cancelButton
-                        text: Const.cancelText
-                        onTriggered: {
-                            root.close()
+                    StandardToolButton {
+                        action: Action {
+                            id: cancelButton
+                            text: Const.cancelText
+                            onTriggered: {
+                                root.close()
+                            }
                         }
                     }
                 }

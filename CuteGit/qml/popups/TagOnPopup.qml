@@ -8,7 +8,7 @@ import "../views"
 StandardPopup {
     id: root
     width: parent.width * Const.popupWidthNorm
-    height: title.height + name.height + message.height + buttons.height + Const.mainPadding * 2
+    height: content.computedHeight + Const.mainPadding * 2
 
     property variant repository: null
     property string commitId: ""
@@ -17,6 +17,10 @@ StandardPopup {
     property alias messageEnabled: message.enabled
 
     contentItem: Item {
+        id: content
+
+        property int computedHeight: title.height + name.height + message.height + buttons.height
+
         Column {
             id: layout
             anchors.fill: parent

@@ -269,15 +269,11 @@ Pane {
 
     ConfirmPopup {
         id: confirm
-        width: root.width * Const.popupWidthSmall
-        height: root.height * Const.popupHeightSmall
         anchors.centerIn: parent
     }
 
     CommitPopup {
         id: commit
-        width: root.width * Const.popupWidthNorm
-        height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
 
         repository: root.repository

@@ -284,8 +284,6 @@ ApplicationWindow {
 
     ClonePopup {
         id: cloneDialog
-        width: root.width * Const.popupWidthNorm
-        height: root.height * Const.popupHeightSmall
         anchors.centerIn: parent
 
         controller: root.ctrl

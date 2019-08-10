@@ -6,7 +6,7 @@ import Qt.labs.platform 1.1 as QLP
 Item {
     id: root
     anchors.margins: Const.mainPadding
-    implicitHeight: Const.elementHeight * 2
+    implicitHeight: title.height + folderName.height
 
     property alias title: title.text
     property alias text: folderName.text
@@ -16,7 +16,6 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: parent.height * 0.5
     }
 
     Item {

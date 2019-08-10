@@ -6,6 +6,8 @@ import "../components"
 
 StandardPopup {
     id: root
+    width: parent.width * Const.popupWidthNorm
+    height: content.computedHeight + Const.mainPadding * 2
 
     property Action actionToTrigger: null
 
@@ -13,54 +15,54 @@ StandardPopup {
     property alias messageText: message.text
 
     contentItem: Item {
-        anchors.fill: parent
+        id: content
 
-        StandardText {
-            id: title
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: Const.mainPadding
-            horizontalAlignment: Text.AlignHCenter
-        }
+        property int computedHeight: title.height + message.height + buttons.height
 
-        StandardText {
-            id: message
-            anchors.top: title.bottom
-            anchors.bottom: buttons.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: Const.mainPadding
-        }
+        Column {
+            id: layout
+            anchors.fill: parent
 
-        StandardToolBar {
-            id: buttons
-            width: parent.width
-            height: cancelButton.height + Const.mainPadding
-            anchors.bottom: parent.bottom
+            StandardText {
+                id: title
+                width: parent.width
+                height: Const.elementHeight * 2
 
-            Row {
-                spacing: Const.mainPadding
+                horizontalAlignment: Text.AlignHCenter
+            }
 
-                StandardToolButton {
-                    action: Action {
-                        id: okButton
-                        text: Const.okText
-                        onTriggered: {
-                            if (root.actionToTrigger !== null) {
-                                root.close()
-                                root.actionToTrigger.trigger()
+            StandardText {
+                id: message
+                width: parent.width
+                height: Const.elementHeight * 5
+            }
+
+            StandardToolBar {
+                id: buttons
+
+                Row {
+                    spacing: Const.mainPadding
+
+                    StandardToolButton {
+                        action: Action {
+                            id: okButton
+                            text: Const.okText
+                            onTriggered: {
+                                if (root.actionToTrigger !== null) {
+                                    root.close()
+                                    root.actionToTrigger.trigger()
+                                }
                             }
                         }
                     }
-                }
 
-                StandardToolButton {
-                    action: Action {
-                        id: cancelButton
-                        text: Const.cancelText
-                        onTriggered: {
-                            root.close()
+                    StandardToolButton {
+                        action: Action {
+                            id: cancelButton
+                            text: Const.cancelText
+                            onTriggered: {
+                                root.close()
+                            }
                         }
                     }
                 }
