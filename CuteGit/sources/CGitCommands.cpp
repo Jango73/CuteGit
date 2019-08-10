@@ -805,10 +805,13 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 CDiffLine* pDiffLine = new CDiffLine();
                 pDiffLine->setText(sLine);
 
-                if (sLine.startsWith("+"))
-                    pDiffLine->setOperation(CEnums::Add);
-                if (sLine.startsWith("-"))
-                    pDiffLine->setOperation(CEnums::Delete);
+                if (not (sLine.startsWith("+++") || sLine.startsWith("---") || sLine.startsWith("@@")))
+                {
+                    if (sLine.startsWith("+"))
+                        pDiffLine->setOperation(CEnums::Add);
+                    if (sLine.startsWith("-"))
+                        pDiffLine->setOperation(CEnums::Delete);
+                }
 
                 lReturnValue << pDiffLine;
             }
