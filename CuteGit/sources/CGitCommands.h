@@ -3,8 +3,6 @@
 
 // Qt
 #include <QObject>
-#include <QThreadPool>
-#include <QRunnable>
 
 // Application
 #include "CCommands.h"
@@ -279,34 +277,8 @@ protected:
 
 protected:
 
-    QThreadPool     m_tPool;
     ERebaseType     m_eRebaseType;
     ERebaseStep     m_eRebaseStep;
     QString         m_sCommitId;
     QString         m_sCommitMessage;
-};
-
-//-------------------------------------------------------------------------------------------------
-
-class CCleanFileLister : public QObject, public QRunnable
-{
-    Q_OBJECT
-
-public:
-
-    CEnums::EProcessCommand     m_eCommand;
-    QString                     m_sRootPath;
-
-protected:
-
-    //!
-    virtual void run() override;
-
-    //!
-    void getAllFiles(QList<CRepoFile*>& lFileList, const QString& sRootPath, const QString& sCurrentPath);
-
-signals:
-
-    //!
-    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 };

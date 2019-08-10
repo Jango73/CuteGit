@@ -7,6 +7,8 @@
 #include <QMap>
 #include <QThread>
 #include <QMutex>
+#include <QThreadPool>
+#include <QRunnable>
 
 // Application
 #include "CEnums.h"
@@ -260,9 +262,54 @@ signals:
     //!
     void newOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
 
+    //-------------------------------------------------------------------------------------------------
+    // Properties
+    //-------------------------------------------------------------------------------------------------
+
+protected:
+
+    QThreadPool                 m_tPool;
+
 private:
 
-    bool                    m_bStop;
-    QMutex                  m_mMutex;
-    QList<CProcessCommand*> m_lCommandStack;
+    bool                        m_bStop;
+    QMutex                      m_mMutex;
+    QList<CProcessCommand*>     m_lCommandStack;
+};
+
+//-------------------------------------------------------------------------------------------------
+
+class CCleanFileLister : public QObject, public QRunnable
+{
+    Q_OBJECT
+
+    //-------------------------------------------------------------------------------------------------
+    // Protected control methods
+    //-------------------------------------------------------------------------------------------------
+
+protected:
+
+    //!
+    virtual void run() override;
+
+    //!
+    void getAllFiles(QList<CRepoFile*>& lFileList, const QString& sRootPath, const QString& sCurrentPath);
+
+    //-------------------------------------------------------------------------------------------------
+    // Signals
+    //-------------------------------------------------------------------------------------------------
+
+signals:
+
+    //!
+    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+
+    //-------------------------------------------------------------------------------------------------
+    // Properties
+    //-------------------------------------------------------------------------------------------------
+
+public:
+
+    CEnums::EProcessCommand     m_eCommand;
+    QString                     m_sRootPath;
 };

@@ -1,9 +1,9 @@
 
 // Qt
 #include <QDebug>
+#include <QCoreApplication>
 #include <QRegExp>
 #include <QDir>
-#include <QCoreApplication>
 
 // Application
 #include "CUtils.h"
@@ -98,8 +98,7 @@ const QString CGitCommands::sStatusIgnored              = "!";
 //-------------------------------------------------------------------------------------------------
 
 CGitCommands::CGitCommands()
-    : m_tPool(this)
-    , m_eRebaseType(eRTReword)
+    : m_eRebaseType(eRTReword)
     , m_eRebaseStep(eRSChangeCommitEditSequence)
 {
     connect(this, &CCommands::execFinished, this, &CGitCommands::onExecFinished);
@@ -979,53 +978,4 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 void CGitCommands::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
 {
     emit newOutputListOfCRepoFile(eCommand, lNewRepoFiles);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CCleanFileLister::run()
-{
-    QList<CRepoFile*> lFileList;
-    getAllFiles(lFileList, m_sRootPath, m_sRootPath);
-
-    emit newOutputListOfCRepoFile(m_eCommand, lFileList);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CCleanFileLister::getAllFiles(QList<CRepoFile*>& lFileList, const QString& sRootPath, const QString& sCurrentPath)
-{
-    QStringList slNameFilter;
-    slNameFilter << "*.*";
-
-    QDir dRoot(sRootPath);
-    QDir dDirectory(sCurrentPath);
-
-    dDirectory.setFilter(QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Files);
-    QStringList lFiles = dDirectory.entryList(slNameFilter);
-
-    for (QString sFile : lFiles)
-    {
-        QString sFullName = QString("%1/%2").arg(sCurrentPath).arg(sFile);
-        QFileInfo info(sFullName);
-
-        CRepoFile* pNewFile = new CRepoFile();
-
-        pNewFile->setStatus(CEnums::eClean);
-        pNewFile->setFullName(sFullName);
-        pNewFile->setRelativeName(dRoot.relativeFilePath(sFullName));
-        pNewFile->setFileName(info.fileName());
-
-        lFileList << pNewFile;
-    }
-
-    dDirectory.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
-    QStringList lDirectories = dDirectory.entryList();
-
-    for (QString sNewDirectory : lDirectories)
-    {
-        QString sFullName = QString("%1/%2").arg(sCurrentPath).arg(sNewDirectory);
-
-        getAllFiles(lFileList, sRootPath, sFullName);
-    }
 }
