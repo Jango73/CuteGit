@@ -148,9 +148,6 @@ public:
     virtual void commitSquash(const QString& sPath, const QString& sCommitId) override;
 
     //!
-    virtual void commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName) override;
-
-    //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage) override;
 
     //!
@@ -160,10 +157,16 @@ public:
     virtual void abortRebase(const QString& sPath) override;
 
     //!
+    virtual void createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName) override;
+
+    //!
     virtual void mergeBranch(const QString& sPath, const QString& sBranchName) override;
 
     //!
     virtual void deleteBranch(const QString& sPath, const QString& sBranchName) override;
+
+    //!
+    virtual void createTagOnCommit(const QString& sPath, const QString& sCommitId, const QString& sTagName, const QString& sMessage) override;
 
     //!
     virtual void editSequenceFile(const QString& sFileName) override;
@@ -215,6 +218,7 @@ protected:
     static const QString sCommandCommitDiffPrevious;
     static const QString sCommandContinueMerge;
     static const QString sCommandContinueRebase;
+    static const QString sCommandCreateTagOnCommit;
     static const QString sCommandCurrentBranch;
     static const QString sCommandDeleteBranch;
     static const QString sCommandFetch;

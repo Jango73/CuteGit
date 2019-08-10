@@ -450,15 +450,6 @@ void CCommands::commitSquash(const QString& sPath, const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
-void CCommands::commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName)
-{
-    Q_UNUSED(sPath);
-    Q_UNUSED(sCommitId);
-    Q_UNUSED(sBranchName);
-}
-
-//-------------------------------------------------------------------------------------------------
-
 void CCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
     Q_UNUSED(sPath);
@@ -482,6 +473,15 @@ void CCommands::abortRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+    Q_UNUSED(sBranchName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::mergeBranch(const QString& sPath, const QString& sBranchName)
 {
     Q_UNUSED(sPath);
@@ -494,6 +494,16 @@ void CCommands::deleteBranch(const QString& sPath, const QString& sBranchName)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(sBranchName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::createTagOnCommit(const QString& sPath, const QString& sCommitId, const QString& sTagName, const QString& sMessage)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sCommitId);
+    Q_UNUSED(sTagName);
+    Q_UNUSED(sMessage);
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -127,9 +127,10 @@ public:
         eRebaseOnCommit,
         eSquashCommit,
         eChangeCommitMessage,
-        eBranchFromCommit,
+        eCreateBranchOnCommit,
         eMergeBranch,
         eDeleteBranch,
+        eCreateTagOnCommit,
         eContinueRebase,
         eAbortRebase
     };

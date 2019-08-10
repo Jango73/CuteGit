@@ -177,9 +177,6 @@ public:
     virtual void commitSquash(const QString& sPath, const QString& sCommitId);
 
     //!
-    virtual void commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName);
-
-    //!
     virtual void changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage);
 
     //!
@@ -189,10 +186,16 @@ public:
     virtual void abortRebase(const QString& sPath);
 
     //!
+    virtual void createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName);
+
+    //!
     virtual void mergeBranch(const QString& sPath, const QString& sBranchName);
 
     //!
     virtual void deleteBranch(const QString& sPath, const QString& sBranchName);
+
+    //!
+    virtual void createTagOnCommit(const QString& sPath, const QString& sCommitId, const QString& sTagName, const QString& sMessage);
 
     //!
     virtual void editSequenceFile(const QString& sFileName);

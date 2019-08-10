@@ -434,7 +434,7 @@ void CRepository::commitSquash(const QString& sCommitId)
 
 void CRepository::commitBranchFrom(const QString& sCommitId, const QString& sBranchName)
 {
-    m_pCommands->commitBranchFrom(m_sRepositoryPath, sCommitId, sBranchName);
+    m_pCommands->createBranchOnCommit(m_sRepositoryPath, sCommitId, sBranchName);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -456,6 +456,13 @@ void CRepository::mergeBranch(const QString& sName)
 void CRepository::deleteBranch(const QString& sName)
 {
     m_pCommands->deleteBranch(m_sRepositoryPath, sName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::createTagOnCommit(const QString& sCommitId, const QString& sTagName, const QString& sMessage)
+{
+    m_pCommands->createTagOnCommit(m_sRepositoryPath, sCommitId, sTagName, sMessage);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -712,7 +719,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eResetToCommit:
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
-    case CEnums::eBranchFromCommit:
+    case CEnums::eCreateBranchOnCommit:
     case CEnums::eMergeBranch:
     case CEnums::eDeleteBranch:
     case CEnums::eChangeCommitMessage:

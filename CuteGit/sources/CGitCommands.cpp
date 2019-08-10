@@ -43,6 +43,7 @@ const QString CGitCommands::sCommandCommit              = "git commit -m \"%1\""
 const QString CGitCommands::sCommandCommitDiffPrevious  = "git diff %1~1 %1";
 const QString CGitCommands::sCommandContinueMerge       = "git merge --continue";
 const QString CGitCommands::sCommandContinueRebase      = "git rebase --continue";
+const QString CGitCommands::sCommandCreateTagOnCommit   = "git tag -m \"%1\" \"%2\" \"%3\"";
 const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbrev-ref HEAD";
 const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
 const QString CGitCommands::sCommandFetch               = "git fetch";
@@ -460,14 +461,6 @@ void CGitCommands::commitSquash(const QString& sPath, const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::commitBranchFrom(const QString& sPath, const QString& sCommitId, const QString& sBranchName)
-{
-    QString sCommand = QString(sCommandBranchFromCommit).arg(sBranchName).arg(sCommitId);
-    exec(new CProcessCommand(CEnums::eBranchFromCommit, sPath, sCommand, true));
-}
-
-//-------------------------------------------------------------------------------------------------
-
 void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCommitId, const QString& sMessage)
 {
     emit newOutputString(CEnums::eNotification, tr("Changing commit message..."));
@@ -506,6 +499,15 @@ void CGitCommands::abortRebase(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName)
+{
+    emit newOutputString(CEnums::eNotification, QString(tr("Creating branch %1...")).arg(sBranchName));
+    QString sCommand = QString(sCommandBranchFromCommit).arg(sBranchName).arg(sCommitId);
+    exec(new CProcessCommand(CEnums::eCreateBranchOnCommit, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::mergeBranch(const QString& sPath, const QString& sBranchName)
 {
     emit newOutputString(CEnums::eNotification, QString(tr("Merging branch %1...")).arg(sBranchName));
@@ -520,6 +522,15 @@ void CGitCommands::deleteBranch(const QString& sPath, const QString& sBranchName
     emit newOutputString(CEnums::eNotification, QString(tr("Deleting branch %1...")).arg(sBranchName));
     QString sCommand = QString(sCommandDeleteBranch).arg(sBranchName);
     exec(new CProcessCommand(CEnums::eDeleteBranch, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::createTagOnCommit(const QString& sPath, const QString& sCommitId, const QString& sTagName, const QString& sMessage)
+{
+    emit newOutputString(CEnums::eNotification, QString(tr("Creating tag %1...")).arg(sTagName));
+    QString sCommand = QString(sCommandCreateTagOnCommit).arg(sMessage).arg(sTagName).arg(sCommitId);
+    exec(new CProcessCommand(CEnums::eCreateTagOnCommit, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -752,9 +763,10 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eResetToCommit:
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
-    case CEnums::eBranchFromCommit:
+    case CEnums::eCreateBranchOnCommit:
     case CEnums::eMergeBranch:
     case CEnums::eDeleteBranch:
+    case CEnums::eCreateTagOnCommit:
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:
