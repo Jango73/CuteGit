@@ -243,6 +243,25 @@ MenuBar {
             onTriggered: repositoryView.requestRefresh()
         }
 
+        MenuSeparator { }
+
+        MenuItem {
+            text: qsTr("Show all")
+
+            onClicked: {
+                root.controller.showClean = true
+                root.controller.showAdded = true
+                root.controller.showModified = true
+                root.controller.showRenamed = true
+                root.controller.showDeleted = true
+                root.controller.showMissing = true
+                root.controller.showUntracked = true
+                root.controller.showIgnored = true
+            }
+        }
+
+        MenuSeparator { }
+
         MenuItem {
             text: qsTr("Show &clean")
             checkable: true
@@ -265,6 +284,13 @@ MenuBar {
         }
 
         MenuItem {
+            text: qsTr("Show &renamed")
+            checkable: true
+            checked: root.controller.showRenamed
+            onClicked: root.controller.showRenamed = !root.controller.showRenamed
+        }
+
+        MenuItem {
             text: qsTr("Show &deleted")
             checkable: true
             checked: root.controller.showDeleted
@@ -272,10 +298,24 @@ MenuBar {
         }
 
         MenuItem {
+            text: qsTr("Show mi&ssing")
+            checkable: true
+            checked: root.controller.showMissing
+            onClicked: root.controller.showMissing = !root.controller.showMissing
+        }
+
+        MenuItem {
             text: qsTr("Show &untracked")
             checkable: true
             checked: root.controller.showUntracked
             onClicked: root.controller.showUntracked = !root.controller.showUntracked
+        }
+
+        MenuItem {
+            text: qsTr("Show &ignored")
+            checkable: true
+            checked: root.controller.showIgnored
+            onClicked: root.controller.showIgnored = !root.controller.showIgnored
         }
     }
 

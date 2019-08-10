@@ -667,7 +667,10 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
             else if (sStaged == sStatusDeleted)
                 eStatus = CEnums::eDeleted;
             else if (sStaged == sStatusIgnored)
+            {
+                bStaged = false;
                 eStatus = CEnums::eIgnored;
+            }
             else if (sStaged == sStatusUntracked)
             {
                 bStaged = false;

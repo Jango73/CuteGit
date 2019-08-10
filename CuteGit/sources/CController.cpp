@@ -75,8 +75,11 @@ CController::CController(QObject* parent)
     , m_bShowClean(false)
     , m_bShowAdded(true)
     , m_bShowModified(true)
+    , m_bShowRenamed(true)
     , m_bShowDeleted(true)
+    , m_bShowMissing(true)
     , m_bShowUntracked(false)
+    , m_bShowIgnored(false)
     , m_bMasterMode(true)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
@@ -208,6 +211,19 @@ void CController::setShowModified(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::setShowRenamed(bool bValue)
+{
+    if (m_bShowRenamed != bValue)
+    {
+        m_bShowRenamed = bValue;
+        emit showRenamedChanged();
+
+        m_pOpenRepositoryModel->fileFiltersChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::setShowDeleted(bool bValue)
 {
     if (m_bShowDeleted != bValue)
@@ -221,12 +237,38 @@ void CController::setShowDeleted(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
+void CController::setShowMissing(bool bValue)
+{
+    if (m_bShowMissing != bValue)
+    {
+        m_bShowMissing = bValue;
+        emit showMissingChanged();
+
+        m_pOpenRepositoryModel->fileFiltersChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CController::setShowUntracked(bool bValue)
 {
     if (m_bShowUntracked != bValue)
     {
         m_bShowUntracked = bValue;
         emit showUntrackedChanged();
+
+        m_pOpenRepositoryModel->fileFiltersChanged();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setShowIgnored(bool bValue)
+{
+    if (m_bShowIgnored != bValue)
+    {
+        m_bShowIgnored = bValue;
+        emit showIgnoredChanged();
 
         m_pOpenRepositoryModel->fileFiltersChanged();
     }

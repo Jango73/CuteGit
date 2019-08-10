@@ -41,8 +41,11 @@ class CController : public QObject
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showAdded, ShowAdded)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showModified, ShowModified)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showRenamed, ShowRenamed)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showDeleted, ShowDeleted)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showMissing, ShowMissing)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showUntracked, ShowUntracked)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showIgnored, ShowIgnored)
 
 public:
 

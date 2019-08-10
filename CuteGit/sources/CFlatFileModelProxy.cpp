@@ -90,13 +90,19 @@ bool CFlatFileModelProxy::statusShown(const QString& sStatus) const
     if (m_pController->showModified() && sStatus == CRepoFile::sTokenModified)
         return true;
 
-    if (m_pController->showModified() && sStatus == CRepoFile::sTokenRenamed)
+    if (m_pController->showRenamed() && sStatus == CRepoFile::sTokenRenamed)
         return true;
 
     if (m_pController->showDeleted() && sStatus == CRepoFile::sTokenDeleted)
         return true;
 
+    if (m_pController->showMissing() && sStatus == CRepoFile::sTokenMissing)
+        return true;
+
     if (m_pController->showUntracked() && sStatus == CRepoFile::sTokenUntracked)
+        return true;
+
+    if (m_pController->showIgnored() && sStatus == CRepoFile::sTokenIgnored)
         return true;
 
     return false;
