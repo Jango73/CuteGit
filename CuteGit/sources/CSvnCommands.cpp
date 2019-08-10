@@ -43,6 +43,7 @@ bool CSvnCommands::can(CEnums::ECapability eWhat) const
     case CEnums::Commit:
     case CEnums::Pull:
     case CEnums::BranchFromCommit:
+    case CEnums::TagOnCommit:
         return true;
 
     default:

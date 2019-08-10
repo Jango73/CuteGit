@@ -13,6 +13,7 @@ Menu {
 
     signal requestCopy(var commitId)
     signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitTagOn(var commitId)
     signal requestCommitBranchFrom(var commitId)
     signal requestCommitReset(var commitId)
     signal requestCommitRebase(var commitId)
@@ -34,7 +35,18 @@ Menu {
     MenuSeparator { }
 
     Action {
-        text: qsTr("&Branch from")
+        text: qsTr("Create ta&g here")
+        enabled: root.repository ? root.repository.can(CEnums.TagOnCommit) : false
+
+        onTriggered: {
+            if (root.commitId !== "") {
+                root.requestCommitTagOn(root.commitId)
+            }
+        }
+    }
+
+    Action {
+        text: qsTr("&Branch from here")
         enabled: root.repository ? root.repository.can(CEnums.BranchFromCommit) : false
 
         onTriggered: {
@@ -45,7 +57,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("Reset &to")
+        text: qsTr("Reset &to here")
         enabled: root.repository ? root.repository.can(CEnums.ResetToCommit) : false
 
         onTriggered: {

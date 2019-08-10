@@ -222,6 +222,11 @@ Pane {
             root.activateFileDiffView()
         }
 
+        onRequestCommitTagOn: {
+            tagOn.commitId = commitId
+            tagOn.open()
+        }
+
         onRequestCommitBranchFrom: {
             branchFrom.commitId = commitId
             branchFrom.open()
@@ -273,6 +278,13 @@ Pane {
         id: commit
         width: root.width * Const.popupWidthNorm
         height: root.height * Const.popupHeightNorm
+        anchors.centerIn: parent
+
+        repository: root.repository
+    }
+
+    TagOnPopup {
+        id: tagOn
         anchors.centerIn: parent
 
         repository: root.repository

@@ -47,6 +47,7 @@ public:
         ResetToCommit,
         RebaseOnCommit,
         BranchFromCommit,
+        TagOnCommit,
         MergeBranch,
         DeleteBranch,
         ContinueRebase,

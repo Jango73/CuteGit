@@ -53,6 +53,7 @@
         <file>qml/popups/CommitPopup.qml</file>
         <file>qml/popups/ConfirmPopup.qml</file>
         <file>qml/popups/HelpPopup.qml</file>
+        <file>qml/popups/TagOnPopup.qml</file>
 
         <file>qml/images/blank.svg</file>
         <file>qml/images/check.svg</file>

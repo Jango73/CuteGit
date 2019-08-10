@@ -699,6 +699,14 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+    case CEnums::eCreateTagOnCommit:
+    {
+        onNewOutput(sOutput);
+
+        getTags();
+        break;
+    }
+
     case CEnums::eCommit:
     case CEnums::eAmend:
     case CEnums::ePush:
@@ -766,6 +774,7 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
     {
         m_pTagModel->setBranchHeadCommit(sKey, sValue);
         m_pLogModel->commitChanged(sValue);
+        m_pGraphModel->commitChanged(sValue);
         break;
     }
 
