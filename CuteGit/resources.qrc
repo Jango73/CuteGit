@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file alias="qml/generalUtils.js">../qt-plus/source/js/generalUtils.js</file>
-        <file alias="qml/Tracer.js">../qt-plus/source/qml/Tracer.qml</file>
+        <file alias="qml/Tracer.qml">../qt-plus/source/qml/Tracer.qml</file>
 
         <file>qml/App.qml</file>
         <file>qml/components/qmldir</file>

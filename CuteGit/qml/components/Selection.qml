@@ -4,8 +4,8 @@ import QtQuick.Controls.Material 2.12
 
 Rectangle {
     id: root
-    width: targetWidth + Const.paneMargins
-    height: targetHeight + Const.paneMargins * 0.5
+    width: targetWidth + Const.smallPadding * 0.5
+    height: targetHeight + Const.smallPadding * 0.5
     color: borderOnly ? Const.transparent : Material.primary
     radius: Const.mainRadius
     border.width: 2

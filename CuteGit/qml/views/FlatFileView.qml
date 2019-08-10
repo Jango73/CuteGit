@@ -67,7 +67,7 @@ StandardListView {
 
             ElideText {
                 id: listViewStatusText
-                width: parent.width - Const.smallPadding
+                width: parent.width - Const.mainPadding
                 anchors.centerIn: parent
                 color: Material.foreground
                 text: model.status
@@ -95,7 +95,7 @@ StandardListView {
 
             TextOverSelection {
                 id: listViewFileNameText
-                width: parent.width - Const.smallPadding
+                width: parent.width - Const.mainPadding
                 anchors.centerIn: parent
                 text: model.fileName
 
@@ -111,7 +111,7 @@ StandardListView {
 
             ElideText {
                 id: listViewRelativeNameText
-                width: parent.width - Const.smallPadding
+                width: parent.width - Const.mainPadding
                 anchors.centerIn: parent
                 color: Material.foreground
                 text: model.relativeName
