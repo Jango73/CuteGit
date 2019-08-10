@@ -67,7 +67,7 @@ const QString CGitCommands::sCommandStashPop            = "git stash pop";
 const QString CGitCommands::sCommandStashSave           = "git stash save";
 const QString CGitCommands::sCommandStatus              = "git status --porcelain --ignored --untracked-files=all";
 const QString CGitCommands::sCommandTags                = "git tag";
-const QString CGitCommands::sCommandTagCommit           = "git rev-parse --short \"%1\""; // "git rev-list --short -n 1 \"%1\"";
+const QString CGitCommands::sCommandTagCommit           = "git rev-list -n 1 --abbrev-commit \"%1\"";
 const QString CGitCommands::sCommandTwoCommitDiff       = "git diff --no-color --ignore-all-space \"%1\" \"%2\"";
 const QString CGitCommands::sCommandUnstage             = "git reset HEAD \"%1\"";
 const QString CGitCommands::sCommandUnstageAll          = "git reset .";
@@ -777,6 +777,12 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     }
 
     case CEnums::eBranchHeadCommit:
+    {
+        // Throw the returned string of the process
+        emit newOutputKeyValue(eCommand, sUserData, sValue.trimmed());
+        break;
+    }
+
     case CEnums::eTagCommit:
     {
         // Throw the returned string of the process
