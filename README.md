@@ -12,18 +12,14 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 - Open /CuteGit.pro in QtCreator
 - Build and run
 
-## Caution
-
-Do not use this software on very large repositories, where you can have hundreds of modified files at once.
-It is not *yet* able to handle massive repositories.
-
 ## Things it does
 
 * Open a GIT repository
 * Show repository status (clean, merge, rebase, ...)
 * Show repository files as a tree, colored according to status
-* Show the branches of the repository
+* Show the branches and tags of the repository
 * Show the branch log
+* Show the graph as output by Git
 * Show the selected file log
 * Show the unstaged diffs in the selected item (folder or file)
 * Show the output of the executed GIT commands
@@ -36,6 +32,11 @@ It is not *yet* able to handle massive repositories.
 * Refresh view
 * Modify a commit message
 * Begin rebase on a commit, continue and abort rebase
+* Reset on a commit
+* Save and pop stash (no selectable stash yet)
+* Branch from a commit
+* Tag a commit
+* View diff between any two commits
 
 ## Classes
 
