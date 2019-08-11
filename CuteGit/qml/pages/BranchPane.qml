@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import "../components"
+import ".."
 
 Pane {
     id: root
@@ -50,7 +51,7 @@ Pane {
 
             delegate: StandardListViewItem {
                 width: parent.width
-                height: Const.elementHeight + Const.mainPadding * 0.25
+                height: Const.elementHeight + Const.smallPadding
                 text: model.name
                 selectionShown: model.name === root.repository.currentBranch
                 listView: branchList
@@ -93,7 +94,7 @@ Pane {
 
             delegate: StandardListViewItem {
                 width: parent.width
-                height: Const.elementHeight + Const.mainPadding * 0.25
+                height: Const.elementHeight + Const.smallPadding
                 text: model.name
                 selectionShown: false
                 listView: tagList

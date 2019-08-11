@@ -23,6 +23,7 @@ Item {
     property int mainPadding: 8
     property int mainRadius: 4
     property int smallPadding: mainPadding / 2
+    property int verySmallPadding: smallPadding / 2
     property int panePadding: smallPadding
     property int paneMargins: smallPadding
     property int paneElevation: 2

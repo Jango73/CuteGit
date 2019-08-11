@@ -4,10 +4,7 @@ import QtQuick.Controls.Material 2.12
 
 Rectangle {
     id: root
-    width: targetWidth + Const.smallPadding * 0.5
-    height: targetHeight + Const.smallPadding * 0.5
     color: borderOnly ? Const.transparent : Material.primary
-    radius: Const.mainRadius
     border.width: 2
     border.color: borderOnly ? Material.primary : Const.transparent
     opacity: 0
@@ -15,8 +12,6 @@ Rectangle {
 
     property bool show: false
     property bool borderOnly: false
-    property int targetWidth: 100
-    property int targetHeight: 100
 
     states: [
         State {

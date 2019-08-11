@@ -7,12 +7,11 @@ Item {
 
     Rectangle {
         anchors.centerIn: parent
-        width: parent.width - Const.mainPadding * 0.25
-        height: parent.height - Const.mainPadding * 0.25
+        width: parent.width - Const.mainPadding * 0.5
+        height: parent.height - Const.mainPadding * 0.5
         color: Const.transparent
-        border.width: 2
+        border.width: 1
         border.color: Material.foreground
         opacity: 0.8
-        radius: Const.mainRadius
     }
 }

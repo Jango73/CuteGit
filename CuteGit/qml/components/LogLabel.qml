@@ -9,9 +9,7 @@ Item {
     property alias text: labelText.text
 
     Selection {
-        anchors.centerIn: labelText
-        targetWidth: labelText.width
-        targetHeight: labelText.height
+        anchors.fill: labelText
         color: Material.accent
         show: true
     }

@@ -82,9 +82,7 @@ StandardListView {
 
             Selection {
                 id: listSelection
-                targetWidth: listViewFileNameText.width
-                targetHeight: listViewFileNameText.height
-                anchors.centerIn: listViewFileNameText
+                anchors.fill: listViewFileNameText
                 show: dlg.selected
             }
 

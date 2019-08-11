@@ -47,9 +47,7 @@ TitlePane {
 
                     Selection {
                         id: selection
-                        targetWidth: text.width
-                        targetHeight: text.height
-                        anchors.centerIn: text
+                        anchors.fill: text
                         show: display === root.controller.currentRepository.repositoryPath
                     }
 

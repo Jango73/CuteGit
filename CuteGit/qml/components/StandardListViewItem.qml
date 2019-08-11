@@ -14,7 +14,7 @@ Item {
 
     Item {
         anchors.fill: parent
-        anchors.margins: Const.smallPadding
+        anchors.margins: Const.verySmallPadding
 
         MouseArea {
             anchors.fill: selection
@@ -33,19 +33,20 @@ Item {
 
         Selection {
             id: selection
-            targetWidth: theText.width
-            targetHeight: theText.height
-            anchors.centerIn: theText
+            anchors.fill: parent
         }
 
         FocusIndicator {
-            anchors.fill: selection
+            anchors.fill: parent
             visible: root.listView.activeFocus && index === root.listView.currentIndex
         }
 
         TextOverSelection {
             id: theText
-            width: parent.width - Const.smallPadding
+            anchors.centerIn: parent
+            width: parent.width - Const.mainPadding
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
             selection: selection
         }
     }

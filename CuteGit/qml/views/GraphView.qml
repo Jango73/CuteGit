@@ -55,9 +55,7 @@ StandardListView {
 
         Selection {
             id: selection
-            anchors.centerIn: dataZone
-            targetWidth: dataZone.width
-            targetHeight: dataZone.height
+            anchors.fill: dataZone
             show: index === root.currentIndex
 
             FocusIndicator {

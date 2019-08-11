@@ -64,9 +64,7 @@ TreeView {
 
             Selection {
                 id: selectionIndicator
-                targetWidth: fileNameText.width
-                targetHeight: fileNameText.height
-                anchors.centerIn: fileNameText
+                anchors.fill: fileNameText
                 show: styleData.selected
 
                 FocusIndicator {

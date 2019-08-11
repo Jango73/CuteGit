@@ -13,7 +13,7 @@ StandardListView {
     delegate: Item {
         id: delegateItem
         width: parent.width
-        height: Const.elementHeight
+        height: Const.elementHeight + Const.smallPadding
 
         property variant labels: model.labels
         property bool showLabels: true
@@ -44,9 +44,7 @@ StandardListView {
 
         Selection {
             id: selection
-            anchors.centerIn: dataZone
-            targetWidth: dataZone.width
-            targetHeight: dataZone.height
+            anchors.fill: dataZone
             show: index === root.currentIndex
 
             FocusIndicator {
