@@ -38,6 +38,7 @@ public:
 
     Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
+    Q_FAST_PROPERTY(CHashOfRepoFile, h, hashRepoFiles, HashRepoFiles)
 
 public:
 

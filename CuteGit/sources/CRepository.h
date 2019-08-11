@@ -3,6 +3,7 @@
 
 // Qt
 #include <QStringListModel>
+#include <QHash>
 
 // qt-plus
 #include "Macros.h"
@@ -61,6 +62,7 @@ public:
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
+    Q_FAST_PROPERTY(CHashOfRepoFile, h, hashRepoFiles, HashRepoFiles)
     Q_FAST_PROPERTY(int, i, commitCountAhead, CommitCountAhead)
     Q_FAST_PROPERTY(int, i, commitCountBehind, CommitCountBehind)
     Q_FAST_PROPERTY(bool, b, hasModifiedFiles, HasModifiedFiles)

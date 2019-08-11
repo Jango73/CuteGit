@@ -854,52 +854,65 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
     case CEnums::eAllFileStatus:
     case CEnums::eChangedFileStatus:
     {
-        bool bHasModifiedFiles = false;
-        bool bHasCommitableFiles = false;
-
-        for (CRepoFile* pNewFile : lNewFiles)
+        if (not lNewFiles.isEmpty())
         {
-            if (pNewFile->status() != CEnums::eIgnored && pNewFile->status() != CEnums::eClean)
+            QHash<QString, CRepoFile*> hNewFiles;
+
+            for (CRepoFile* pFile : lNewFiles)
             {
-                bHasModifiedFiles = true;
-
-                if (pNewFile->staged())
-                    bHasCommitableFiles = true;
+                hNewFiles[pFile->fullName()] = pFile;
             }
 
-            CRepoFile* pExistingFile = fileByFullName(pNewFile->fullName());
+            bool bHasModifiedFiles = false;
+            bool bHasCommitableFiles = false;
 
-            if (pExistingFile != nullptr)
+            for (CRepoFile* pNewFile : lNewFiles)
             {
-                m_lRepoFiles.removeAll(pExistingFile);
-                delete pExistingFile;
+                QString sNewKey = pNewFile->fullName();
+
+                if (pNewFile->status() != CEnums::eIgnored && pNewFile->status() != CEnums::eClean)
+                {
+                    bHasModifiedFiles = true;
+
+                    if (pNewFile->staged())
+                        bHasCommitableFiles = true;
+                }
+
+                if (m_hHashRepoFiles.contains(sNewKey))
+                {
+                    CRepoFile* pExistingFile = m_hHashRepoFiles[sNewKey];
+                    m_lRepoFiles.removeAll(pExistingFile);
+                    delete pExistingFile;
+                }
+
+                m_lRepoFiles << pNewFile;
+                m_hHashRepoFiles[sNewKey] = pNewFile;
             }
 
-            m_lRepoFiles << pNewFile;
-        }
+            for (CRepoFile* pExistingFile : m_lRepoFiles)
+            {
+                QString sExistingKey = pExistingFile->fullName();
 
-        for (CRepoFile* pExistingFile : m_lRepoFiles)
-        {
-            CRepoFile* pNewFile = fileByFullName(lNewFiles, pExistingFile->fullName());
-
-            if (pNewFile == nullptr) {
-                pExistingFile->setStaged(false);
-                pExistingFile->setStatus(CEnums::eClean);
+                if (not hNewFiles.contains(sExistingKey))
+                {
+                    pExistingFile->setStaged(false);
+                    pExistingFile->setStatus(CEnums::eClean);
+                }
             }
+
+            setHasModifiedFiles(bHasModifiedFiles);
+            setHasCommitableFiles(bHasCommitableFiles);
+
+            std::sort(m_lRepoFiles.begin(), m_lRepoFiles.end(), [] (CRepoFile* left, CRepoFile* right) {
+                return left->fullName() < right->fullName();
+            });
+
+            // Update the models
+            m_pTreeFileModel->handleRepoFilesChanged();
+            m_pFlatFileModel->handleRepoFilesChanged();
+            m_pTreeFileModelProxy->filterChanged();
+            m_pFlatFileModelProxy->filterChanged();
         }
-
-        setHasModifiedFiles(bHasModifiedFiles);
-        setHasCommitableFiles(bHasCommitableFiles);
-
-        std::sort(m_lRepoFiles.begin(), m_lRepoFiles.end(), [] (CRepoFile* left, CRepoFile* right) {
-            return left->fullName() < right->fullName();
-        });
-
-        // Update the models
-        m_pTreeFileModel->handleRepoFilesChanged();
-        m_pFlatFileModel->handleRepoFilesChanged();
-        m_pTreeFileModelProxy->filterChanged();
-        m_pFlatFileModelProxy->filterChanged();
 
         break;
     }

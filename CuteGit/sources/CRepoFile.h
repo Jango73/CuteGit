@@ -76,3 +76,5 @@ public:
     static const QString sRepositoryStatusRebase;
     static const QString sRepositoryStatusInteractiveRebase;
 };
+
+typedef QHash<QString, CRepoFile*> CHashOfRepoFile;

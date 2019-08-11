@@ -109,14 +109,17 @@ bool CFlatFileModel::setData(const QModelIndex& qIndex, const QVariant& vValue, 
 void CFlatFileModel::handleRepoFilesChanged()
 {
     QList<CRepoFile*> lNewFiles = m_pRepository->repoFiles();
+    CHashOfRepoFile hNewFiles = m_pRepository->hashRepoFiles();
 
     for (int iNewFileIndex = 0; iNewFileIndex < lNewFiles.count(); iNewFileIndex++)
     {
         CRepoFile* pNewFile = lNewFiles[iNewFileIndex];
-        CRepoFile* pExistingFile = m_pRepository->fileByFullName(m_lRepoFiles, pNewFile->fullName());
+        QString sNewKey = pNewFile->fullName();
 
-        if (pExistingFile != nullptr)
+        if (m_hHashRepoFiles.contains(sNewKey))
         {
+            CRepoFile* pExistingFile = m_hHashRepoFiles[sNewKey];
+
             if (pExistingFile->staged() != pNewFile->staged() || pExistingFile->status() != pNewFile->status())
             {
                 QModelIndex qIndex = createIndex(iNewFileIndex, 0);
@@ -130,7 +133,9 @@ void CFlatFileModel::handleRepoFilesChanged()
         else
         {
             beginInsertRows(QModelIndex(), iNewFileIndex, iNewFileIndex);
-            m_lRepoFiles.insert(iNewFileIndex, new CRepoFile(*pNewFile, this));
+            CRepoFile* pNewFileForThis = new CRepoFile(*pNewFile, this);
+            m_lRepoFiles.insert(iNewFileIndex, pNewFileForThis);
+            m_hHashRepoFiles[sNewKey] = pNewFileForThis;
             endInsertRows();
         }
     }
@@ -138,13 +143,14 @@ void CFlatFileModel::handleRepoFilesChanged()
     for (int iExistingFileIndex = 0; iExistingFileIndex < m_lRepoFiles.count(); iExistingFileIndex++)
     {
         CRepoFile* pExistingFile = m_lRepoFiles[iExistingFileIndex];
-        CRepoFile* pNewFile = m_pRepository->fileByFullName(lNewFiles, pExistingFile->fullName());
+        QString sExistingKey = pExistingFile->fullName();
 
-        if (pNewFile == nullptr)
+        if (not hNewFiles.contains(sExistingKey))
         {
             beginRemoveRows(QModelIndex(), iExistingFileIndex, iExistingFileIndex);
             delete m_lRepoFiles[iExistingFileIndex];
             m_lRepoFiles.removeAt(iExistingFileIndex);
+            m_hHashRepoFiles.remove(sExistingKey);
             endRemoveRows();
 
             iExistingFileIndex--;
