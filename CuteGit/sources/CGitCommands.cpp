@@ -37,7 +37,7 @@ const QString CGitCommands::sCommandAmend               = "git commit --amend --
 const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count \"%1\"...\"origin/%1\"";
 const QString CGitCommands::sCommandBranches            = "git branch -a";
 const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\" \"%2\"";
-const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %an &&& %aI\" --max-count=20";
+const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %an &&& %aI\" --max-count=50";
 const QString CGitCommands::sCommandClone               = "git clone --progress \"%1\"";
 const QString CGitCommands::sCommandCommit              = "git commit -m \"%1\"";
 const QString CGitCommands::sCommandCommitDiffPrevious  = "git diff %1~1 %1";
@@ -48,7 +48,7 @@ const QString CGitCommands::sCommandCreateTagOnCommit   = "git tag -m \"%1\" \"%
 const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbrev-ref HEAD";
 const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
 const QString CGitCommands::sCommandFetch               = "git fetch";
-const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %an &&& %aI\" --max-count=20 \"%1\"";
+const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %an &&& %aI\" --max-count=50 \"%1\"";
 const QString CGitCommands::sCommandFileStatus          = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 const QString CGitCommands::sCommandGetRebaseApplyPath  = "git rev-parse --git-path rebase-apply";
 const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-path rebase-merge";

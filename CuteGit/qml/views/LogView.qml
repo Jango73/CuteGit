@@ -93,7 +93,6 @@ StandardListView {
                     id: messageFieldText
                     anchors.top: parent.top
                     anchors.left: labelLayout.right
-                    anchors.right: parent.right
                     anchors.topMargin: Const.mainFontSize * 0.2
                     anchors.leftMargin: Const.mainPadding
                     height: parent.height
