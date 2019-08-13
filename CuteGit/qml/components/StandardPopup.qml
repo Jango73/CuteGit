@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import ".."
@@ -55,12 +56,14 @@ Popup {
                 }
             }
 
-            StandardToolBar {
+            Item {
                 id: buttonToolBar
-                height: buttonsLayout.implicitHeight
+                width: parent.width
+                height: buttonsLayout.implicitHeight + Const.mainPadding
 
-                Row {
+                RowLayout {
                     id: buttonsLayout
+                    anchors.centerIn: parent
                     spacing: Const.mainPadding
                 }
             }

@@ -58,6 +58,7 @@ Item {
     property string tagsText: qsTr("Tags")
     property string flatText: qsTr("Flat")
     property string diffText: qsTr("Diff")
+    property string closeText: qsTr("Close")
     property string clearText: qsTr("Clear")
     property string filesText: qsTr("Files")
     property string stageText: qsTr("Stage")

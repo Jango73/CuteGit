@@ -53,6 +53,18 @@ StandardPopup {
         }
     ]
 
+    buttons: [
+        StandardToolButton {
+            action: Action {
+                id: closeButton
+                text: Const.closeText
+                onTriggered: {
+                    root.close()
+                }
+            }
+        }
+    ]
+
     Component.onCompleted: {
         copyrightText.text = Const.copyrightText.format(root.controller.version)
         generalText.text = Const.generalHelpText
