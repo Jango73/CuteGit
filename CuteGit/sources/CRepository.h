@@ -12,8 +12,6 @@
 // Application
 #include "CEnums.h"
 #include "CBranchModel.h"
-#include "CTreeFileModel.h"
-#include "CTreeFileModelProxy.h"
 #include "CFlatFileModel.h"
 #include "CFlatFileModelProxy.h"
 #include "CStagedFileModelProxy.h"
@@ -48,8 +46,6 @@ public:
     Q_FAST_PROPERTY(QString, s, diffToCommitId, DiffToCommitId)
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
 	Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
-    Q_FAST_PROPERTY(CTreeFileModel*, p, treeFileModel, TreeFileModel)
-    Q_FAST_PROPERTY(CTreeFileModelProxy*, p, treeFileModelProxy, TreeFileModelProxy)
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(CFlatFileModelProxy*, p, flatFileModelProxy, FlatFileModelProxy)
     Q_FAST_PROPERTY(CStagedFileModelProxy*, p, stagedFileModelProxy, StagedFileModelProxy)

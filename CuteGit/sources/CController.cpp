@@ -2,6 +2,7 @@
 // Qt
 #include <QDebug>
 #include <QApplication>
+#include <QDir>
 #include <QUrl>
 
 // Application

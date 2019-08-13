@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
+#include <QDir>
 #include <QUrl>
 
 // Application
@@ -45,8 +46,6 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_sRepositoryPath(sPath)
     , m_pController(pController)
     , m_pCommands(nullptr)
-    , m_pTreeFileModel(new CTreeFileModel(this, this))
-    , m_pTreeFileModelProxy(new CTreeFileModelProxy(pController, this))
     , m_pFlatFileModel(new CFlatFileModel(this, this))
     , m_pFlatFileModelProxy(new CFlatFileModelProxy(pController, this))
     , m_pStagedFileModelProxy(new CStagedFileModelProxy(pController, this))
@@ -91,14 +90,10 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     m_pFileLogModel->setLines(QList<CLogLine*>());
     m_pGraphModel->setLines(QList<CGraphLine*>());
 
-    connect(m_pTreeFileModel, &CTreeFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
-    connect(m_pTreeFileModel, &CTreeFileModel::shouldRefreshFileStatus, this, &CRepository::onShouldRefreshFileStatus);
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
     m_pFlatFileModelProxy->setSourceModel(m_pFlatFileModel);
     m_pStagedFileModelProxy->setSourceModel(m_pFlatFileModel);
-    m_pTreeFileModelProxy->setSourceModel(m_pTreeFileModel);
-    m_pTreeFileModel->setRootPath(sPath);
 
     connect(this, &CRepository::diffToCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
     connect(this, &CRepository::diffFromCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
@@ -908,9 +903,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
             });
 
             // Update the models
-            m_pTreeFileModel->handleRepoFilesChanged();
             m_pFlatFileModel->handleRepoFilesChanged();
-            m_pTreeFileModelProxy->filterChanged();
             m_pFlatFileModelProxy->filterChanged();
         }
 

@@ -20,7 +20,7 @@ StandardListView {
     delegate: Item {
         id: dlg
         width: parent.width
-        height: Const.treeElementHeight + Const.mainPadding * 0.25
+        height: Const.elementHeight + Const.mainPadding * 0.25
 
         property string fullName: model.fullName
         property bool selected: root.selection

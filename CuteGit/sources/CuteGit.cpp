@@ -12,8 +12,6 @@
 #include "CuteGit.h"
 #include "CEnums.h"
 #include "CRepository.h"
-#include "CTreeFileModel.h"
-#include "CTreeFileModelProxy.h"
 #include "CDiffLine.h"
 
 /*!

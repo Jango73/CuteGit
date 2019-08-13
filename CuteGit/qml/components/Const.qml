@@ -29,7 +29,6 @@ Item {
     property int paneElevation: 2
     property int popupElevation: 8
     property int elementHeight: mainFontSize * 1.5
-    property int treeElementHeight: elementHeight
     property int buttonHeight: mainFontSize * 2.5
 
     property real popupWidthNorm: 0.50
@@ -58,7 +57,6 @@ Item {
     property string logText: qsTr("Log")
     property string tagsText: qsTr("Tags")
     property string flatText: qsTr("Flat")
-    property string treeText: qsTr("Tree")
     property string diffText: qsTr("Diff")
     property string clearText: qsTr("Clear")
     property string filesText: qsTr("Files")

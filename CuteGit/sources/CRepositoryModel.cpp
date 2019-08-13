@@ -107,7 +107,6 @@ void CRepositoryModel::fileFiltersChanged()
     {
         if (pRepository != nullptr)
         {
-            pRepository->treeFileModelProxy()->filterChanged();
             pRepository->flatFileModelProxy()->filterChanged();
         }
     }

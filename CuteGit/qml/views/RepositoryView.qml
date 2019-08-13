@@ -75,15 +75,6 @@ Pane {
         anchors.right: rightPart.left
 
         ItemSelectionModel {
-            id: treeFileSelection
-            model: root.repository ? root.repository.treeFileModelProxy : null
-
-            onCurrentIndexChanged: {
-                root.repository.treeFileModelProxy.handleCurrentIndex(currentIndex)
-            }
-        }
-
-        ItemSelectionModel {
             id: flatFileSelection
             model: root.repository ? root.repository.flatFileModelProxy : null
 
@@ -101,7 +92,6 @@ Pane {
             anchors.margins: Const.paneMargins
 
             repository: root.repository
-            treeSelection: treeFileSelection
             flatSelection: flatFileSelection
         }
 

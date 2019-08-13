@@ -14,95 +14,29 @@ Pane {
     Material.elevation: Const.paneElevation
 
     property variant repository: null
-    property variant treeSelection: null
     property variant flatSelection: null
 
-    TabBar {
-        id: tabBar
-        anchors.top: parent.top
-
-        TabButton {
-            width: implicitWidth
-            text: Const.flatText
-        }
-
-        TabButton {
-            width: implicitWidth
-            text: Const.treeText
-        }
+    StandardLabel {
+        anchors.fill: parent
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        text: Const.allFilesCleanText
+        visible: root.repository === null | flatFileView.count === 0
     }
 
-    SwipeView {
-        id: swipeView
-        anchors.top: tabBar.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        interactive: false
-        currentIndex: tabBar.currentIndex
-        clip: true
+    FlatFileView {
+        id: flatFileView
+        anchors.fill: parent
 
-        Item {
-            StandardLabel {
-                anchors.fill: parent
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                text: Const.allFilesCleanText
-                visible: root.repository === null | flatFileView.count === 0
-            }
-
-            FlatFileView {
-                id: flatFileView
-                anchors.fill: parent
-                visible: !root.filesAsTree
-                enabled: visible
-
-                repository: root.repository
-                selection: root.flatSelection
-            }
-        }
-
-        Item {
-            /*
-                TODO: make expand and collapse all functions work
-                StandardToolBar {
-                    id: toolbar
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Row {
-                        StandardToolButton { text: Const.expandAllText; action: Action { onTriggered: treeView.expandAll() } }
-                        StandardToolButton { text: Const.collapseAllText; action: Action { onTriggered: treeView.collapseAll() } }
-                    }
-                }
-                */
-
-            TreeFileView {
-                id: treeFileView
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-
-                repository: root.repository
-                selection: root.treeSelection
-            }
-        }
+        repository: root.repository
+        selection: root.flatSelection
     }
 
     function getSelectedFiles() {
-        var files
-        if (tabBar.currentIndex === 0) {
-            files = flatFileView.model.selectionToFullNameList(flatSelection.selectedIndexes)
-        } else {
-            files = treeFileView.model.selectionToFullNameList(treeSelection.selectedIndexes)
-        }
-        return files
+        return flatFileView.model.selectionToFullNameList(flatSelection.selectedIndexes)
     }
 
     function activateFlatFileView() {
-        tabBar.currentIndex = 0
         flatFileView.forceActiveFocus()
     }
 }

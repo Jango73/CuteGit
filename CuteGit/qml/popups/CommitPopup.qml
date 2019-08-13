@@ -46,7 +46,7 @@ StandardPopup {
                 delegate: Item {
                     id: dlg
                     width: parent.width
-                    height: Const.treeElementHeight + Const.mainPadding * 0.25
+                    height: Const.elementHeight + Const.mainPadding * 0.25
 
                     Item {
                         id: listViewStatus
