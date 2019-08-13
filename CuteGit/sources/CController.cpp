@@ -57,9 +57,11 @@ const QString sParamKnownRepositories = "KnownRepositories";
 const QString sParamCurrentRepository = "CurrentRepository";
 const QString sParamRepository = "Repository";
 const QString sParamPath = "Path";
+const QString sParamName = "Name";
 const QString sParamHistory = "History";
 const QString sParamLastBrowsedRepositoryURL = "LastBrowsedRepositoryURL";
 const QString sParamLastBrowsedRepositoryPath = "LastBrowsedRepositoryPath";
+const QString sParamTheme = "Theme";
 
 const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
 
@@ -372,6 +374,11 @@ void CController::saveConfiguration()
         xConfig << xCurrentRepository;
     }
 
+    // Save theme
+    CXMLNode xTheme(sParamTheme);
+    xTheme.attributes()[sParamName] = m_sTheme;
+    xConfig << xTheme;
+
     xConfig.saveXMLToFile(CONFIG_FILE_NAME);
 }
 
@@ -409,6 +416,10 @@ void CController::loadConfiguration()
     // Load current repository
     CXMLNode xCurrentRepository = xConfig.getNodeByTagName(sParamCurrentRepository);
     m_sCurrentRepositoryPath = xCurrentRepository.attributes()[sParamPath];
+
+    // Load theme
+    CXMLNode xTheme = xConfig.getNodeByTagName(sParamTheme);
+    m_sTheme = xTheme.attributes()[sParamName];
 }
 
 //-------------------------------------------------------------------------------------------------

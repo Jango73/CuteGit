@@ -20,7 +20,6 @@ ApplicationWindow {
     property var materialTheme: Material.theme
     property var currentRepositoryView: null
 
-    Material.theme: Material.Dark
     Material.primary: Material.Teal
     Material.accent: Material.Green
 
@@ -28,6 +27,8 @@ ApplicationWindow {
         currentRepositoryView = Qt.binding(function() {
             return mainSwipeView.count > 0 ? mainSwipeView.currentItem : null
         })
+
+        setTheme(ctrl.theme === Const.themeMaterialDark ? Material.Dark : Material.Light)
     }
 
     //--------------------------------------------------------------------------------
@@ -362,6 +363,7 @@ ApplicationWindow {
 
     function setTheme(theme) {
         Material.theme = theme
+        ctrl.theme = (theme === Material.Dark ? Const.themeMaterialDark : Const.themeMaterialLight)
     }
 
     //--------------------------------------------------------------------------------

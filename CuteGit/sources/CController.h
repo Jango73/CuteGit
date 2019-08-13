@@ -36,6 +36,7 @@ class CController : public QObject
     Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryURL, LastBrowsedRepositoryURL)
     Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryPath, LastBrowsedRepositoryPath)
     Q_FAST_PROPERTY(QString, s, statusText, StatusText)
+    Q_FAST_PROPERTY(QString, s, theme, Theme)
 
     Q_FAST_PROPERTY_NO_SET_IMPL(int, i, currentRepositoryIndex, CurrentRepositoryIndex)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)

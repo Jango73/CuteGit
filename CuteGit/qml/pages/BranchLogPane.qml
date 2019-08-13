@@ -9,6 +9,9 @@ import "../popups"
 
 Pane {
     id: root
+    padding: Const.mainPadding
+
+    Material.elevation: Const.paneElevation
 
     property variant repository: null
 

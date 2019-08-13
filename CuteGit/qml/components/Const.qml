@@ -5,7 +5,8 @@ import QtQuick.Window 2.12
 
 Item {
     // Constants
-    property string statusOnline: "online"
+    property string themeMaterialDark: "MaterialDark"
+    property string themeMaterialLight: "MaterialLight"
 
     // Main font
     property string mainFontFamily: "Calibri"
@@ -120,7 +121,7 @@ Item {
                                   )
 
     property string generalHelpText: qsTr(
-                                         "File views\n" +
+                                         "File view\n" +
                                          "\n" +
                                          "Staged files are shown in green, unstaged ones in red.\n" +
                                          "The symbols next to file names are:\n" +
