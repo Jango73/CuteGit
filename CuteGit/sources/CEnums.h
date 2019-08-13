@@ -78,8 +78,9 @@ public:
     enum EDiffOperation
     {
         None,
-        Add,
-        Delete
+        DiffFileName,
+        DiffAdd,
+        DiffDelete
     };
 
     Q_ENUMS(ECapability)

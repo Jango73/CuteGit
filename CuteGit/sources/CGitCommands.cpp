@@ -823,15 +823,28 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 CDiffLine* pDiffLine = new CDiffLine();
                 pDiffLine->setText(sLine);
 
-                if (not (sLine.startsWith("+++") || sLine.startsWith("---") || sLine.startsWith("@@")))
+                if (sLine.startsWith("index") || sLine.startsWith("+++") || sLine.startsWith("---"))
                 {
-                    if (sLine.startsWith("+"))
-                        pDiffLine->setOperation(CEnums::Add);
-                    if (sLine.startsWith("-"))
-                        pDiffLine->setOperation(CEnums::Delete);
+                    delete pDiffLine;
                 }
+                else
+                {
+                    if (sLine.startsWith("diff"))
+                    {
+                        QString sNewText = pDiffLine->text().split(PATH_SEP).last();
+                        pDiffLine->setOperation(CEnums::DiffFileName);
+                        pDiffLine->setText(sNewText);
+                    }
+                    else if (not (sLine.startsWith("@@")))
+                    {
+                        if (sLine.startsWith("+"))
+                            pDiffLine->setOperation(CEnums::DiffAdd);
+                        if (sLine.startsWith("-"))
+                            pDiffLine->setOperation(CEnums::DiffDelete);
+                    }
 
-                lReturnValue << pDiffLine;
+                    lReturnValue << pDiffLine;
+                }
             }
         }
 
