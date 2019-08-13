@@ -121,7 +121,7 @@ StandardListView {
     }
 
     onCurrentIndexChanged: {
-        if (root.selection)
+        if (root.currentIndex !== -1 && root.selection)
             root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
     }
 
