@@ -64,7 +64,7 @@ TreeView {
 
             Selection {
                 id: selectionIndicator
-                anchors.fill: fileNameText
+                anchors.fill: parent
                 show: styleData.selected
 
                 FocusIndicator {
@@ -85,6 +85,7 @@ TreeView {
                 anchors.left: statusText.right
                 anchors.right: parent.right
                 height: parent.height
+                verticalAlignment: Text.AlignVCenter
                 text: model !== null && typeof model !== "undefined" ? model.fileName : ""
 
                 selection: selectionIndicator

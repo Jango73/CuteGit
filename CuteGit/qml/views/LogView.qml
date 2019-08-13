@@ -75,13 +75,6 @@ StandardListView {
                     spacing: Const.mainPadding
                     width: delegateItem.showLabels ? implicitWidth : 0
 
-                    Behavior on width {
-                        NumberAnimation {
-                            duration: Const.componentFadingDuration
-                            easing.type: Easing.InOutQuad
-                        }
-                    }
-
                     Repeater {
                         id: labelsRepeater
 
