@@ -143,7 +143,7 @@ Pane {
 
             onRequestMergeBranch: {
                 mergeBranchAction.branchName = name
-                confirm.titleText = Const.mergeBranchText + " " + name
+                confirm.title = Const.mergeBranchText + " " + name
                 confirm.messageText = Const.mergeBranchMessage.format(name)
                 confirm.actionToTrigger = mergeBranchAction
                 confirm.open()
@@ -151,7 +151,7 @@ Pane {
 
             onRequestDeleteBranch: {
                 deleteBranchAction.branchName = name
-                confirm.titleText = Const.deleteBranchText + " " + name
+                confirm.title = Const.deleteBranchText + " " + name
                 confirm.messageText = Const.deleteBranchMessage
                 confirm.actionToTrigger = deleteBranchAction
                 confirm.open()
@@ -288,8 +288,6 @@ Pane {
 
     BranchFromPopup {
         id: branchFrom
-        width: root.width * Const.popupWidthSmall
-        height: root.height * Const.popupHeightSmall
         anchors.centerIn: parent
 
         repository: root.repository

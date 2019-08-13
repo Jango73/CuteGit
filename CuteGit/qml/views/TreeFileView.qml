@@ -12,9 +12,9 @@ TreeView {
     property variant repository: null
     property bool mouseActive: true
 
-    model: root.repository !== null
-           ? root.repository.treeFileModelProxy
-           : undefined
+//    model: root.repository !== null
+//           ? root.repository.treeFileModelProxy
+//           : undefined
 
     rootIndex: root.repository !== null
                ? root.repository.treeFileModelProxy.rootPathIndex

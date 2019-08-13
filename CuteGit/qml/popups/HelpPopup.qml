@@ -5,32 +5,22 @@ import "../components"
 
 StandardPopup {
     id: root
+    width: parent.width * Const.popupWidthNorm
+    title: Const.helpTitleText
 
     property variant controller: null
 
-    contentItem: Item {
-        StandardLabel {
-            id: title
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: Const.mainPadding
-
-            horizontalAlignment: Text.AlignHCenter
-            text: Const.helpTitleText
-        }
-
+    controls: [
         StandardText {
             id: copyrightText
-            anchors.top: title.bottom
-            anchors.left: parent.left
             width: parent.width
             height: parent.height * 0.15
-        }
+        },
 
         TabBar {
             id: tabBar
-            anchors.top: copyrightText.bottom
+            width: parent.width
+            height: implicitHeight
 
             TabButton {
                 width: implicitWidth
@@ -41,14 +31,12 @@ StandardPopup {
                 width: implicitWidth
                 text: Const.shortcutsText
             }
-        }
+        },
 
         SwipeView {
             id: swipeView
-            anchors.top: tabBar.bottom
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
+            width: parent.width
+            height: Const.elementHeight * 20
             interactive: false
             clip: true
             currentIndex: tabBar.currentIndex
@@ -63,11 +51,11 @@ StandardPopup {
                 padding: Const.mainPadding * 2
             }
         }
+    ]
 
-        Component.onCompleted: {
-            copyrightText.text = Const.copyrightText.format(root.controller.version)
-            generalText.text = Const.generalHelpText
-            shortcutText.text = Const.shortcutHelpText
-        }
+    Component.onCompleted: {
+        copyrightText.text = Const.copyrightText.format(root.controller.version)
+        generalText.text = Const.generalHelpText
+        shortcutText.text = Const.shortcutHelpText
     }
 }

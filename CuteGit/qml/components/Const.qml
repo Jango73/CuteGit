@@ -87,6 +87,7 @@ Item {
     property string deleteBranchText: qsTr("Delete branch")
     property string repositoriesText: qsTr("Repositories")
     property string repositoryURLText: qsTr("Repository URL")
+    property string statusHistoryText: qsTr("Status history")
     property string mergeProgressText: qsTr("Merge in progress...")
     property string allFilesCleanText: qsTr("All files are clean")
     property string rebaseProgressText: qsTr("Rebase in progress...")

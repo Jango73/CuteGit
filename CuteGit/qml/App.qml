@@ -291,18 +291,8 @@ ApplicationWindow {
         onCloneBegins: statusTextHistory.open()
     }
 
-    QLP.FolderDialog {
-        id: openDialog
-
-        onAccepted: {
-            root.ctrl.openRepository(folder)
-        }
-    }
-
     HelpPopup {
         id: helpDialog
-        width: root.width * Const.popupWidthNorm
-        height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
 
         controller: root.ctrl
@@ -310,14 +300,26 @@ ApplicationWindow {
 
     StandardPopup {
         id: statusTextHistory
-        width: root.width * Const.popupWidthNorm
-        height: root.height * Const.popupHeightNorm
         anchors.centerIn: parent
+        width: root.width * Const.popupWidthNorm
 
-        StandardStringListView {
-            anchors.fill: parent
-            model: root.ctrl.statusTextHistory
-            autoScrollToEnd: true
+        title: Const.statusHistoryText
+
+        controls: [
+            StandardStringListView {
+                width: parent.width
+                height: Const.elementHeight * 20
+                model: root.ctrl.statusTextHistory
+                autoScrollToEnd: true
+            }
+        ]
+    }
+
+    QLP.FolderDialog {
+        id: openDialog
+
+        onAccepted: {
+            root.ctrl.openRepository(folder)
         }
     }
 
@@ -362,4 +364,12 @@ ApplicationWindow {
     function setTheme(theme) {
         Material.theme = theme
     }
+
+    //--------------------------------------------------------------------------------
+    // Debug
+
+//    ScatteredItemView {
+//        anchors.fill: parent
+//        targetItem: parent
+//    }
 }
