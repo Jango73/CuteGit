@@ -710,11 +710,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     {
         onNewOutput(sOutput);
 
-        getBranchHeadCommits();
-        getBranchesCommitCountAheadBehind();
-        checkChangedFileStatus();
-        getBranchLog();
-        getGraph();
+        refresh();
         break;
     }
 
