@@ -29,7 +29,6 @@
 // Constant numbers
 
 static int iLogFormatValueCount = 4;
-static int iGraphFormatValueCount = 5;
 
 //-------------------------------------------------------------------------------------------------
 // Command strings

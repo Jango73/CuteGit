@@ -90,7 +90,7 @@ Pane {
             id: tagList
             visible: count > 0
 
-            model: root.repository.tagModel
+            model: root.repository ? root.repository.tagModel : undefined
 
             delegate: StandardListViewItem {
                 width: parent.width

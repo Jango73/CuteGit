@@ -112,6 +112,7 @@ public:
         eGraph,
         eBranchLog,
         eFileLog,
+        eCommitMessage,
         eStageFile,
         eStageAll,
         eRevertFile,

@@ -65,6 +65,9 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const;
 
     //!
+    void setCommitMessage(const QString& sCommitId, const QString& sMessage);
+
+    //!
     void commitChanged(const QString& sCommitId);
 
     //-------------------------------------------------------------------------------------------------

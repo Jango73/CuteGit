@@ -180,6 +180,9 @@ protected:
     //!
     CRepoFile* repoFileForLine(const QString& sPath, QString sLine);
 
+    //!
+    void getCommitMessage(QString sPath, const QString &sCommitId);
+
     //-------------------------------------------------------------------------------------------------
     // Protected slots
     //-------------------------------------------------------------------------------------------------
@@ -216,6 +219,7 @@ protected:
     static const QString sCommandClone;
     static const QString sCommandCommit;
     static const QString sCommandCommitDiffPrevious;
+    static const QString sCommandCommitMessage;
     static const QString sCommandContinueMerge;
     static const QString sCommandContinueRebase;
     static const QString sCommandCreateTagOnCommit;

@@ -98,6 +98,23 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
 
 //-------------------------------------------------------------------------------------------------
 
+void CLogModel::setCommitMessage(const QString& sCommitId, const QString& sMessage)
+{
+    for (int iLineIndex = 0; iLineIndex < m_lLines.count(); iLineIndex++)
+    {
+        CLogLine* pLine = m_lLines[iLineIndex];
+
+        if (pLine->commitId() == sCommitId)
+        {
+            pLine->setMessage(sMessage);
+            emit dataChanged(index(iLineIndex), index(iLineIndex));
+            break;
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CLogModel::commitChanged(const QString& sCommitId)
 {
     for (int iLineIndex = 0; iLineIndex < m_lLines.count(); iLineIndex++)

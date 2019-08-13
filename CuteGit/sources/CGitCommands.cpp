@@ -28,8 +28,8 @@
 //-------------------------------------------------------------------------------------------------
 // Constants
 
-const int CGitCommands::iLogFormatValueCount            = 4;
-const int CGitCommands::iGraphFormatValueCount          = 5;
+const int CGitCommands::iLogFormatValueCount            = 3;
+const int CGitCommands::iGraphFormatValueCount          = 4;
 
 const QString CGitCommands::sCommandAbortMerge          = "git merge --abort";
 const QString CGitCommands::sCommandAbortRebase         = "git rebase --abort";
@@ -37,21 +37,22 @@ const QString CGitCommands::sCommandAmend               = "git commit --amend --
 const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count \"%1\"...\"origin/%1\"";
 const QString CGitCommands::sCommandBranches            = "git branch -a";
 const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\" \"%2\"";
-const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20";
+const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %an &&& %aI\" --max-count=20";
 const QString CGitCommands::sCommandClone               = "git clone --progress \"%1\"";
 const QString CGitCommands::sCommandCommit              = "git commit -m \"%1\"";
 const QString CGitCommands::sCommandCommitDiffPrevious  = "git diff %1~1 %1";
+const QString CGitCommands::sCommandCommitMessage       = "git show --pretty=format:\"%B\" -s \"%1\"";
 const QString CGitCommands::sCommandContinueMerge       = "git merge --continue";
 const QString CGitCommands::sCommandContinueRebase      = "git rebase --continue";
 const QString CGitCommands::sCommandCreateTagOnCommit   = "git tag -m \"%1\" \"%2\" \"%3\"";
 const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbrev-ref HEAD";
 const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
 const QString CGitCommands::sCommandFetch               = "git fetch";
-const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=20 HEAD \"%1\"";
+const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %an &&& %aI\" --max-count=20 \"%1\"";
 const QString CGitCommands::sCommandFileStatus          = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 const QString CGitCommands::sCommandGetRebaseApplyPath  = "git rev-parse --git-path rebase-apply";
 const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-path rebase-merge";
-const QString CGitCommands::sCommandGraph               = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\" --max-count=50";
+const QString CGitCommands::sCommandGraph               = "git log --graph --all --pretty=format:\"&&& %h &&& %an &&& %aI\" --max-count=50";
 const QString CGitCommands::sCommandHeadCommit          = "git rev-parse --short \"%1\"";
 const QString CGitCommands::sCommandMergeBranch         = "git merge \"%1\"";
 const QString CGitCommands::sCommandPull                = "git pull";
@@ -736,6 +737,14 @@ CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::getCommitMessage(QString sPath, const QString& sCommitId)
+{
+    QString sCommand = QString(sCommandCommitMessage).arg(sCommitId);
+    exec(new CProcessCommand(CEnums::eCommitMessage, sPath, sCommand, true, QMap<QString, QString>(), sCommitId));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData)
 {
     switch (eCommand)
@@ -787,6 +796,13 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     {
         // Throw the returned string of the process
         emit newOutputKeyValue(eCommand, sUserData, sValue.trimmed());
+        break;
+    }
+
+    case CEnums::eCommitMessage:
+    {
+        emit newOutputKeyValue(eCommand, sUserData, sValue);
+
         break;
     }
 
@@ -955,9 +971,11 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 CLogLine* pLine = new CLogLine();
 
                 pLine->setCommitId(sValues[0].trimmed());
-                pLine->setMessage(sValues[1].trimmed());
-                pLine->setAuthor(sValues[2].trimmed());
-                pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
+                pLine->setAuthor(sValues[1].trimmed());
+                pLine->setDate(QDateTime::fromString(sValues[2].trimmed(), Qt::ISODate));
+                pLine->setMessage("...");
+
+                getCommitMessage(sPath, pLine->commitId());
 
                 lReturnValue << pLine;
             }
@@ -984,9 +1002,11 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
                 pLine->setGraphSymbol(sValues[0].trimmed());
                 pLine->setCommitId(sValues[1].trimmed());
-                pLine->setMessage(sValues[2].trimmed());
-                pLine->setAuthor(sValues[3].trimmed());
-                pLine->setDate(QDateTime::fromString(sValues[4].trimmed(), Qt::ISODate));
+                pLine->setAuthor(sValues[2].trimmed());
+                pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
+                pLine->setMessage("...");
+
+                getCommitMessage(sPath, pLine->commitId());
 
                 lReturnValue << pLine;
             }

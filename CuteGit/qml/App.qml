@@ -141,7 +141,6 @@ ApplicationWindow {
                 id: tabCloseAction
 
                 onTriggered: {
-                    console.log(source.tabIndex)
                     root.ctrl.removeRepository(source.tabIndex)
                 }
             }

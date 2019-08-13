@@ -93,9 +93,9 @@ StandardListView {
                     id: messageFieldText
                     anchors.top: parent.top
                     anchors.left: labelLayout.right
+                    anchors.topMargin: Const.mainFontSize * 0.15
                     anchors.leftMargin: Const.mainPadding
                     height: parent.height
-                    verticalAlignment: Text.AlignVCenter
                     text: (
                               model.markedAsDiffFrom
                               ? "[F]  "

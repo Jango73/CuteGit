@@ -105,7 +105,7 @@ void CCommands::run()
             delete pCommand;
         }
 
-        msleep(bStackEmpty ? 100 : 10);
+        msleep(bStackEmpty ? 100 : 2);
     }
 }
 
