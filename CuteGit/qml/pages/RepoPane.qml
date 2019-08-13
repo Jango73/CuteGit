@@ -31,7 +31,7 @@ TitlePane {
 
             delegate: Item {
                 width: parent.width
-                height: Const.elementHeight
+                height: Const.listViewItemHeight
 
                 Item {
                     id: item

@@ -36,6 +36,7 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.topMargin: Const.smallPadding
         interactive: false
         currentIndex: tabBar.currentIndex
         clip: true

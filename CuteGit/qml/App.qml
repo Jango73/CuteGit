@@ -176,6 +176,7 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
+            anchors.topMargin: Const.smallPadding
             interactive: false
             currentIndex: mainTabBar.currentIndex
 

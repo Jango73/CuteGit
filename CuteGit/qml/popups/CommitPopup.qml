@@ -30,7 +30,7 @@ StandardPopup {
         TitlePane {
             id: filePane
             width: parent.width
-            height: Const.elementHeight * 10
+            height: Const.listViewItemHeight * 10
 
             title: Const.stagedFilesForCommitText
 
@@ -46,7 +46,7 @@ StandardPopup {
                 delegate: Item {
                     id: dlg
                     width: parent.width
-                    height: Const.elementHeight + Const.mainPadding * 0.25
+                    height: Const.listViewItemHeight
 
                     Item {
                         id: listViewStatus

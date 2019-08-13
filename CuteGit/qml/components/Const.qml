@@ -30,6 +30,7 @@ Item {
     property int paneElevation: 2
     property int popupElevation: 8
     property int elementHeight: mainFontSize * 1.5
+    property int listViewItemHeight: elementHeight + smallPadding
     property int buttonHeight: mainFontSize * 2.5
 
     property real popupWidthNorm: 0.50

@@ -39,6 +39,7 @@ Pane {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.topMargin: Const.smallPadding
         interactive: false
         clip: true
         currentIndex: tabBar.currentIndex
@@ -51,7 +52,7 @@ Pane {
 
             delegate: StandardListViewItem {
                 width: parent.width
-                height: Const.elementHeight + Const.smallPadding
+                height: Const.listViewItemHeight
                 text: model.name
                 selectionShown: model.name === root.repository.currentBranch
                 listView: branchList
@@ -94,7 +95,7 @@ Pane {
 
             delegate: StandardListViewItem {
                 width: parent.width
-                height: Const.elementHeight + Const.smallPadding
+                height: Const.listViewItemHeight
                 text: model.name
                 selectionShown: false
                 listView: tagList

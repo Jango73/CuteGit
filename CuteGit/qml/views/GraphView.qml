@@ -13,7 +13,7 @@ StandardListView {
     delegate: Item {
         id: delegateItem
         width: parent.width
-        height: Const.elementHeight
+        height: Const.listViewItemHeight
 
         property variant labels: model.labels
         property bool showLabels: true

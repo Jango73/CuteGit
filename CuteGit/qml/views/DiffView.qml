@@ -25,7 +25,7 @@ Pane {
 
         delegate: Item {
             width: parent.width
-            height: Const.elementHeight
+            height: Const.listViewItemHeight
 
             Rectangle {
                 anchors.fill: parent

@@ -7,7 +7,7 @@ StandardListView {
 
     delegate: ElideText {
         width: parent.width
-        height: Const.elementHeight
+        height: Const.listViewItemHeight
         text: display
     }
 }
