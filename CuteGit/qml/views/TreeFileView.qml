@@ -53,11 +53,11 @@ TreeView {
             Rectangle {
                 anchors.fill: parent
                 color: if (model !== null && typeof model !== "undefined")
-                           if (model.staged === "X") Const.fileStagedColor
-                           else if (model.status === "*") Const.fileModifiedColor
-                           else if (model.status === "=") Const.fileRenamedColor
-                           else if (model.status === "+") Const.fileAddedColor
-                           else if (model.status === "-") Const.fileDeletedColor
+                           if (model.staged === Const.staged) Const.fileStagedColor
+                           else if (model.status === Const.statusModified) Const.fileModifiedColor
+                           else if (model.status === Const.statusRenamed) Const.fileRenamedColor
+                           else if (model.status === Const.statusAdded) Const.fileAddedColor
+                           else if (model.status === Const.statusDeleted) Const.fileDeletedColor
                            else Const.transparent
                 else Const.transparent
             }

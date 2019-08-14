@@ -42,6 +42,7 @@ QHash<int, QByteArray> CLogModel::roleNames() const
     hRoleNames[eDateRole] = "date";
     hRoleNames[eAuthorRole] = "author";
     hRoleNames[eMessageRole] = "message";
+    hRoleNames[eFullMessageRole] = "fullMessage";
     hRoleNames[eLabelsRole] = "labels";
     hRoleNames[eMarkedAsDiffFromRole] = "markedAsDiffFrom";
     hRoleNames[eMarkedAsDiffToRole] = "markedAsDiffTo";
@@ -81,6 +82,9 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
         return m_lLines[row]->author();
 
     case eMessageRole:
+        return m_lLines[row]->message().split(NEW_LINE).first();
+
+    case eFullMessageRole:
         return m_lLines[row]->message();
 
     case eLabelsRole:

@@ -52,15 +52,14 @@ Pane {
 
             delegate: StandardListViewItem {
                 width: parent.width
-                height: Const.listViewItemHeight
-                text: model.name
-                selectionShown: model.name === root.repository.currentBranch
                 listView: branchList
+                selectionShown: model.name === root.repository.currentBranch
+                primaryText: model.name
 
                 onClicked: {
                     if (mouse.button === Qt.RightButton) {
                         root.branchName = model.name
-                        branchMenu.canMerge = model.name !== root.repository.currentBranch
+                        branchMenu.canMerge = (model.name !== root.repository.currentBranch)
                         branchMenu.popup()
                     }
                 }
@@ -95,10 +94,9 @@ Pane {
 
             delegate: StandardListViewItem {
                 width: parent.width
-                height: Const.listViewItemHeight
-                text: model.name
-                selectionShown: false
                 listView: tagList
+                selectionShown: false
+                primaryText: model.name
             }
         }
     }

@@ -17,111 +17,53 @@ StandardListView {
            ? root.repository.flatFileModelProxy
            : undefined
 
-    delegate: Item {
-        id: dlg
+    delegate: StandardListViewItem {
         width: parent.width
-        height: Const.listViewItemHeight
+        expanded: mustShowRelativeName
+        listView: parent
+        mouseEnabled: root.mouseActive
+        symbolText: model.status
+        primaryText: model.fileName
+        secondaryText: mustShowRelativeName ? model.relativeName : ""
+        selectionShown: selected
+        focusShown: root.activeFocus && index === root.currentIndex
 
         property string fullName: model.fullName
+        property bool mustShowRelativeName: model.fileName !== model.relativeName
         property bool selected: root.selection
                                 ? root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
                                 : false
 
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.AllButtons
-            enabled: root.mouseActive
-            hoverEnabled : true
-
-            onPressed: {
-                if (mouse.modifiers & Qt.ShiftModifier) {
-                    root.selectTo(index)
-                } else {
-                    root.selectOnly(index)
-                }
-
-                root.currentIndex = index
-                root.forceActiveFocus()
+        onPressed: {
+            if (mouse.modifiers & Qt.ShiftModifier) {
+                root.selectTo(index)
+            } else {
+                root.selectOnly(index)
             }
 
-            onDoubleClicked: {
-                root.repository.openFile(model.fullName)
-            }
+            root.currentIndex = index
+            root.forceActiveFocus()
         }
 
-        Rectangle {
-            anchors.fill: parent
-            color: if (model.staged === "X") Const.fileStagedColor
-                   else if (model.status === "*") Const.fileModifiedColor
-                   else if (model.status === "=") Const.fileRenamedColor
-                   else if (model.status === "+") Const.fileAddedColor
-                   else if (model.status === "-") Const.fileDeletedColor
-                   else Const.transparent
-        }
+        onDoubleClicked: root.repository.openFile(model.fullName)
 
-        Item {
-            id: listViewStatus
-            width: Const.elementHeight
-            height: parent.height
-            anchors.left: parent.left
-
-            ElideText {
-                id: listViewStatusText
-                width: parent.width - Const.mainPadding
-                anchors.centerIn: parent
-                color: Material.foreground
-                text: model.status
-            }
-        }
-
-        Item {
-            id: listViewFileName
-            anchors.left: listViewStatus.right
-            width: parent.width * 0.4
-            height: parent.height
-
-            Selection {
-                id: listSelection
-                anchors.fill: listViewFileNameText
-                show: dlg.selected
-            }
-
-            FocusIndicator {
-                anchors.fill: parent
-                visible: root.activeFocus && index === root.currentIndex
-            }
-
-            TextOverSelection {
-                id: listViewFileNameText
-                width: parent.width - Const.mainPadding
-                anchors.centerIn: parent
-                text: model.fileName
-
-                selection: listSelection
-            }
-        }
-
-        Item {
-            id: listViewRelativeName
-            anchors.left: listViewFileName.right
-            anchors.right: parent.right
-            height: parent.height
-
-            ElideText {
-                id: listViewRelativeNameText
-                width: parent.width - Const.mainPadding
-                anchors.centerIn: parent
-                color: Material.foreground
-                text: model.relativeName
-            }
-        }
+        onFullNameChanged: root.modelIndices[index] = root.model.index(index, 0)
 
         Component.onCompleted: root.modelIndices[index] = root.model.index(index, 0)
-        onFullNameChanged: root.modelIndices[index] = root.model.index(index, 0)
+
+        background: Rectangle {
+            anchors.fill: parent
+            color: if (model.staged === Const.staged) Const.fileStagedColor
+                   else if (model.status === Const.statusModified) Const.fileModifiedColor
+                   else if (model.status === Const.statusRenamed) Const.fileRenamedColor
+                   else if (model.status === Const.statusAdded) Const.fileAddedColor
+                   else if (model.status === Const.statusDeleted) Const.fileDeletedColor
+                   else Const.transparent
+        }
     }
 
     onCurrentIndexChanged: {
-        if (root.currentIndex !== -1 && root.selection)
+        if (root.selection && root.currentIndex !== -1 && typeof root.modelIndices[currentIndex] !== "undefined")
             root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
     }
 

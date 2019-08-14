@@ -167,9 +167,11 @@ Item {
                                           )
 
     //
+    property string staged: "X"
     property string statusModified: "*"
     property string statusAdded: "+"
     property string statusDeleted: "-"
+    property string statusRenamed: "="
 
     // Icons
 

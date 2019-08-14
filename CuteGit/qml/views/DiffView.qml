@@ -23,24 +23,20 @@ Pane {
         anchors.fill: parent
         model: root.repository !== null ? root.repository.fileDiffModel : undefined
 
-        delegate: Item {
+        delegate: StandardListViewItem {
             width: parent.width
-            height: Const.listViewItemHeight
+            listView: parent
+            primaryText: model.text
+            primaryTextColor: model.operation === CEnums.DiffFileName ? Material.background : Material.foreground
+            selectionShown: false
+            focusShown: false
 
-            Rectangle {
+            background: Rectangle {
                 anchors.fill: parent
-                color: if (operation === CEnums.DiffAdd) Const.fileStagedColor
-                       else if (operation === CEnums.DiffDelete) Const.fileModifiedColor
-                       else if (operation === CEnums.DiffFileName) Material.accent
+                color: if (model.operation === CEnums.DiffAdd) Const.fileStagedColor
+                       else if (model.operation === CEnums.DiffDelete) Const.fileModifiedColor
+                       else if (model.operation === CEnums.DiffFileName) Material.accent
                        else Const.transparent
-            }
-
-            StandardText {
-                anchors.fill: parent
-                text: model.text
-                verticalAlignment: Text.AlignVCenter
-                elide: Text.ElideRight
-                color: operation === CEnums.DiffFileName ? Material.background : Material.foreground
             }
         }
     }

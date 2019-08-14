@@ -6,6 +6,13 @@ ElideText {
     id: root
 
     property Item selection: null
+    property bool asLabel: false
 
-    color: selection.show ? Material.background : Material.foreground
+    color: selection
+           ? selection.show
+             ? Material.background
+             : asLabel
+               ? Material.backgroundDimColor
+               : Material.foreground
+    : "black"
 }
