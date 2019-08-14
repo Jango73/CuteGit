@@ -10,6 +10,7 @@ import "../popups"
 Pane {
     id: root
     padding: Const.mainPadding
+    anchors.margins: Const.paneMargins
 
     Material.elevation: Const.paneElevation
 
