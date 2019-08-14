@@ -7,7 +7,7 @@ import "../components"
 import "../views"
 import "../popups"
 
-TitlePane {
+ExtendablePane {
     id: root
     title: qsTr("Files")
 

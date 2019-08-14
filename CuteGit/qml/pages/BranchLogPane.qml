@@ -7,7 +7,7 @@ import "../components"
 import "../views"
 import "../popups"
 
-StandardPane {
+ExtendablePane {
     id: root
 
     property variant repository: null

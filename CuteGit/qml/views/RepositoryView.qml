@@ -89,6 +89,7 @@ Pane {
             width: parent.width * 0.5
             anchors.margins: Const.paneMargins
 
+            extensionParent: root
             repository: root.repository
             flatSelection: flatFileSelection
 
@@ -115,8 +116,7 @@ Pane {
             anchors.right: parent.right
             anchors.margins: Const.paneMargins
 
-            Material.elevation: Const.paneElevation
-
+            extensionParent: root
             repository: root.repository
 
             onRequestMenu: {
@@ -187,6 +187,7 @@ Pane {
             anchors.left: parent.left
             width: parent.width * 0.6
 
+            extensionParent: root
             repository: root.repository
 
             onRequestMenu: {
@@ -204,6 +205,7 @@ Pane {
             anchors.right: parent.right
             anchors.margins: Const.paneMargins
 
+            extensionParent: root
             repository: root.repository
         }
     }

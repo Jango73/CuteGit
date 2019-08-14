@@ -11,6 +11,7 @@
         <file>qml/components/Const.qml</file>
         <file>qml/components/DatePicker.qml</file>
         <file>qml/components/ElideText.qml</file>
+        <file>qml/components/ExtendablePane.qml</file>
         <file>qml/components/FocusIndicator.qml</file>
         <file>qml/components/FolderSelector.qml</file>
         <file>qml/components/LogLabel.qml</file>

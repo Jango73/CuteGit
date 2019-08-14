@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import "../components"
 
-TitlePane {
+ExtendablePane {
     id: root
 
     property variant repository: null
