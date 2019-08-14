@@ -8,8 +8,9 @@
 //-------------------------------------------------------------------------------------------------
 
 // Character constants
-#define PATH_SEP    "/"
-#define NEW_LINE	"\n"
+#define PATH_SEP            "/"
+#define NEW_LINE            "\n"
+#define NEW_LINE_ESCAPED    "\\n"
 
 // Qt features
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
