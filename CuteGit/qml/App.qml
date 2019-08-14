@@ -28,6 +28,7 @@ ApplicationWindow {
             return mainSwipeView.count > 0 ? mainSwipeView.currentItem : null
         })
 
+        Material.theme = Material.Dark  // This is to force material change (else font is white in light theme)
         setTheme(ctrl.theme === Const.themeMaterialDark ? Material.Dark : Material.Light)
     }
 
