@@ -4,9 +4,8 @@ import "../components"
 import "../views"
 import "../popups"
 
-Pane {
+Item {
     id: root
-    padding: Const.mainPadding
 
     property variant repository: null
 

@@ -181,7 +181,7 @@ protected:
     CRepoFile* repoFileForLine(const QString& sPath, QString sLine);
 
     //!
-    void getCommitMessage(QString sPath, const QString &sCommitId);
+    void getFullCommitMessage(QString sPath, const QString &sCommitId);
 
     //-------------------------------------------------------------------------------------------------
     // Protected slots

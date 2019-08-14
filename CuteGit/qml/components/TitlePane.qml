@@ -14,7 +14,8 @@ StandardPane {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: Const.elementHeight
+        height: visible ? Const.elementHeight : 0
+        visible: text !== ""
     }
 
     Item {

@@ -4,9 +4,8 @@ import QtQuick.Controls.Material 2.12
 import CuteGit 1.0
 import "../components"
 
-Pane {
+Item {
     id: root
-    padding: Const.mainPadding
 
     property variant repository: null
 
