@@ -288,6 +288,15 @@ void CRepository::toggleStaged(QString sFullName)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::deleteFile(QString sFullName)
+{
+    QFile file (sFullName);
+    file.remove();
+    checkChangedFileStatus();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::stageSelection(QStringList lFileFullNames)
 {
     for (QString sFullName : lFileFullNames)
@@ -895,7 +904,16 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
                 if (not hNewFiles.contains(sExistingKey))
                 {
                     pExistingFile->setStaged(false);
-                    pExistingFile->setStatus(CEnums::eClean);
+
+                    if (
+                            pExistingFile->status() == CEnums::eAdded ||
+                            pExistingFile->status() == CEnums::eModified ||
+                            pExistingFile->status() == CEnums::eRenamed ||
+                            pExistingFile->status() == CEnums::eDeleted
+                            )
+                    {
+                        pExistingFile->setStatus(CEnums::eClean);
+                    }
                 }
             }
 

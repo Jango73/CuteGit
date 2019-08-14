@@ -95,6 +95,20 @@ Pane {
 
             repository: root.repository
             flatSelection: flatFileSelection
+
+            onRequestDeleteFile: {
+                deleteFileAction.fileName = name
+                confirm.title = Const.deleteFileText
+                confirm.messageText = Const.deleteFileMessage.format(name)
+                confirm.actionToTrigger = deleteFileAction
+                confirm.open()
+            }
+
+            Action {
+                id: deleteFileAction
+                property string fileName: ""
+                onTriggered: root.repository.deleteFile(fileName)
+            }
         }
 
         ToolPane {

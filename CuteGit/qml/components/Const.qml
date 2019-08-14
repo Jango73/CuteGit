@@ -82,6 +82,7 @@ Item {
     property string helpTitleText: qsTr("Help")
     property string listEmptyText: qsTr("List empty")
     property string expandAllText: qsTr("Expand all")
+    property string deleteFileText: qsTr("Delete file")
     property string branchFromText: qsTr("Branch from")
     property string collapseAllText: qsTr("Collapse all")
     property string mergeBranchText: qsTr("Merge branch")
@@ -114,6 +115,11 @@ Item {
                                              "You are about to delete a branch.\n\n" +
                                              "Are you sure you want to do this? It cannot be undone."
                                              )
+
+    property string deleteFileMessage: qsTr(
+                                           "Are you sure you want to delete this file?\n" +
+                                           "{0}"
+                                           )
 
     property string copyrightText: qsTr(
                                   "CuteGit - version {0}\n" +

@@ -13,6 +13,8 @@ StandardListView {
     property bool mouseActive: true
     property variant modelIndices: ({})
 
+    signal requestDeleteFile(var name)
+
     model: root.repository
            ? root.repository.flatFileModelProxy
            : undefined
@@ -67,14 +69,9 @@ StandardListView {
             root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
     }
 
-    Keys.onPressed: {
-        if (event.key === Qt.Key_Space) {
-            root.repository.toggleStaged(currentItem.fullName)
-        }
-    }
+    onSpacePressed: root.repository.toggleStaged(currentItem.fullName)
 
-    Keys.onReleased: {
-    }
+    onDeletePressed: root.requestDeleteFile(currentItem.fullName)
 
     function selectTo(targetIndex) {
         var selIndex

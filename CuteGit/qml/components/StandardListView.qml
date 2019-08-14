@@ -8,6 +8,12 @@ ListView {
     activeFocusOnTab: true
     contentWidth: width - scrollBarWidth
 
+    property bool autoScrollToEnd: false
+    property int scrollBarWidth: Const.mainPadding * 2
+
+    signal spacePressed()
+    signal deletePressed()
+
     ScrollBar.vertical: ScrollBar {
         width: scrollBarWidth
         active: true;
@@ -17,9 +23,6 @@ ListView {
                 active = true;
         }
     }
-
-    property bool autoScrollToEnd: false
-    property int scrollBarWidth: Const.mainPadding * 2
 
     Timer {
         id: positionTimer
@@ -48,6 +51,12 @@ ListView {
         }
         else if (event.key === Qt.Key_End) {
             root.currentIndex = root.count - 1
+        }
+        else if (event.key === Qt.Key_Space) {
+            root.spacePressed()
+        }
+        else if (event.key === Qt.Key_Delete) {
+            root.deletePressed()
         }
     }
 }

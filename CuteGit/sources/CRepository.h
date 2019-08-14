@@ -135,6 +135,9 @@ public:
     //! Toggles the 'staged' flag of a file
     Q_INVOKABLE void toggleStaged(QString sFullName);
 
+    //! Deletes a file
+    Q_INVOKABLE void deleteFile(QString sFullName);
+
     //!
     Q_INVOKABLE void stageSelection(QStringList lFileFullNames);
 
@@ -159,13 +162,13 @@ public:
     //! Aborts any ongoing rebase
     Q_INVOKABLE void abortRebase();
 
-    //! Pushes local work to remote
+    //! Pushes local commits to remote
     Q_INVOKABLE void push();
 
     //! Pulls remote commits
     Q_INVOKABLE void pull();
 
-    //!
+    //! Fetches changes from remote
     Q_INVOKABLE void fetch();
 
     //! Saves stash

@@ -16,6 +16,8 @@ Pane {
     property variant repository: null
     property variant flatSelection: null
 
+    signal requestDeleteFile(var name)
+
     StandardLabel {
         anchors.fill: parent
         horizontalAlignment: Text.AlignHCenter
@@ -30,6 +32,8 @@ Pane {
 
         repository: root.repository
         selection: root.flatSelection
+
+        onRequestDeleteFile: root.requestDeleteFile(name)
     }
 
     function getSelectedFiles() {
