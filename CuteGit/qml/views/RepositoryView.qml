@@ -21,16 +21,12 @@ Pane {
     //--------------------------------------------------------------------------------
     // Status
 
-    Pane {
+    StandardPane {
         id: repositoryStatus
-        padding: 2
-        anchors.margins: Const.paneMargins
         anchors.left: parent.left
         anchors.right: rightPart.left
         anchors.top: parent.top
         height: Const.elementHeight * 1.5
-
-        Material.elevation: Const.paneElevation
 
         Rectangle {
             anchors.fill: parent

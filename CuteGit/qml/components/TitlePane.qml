@@ -3,12 +3,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 
-Pane {
+StandardPane {
     id: root
-    anchors.margins: Const.paneMargins
-    padding: Const.panePadding
-
-    Material.elevation: Const.paneElevation
 
     property alias title: title.text
     property alias content: content.children

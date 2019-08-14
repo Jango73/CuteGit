@@ -7,34 +7,34 @@ import "../components"
 import "../views"
 import "../popups"
 
-Pane {
+TitlePane {
     id: root
-    padding: Const.mainPadding
-
-    Material.elevation: Const.paneElevation
+    title: qsTr("Files")
 
     property variant repository: null
     property variant flatSelection: null
 
     signal requestDeleteFile(var name)
 
-    StandardLabel {
-        anchors.fill: parent
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        text: Const.allFilesCleanText
-        visible: root.repository === null | flatFileView.count === 0
-    }
+    content: [
+        StandardLabel {
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: Const.allFilesCleanText
+            visible: root.repository === null | flatFileView.count === 0
+        },
 
-    FlatFileView {
-        id: flatFileView
-        anchors.fill: parent
+        FlatFileView {
+            id: flatFileView
+            anchors.fill: parent
 
-        repository: root.repository
-        selection: root.flatSelection
+            repository: root.repository
+            selection: root.flatSelection
 
-        onRequestDeleteFile: root.requestDeleteFile(name)
-    }
+            onRequestDeleteFile: root.requestDeleteFile(name)
+        }
+    ]
 
     function getSelectedFiles() {
         return flatFileView.model.selectionToFullNameList(flatSelection.selectedIndexes)

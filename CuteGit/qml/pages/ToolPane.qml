@@ -5,11 +5,8 @@ import "../components"
 import "../views"
 import "../popups"
 
-Pane {
+StandardPane {
     id: root
-    padding: Const.mainPadding
-
-    Material.elevation: Const.paneElevation
 
     property variant repository: null
 

@@ -5,12 +5,8 @@ import QtQuick.Controls.Material 2.12
 import "../components"
 import ".."
 
-Pane {
+StandardPane {
     id: root
-    padding: Const.panePadding
-    anchors.margins: Const.paneMargins
-
-    Material.elevation: Const.paneElevation
 
     property variant repository: null
     property string branchName: ""

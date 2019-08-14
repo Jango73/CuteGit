@@ -20,6 +20,7 @@
         <file>qml/components/StandardLabel.qml</file>
         <file>qml/components/StandardListView.qml</file>
         <file>qml/components/StandardListViewItem.qml</file>
+        <file>qml/components/StandardPane.qml</file>
         <file>qml/components/StandardPopup.qml</file>
         <file>qml/components/StandardStringListView.qml</file>
         <file>qml/components/StandardText.qml</file>
