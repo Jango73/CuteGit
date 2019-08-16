@@ -23,6 +23,15 @@ class CLogLine : public QObject
     Q_FAST_PROPERTY(QDateTime, d, date, Date)
     Q_FAST_PROPERTY(QString, s, author, Author)
     Q_FAST_PROPERTY(QString, s, message, Message)
+    Q_FAST_PROPERTY(bool, b, messageIsComplete, MessageIsComplete)
     Q_FAST_PROPERTY(bool, b, markedAsDiffFrom, MarkedAsDiffFrom)
     Q_FAST_PROPERTY(bool, b, markedAsDiffTo, MarkedAsDiffTo)
+
+public:
+
+    CLogLine()
+        : m_bMessageIsComplete(false)
+        , m_bMarkedAsDiffFrom(false)
+        , m_bMarkedAsDiffTo(false)
+    {}
 };

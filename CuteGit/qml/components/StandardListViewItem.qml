@@ -13,9 +13,12 @@ Item {
              ? "retractedPrimaryOnly"
              : "retracted"
 
-    property bool expanded: false
-    property variant textElide: Text.ElideRight
     property Item listView: null
+    property bool expanded: false
+    property bool selectionFillsItem: true
+    property bool dataLoading: false
+    property variant textElide: Text.ElideRight
+
     property alias background: background.children
     property alias symbolText: symbolText.text
     property alias primaryText: primaryText.text
@@ -80,41 +83,56 @@ Item {
 
         Selection {
             id: selection
-            anchors.fill: parent
+            anchors.fill: selectionFillsItem ? parent : primaryZone
         }
 
         FocusIndicator {
             id: focusIndicator
-            anchors.fill: parent
+            anchors.fill: selection
             visible: root.listView && root.listView.activeFocus && index === root.listView.currentIndex
         }
 
         Item {
-            id: primaryZone
-            width: parent.width
-            height: parent.height * 0.5
+            id: symbolZone
+            width: (symbolText.text === "" ||symbolText.text === Const.statusClean ) ? 0 : symbolText.width + Const.mainPadding
+            height: primaryZone.height
 
             TextOverSelection {
                 id: symbolText
+                anchors.centerIn: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                elide: root.textElide
+                selection: root.selectionFillsItem ? selection : null
+            }
+        }
+
+        Item {
+            id: primaryZone
+            anchors.left: symbolZone.right
+            width: parent.width - symbolZone.width
+            height: parent.height * 0.5
+
+            TextOverSelection {
+                id: dataLoadingText
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
-                anchors.leftMargin: Const.mainPadding
-                anchors.rightMargin: Const.mainPadding
-                horizontalAlignment: Text.AlignHCenter
+                anchors.leftMargin: Const.smallPadding
+                anchors.rightMargin: Const.smallPadding
+                width: root.dataLoading ? implicitWidth : 0
                 verticalAlignment: Text.AlignVCenter
                 selection: selection
-                elide: root.textElide
+                elide: Text.ElideRight
+                text: qsTr("Loading...")
             }
 
             TextOverSelection {
                 id: primaryText
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.left: symbolText.right
+                anchors.left: dataLoadingText.right
                 anchors.right: parent.right
-                anchors.leftMargin: Const.mainPadding
-                anchors.rightMargin: Const.mainPadding
                 verticalAlignment: Text.AlignVCenter
                 selection: selection
                 elide: root.textElide
@@ -139,8 +157,8 @@ Item {
                 anchors.leftMargin: Const.mainPadding
                 anchors.rightMargin: Const.mainPadding
                 verticalAlignment: Text.AlignVCenter
-                selection: selection
                 elide: root.textElide
+                selection: root.selectionFillsItem ? selection : null
                 asLabel: true
             }
 
@@ -166,7 +184,7 @@ Item {
                 target: primaryZone
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.left: parent.left
+                anchors.left: symbolZone.right
                 anchors.right: parent.right
             }
             PropertyChanges {
@@ -185,7 +203,7 @@ Item {
                 target: primaryZone
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.left: parent.left
+                anchors.left: symbolZone.right
                 anchors.right: undefined
                 width: parent.width * 0.5
             }
@@ -204,7 +222,7 @@ Item {
                 target: primaryZone
                 anchors.top: parent.top
                 anchors.bottom: undefined
-                anchors.left: parent.left
+                anchors.left: symbolZone.right
                 anchors.right: parent.right
                 height: parent.height * 0.5
             }

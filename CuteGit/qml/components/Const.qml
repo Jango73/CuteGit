@@ -174,7 +174,8 @@ Item {
 
     //
     property string staged: "X"
-    property string statusModified: "*"
+    property string statusClean: " "
+    property string statusModified: "M"
     property string statusAdded: "+"
     property string statusDeleted: "-"
     property string statusRenamed: "="

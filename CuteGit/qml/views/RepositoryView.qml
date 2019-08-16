@@ -42,10 +42,10 @@ Pane {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
 
-            color: root.repository ?
-                       root.repository.repositoryStatus === CEnums.NoMerge
-                       ? Material.foreground
-                       : Material.background
+            color: root.repository
+                   ? root.repository.repositoryStatus === CEnums.NoMerge
+                     ? Material.foreground
+                     : Material.background
             : "black"
 
             text: (root.repository

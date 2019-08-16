@@ -44,6 +44,7 @@ QHash<int, QByteArray> CGraphModel::roleNames() const
     hRoleNames[eMessageRole] = "message";
     hRoleNames[eLabelsRole] = "labels";
     hRoleNames[eGraphSymbolRole] = "graphSymbol";
+    hRoleNames[eMessageIsCompleteRole] = "messageIsComplete";
     return hRoleNames;
 }
 
@@ -94,6 +95,9 @@ QVariant CGraphModel::data(const QModelIndex& index, int role) const
 
     case eGraphSymbolRole:
         return m_lLines[row]->graphSymbol();
+
+    case eMessageIsCompleteRole:
+        return m_lLines[row]->messageIsComplete();
     }
 
     return QVariant();
@@ -110,6 +114,7 @@ void CGraphModel::setCommitMessage(const QString& sCommitId, const QString& sMes
         if (pLine->commitId() == sCommitId)
         {
             pLine->setMessage(sMessage);
+            pLine->setMessageIsComplete(true);
             emit dataChanged(index(iLineIndex), index(iLineIndex));
             break;
         }

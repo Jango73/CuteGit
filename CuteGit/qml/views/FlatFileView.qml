@@ -22,6 +22,7 @@ StandardListView {
     delegate: StandardListViewItem {
         width: parent.width
         expanded: mustShowRelativeName
+        selectionFillsItem: false
         listView: parent
         mouseEnabled: root.mouseActive
         symbolText: model.status

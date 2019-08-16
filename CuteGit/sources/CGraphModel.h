@@ -28,6 +28,7 @@ public:
         eMessageRole,
         eLabelsRole,
         eGraphSymbolRole,
+        eMessageIsCompleteRole,
     };
 
     //-------------------------------------------------------------------------------------------------

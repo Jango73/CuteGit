@@ -4,10 +4,15 @@ import QtQuick.Controls.Material 2.12
 
 Text {
     id: root
+
+    property bool asLabel: false
+
     font.family: Const.mainFontFamily
     font.pixelSize: Const.mainFontSize
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignTop
     wrapMode: Text.WordWrap
-    color: Material.foreground
+    color: asLabel
+           ? Material.backgroundDimColor
+           : Material.foreground
 }

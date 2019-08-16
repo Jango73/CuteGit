@@ -9,7 +9,7 @@
 
 const QString CRepoFile::sTokenClean = " ";
 const QString CRepoFile::sTokenAdded = "+";
-const QString CRepoFile::sTokenModified = "*";
+const QString CRepoFile::sTokenModified = "M";
 const QString CRepoFile::sTokenRenamed = "=";
 const QString CRepoFile::sTokenDeleted = "-";
 const QString CRepoFile::sTokenMissing = "???";

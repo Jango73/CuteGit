@@ -8,13 +8,17 @@ import "../components"
 StandardListView {
     id: root
 
+    property bool hasSymbol: false
+
     signal itemRightClicked(var commitId, var message)
 
     delegate: StandardListViewItem {
         id: delegateItem
         width: parent.width
         expanded: true
+        dataLoading: !model.messageIsComplete
         listView: parent
+        symbolText: root.hasSymbol ? model.graphSymbol : ""
         primaryText: fullText
         secondaryText: model.author + " - " + model.date
         selectionShown: index === root.currentIndex

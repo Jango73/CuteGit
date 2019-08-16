@@ -28,6 +28,7 @@ public:
         eMessageRole,
         eFullMessageRole,
         eLabelsRole,
+        eMessageIsCompleteRole,
         eMarkedAsDiffFromRole,
         eMarkedAsDiffToRole,
     };

@@ -44,6 +44,7 @@ QHash<int, QByteArray> CLogModel::roleNames() const
     hRoleNames[eMessageRole] = "message";
     hRoleNames[eFullMessageRole] = "fullMessage";
     hRoleNames[eLabelsRole] = "labels";
+    hRoleNames[eMessageIsCompleteRole] = "messageIsComplete";
     hRoleNames[eMarkedAsDiffFromRole] = "markedAsDiffFrom";
     hRoleNames[eMarkedAsDiffToRole] = "markedAsDiffTo";
     return hRoleNames;
@@ -90,6 +91,9 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
     case eLabelsRole:
         return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
 
+    case eMessageIsCompleteRole:
+        return m_lLines[row]->messageIsComplete();
+
     case eMarkedAsDiffFromRole:
         return m_pRepository->diffFromCommitId() == m_lLines[row]->commitId();
 
@@ -111,6 +115,7 @@ void CLogModel::setCommitMessage(const QString& sCommitId, const QString& sMessa
         if (pLine->commitId() == sCommitId)
         {
             pLine->setMessage(sMessage);
+            pLine->setMessageIsComplete(true);
             emit dataChanged(index(iLineIndex), index(iLineIndex));
             break;
         }

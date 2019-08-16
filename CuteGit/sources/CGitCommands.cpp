@@ -1001,8 +1001,8 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 CGraphLine* pLine = new CGraphLine();
 
                 pLine->setGraphSymbol(sValues[0].trimmed());
-                pLine->setMessage(sValues[1].trimmed());
-                pLine->setCommitId(sValues[2].trimmed());
+                pLine->setCommitId(sValues[1].trimmed());
+                pLine->setMessage(sValues[2].trimmed());
                 pLine->setAuthor(sValues[3].trimmed());
                 pLine->setDate(QDateTime::fromString(sValues[4].trimmed(), Qt::ISODate));
 
@@ -1015,6 +1015,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 CGraphLine* pLine = new CGraphLine();
 
                 pLine->setGraphSymbol(sValues[0].trimmed());
+                pLine->setMessageIsComplete(true);
 
                 lReturnValue << pLine;
             }
