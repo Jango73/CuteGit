@@ -139,22 +139,23 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 
 ## Code summary
 
-As of 2019-07-30:
+As of 2019-09-02:
 
 ```
-      94 text files.                                                                                                       
-      94 unique files.                                                                                                     
-      15 files ignored.                                                                                                    
+     126 text files.
+     126 unique files.                                          
+      28 files ignored.
 
-http://cloc.sourceforge.net v 1.64  T=0.22 s (364.8 files/s, 40039.0 lines/s)
+http://cloc.sourceforge.net v 1.64  T=0.32 s (308.8 files/s, 37276.7 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C++                             17            910            474           2624
-QML                             39            449             47           2162
-C/C++ Header                    21            579            625            772
-Qt Project                       2              8              4             17
+C++                             21           1196            558           3567
+QML                             49            655             93           3196
+C/C++ Header                    26            724            758           1054
+Qt Project                       1              7              4             13
+Prolog                           1              1              0              5
 -------------------------------------------------------------------------------
-SUM:                            79           1946           1150           5575
+SUM:                            98           2583           1413           7835
 -------------------------------------------------------------------------------
 ```
