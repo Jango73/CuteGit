@@ -280,7 +280,7 @@ protected slots:
     void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 
     //!
-    void onNewOutputListOfCLogLine(CEnums::EProcessCommand eCommand, QList<CLogLine*> lNewLines);
+    void onNewOutputCLogLineCollection(CEnums::EProcessCommand eCommand, CLogLineCollection lNewLines);
 
     //!
     void onNewOutputListOfCDiffLine(CEnums::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
@@ -293,4 +293,7 @@ protected slots:
 
     //!
     void onShouldRefreshFileStatus();
+
+    //!
+    void onRequestBranchLogData(int iStartIndex, int iCount);
 };

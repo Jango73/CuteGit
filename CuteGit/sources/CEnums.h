@@ -18,6 +18,8 @@
 #define HAVE_QSTRING_BACK
 #endif
 
+#define LOG_COUNT_DEFAULT   20
+
 //-------------------------------------------------------------------------------------------------
 
 class CEnums : public QObject

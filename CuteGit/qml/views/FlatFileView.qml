@@ -13,6 +13,7 @@ StandardListView {
     property bool mouseActive: true
     property variant modelIndices: ({})
 
+    signal requestMenu(var name)
     signal requestDeleteFile(var name)
 
     model: root.repository
@@ -46,6 +47,12 @@ StandardListView {
 
             root.currentIndex = index
             root.forceActiveFocus()
+        }
+
+        onClicked: {
+            if (mouse.button === Qt.RightButton) {
+                root.requestMenu(model.fullName)
+            }
         }
 
         onDoubleClicked: root.repository.openFile(model.fullName)

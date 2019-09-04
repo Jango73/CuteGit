@@ -4,6 +4,7 @@ HEADERS += \
     sources/CEnums.h \
     sources/CUtils.h \
     sources/CBranch.h \
+    sources/CExecution.h \
     sources/CCommands.h \
     sources/CGitCommands.h \
     sources/CGerritCommands.h \
@@ -18,6 +19,7 @@ HEADERS += \
     sources/CRepoFile.h \
     sources/CLogModel.h \
     sources/CLogLine.h \
+    sources/CLogLineCollection.h \
     sources/CGraphModel.h \
     sources/CGraphLine.h \
     sources/CDiffModel.h \
@@ -30,6 +32,7 @@ HEADERS += \
 SOURCES += \
     ../qt-plus/source/cpp/CXMLNode.cpp \
     sources/CUtils.cpp \
+    sources/CExecution.cpp \
     sources/CCommands.cpp \
     sources/CGitCommands.cpp \
     sources/CGerritCommands.cpp \
@@ -43,6 +46,7 @@ SOURCES += \
     sources/CStagedFileModelProxy.cpp \
     sources/CRepoFile.cpp \
     sources/CLogModel.cpp \
+    sources/CLogLineCollection.cpp \
     sources/CGraphModel.cpp \
     sources/CDiffModel.cpp \
     sources/CRepository.cpp \

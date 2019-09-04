@@ -5,7 +5,7 @@
 #include <QAbstractListModel>
 
 // qt-plus
-#include "CLogLine.h"
+#include "CLogLineCollection.h"
 
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
@@ -38,6 +38,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
+    Q_FAST_PROPERTY(int, i, potentialCount, PotentialCount)
 
 public:
 
@@ -49,23 +50,32 @@ public:
     CLogModel(CRepository* pRepository, QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CLogModel();
+    virtual ~CLogModel() override;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
-    //! Sets all lines
-    void setLines(QList<CLogLine*> lNewLines);
+    //! Clear all lines
+    void clear();
+
+    //! Sets some lines
+    void setLines(CLogLineCollection tCollection);
 
     //! Returns role names
-    virtual QHash<int, QByteArray> roleNames() const;
+    virtual QHash<int, QByteArray> roleNames() const override;
 
     //! Returns row count
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
     //! Returns data
-    virtual QVariant data(const QModelIndex& index, int role) const;
+    virtual QVariant data(const QModelIndex& index, int role) const override;
+
+    //!
+    virtual bool canFetchMore(const QModelIndex& parent) const override;
+
+    //!
+    virtual void fetchMore(const QModelIndex& parent) override;
 
     //!
     void setCommitMessage(const QString& sCommitId, const QString& sMessage);
@@ -76,8 +86,16 @@ public:
     //!
     void invalidate();
 
+    //-------------------------------------------------------------------------------------------------
+    // Signals
+    //-------------------------------------------------------------------------------------------------
+
+signals:
+
+    void requestLogData(int iStartIndex, int iCount);
+
 private:
 
     //! Lines of the log
-    QList<CLogLine*>  m_lLines;
+    QList<CLogLine*> m_lLines;
 };

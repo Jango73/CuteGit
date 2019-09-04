@@ -109,18 +109,22 @@ void CHgCommands::allFileStatus(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CHgCommands::branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CHgCommands::branchLog(const QString& sPath, int iFrom, int iCount)
 {
-    QString sFrom = from.toString(Qt::ISODate);
-    QString sTo = to.toString(Qt::ISODate);
-    QString sCommand = QString(sCommandBranchLog); // .arg(sFrom).arg(sTo);
+    Q_UNUSED(iFrom);
+    Q_UNUSED(iCount);
+
+    QString sCommand = QString(sCommandBranchLog);
     exec(new CProcessCommand(CEnums::eBranchLog, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CHgCommands::fileLog(const QString& sPath, const QString& sFullName)
+void CHgCommands::fileLog(const QString& sPath, const QString& sFullName, int iFrom, int iCount)
 {
+    Q_UNUSED(iFrom);
+    Q_UNUSED(iCount);
+
     QString sCommand = QString(sCommandFileLog).arg(sFullName);
     exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand));
 }
@@ -289,7 +293,7 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
     {
         // Create CLogLines with the returned string of the process
 
-        QList<CLogLine*> lReturnValue;
+        CLogLineCollection lReturnValue;
         QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
@@ -305,11 +309,11 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
                 pLine->setAuthor(sValues[2].trimmed());
                 pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
 
-                lReturnValue << pLine;
+                lReturnValue.add(pLine);
             }
         }
 
-        emit newOutputListOfCLogLine(eCommand, lReturnValue);
+        emit newOutputCLogLineCollection(eCommand, lReturnValue);
         break;
     }
 

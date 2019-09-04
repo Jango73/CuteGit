@@ -117,7 +117,7 @@ Item {
                                              )
 
     property string deleteFileMessage: qsTr(
-                                           "Are you sure you want to delete this file?\n" +
+                                           "Are you sure you want to delete this file?\n\n" +
                                            "{0}"
                                            )
 
@@ -147,31 +147,6 @@ Item {
                                          "...\n"
                                          )
 
-    property string shortcutHelpText: qsTr(
-                                          "Shortcuts\n" +
-                                          "\n" +
-                                          "Open a repository\t\tControl O\n" +
-                                          "Quit\t\t\tControl Q\n" +
-                                          "\n" +
-                                          "Refresh\t\t\tF5\n" +
-                                          "\n" +
-                                          "Stage all\t\t\tControl Shift +\n" +
-                                          "Unstage all\t\t\tControl Shift -\n" +
-                                          "Toggle staged\t\tSpace\n" +
-                                          "Stage selection\t\tControl +\n" +
-                                          "Unstage selection\t\tControl -\n" +
-                                          "Revert selection\t\tControl Z\n" +
-                                          "Commit\t\t\tControl C\n" +
-                                          "Amend\t\t\tControl A\n" +
-                                          "Continue rebase\t\tControl R\n" +
-                                          "Abort rebase\t\tControl T\n" +
-                                          "\n" +
-                                          "Fetch\t\t\tControl F\n" +
-                                          "Pull\t\t\tControl L\n" +
-                                          "Push\t\t\tControl P\n" +
-                                          "\n"
-                                          )
-
     //
     property string staged: "X"
     property string statusClean: " "
@@ -183,16 +158,44 @@ Item {
     // Icons
 
     // By Freepik from www.flaticon.com
+    property string deleteIcon: "qrc:/qml/images/garbage-container.svg"
+
     property string cloneIcon: "qrc:/qml/images/copy-documents-option.svg"
     property string openIcon: "qrc:/qml/images/open-folder-black-and-white-variant"
     property string pushIcon: "qrc:/qml/images/up-arrow.svg"
     property string pullIcon: "qrc:/qml/images/down.svg"
     property string fetchIcon: "qrc:/qml/images/loop.svg"
     property string stageIcon: "qrc:/qml/images/check.svg"
-    property string revertIcon: "qrc:/qml/images/garbage-container.svg"
+    property string revertIcon: deleteIcon
     property string commitIcon: "qrc:/qml/images/seal.svg"
     property string amendIcon: "qrc:/qml/images/plus-sign.svg"
     property string saveStashIcon: "qrc:/qml/images/clipboard.svg"
     property string popStashIcon: "qrc:/qml/images/blank.svg"
     property string exitIcon: "qrc:/qml/images/door-exit.svg"
+
+    // Models
+
+    property ListModel shortcutModel: ListModel {
+        ListElement { name: "Open a repository"; sequence: "Control O" }
+        ListElement { name: "Quit"; sequence: "Control Q" }
+        ListElement { name: ""; sequence: "" }
+        ListElement { name: "Refresh"; sequence: "F5" }
+        ListElement { name: ""; sequence: "" }
+        ListElement { name: "Stage all"; sequence: "Control Shift +" }
+        ListElement { name: "Unstage all"; sequence: "Control Shift -" }
+        ListElement { name: "Toggle staged"; sequence: "Space" }
+        ListElement { name: "Stage selection"; sequence: "Control +" }
+        ListElement { name: "Unstage selection"; sequence: "Control -" }
+        ListElement { name: "Revert selection"; sequence: "Control Z" }
+        ListElement { name: "Commit"; sequence: "Control C" }
+        ListElement { name: "Amend"; sequence: "Control A" }
+        ListElement { name: "Continue rebase"; sequence: "Control R" }
+        ListElement { name: "Abort rebase"; sequence: "Control T" }
+        ListElement { name: ""; sequence: "" }
+        ListElement { name: "Fetch"; sequence: "Control F" }
+        ListElement { name: "Pull"; sequence: "Control L" }
+        ListElement { name: "Push"; sequence: "Control P" }
+        ListElement { name: ""; sequence: "" }
+        ListElement { name: "Activate file view"; sequence: "Alt Shift F" }
+    }
 }

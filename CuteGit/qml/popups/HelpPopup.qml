@@ -46,9 +46,41 @@ StandardPopup {
                 padding: Const.mainPadding * 2
             }
 
-            StandardText {
-                id: shortcutText
-                padding: Const.mainPadding * 2
+            Item {
+                id: shortcutView
+
+                StandardText {
+                    id: shortcutText
+                    anchors.top: parent.top
+                    padding: Const.mainPadding * 2
+                }
+
+                StandardListView {
+                    id: shortcutListView
+                    anchors.top: shortcutText.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    model: Const.shortcutModel
+
+                    delegate: Item {
+                        width: parent.width
+                        height: shortcutName.height
+
+                        StandardText {
+                            id: shortcutName
+                            width: parent.width * 0.6
+                            text: name
+                        }
+
+                        StandardText {
+                            anchors.left: shortcutName.right
+                            width: parent.width * 0.4
+                            text: sequence
+                        }
+                    }
+                }
             }
         }
     ]
@@ -68,6 +100,6 @@ StandardPopup {
     Component.onCompleted: {
         copyrightText.text = Const.copyrightText.format(root.controller.version)
         generalText.text = Const.generalHelpText
-        shortcutText.text = Const.shortcutHelpText
+        shortcutText.text = Const.shortcutsText
     }
 }

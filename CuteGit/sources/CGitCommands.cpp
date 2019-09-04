@@ -37,7 +37,8 @@ const QString CGitCommands::sCommandAmend               = "git commit --amend --
 const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count \"%1\"...\"origin/%1\"";
 const QString CGitCommands::sCommandBranches            = "git branch -a";
 const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\" \"%2\"";
-const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=50";
+const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --skip=%1 --max-count=%2";
+const QString CGitCommands::sCommandBranchLogCount      = "git rev-list --count HEAD";
 const QString CGitCommands::sCommandClone               = "git clone --progress \"%1\"";
 const QString CGitCommands::sCommandCommit              = "git commit -m \"%1\"";
 const QString CGitCommands::sCommandCommitDiffPrevious  = "git diff %1~1 %1";
@@ -48,7 +49,7 @@ const QString CGitCommands::sCommandCreateTagOnCommit   = "git tag -m \"%1\" \"%
 const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbrev-ref HEAD";
 const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
 const QString CGitCommands::sCommandFetch               = "git fetch";
-const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --max-count=50 \"%1\"";
+const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --skip=%1 --max-count=%2 \"%3\"";
 const QString CGitCommands::sCommandFileStatus          = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 const QString CGitCommands::sCommandGetRebaseApplyPath  = "git rev-parse --git-path rebase-apply";
 const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-path rebase-merge";
@@ -257,20 +258,22 @@ void CGitCommands::graph(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CGitCommands::branchLog(const QString& sPath, int iFrom, int iCount)
 {
-    QString sFrom = from.toString(Qt::ISODate);
-    QString sTo = to.toString(Qt::ISODate);
-    QString sCommand = QString(sCommandBranchLog); // .arg(sFrom).arg(sTo);
-    exec(new CProcessCommand(CEnums::eBranchLog, sPath, sCommand));
+    int iPotentialCount = execNow(sPath, sCommandBranchLogCount).trimmed().toInt();
+    QString sCommand = QString(sCommandBranchLog).arg(iFrom).arg(iCount);
+    QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
+    exec(new CProcessCommand(CEnums::eBranchLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::fileLog(const QString& sPath, const QString& sFullName)
+void CGitCommands::fileLog(const QString& sPath, const QString& sFullName, int iFrom, int iCount)
 {
-    QString sCommand = QString(sCommandFileLog).arg(sFullName);
-    exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand));
+    int iPotentialCount = 0;
+    QString sCommand = QString(sCommandFileLog).arg(iFrom).arg(iCount).arg(sFullName);
+    QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
+    exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -958,8 +961,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eBranchLog:
     {
         // Create CLogLines with the returned string of the process
-
-        QList<CLogLine*> lReturnValue;
+        CLogLineCollection lReturnValue;
         QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
@@ -977,11 +979,21 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
                 getFullCommitMessage(sPath, pLine->commitId());
 
-                lReturnValue << pLine;
+                lReturnValue.add(pLine);
             }
         }
 
-        emit newOutputListOfCLogLine(eCommand, lReturnValue);
+        QStringList lUserValues = sUserData.split(",");
+        int iPotentialCount = lUserValues[0].toInt();
+        int iStartIndex = lUserValues[1].toInt();
+
+        if (iPotentialCount == 0)
+            iPotentialCount = lReturnValue.lines().count();
+
+        lReturnValue.setPotentialCount(iPotentialCount);
+        lReturnValue.setStartIndex(iStartIndex);
+
+        emit newOutputCLogLineCollection(eCommand, lReturnValue);
         break;
     }
 

@@ -30,6 +30,7 @@ ExtendablePane {
                             root.repository.clearOutput()
                         }
                     }
+                    icon.source: Const.deleteIcon
                 }
             }
         }

@@ -88,10 +88,10 @@ public:
     virtual void graph(const QString& sPath) override;
 
     //!
-    virtual void branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to) override;
+    virtual void branchLog(const QString& sPath, int iFrom = 0, int iCount = LOG_COUNT_DEFAULT) override;
 
     //!
-    virtual void fileLog(const QString& sPath, const QString& sFullName) override;
+    virtual void fileLog(const QString& sPath, const QString& sFullName, int iFrom = 0, int iCount = LOG_COUNT_DEFAULT) override;
 
     //!
     virtual void toggleStaged(const QString& sPath, const QString& sFullName) override;
@@ -216,6 +216,7 @@ protected:
     static const QString sCommandBranches;
     static const QString sCommandBranchFromCommit;
     static const QString sCommandBranchLog;
+    static const QString sCommandBranchLogCount;
     static const QString sCommandClone;
     static const QString sCommandCommit;
     static const QString sCommandCommitDiffPrevious;

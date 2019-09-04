@@ -79,16 +79,11 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(m_pCommands, &CCommands::newOutputStringList, this, &CRepository::onNewOutputStringList);
     connect(m_pCommands, &CCommands::newOutputListOfCBranch, this, &CRepository::onNewOutputListOfCBranch);
     connect(m_pCommands, &CCommands::newOutputListOfCRepoFile, this, &CRepository::onNewOutputListOfCRepoFile);
-    connect(m_pCommands, &CCommands::newOutputListOfCLogLine, this, &CRepository::onNewOutputListOfCLogLine);
+    connect(m_pCommands, &CCommands::newOutputCLogLineCollection, this, &CRepository::onNewOutputCLogLineCollection);
     connect(m_pCommands, &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
     connect(m_pCommands, &CCommands::newOutputListOfCGraphLine, this, &CRepository::onNewOutputListOfCGraphLine);
 
-    m_pBranchModel->setBranchList(QList<CBranch*>());
-    m_pTagModel->setBranchList(QList<CBranch*>());
-    m_pLogModel->setLines(QList<CLogLine*>());
-    m_pFileDiffModel->setLines(QList<CDiffLine*>());
-    m_pFileLogModel->setLines(QList<CLogLine*>());
-    m_pGraphModel->setLines(QList<CGraphLine*>());
+    connect(m_pLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestBranchLogData);
 
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
@@ -615,16 +610,19 @@ void CRepository::getBranchLog(QString sPath)
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
-    QDateTime dFrom = QDateTime::currentDateTime().addDays(-2);
-    QDateTime dTo = QDateTime::currentDateTime().addDays(2);
+    m_pLogModel->clear();
+    m_pLogModel->invalidate();
 
-    m_pCommands->branchLog(sPath, dFrom, dTo);
+    m_pCommands->branchLog(sPath);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CRepository::onCurrentFileFullName(QString sFileFullName)
 {
+    m_pFileLogModel->clear();
+    m_pFileLogModel->invalidate();
+
     m_pCommands->unstagedFileDiff(m_sRepositoryPath, sFileFullName);
     m_pCommands->fileLog(m_sRepositoryPath, sFileFullName);
 }
@@ -942,7 +940,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputListOfCLogLine(CEnums::EProcessCommand eCommand, QList<CLogLine*> lNewLines)
+void CRepository::onNewOutputCLogLineCollection(CEnums::EProcessCommand eCommand, CLogLineCollection lNewLines)
 {
     switch (eCommand)
     {
@@ -1037,4 +1035,11 @@ void CRepository::onShouldRefreshFileStatus()
 {
     checkRepositoryStatus();
     checkChangedFileStatus();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::onRequestBranchLogData(int iStartIndex, int iCount)
+{
+    m_pCommands->branchLog(m_sRepositoryPath, iStartIndex, iCount);
 }

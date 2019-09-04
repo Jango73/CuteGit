@@ -81,19 +81,21 @@ void CSvnCommands::graph(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
-void CSvnCommands::branchLog(const QString& sPath, const QDateTime& from, const QDateTime& to)
+void CSvnCommands::branchLog(const QString& sPath, int iFrom, int iCount)
 {
     Q_UNUSED(sPath);
-    Q_UNUSED(from);
-    Q_UNUSED(to);
+    Q_UNUSED(iFrom);
+    Q_UNUSED(iCount);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CSvnCommands::fileLog(const QString& sPath, const QString& sFullName)
+void CSvnCommands::fileLog(const QString& sPath, const QString& sFullName, int iFrom, int iCount)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(sFullName);
+    Q_UNUSED(iFrom);
+    Q_UNUSED(iCount);
 }
 
 //-------------------------------------------------------------------------------------------------

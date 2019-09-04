@@ -5,6 +5,7 @@ import QtQuick.Controls.Material 2.12
 TitlePane {
     id: root
 
+    //! This is the item to which the pane is parented when extended
     property Item extensionParent: null
 
     Button {
@@ -30,7 +31,7 @@ TitlePane {
             name: "extended"
             ParentChange {
                 target: root
-                parent: root.extensionParent
+                parent: root.extensionParent !== null ? root.extensionParent : parent
             }
             PropertyChanges {
                 target: root

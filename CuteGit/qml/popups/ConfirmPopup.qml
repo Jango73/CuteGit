@@ -8,7 +8,8 @@ StandardPopup {
     id: root
     width: parent.width * Const.popupWidthNorm
 
-    property Action actionToTrigger: null
+    property Action actionOnAccept: null
+    property Action actionOnReject: null
 
     property alias messageText: message.text
 
@@ -26,10 +27,10 @@ StandardPopup {
                 id: okButton
                 text: Const.okText
                 onTriggered: {
-                    if (root.actionToTrigger !== null) {
-                        root.close()
-                        root.actionToTrigger.trigger()
-                    }
+                    root.close()
+
+                    if (root.actionOnAccept !== null)
+                        root.actionOnAccept.trigger()
                 }
             }
         },
@@ -40,6 +41,9 @@ StandardPopup {
                 text: Const.cancelText
                 onTriggered: {
                     root.close()
+
+                    if (root.actionOnReject !== null)
+                        root.actionOnReject.trigger()
                 }
             }
         }

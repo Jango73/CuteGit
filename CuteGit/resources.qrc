@@ -37,6 +37,7 @@
         <file>qml/pages/BranchMenu.qml</file>
         <file>qml/pages/BranchPane.qml</file>
         <file>qml/pages/FileLogPane.qml</file>
+        <file>qml/pages/FileMenu.qml</file>
         <file>qml/pages/FilePane.qml</file>
         <file>qml/pages/LogMenu.qml</file>
         <file>qml/pages/MainMenu.qml</file>

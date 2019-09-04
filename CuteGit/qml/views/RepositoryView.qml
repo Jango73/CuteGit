@@ -93,18 +93,13 @@ Pane {
             repository: root.repository
             flatSelection: flatFileSelection
 
-            onRequestDeleteFile: {
-                deleteFileAction.fileName = name
-                confirm.title = Const.deleteFileText
-                confirm.messageText = Const.deleteFileMessage.format(name)
-                confirm.actionToTrigger = deleteFileAction
-                confirm.open()
+            onRequestMenu: {
+                fileMenu.name = name
+                fileMenu.popup()
             }
 
-            Action {
-                id: deleteFileAction
-                property string fileName: ""
-                onTriggered: root.repository.deleteFile(fileName)
+            onRequestDeleteFile: {
+                root.requestDeleteFile(name)
             }
         }
 
@@ -147,7 +142,8 @@ Pane {
                 mergeBranchAction.branchName = name
                 confirm.title = Const.mergeBranchText + " " + name
                 confirm.messageText = Const.mergeBranchMessage.format(name)
-                confirm.actionToTrigger = mergeBranchAction
+                confirm.actionOnAccept = mergeBranchAction
+                confirm.actionOnReject = null
                 confirm.open()
             }
 
@@ -155,7 +151,8 @@ Pane {
                 deleteBranchAction.branchName = name
                 confirm.title = Const.deleteBranchText + " " + name
                 confirm.messageText = Const.deleteBranchMessage
-                confirm.actionToTrigger = deleteBranchAction
+                confirm.actionOnAccept = deleteBranchAction
+                confirm.actionOnReject = null
                 confirm.open()
             }
 
@@ -211,7 +208,7 @@ Pane {
     }
 
     //--------------------------------------------------------------------------------
-    // Menu
+    // Menus
 
     LogMenu {
         id: logMenu
@@ -268,6 +265,15 @@ Pane {
         }
     }
 
+    FileMenu {
+        id: fileMenu
+        repository: root.repository
+
+        onRequestDelete: {
+            root.requestDeleteFile(name)
+        }
+    }
+
     //--------------------------------------------------------------------------------
     // Popups
 
@@ -297,8 +303,23 @@ Pane {
         repository: root.repository
     }
 
+    Action {
+        id: deleteFileAction
+        property string fileName: ""
+        onTriggered: root.repository.deleteFile(fileName)
+    }
+
     //--------------------------------------------------------------------------------
     // Functions
+
+    function requestDeleteFile(name) {
+        deleteFileAction.fileName = name
+        confirm.title = Const.deleteFileText
+        confirm.messageText = Const.deleteFileMessage.format(name)
+        confirm.actionOnAccept = deleteFileAction
+        confirm.actionOnReject = null
+        confirm.open()
+    }
 
     function requestRefresh() {
         root.repository.refresh()

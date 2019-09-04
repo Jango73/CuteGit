@@ -14,6 +14,7 @@ ExtendablePane {
     property variant repository: null
     property variant flatSelection: null
 
+    signal requestMenu(var name)
     signal requestDeleteFile(var name)
 
     content: [
@@ -31,6 +32,8 @@ ExtendablePane {
 
             repository: root.repository
             selection: root.flatSelection
+
+            onRequestMenu: root.requestMenu(name)
 
             onRequestDeleteFile: root.requestDeleteFile(name)
         }

@@ -133,9 +133,11 @@ void CFlatFileModel::handleRepoFilesChanged()
         else
         {
             beginInsertRows(QModelIndex(), iNewFileIndex, iNewFileIndex);
+
             CRepoFile* pNewFileForThis = new CRepoFile(*pNewFile, this);
             m_lRepoFiles.insert(iNewFileIndex, pNewFileForThis);
             m_hHashRepoFiles[sNewKey] = pNewFileForThis;
+
             endInsertRows();
         }
     }
@@ -148,9 +150,11 @@ void CFlatFileModel::handleRepoFilesChanged()
         if (not hNewFiles.contains(sExistingKey))
         {
             beginRemoveRows(QModelIndex(), iExistingFileIndex, iExistingFileIndex);
+
             delete m_lRepoFiles[iExistingFileIndex];
             m_lRepoFiles.removeAt(iExistingFileIndex);
             m_hHashRepoFiles.remove(sExistingKey);
+
             endRemoveRows();
 
             iExistingFileIndex--;
