@@ -228,6 +228,7 @@ protected:
     static const QString sCommandDeleteBranch;
     static const QString sCommandFetch;
     static const QString sCommandFileLog;
+    static const QString sCommandFileLogCount;
     static const QString sCommandFileStatus;
     static const QString sCommandGetRebaseApplyPath;
     static const QString sCommandGetRebaseMergePath;

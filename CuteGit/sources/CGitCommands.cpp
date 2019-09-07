@@ -50,6 +50,7 @@ const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbre
 const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
 const QString CGitCommands::sCommandFetch               = "git fetch";
 const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --skip=%1 --max-count=%2 \"%3\"";
+const QString CGitCommands::sCommandFileLogCount        = "git rev-list --count HEAD \"%1\"";
 const QString CGitCommands::sCommandFileStatus          = "git status --porcelain --ignored --untracked-files=all \"%1\"";
 const QString CGitCommands::sCommandGetRebaseApplyPath  = "git rev-parse --git-path rebase-apply";
 const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-path rebase-merge";
@@ -270,7 +271,8 @@ void CGitCommands::branchLog(const QString& sPath, int iFrom, int iCount)
 
 void CGitCommands::fileLog(const QString& sPath, const QString& sFullName, int iFrom, int iCount)
 {
-    int iPotentialCount = 0;
+    QString sCountCommand = QString(sCommandFileLogCount).arg(sFullName);
+    int iPotentialCount = execNow(sPath, sCountCommand).trimmed().toInt();
     QString sCommand = QString(sCommandFileLog).arg(iFrom).arg(iCount).arg(sFullName);
     QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
     exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));

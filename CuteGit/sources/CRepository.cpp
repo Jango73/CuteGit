@@ -84,6 +84,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(m_pCommands, &CCommands::newOutputListOfCGraphLine, this, &CRepository::onNewOutputListOfCGraphLine);
 
     connect(m_pLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestBranchLogData);
+    connect(m_pFileLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestFileLogData);
 
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
@@ -621,8 +622,13 @@ void CRepository::onCurrentFileFullName(QString sFileFullName)
     m_pFileLogModel->clear();
     m_pFileLogModel->invalidate();
 
-    m_pCommands->unstagedFileDiff(m_sRepositoryPath, sFileFullName);
-    m_pCommands->fileLog(m_sRepositoryPath, sFileFullName);
+    m_sCurrentFileFullName = sFileFullName;
+
+    if (not m_sCurrentFileFullName.isEmpty())
+    {
+        m_pCommands->unstagedFileDiff(m_sRepositoryPath, m_sCurrentFileFullName);
+        m_pCommands->fileLog(m_sRepositoryPath, m_sCurrentFileFullName);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1040,4 +1046,14 @@ void CRepository::onShouldRefreshFileStatus()
 void CRepository::onRequestBranchLogData(int iStartIndex, int iCount)
 {
     m_pCommands->branchLog(m_sRepositoryPath, iStartIndex, iCount);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::onRequestFileLogData(int iStartIndex, int iCount)
+{
+    if (not m_sCurrentFileFullName.isEmpty())
+    {
+        m_pCommands->fileLog(m_sRepositoryPath, m_sCurrentFileFullName, iStartIndex, iCount);
+    }
 }

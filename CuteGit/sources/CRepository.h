@@ -297,4 +297,15 @@ protected slots:
 
     //!
     void onRequestBranchLogData(int iStartIndex, int iCount);
+
+    //!
+    void onRequestFileLogData(int iStartIndex, int iCount);
+
+    //-------------------------------------------------------------------------------------------------
+    // Properties
+    //-------------------------------------------------------------------------------------------------
+
+protected:
+
+    QString m_sCurrentFileFullName;
 };
