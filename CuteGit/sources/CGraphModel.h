@@ -7,6 +7,9 @@
 // qt-plus
 #include "CGraphLine.h"
 
+// Application
+#include "CLabelModel.h"
+
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
 
@@ -53,6 +56,9 @@ public:
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
+    //! Clears all data
+    void clear();
+
     //! Sets all lines
     void setLines(QList<CGraphLine*> lNewLines);
 
@@ -79,4 +85,7 @@ private:
 
     //! Lines of the graph
     QList<CGraphLine*>  m_lLines;
+
+    //! Labels for commits
+    QMap<QString, CLabelModel*> m_mLabels;
 };

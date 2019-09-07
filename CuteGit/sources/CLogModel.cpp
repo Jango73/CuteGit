@@ -28,6 +28,8 @@ void CLogModel::clear()
 {
     qDeleteAll(m_lLines);
     m_lLines.clear();
+    qDeleteAll(m_mLabels);
+    m_mLabels.clear();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -121,7 +123,18 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
         return m_lLines[row]->message();
 
     case eLabelsRole:
-        return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
+    {
+        QString sCommitId = m_lLines[row]->commitId();
+
+        if (m_mLabels.contains(sCommitId))
+        {
+            QVariant vReturnValue;
+            vReturnValue.setValue<CLabelModel*>(m_mLabels[sCommitId]);
+            return vReturnValue;
+        }
+
+        return QVariant();
+    }
 
     case eMessageIsCompleteRole:
         return m_lLines[row]->messageIsComplete();
@@ -175,7 +188,15 @@ void CLogModel::setCommitMessage(const QString& sCommitId, const QString& sMessa
             {
                 pLine->setMessage(sMessage);
                 pLine->setMessageIsComplete(true);
+
+                if (not m_mLabels.contains(sCommitId))
+                {
+                    m_mLabels[sCommitId] = new CLabelModel();
+                    m_mLabels[sCommitId]->setLabelList(m_pRepository->labelsForCommit(sCommitId));
+                }
+
                 emit dataChanged(index(iLineIndex), index(iLineIndex));
+
                 break;
             }
         }

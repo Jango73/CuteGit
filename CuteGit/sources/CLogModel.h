@@ -7,6 +7,9 @@
 // qt-plus
 #include "CLogLineCollection.h"
 
+// Application
+#include "CLabelModel.h"
+
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
 
@@ -98,4 +101,7 @@ private:
 
     //! Lines of the log
     QList<CLogLine*> m_lLines;
+
+    //! Labels for commits
+    QMap<QString, CLabelModel*> m_mLabels;
 };

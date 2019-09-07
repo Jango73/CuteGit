@@ -45,7 +45,7 @@ TabButton {
                     y: parent.height * 0.5 - height * 0.3
                     width: parent.width
                     height: 3
-                    color: "black"
+                    color: Material.foreground
                 }
 
                 Rectangle {
@@ -53,7 +53,7 @@ TabButton {
                     y: 0
                     width: 3
                     height: parent.height
-                    color: "black"
+                    color: Material.foreground
                 }
 
                 transform: Rotation {

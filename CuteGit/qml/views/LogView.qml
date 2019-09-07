@@ -52,7 +52,8 @@ StandardListView {
                     LogLabel {
                         x: Const.mainPadding
                         height: labelLayout.height
-                        text: modelData
+                        text: model.name
+                        type: model.type
                     }
                 }
             }

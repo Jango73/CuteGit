@@ -261,6 +261,7 @@ protected:
 
     // Other strings
 
+    static const QString sComment;
     static const QString sLogFormatSplitter;
     static const QString sRemoteBranchPrefix;
     static const QString sRemoteBranchUselessPrefix;
@@ -269,7 +270,6 @@ protected:
     static const QString sRebaseEditCommit;
     static const QString sRebaseRewordCommit;
     static const QString sRebaseSquashCommit;
-    static const QString sComment;
 
     static const QString sStatusClean;
     static const QString sStatusAdded;

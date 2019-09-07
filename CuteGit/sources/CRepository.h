@@ -11,6 +11,7 @@
 
 // Application
 #include "CEnums.h"
+#include "CLabel.h"
 #include "CBranchModel.h"
 #include "CFlatFileModel.h"
 #include "CFlatFileModelProxy.h"
@@ -96,7 +97,7 @@ public:
     CRepoFile* fileByFullName(QList<CRepoFile*> lRepoFiles, const QString& sFullName) const;
 
     //!
-    QStringList labelsForCommit(const QString& sCommitId) const;
+    QList<CLabel*> labelsForCommit(const QString& sCommitId) const;
 
     //!
     QString repositoryTypeString() const;

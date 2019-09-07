@@ -5,11 +5,11 @@
 #include <QAbstractListModel>
 
 // Application
-#include "CBranch.h"
+#include "CLabel.h"
 
 //-------------------------------------------------------------------------------------------------
 
-class CBranchModel : public QAbstractListModel
+class CLabelModel : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -18,7 +18,7 @@ public:
     enum ERoles
     {
         eNameRole = Qt::UserRole + 1,
-        eCommitIdRole,
+        eTypeRole,
     };
 
 public:
@@ -28,20 +28,10 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CBranchModel(QObject *parent = nullptr);
+    CLabelModel(QObject *parent = nullptr);
 
     //! Destructor
-    virtual ~CBranchModel();
-
-    //-------------------------------------------------------------------------------------------------
-    // Getters
-    //-------------------------------------------------------------------------------------------------
-
-    //!
-    QList<CLabel*> labelsForCommit(const QString& sCommitId) const;
-
-    //!
-    QStringList branchNames() const;
+    virtual ~CLabelModel();
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
@@ -57,10 +47,7 @@ public:
     virtual QVariant data(const QModelIndex& qIndex, int iRole) const;
 
     //!
-    void setBranchList(QList<CBranch*> lNewList);
-
-    //!
-    void setBranchHeadCommit(const QString& sBranch, const QString& sCommitId);
+    void setLabelList(QList<CLabel*> lNewList);
 
     //-------------------------------------------------------------------------------------------------
     // Properties
@@ -68,6 +55,6 @@ public:
 
 private:
 
-    //! List of branches
-    QList<CBranch*> m_lBranches;
+    //! List of labels
+    QList<CLabel*> m_lLabels;
 };

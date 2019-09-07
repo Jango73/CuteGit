@@ -15,7 +15,17 @@ CGraphModel::CGraphModel(CRepository* pRepository, QObject* parent)
 
 CGraphModel::~CGraphModel()
 {
+    clear();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGraphModel::clear()
+{
     qDeleteAll(m_lLines);
+    m_lLines.clear();
+    qDeleteAll(m_mLabels);
+    m_mLabels.clear();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -84,14 +94,9 @@ QVariant CGraphModel::data(const QModelIndex& index, int role) const
         return m_lLines[row]->message();
 
     case eLabelsRole:
-        if (not m_lLines[row]->commitId().isEmpty())
-        {
-            return m_pRepository->labelsForCommit(m_lLines[row]->commitId());
-        }
-        else
-        {
-            return QStringList();
-        }
+    {
+        return QVariant();
+    }
 
     case eGraphSymbolRole:
         return m_lLines[row]->graphSymbol();

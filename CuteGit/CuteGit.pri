@@ -17,6 +17,8 @@ HEADERS += \
     sources/CFlatFileModelProxy.h \
     sources/CStagedFileModelProxy.h \
     sources/CRepoFile.h \
+    sources/CLabel.h \
+    sources/CLabelModel.h \
     sources/CLogModel.h \
     sources/CLogLine.h \
     sources/CLogLineCollection.h \
@@ -45,6 +47,7 @@ SOURCES += \
     sources/CFlatFileModelProxy.cpp \
     sources/CStagedFileModelProxy.cpp \
     sources/CRepoFile.cpp \
+    sources/CLabelModel.cpp \
     sources/CLogModel.cpp \
     sources/CLogLineCollection.cpp \
     sources/CGraphModel.cpp \

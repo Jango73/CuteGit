@@ -21,14 +21,14 @@ CBranchModel::~CBranchModel()
 
 //-------------------------------------------------------------------------------------------------
 
-QStringList CBranchModel::labelsForCommit(const QString& sCommitId) const
+QList<CLabel*> CBranchModel::labelsForCommit(const QString& sCommitId) const
 {
-    QStringList lReturnValue;
+    QList<CLabel*> lReturnValue;
 
     for (CBranch* pBranch : m_lBranches)
     {
         if (pBranch->commitId() == sCommitId)
-            lReturnValue << pBranch->name();
+            lReturnValue << new CBranch(*pBranch);
     }
 
     return lReturnValue;

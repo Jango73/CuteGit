@@ -14,11 +14,16 @@ Item {
 
     // Colors
     property color transparent: "transparent"
+
     property color fileStagedColor: "#80008000"
     property color fileModifiedColor: "#80800000"
     property color fileRenamedColor: "#80804000"
     property color fileAddedColor: "#80000080"
     property color fileDeletedColor: "#80804000"
+
+    property color labelLocalColor: "aquamarine"
+    property color labelRemoteColor: "lightsalmon"
+    property color labelTagColor: "deepskyblue"
 
     // Margins and padding
     property int mainPadding: 8

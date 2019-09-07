@@ -79,6 +79,7 @@ const QString CGitCommands::sStatusBranchRegExp         = "";
 const QString CGitCommands::sStatusRegExp               = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
 const QString CGitCommands::sPickCommitRegExp           = "(pick)\\s+([a-zA-Z0-9]+)\\s+(.*)";
 
+const QString CGitCommands::sComment                    = "#";
 const QString CGitCommands::sLogFormatSplitter          = "&&&";
 const QString CGitCommands::sRemoteBranchPrefix         = "remotes/origin/";
 const QString CGitCommands::sRemoteBranchUselessPrefix  = "remotes/";
@@ -87,7 +88,6 @@ const QString CGitCommands::sTextEditorToken            = "GIT_EDITOR";
 const QString CGitCommands::sRebaseEditCommit           = "edit %1 %2";
 const QString CGitCommands::sRebaseRewordCommit         = "reword %1 %2";
 const QString CGitCommands::sRebaseSquashCommit         = "squash %1 %2";
-const QString CGitCommands::sComment                    = "#";
 
 const QString CGitCommands::sStatusClean                = " ";
 const QString CGitCommands::sStatusAdded                = "A";
@@ -891,21 +891,21 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
             if (not sLine.isEmpty())
             {
                 CBranch* pNewBranch = new CBranch();
+                bool bIsCurrent = false;
 
                 if (sLine.startsWith("*"))
-                {
-                    sLine.remove(0, 2);
-                    sLine.replace(sRemoteBranchUselessPrefix, "");
-                    pNewBranch->setName(sLine);
+                    bIsCurrent = true;
 
+                pNewBranch->setType(sLine.contains(sRemoteBranchUselessPrefix) ? CEnums::RemoteBranchLabel : CEnums::LocalBranchLabel);
+
+                sLine.remove(0, 2);
+                sLine.replace(sRemoteBranchUselessPrefix, "");
+                pNewBranch->setName(sLine);
+
+                if (bIsCurrent)
+                {
                     // Tell the world about the current branch
                     emit newOutputString(CEnums::eCurrentBranch, sLine);
-                }
-                else
-                {
-                    sLine.remove(0, 2);
-                    sLine.replace(sRemoteBranchUselessPrefix, "");
-                    pNewBranch->setName(sLine);
                 }
 
                 lReturnValue << pNewBranch;
@@ -928,6 +928,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
             if (not sLine.isEmpty())
             {
                 CBranch* pNewBranch = new CBranch();
+                pNewBranch->setType(CEnums::TagLabel);
                 pNewBranch->setName(sLine);
                 lReturnValue << pNewBranch;
             }
