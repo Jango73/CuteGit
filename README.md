@@ -2,9 +2,9 @@
 
 ![alt text](https://github.com/Jango73/CuteGit/blob/master/Media/Screenshot01.jpg)
 
-This is a simple UI for the GIT executable (and other versioning systems in a near future).
-I decided to make my own because the only efficient GIT UIs on Linux are paywares.
-It is however not meant to compete with paywares, just provide minimal GIT functionality.
+This is a simple multi-document UI for the Git executable (and other versioning systems in a near future).
+I decided to make my own because the only efficient Git UIs on Linux are paywares.
+It is however not meant to compete with paywares, just provide minimal versioning functionality.
 
 ## Building
 
@@ -14,21 +14,20 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 
 ## Things it does
 
-* Open a GIT repository
+* Open one or more git repositories
 * Show repository status (clean, merge, rebase, ...)
 * Show repository files as a tree, colored according to status
 * Show the branches and tags of the repository
 * Show the branch log
-* Show the graph as output by Git
-* Show the selected file log
+* Show the graph as output by Git (might be graphical some day)
+* Show the selected file's log
 * Show the unstaged diffs in the selected item (folder or file)
-* Show the output of the executed GIT commands
-* Mark files as staged / unstaged
+* Show the output of the executed commands
 * Change current branch
+* Mark files as staged / unstaged
 * Revert files
 * Commit / amend (auto on interactive rebase)
-* Simple pull
-* Simple push
+* Basic fetch, pull and push
 * Refresh view
 * Modify a commit message
 * Begin rebase on a commit, continue and abort rebase
@@ -36,6 +35,7 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 * Save and pop stash (no selectable stash yet)
 * Branch from a commit
 * Tag a commit
+* View diff with previous commit
 * View diff between any two commits
 
 ## Classes
@@ -109,17 +109,17 @@ It is however not meant to compete with paywares, just provide minimal GIT funct
 ### CGitCommands
 
 * Inherits CCommands
-* Implements GIT versioning commands
+* Implements Git versioning commands
 
 ### CSVNCommands
 
 * Inherits CCommands
-* Will implements SVN versioning commands
+* Will implement SVN versioning commands
 
 ### CHGCommands
 
 * Inherits CCommands
-* Will implements Mercurial versioning commands
+* Will implement Mercurial versioning commands
 
 ### CLogModel
 
