@@ -48,17 +48,18 @@ Pane {
                      : Material.background
             : "black"
 
-            text: (root.repository
-                   ? root.repository.repositoryStatus === CEnums.InteractiveRebase
-                     ? Const.interactiveRebaseProgressText
-                     : root.repository.repositoryStatus === CEnums.Rebase
-                       ? Const.rebaseProgressText
-                       : root.repository.repositoryStatus === CEnums.Merge
-                         ? Const.mergeProgressText
-                         : ""
-                   : "")
-                  + " - " + root.repository.repositoryTypeString
-                  + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(" : behind ") + root.repository.commitCountBehind + " )"
+            text: root.repository
+                  ?
+                      root.repository.repositoryStatus === CEnums.InteractiveRebase
+                      ? Const.interactiveRebaseProgressText
+                      : root.repository.repositoryStatus === CEnums.Rebase
+                        ? Const.rebaseProgressText
+                        : root.repository.repositoryStatus === CEnums.Merge
+                          ? Const.mergeProgressText
+                          : ""
+                      + " - " + root.repository.repositoryTypeString
+                      + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(" : behind ") + root.repository.commitCountBehind + " )"
+            : ""
         }
     }
 

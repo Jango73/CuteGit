@@ -26,6 +26,10 @@ class CLabel : public QObject
 
 public:
 
+    //-------------------------------------------------------------------------------------------------
+    // Constructors
+    //-------------------------------------------------------------------------------------------------
+
     CLabel(QObject* parent = nullptr)
         : QObject(parent)
         , m_eType(CEnums::UnknownLabel)

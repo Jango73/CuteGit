@@ -28,7 +28,7 @@ class CTreeFileModelProxy : public QSortFilterProxyModel
 public:
 
     //-------------------------------------------------------------------------------------------------
-    // Constructor & destructor
+    // Constructor
     //-------------------------------------------------------------------------------------------------
 
     CTreeFileModelProxy(CController* pController, QObject* parent = nullptr);

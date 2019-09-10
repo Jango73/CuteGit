@@ -24,7 +24,7 @@ class CStagedFileModelProxy : public CFlatFileModelProxy
 public:
 
     //-------------------------------------------------------------------------------------------------
-    // Constructor & destructor
+    // Constructor
     //-------------------------------------------------------------------------------------------------
 
     CStagedFileModelProxy(CController* pController, QObject* parent = nullptr);
