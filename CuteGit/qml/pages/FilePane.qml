@@ -9,7 +9,7 @@ import "../popups"
 
 ExtendablePane {
     id: root
-    title: qsTr("Files")
+    showTitle: false
 
     property variant repository: null
     property variant flatSelection: null
@@ -31,7 +31,7 @@ ExtendablePane {
                 height: filterText.height
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                text: qsTr("Filter")
+                text: qsTr("File filter")
             }
 
             StandardTextField {

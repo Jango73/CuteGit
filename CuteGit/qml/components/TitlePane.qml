@@ -6,6 +6,8 @@ import QtQuick.Controls.Material 2.12
 StandardPane {
     id: root
 
+    property bool showTitle: true
+
     property alias title: title.text
     property alias content: content.children
 
@@ -15,12 +17,12 @@ StandardPane {
         anchors.left: parent.left
         anchors.right: parent.right
         height: visible ? Const.elementHeight : 0
-        visible: text !== ""
+        visible: showTitle && text !== ""
     }
 
     Item {
         id: content
-        anchors.top: title.bottom
+        anchors.top: title.visible ? title.bottom : parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
