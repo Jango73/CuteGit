@@ -271,8 +271,10 @@ void CGitCommands::branchLog(const QString& sPath, int iFrom, int iCount)
 
 void CGitCommands::fileLog(const QString& sPath, const QString& sFullName, int iFrom, int iCount)
 {
-    QString sCountCommand = QString(sCommandFileLogCount).arg(sFullName);
-    int iPotentialCount = execNow(sPath, sCountCommand).trimmed().toInt();
+    // Getting the count of log entries is very slow so log is limited to LOG_COUNT_DEFAULT for now
+    // QString sCountCommand = QString(sCommandFileLogCount).arg(sFullName);
+    // int iPotentialCount = execNow(sPath, sCountCommand).trimmed().toInt();
+    int iPotentialCount = 0;
     QString sCommand = QString(sCommandFileLog).arg(iFrom).arg(iCount).arg(sFullName);
     QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
     exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));
