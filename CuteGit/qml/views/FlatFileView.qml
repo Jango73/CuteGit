@@ -34,7 +34,7 @@ StandardListView {
 
         property string fullName: model.fullName
         property bool mustShowRelativeName: model.fileName !== model.relativeName
-        property bool selected: root.selection
+        property bool selected: root.selection && root.modelIndices[index]
                                 ? root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
                                 : false
 

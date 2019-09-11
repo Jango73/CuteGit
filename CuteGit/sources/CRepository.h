@@ -201,6 +201,9 @@ public:
     //! View diff with previous commit
     Q_INVOKABLE void commitDiffPrevious(const QString& sCommitId);
 
+    //! Sets the file filter
+    Q_INVOKABLE void setFileFilter(const QString& sCommitId);
+
     //-------------------------------------------------------------------------------------------------
     // Static control methods
     //-------------------------------------------------------------------------------------------------

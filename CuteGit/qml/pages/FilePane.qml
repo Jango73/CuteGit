@@ -16,10 +16,38 @@ ExtendablePane {
 
     signal requestMenu(var name)
     signal requestDeleteFile(var name)
+    signal requestFileFilter(var text)
 
     content: [
+        Item {
+            id: filter
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: filterText.height
+
+            StandardLabel {
+                id: filterLabel
+                height: filterText.height
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: qsTr("Filter")
+            }
+
+            StandardTextField {
+                id: filterText
+                anchors.left: filterLabel.right
+                anchors.right: parent.right
+                anchors.leftMargin: Const.mainPadding
+
+                onTextChanged: {
+                    root.requestFileFilter(text)
+                }
+            }
+        },
+
         StandardLabel {
-            anchors.fill: parent
+            anchors.fill: flatFileView
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: Const.allFilesCleanText
@@ -28,13 +56,15 @@ ExtendablePane {
 
         FlatFileView {
             id: flatFileView
-            anchors.fill: parent
+            anchors.top: filter.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
 
             repository: root.repository
             selection: root.flatSelection
 
             onRequestMenu: root.requestMenu(name)
-
             onRequestDeleteFile: root.requestDeleteFile(name)
         }
     ]

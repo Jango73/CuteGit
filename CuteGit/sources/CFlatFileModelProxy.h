@@ -26,6 +26,7 @@ class CFlatFileModelProxy : public QSortFilterProxyModel
     //-------------------------------------------------------------------------------------------------
 
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
+    Q_FAST_PROPERTY(QString, s, nameFilter, NameFilter)
 
 public:
 
@@ -76,4 +77,7 @@ protected:
 
     //!
     bool statusShown(const QString& sStatus) const;
+
+    //!
+    bool nameShown(const QString& sName) const;
 };

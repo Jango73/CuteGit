@@ -36,7 +36,8 @@ public:
     {}
 
     CLabel(const CLabel& target)
-        : m_sName(target.m_sName)
+        : QObject(nullptr)
+        , m_sName(target.m_sName)
         , m_eType(target.m_eType)
     {
     }

@@ -63,7 +63,7 @@ const QString sParamLastBrowsedRepositoryURL = "LastBrowsedRepositoryURL";
 const QString sParamLastBrowsedRepositoryPath = "LastBrowsedRepositoryPath";
 const QString sParamTheme = "Theme";
 
-const QString CController::m_sSharedKey = "CuteGit-Shared-Memory";
+const QString CController::m_sSharedKey = "CuteGitSharedMemory";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -99,6 +99,7 @@ CController::CController(QObject* parent)
     else
     {
         qWarning() << "Could not create shared memory segment";
+        qWarning() << m_tShared.errorString();
     }
 }
 

@@ -102,6 +102,10 @@ Pane {
             onRequestDeleteFile: {
                 root.requestDeleteFile(name)
             }
+
+            onRequestFileFilter: {
+                root.repository.setFileFilter(text)
+            }
         }
 
         ToolPane {

@@ -472,6 +472,14 @@ void CRepository::commitDiffPrevious(const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::setFileFilter(const QString& sText)
+{
+    m_pFlatFileModelProxy->setNameFilter(sText);
+    m_pFlatFileModelProxy->filterChanged();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& sPath)
 {
     if (QDir(QString("%1/.git").arg(sPath)).exists())

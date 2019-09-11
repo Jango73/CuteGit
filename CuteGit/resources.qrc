@@ -32,6 +32,7 @@
         <file>qml/components/TextOverSelection.qml</file>
         <file>qml/components/TitlePane.qml</file>
         <file>qml/components/TitleTextField.qml</file>
+        <file>qml/components/TextLikeLayout.qml</file>
 
         <file>qml/pages/BranchLogPane.qml</file>
         <file>qml/pages/BranchMenu.qml</file>

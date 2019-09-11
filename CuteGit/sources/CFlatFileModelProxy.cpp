@@ -22,8 +22,16 @@ bool CFlatFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
 
     CFlatFileModel* pModel = dynamic_cast<CFlatFileModel*>(sourceModel());
+
     if (pModel != nullptr)
-        return statusShown(pModel->data(index, CFlatFileModel::eStatusRole).toString());
+    {
+        bool bShow = statusShown(pModel->data(index, CFlatFileModel::eStatusRole).toString());
+
+        if (bShow)
+            bShow = nameShown(pModel->data(index, CFlatFileModel::eFullNameRole).toString());
+
+        return bShow;
+    }
 
     return false;
 }
@@ -106,4 +114,14 @@ bool CFlatFileModelProxy::statusShown(const QString& sStatus) const
         return true;
 
     return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool CFlatFileModelProxy::nameShown(const QString& sName) const
+{
+    if (m_sNameFilter.isEmpty())
+        return true;
+
+    return sName.contains(m_sNameFilter, Qt::CaseInsensitive);
 }
