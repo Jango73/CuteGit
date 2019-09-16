@@ -60,6 +60,16 @@ Item {
     property string pullMenuText: qsTr("&Pull")
     property string pushMenuText: qsTr("Pus&h")
 
+    property string stageAllMenuText: qsTr("Stage a&ll")
+    property string unstageAllMenuText: qsTr("Unsta&ge all")
+
+    property string saveStashMenuText: qsTr("Save stash")
+    property string popStashMenuText: qsTr("Pop stash")
+
+    property string commitMenuText: qsTr("&Commit")
+    property string amendMenuText: qsTr("&Amend")
+    property string continueRebaseMenuText: qsTr("C&ontinue rebase")
+
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
     property string tagsText: qsTr("Tags")

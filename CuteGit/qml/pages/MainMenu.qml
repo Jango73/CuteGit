@@ -129,7 +129,7 @@ MenuBar {
         title: qsTr("&Local")
 
         Action {
-            text: qsTr("Stage a&ll")
+            text: Const.stageAllMenuText
             shortcut: "Ctrl+Shift++"
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
@@ -138,7 +138,7 @@ MenuBar {
         }
 
         Action {
-            text: qsTr("Usta&ge all")
+            text: Const.unstageAllMenuText
             shortcut: "Ctrl+Shift+-"
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
@@ -181,7 +181,7 @@ MenuBar {
 
         Action {
             id: saveStash
-            text: qsTr("Save stash")
+            text: Const.saveStashMenuText
             enabled: root.repository
                      ? root.repository.can(CEnums.Stash) && root.repository.hasModifiedFiles
                      : false
@@ -190,7 +190,7 @@ MenuBar {
 
         Action {
             id: popStash
-            text: qsTr("Pop stash")
+            text: Const.popStashMenuText
             enabled: root.repository ? root.repository.can(CEnums.Stash) : false
             onTriggered: repositoryView.requestStashPop()
         }
@@ -199,7 +199,7 @@ MenuBar {
 
         Action {
             id: commit
-            text: qsTr("&Commit")
+            text: Const.commitMenuText
             shortcut: "Ctrl+C"
             enabled: root.repository
                      ? root.repository.can(CEnums.Commit) && root.repository.hasCommitableFiles
@@ -209,7 +209,7 @@ MenuBar {
 
         Action {
             id: amend
-            text: qsTr("&Amend")
+            text: Const.amendMenuText
             shortcut: "Ctrl+A"
             enabled: root.repository
                      ? root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles && root.repository.commitCountAhead > 0
@@ -220,7 +220,7 @@ MenuBar {
         MenuSeparator { }
 
         Action {
-            text: qsTr("C&ontinue rebase")
+            text: Const.continueRebaseMenuText
             shortcut: "Ctrl+R"
             enabled: root.repository ? root.rebaseInProgress && root.repository.can(CEnums.ContinueRebase) : false
             onTriggered: repositoryView.requestContinueRebase()

@@ -45,7 +45,7 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Unable to get current branch name...</source>
-        <translation>Impossible de récupérer le nom de la branche courante</translation>
+        <translation>Impossible de récupérer le nom de la branche courante...</translation>
     </message>
 </context>
 <context>
@@ -143,7 +143,7 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Amending...</source>
-        <translation>Amendement en cours...</translation>
+        <translation>Modification en cours...</translation>
     </message>
     <message>
         <source>Pushing...</source>
@@ -158,46 +158,46 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     <name>Calendar</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Aujourd&apos;hui</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
     <name>Const</name>
     <message>
         <source>&amp;Repository</source>
-        <translation type="unfinished">&amp;Dépôt</translation>
+        <translation>&amp;Dépôt</translation>
     </message>
     <message>
         <source>&amp;Clone / checkout</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cloner</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir</translation>
     </message>
     <message>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Retirer</translation>
     </message>
     <message>
         <source>&amp;Known</source>
-        <translation type="unfinished"></translation>
+        <translation>Co&amp;nnus</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <source>Re&amp;mote</source>
-        <translation type="unfinished"></translation>
+        <translation>Dist&amp;ant</translation>
     </message>
     <message>
         <source>&amp;Fetch</source>
@@ -205,55 +205,55 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>&amp;Pull</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tirer</translation>
     </message>
     <message>
         <source>Pus&amp;h</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pousser</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Journal</translation>
     </message>
     <message>
         <source>Tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Etiquettes</translation>
     </message>
     <message>
         <source>Flat</source>
-        <translation type="unfinished"></translation>
+        <translation>Plat</translation>
     </message>
     <message>
         <source>Diff</source>
-        <translation type="unfinished"></translation>
+        <translation>Diff</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <source>Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers</translation>
     </message>
     <message>
         <source>Stage</source>
-        <translation type="unfinished"></translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionner</translation>
     </message>
     <message>
         <source>Graph</source>
-        <translation type="unfinished"></translation>
+        <translation>Graphe</translation>
     </message>
     <message>
         <source>Amend</source>
@@ -261,39 +261,39 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="unfinished"></translation>
+        <translation>Revenir en arrière</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortie</translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Parcourir</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <source>Commit</source>
-        <translation type="unfinished">Validation</translation>
+        <translation>Validation</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
     <message>
         <source>Branches</source>
-        <translation type="unfinished"></translation>
+        <translation>Branches</translation>
     </message>
     <message>
         <source>Switch to</source>
-        <translation type="unfinished"></translation>
+        <translation>Basculer vers</translation>
     </message>
     <message>
         <source>Amending...</source>
@@ -301,87 +301,87 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Raccourcis</translation>
     </message>
     <message>
         <source>Branch log</source>
-        <translation type="unfinished"></translation>
+        <translation>Journal de branche</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <source>List empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste vide</translation>
     </message>
     <message>
         <source>Expand all</source>
-        <translation type="unfinished"></translation>
+        <translation>Etendre tout</translation>
     </message>
     <message>
         <source>Delete file</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer fichier</translation>
     </message>
     <message>
         <source>Branch from</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer branche depuis</translation>
     </message>
     <message>
         <source>Collapse all</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer tout</translation>
     </message>
     <message>
         <source>Merge branch</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionner branche</translation>
     </message>
     <message>
         <source>Delete branch</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer branche</translation>
     </message>
     <message>
         <source>Repositories</source>
-        <translation type="unfinished"></translation>
+        <translation>Dépôts</translation>
     </message>
     <message>
         <source>Repository URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL du dépôt</translation>
     </message>
     <message>
         <source>Status history</source>
-        <translation type="unfinished"></translation>
+        <translation>Historique de l&apos;état</translation>
     </message>
     <message>
         <source>Merge in progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusion en cours...</translation>
     </message>
     <message>
         <source>All files are clean</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers sont propres</translation>
     </message>
     <message>
         <source>Rebase in progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rebasage en cours...</translation>
     </message>
     <message>
         <source>Clone repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Cloner un dépôt</translation>
     </message>
     <message>
         <source>Enter your message here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tapez votre message ici...</translation>
     </message>
     <message>
         <source>Destination folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier de destination</translation>
     </message>
     <message>
         <source>Enter branch name here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrer le nom de la branche ici...</translation>
     </message>
     <message>
         <source>Change commit message</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer le message de validation</translation>
     </message>
     <message>
         <source>Staged files for commit</source>
@@ -389,18 +389,18 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Interactive rebase in progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rebasage interactif en cours...</translation>
     </message>
     <message>
         <source>There is no open repository at the moment.
 Please open or clone a repository to fill this view.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a aucun dépôt ouvert pour l&apos;instant. Veuillez ouvrir ou cloner un dépôt pour remplir cette vue.</translation>
     </message>
     <message>
         <source>You are about to delete a branch.
 
 Are you sure you want to do this? It cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous êtes sur le point de supprimer une branche. Etes-vous sûr(e) de vouloir faire cela? Cette action ne peut être annulée.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this file?
@@ -433,7 +433,7 @@ Log views
     </message>
     <message>
         <source>Open a repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un dépôt</translation>
     </message>
     <message>
         <source>Quit</source>
@@ -453,7 +453,7 @@ Log views
     </message>
     <message>
         <source>Toggle staged</source>
-        <translation type="unfinished"></translation>
+        <translation>Basculer l&apos;acceptation</translation>
     </message>
     <message>
         <source>Stage selection</source>
@@ -505,7 +505,7 @@ Log views
     </message>
     <message>
         <source>In log view</source>
-        <translation type="unfinished"></translation>
+        <translation>Dans la vue du journal</translation>
     </message>
     <message>
         <source>Diff with previous commit</source>
@@ -537,19 +537,47 @@ Copyright (c) 2019 Jango73
 Certains ic$ones sont copyright Freepik de www.flaticon.com
 </translation>
     </message>
+    <message>
+        <source>Stage a&amp;ll</source>
+        <translation>Accepter &amp;tout</translation>
+    </message>
+    <message>
+        <source>Save stash</source>
+        <translation>Mettre de côté</translation>
+    </message>
+    <message>
+        <source>Pop stash</source>
+        <translation>Récupérer le travail mis de côté</translation>
+    </message>
+    <message>
+        <source>&amp;Commit</source>
+        <translation>&amp;Valider</translation>
+    </message>
+    <message>
+        <source>&amp;Amend</source>
+        <translation>&amp;Modifier</translation>
+    </message>
+    <message>
+        <source>C&amp;ontinue rebase</source>
+        <translation>C&amp;ontinuer le rebasage</translation>
+    </message>
+    <message>
+        <source>Unsta&amp;ge all</source>
+        <translation>R&amp;ejeter tout</translation>
+    </message>
 </context>
 <context>
     <name>FileMenu</name>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Effacer</translation>
     </message>
 </context>
 <context>
     <name>FilePane</name>
     <message>
         <source>File filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre des fichiers</translation>
     </message>
 </context>
 <context>
@@ -602,14 +630,6 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stage a&amp;ll</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Usta&amp;ge all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Stage selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -622,32 +642,12 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save stash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pop stash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Commit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Amend</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;ontinue rebase</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Abor&amp;t rebase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vue</translation>
     </message>
     <message>
         <source>&amp;Refresh</source>
@@ -691,15 +691,15 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     </message>
     <message>
         <source>&amp;Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Thème</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Sombre</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumineux</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -714,11 +714,11 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     <name>RepositoryView</name>
     <message>
         <source> - ( Ahead </source>
-        <translation type="unfinished"></translation>
+        <translation> - ( En avant </translation>
     </message>
     <message>
         <source> : behind </source>
-        <translation type="unfinished"></translation>
+        <translation> : en arrière </translation>
     </message>
 </context>
 <context>
