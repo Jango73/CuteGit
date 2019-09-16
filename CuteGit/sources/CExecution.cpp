@@ -22,6 +22,7 @@ CExecution::CExecution()
     : m_tPool(this)
     , m_bStop(false)
     , m_mMutex(QMutex::Recursive)
+    , m_eLastShownCommand(CEnums::eNothing)
 {
     start();
 }
@@ -60,6 +61,12 @@ void CExecution::run()
 
         if (pCommand != nullptr)
         {
+            if (m_eLastShownCommand != pCommand->m_eCommand)
+            {
+                m_eLastShownCommand = pCommand->m_eCommand;
+                emit execFinished(pCommand->m_sWorkPath, CEnums::eIssuedCommand, pCommand->m_sCommand, "");
+            }
+
             if (pCommand->m_eEndSignal == CEnums::eNothing)
             {
                 QString sOutput = execNow(
@@ -100,8 +107,6 @@ void CExecution::exec(CProcessCommand* pCommand)
     // if not allowed to stack the type
     if (not pCommand->m_bAllowStack)
     {
-        emit execFinished(pCommand->m_sWorkPath, CEnums::eIssuedCommand, pCommand->m_sCommand, "");
-
         for (int index = 0; index < m_lCommandStack.count(); index++)
         {
             if (m_lCommandStack[index]->m_eCommand == pCommand->m_eCommand)

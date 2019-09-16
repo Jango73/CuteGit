@@ -149,6 +149,7 @@ private:
 
     bool                        m_bStop;
     QMutex                      m_mMutex;
+    CEnums::EProcessCommand     m_eLastShownCommand;
     QList<CProcessCommand*>     m_lCommandStack;
 };
 
