@@ -132,7 +132,7 @@ Pane {
         anchors.top: parent.top
         anchors.bottom: bottomPart.top
         anchors.right: parent.right
-        width: parent.width * 0.15
+        width: parent.width * 0.2
 
         BranchPane {
             id: branchPane
