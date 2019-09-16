@@ -98,7 +98,7 @@ StandardPopup {
     ]
 
     Component.onCompleted: {
-        copyrightText.text = Const.copyrightText.format(root.controller.version)
+        copyrightText.text = Const.copyrightText.arg(root.controller.version)
         generalText.text = Const.generalHelpText
         shortcutText.text = Const.shortcutsText
     }

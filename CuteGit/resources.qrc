@@ -77,5 +77,8 @@
         <file>qml/images/star.svg</file>
         <file>qml/images/tag.svg</file>
         <file>qml/images/up-arrow.svg</file>
+
+        <file>i18n/CuteGit_fr.qm</file>
+        <file>i18n/CuteGit_de.qm</file>
     </qresource>
 </RCC>

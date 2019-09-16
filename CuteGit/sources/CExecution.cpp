@@ -100,6 +100,8 @@ void CExecution::exec(CProcessCommand* pCommand)
     // if not allowed to stack the type
     if (not pCommand->m_bAllowStack)
     {
+        emit execFinished(pCommand->m_sWorkPath, CEnums::eIssuedCommand, pCommand->m_sCommand, "");
+
         for (int index = 0; index < m_lCommandStack.count(); index++)
         {
             if (m_lCommandStack[index]->m_eCommand == pCommand->m_eCommand)

@@ -10,7 +10,10 @@ StandardListView {
 
     property bool hasSymbol: false
 
+    property string currentCommitId: ""
+
     signal itemRightClicked(var commitId, var message)
+    signal requestCommitDiffPrevious(var commitId)
 
     delegate: StandardListViewItem {
         id: delegateItem
@@ -60,6 +63,7 @@ StandardListView {
         ]
 
         onClicked: {
+            root.currentCommitId = model.commitId
             root.currentIndex = index
             root.forceActiveFocus()
 
@@ -67,5 +71,10 @@ StandardListView {
                 root.itemRightClicked(model.commitId, model.fullMessage)
             }
         }
+    }
+
+
+    onSpacePressed: {
+        root.requestCommitDiffPrevious(root.currentCommitId)
     }
 }

@@ -79,6 +79,7 @@ const QString CGitCommands::sCommandUnstagedDiff        = "git diff --no-color -
 const QString CGitCommands::sStatusBranchRegExp         = "";
 const QString CGitCommands::sStatusRegExp               = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
 const QString CGitCommands::sPickCommitRegExp           = "(pick)\\s+([a-zA-Z0-9]+)\\s+(.*)";
+const QString CGitCommands::sDiffLineRegExp             = "diff\\s+(.*)\\s+a/(.*)\\s+b/(.*)";
 
 const QString CGitCommands::sComment                    = "#";
 const QString CGitCommands::sLogFormatSplitter          = "&&&";
@@ -763,6 +764,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eRepositoryStatus:
         break;
 
+    case CEnums::eIssuedCommand:
     case CEnums::eCloneRepository:
     case CEnums::eCloneRepositoryFinished:
     case CEnums::eStageFile:
@@ -854,7 +856,18 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 {
                     if (sLine.startsWith("diff"))
                     {
-                        QString sNewText = pDiffLine->text().split(PATH_SEP).last();
+                        QString sNewText = pDiffLine->text(); // .split(PATH_SEP).last();
+
+                        QRegExp tRegExp(sDiffLineRegExp);
+
+                        if (tRegExp.indexIn(sLine) != -1)
+                        {
+                            QString sFileA = tRegExp.cap(2).trimmed();
+                            QString sFileB = tRegExp.cap(3).trimmed();
+
+                            sNewText = sFileB;
+                        }
+
                         pDiffLine->setOperation(CEnums::DiffFileName);
                         pDiffLine->setText(sNewText);
                     }

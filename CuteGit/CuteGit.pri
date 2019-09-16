@@ -60,3 +60,7 @@ SOURCES += \
 
 RESOURCES += \
     resources.qrc
+
+TRANSLATIONS = \
+    i18n/CuteGit_fr.ts \
+    i18n/CuteGit_de.ts

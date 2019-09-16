@@ -92,14 +92,22 @@ CController::CController(QObject* parent)
     if (m_tShared.create(SHARED_MEMORY_MAX))
     {
         clearSharedMemory();
-
         connect(&m_tSharedTimer, &QTimer::timeout, this, &CController::onSharedTimerTick);
         m_tSharedTimer.start(500);
     }
     else
     {
-        qWarning() << "Could not create shared memory segment";
-        qWarning() << m_tShared.errorString();
+        if (m_tShared.attach())
+        {
+            clearSharedMemory();
+            connect(&m_tSharedTimer, &QTimer::timeout, this, &CController::onSharedTimerTick);
+            m_tSharedTimer.start(500);
+        }
+        else
+        {
+            qWarning() << "Could not create shared memory segment";
+            qWarning() << m_tShared.errorString();
+        }
     }
 }
 

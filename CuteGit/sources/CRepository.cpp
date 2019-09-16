@@ -641,8 +641,10 @@ void CRepository::onCurrentFileFullName(QString sFileFullName)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutput(QString sOutput)
+void CRepository::onNewOutput(QString sOutput, bool bSeparation)
 {
+    Q_UNUSED(bSeparation);
+
     QStringList lNewList = sOutput.split(NEW_LINE);
     QStringList lData = m_pCommandOutputModel->stringList();
     bool bHasNewLine = false;
@@ -660,7 +662,8 @@ void CRepository::onNewOutput(QString sOutput)
 
     if (bHasNewLine)
     {
-        lData << "----------------------------------------------------------------------------------------------------";
+//        if (bSeparation)
+//            lData << "----------------------------------------------------------------------------------------------------";
 
         while (lData.count() > 50)
             lData.removeFirst();
@@ -678,7 +681,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
 
     case CEnums::eCloneRepository:
     {
-        onNewOutput(sOutput);
+        onNewOutput(sOutput, false);
         break;
     }
 
@@ -695,19 +698,25 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+    case CEnums::eIssuedCommand:
+    {
+        onNewOutput(sOutput, true);
+        break;
+    }
+
     case CEnums::eNotification:
     case CEnums::eStageFile:
     case CEnums::eStageAll:
     case CEnums::eRevertFile:
     {
-        onNewOutput(sOutput);
+        onNewOutput(sOutput, false);
         break;
     }
 
     case CEnums::eStashSave:
     case CEnums::eStashPop:
     {
-        onNewOutput(sOutput);
+        onNewOutput(sOutput, false);
 
         checkChangedFileStatus();
         break;
@@ -715,7 +724,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
 
     case CEnums::eCreateTagOnCommit:
     {
-        onNewOutput(sOutput);
+        onNewOutput(sOutput, false);
 
         getTags();
         break;
@@ -727,7 +736,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::ePull:
     case CEnums::eFetch:
     {
-        onNewOutput(sOutput);
+        onNewOutput(sOutput, false);
 
         refresh();
         break;
@@ -744,7 +753,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:
     {
-        onNewOutput(sOutput);
+        onNewOutput(sOutput, false);
 
         refresh();
         break;
@@ -1025,7 +1034,7 @@ void CRepository::onNewOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, 
 void CRepository::onDiffCommitIdChanged()
 {
     QString sDiffFromCommitId = m_sDiffFromCommitId;
-    QString sDiffFromToId = m_sDiffToCommitId;
+    QString sDiffToCommitId = m_sDiffToCommitId;
 
     if (not m_sDiffFromCommitId.isEmpty() && not m_sDiffToCommitId.isEmpty())
     {
@@ -1036,9 +1045,9 @@ void CRepository::onDiffCommitIdChanged()
     }
 
     m_pLogModel->commitChanged(sDiffFromCommitId);
-    m_pLogModel->commitChanged(sDiffFromToId);
+    m_pLogModel->commitChanged(sDiffToCommitId);
     m_pGraphModel->commitChanged(sDiffFromCommitId);
-    m_pGraphModel->commitChanged(sDiffFromToId);
+    m_pGraphModel->commitChanged(sDiffToCommitId);
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -18,7 +18,7 @@ DESTDIR = $$OUT_PWD/bin
 
 # Target
 CONFIG(debug, debug|release) {
-    TARGET = cutegitd
+    TARGET = CuteGit-dbg
 } else {
-    TARGET = cutegit
+    TARGET = CuteGit
 }

@@ -146,7 +146,7 @@ Pane {
             onRequestMergeBranch: {
                 mergeBranchAction.branchName = name
                 confirm.title = Const.mergeBranchText + " " + name
-                confirm.messageText = Const.mergeBranchMessage.format(name)
+                confirm.messageText = Const.mergeBranchMessage.arg(name)
                 confirm.actionOnAccept = mergeBranchAction
                 confirm.actionOnReject = null
                 confirm.open()
@@ -197,6 +197,10 @@ Pane {
                 logMenu.commitMessage = message
                 logMenu.popup()
             }
+
+            onRequestCommitDiffPrevious: {
+                root.commitDiffPrevious(commitId)
+            }
         }
 
         OutputPane {
@@ -224,8 +228,7 @@ Pane {
         }
 
         onRequestCommitDiffPrevious: {
-            root.repository.commitDiffPrevious(commitId)
-            root.activateFileDiffView()
+            root.commitDiffPrevious(commitId)
         }
 
         onRequestCommitTagOn: {
@@ -320,7 +323,7 @@ Pane {
     function requestDeleteFile(name) {
         deleteFileAction.fileName = name
         confirm.title = Const.deleteFileText
-        confirm.messageText = Const.deleteFileMessage.format(name)
+        confirm.messageText = Const.deleteFileMessage.arg(name)
         confirm.actionOnAccept = deleteFileAction
         confirm.actionOnReject = null
         confirm.open()
@@ -392,6 +395,11 @@ Pane {
 
     function requestAbortRebase() {
         root.repository.abortRebase()
+    }
+
+    function commitDiffPrevious(commitId) {
+        root.repository.commitDiffPrevious(commitId)
+        root.activateFileDiffView()
     }
 
     function activateFlatFileView() {

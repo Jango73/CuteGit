@@ -10,7 +10,7 @@ Item {
 
     // Main font
     property string mainFontFamily: "Calibri"
-    property int mainFontSize: Screen.desktopAvailableHeight / 65
+    property int mainFontSize: Screen.pixelDensity * 3
 
     // Colors
     property color transparent: "transparent"
@@ -26,8 +26,8 @@ Item {
     property color labelTagColor: "deepskyblue"
 
     // Margins and padding
-    property int mainPadding: 8
-    property int mainRadius: 4
+    property int mainPadding: mainFontSize * 0.6666
+    property int mainRadius: mainPadding * 0.5
     property int smallPadding: mainPadding / 2
     property int verySmallPadding: smallPadding / 2
     property int panePadding: smallPadding
@@ -112,7 +112,7 @@ Item {
                                                 )
 
     property string mergeBranchMessage: qsTr(
-                                            "You are about to merge {0} on the working directory.\n\n" +
+                                            "You are about to merge %1 on the working directory.\n\n" +
                                             "Are you sure you want to do this?"
                                             )
 
@@ -123,11 +123,11 @@ Item {
 
     property string deleteFileMessage: qsTr(
                                            "Are you sure you want to delete this file?\n\n" +
-                                           "{0}"
+                                           "%1"
                                            )
 
     property string copyrightText: qsTr(
-                                  "CuteGit - version {0}\n" +
+                                  "CuteGit - version %1\n" +
                                   "Copyright (c) 2019 Jango73\n" +
                                   "Some icons are copyright Freepik from www.flaticon.com\n"
                                   )
@@ -181,26 +181,32 @@ Item {
     // Models
 
     property ListModel shortcutModel: ListModel {
-        ListElement { name: "Open a repository"; sequence: "Control O" }
-        ListElement { name: "Quit"; sequence: "Control Q" }
+        ListElement { name: qsTr("Open a repository"); sequence: "Control O" }
+        ListElement { name: qsTr("Quit"); sequence: "Control Q" }
         ListElement { name: ""; sequence: "" }
-        ListElement { name: "Refresh"; sequence: "F5" }
+        ListElement { name: qsTr("Refresh"); sequence: "F5" }
         ListElement { name: ""; sequence: "" }
-        ListElement { name: "Stage all"; sequence: "Control Shift +" }
-        ListElement { name: "Unstage all"; sequence: "Control Shift -" }
-        ListElement { name: "Toggle staged"; sequence: "Space" }
-        ListElement { name: "Stage selection"; sequence: "Control +" }
-        ListElement { name: "Unstage selection"; sequence: "Control -" }
-        ListElement { name: "Revert selection"; sequence: "Control Z" }
-        ListElement { name: "Commit"; sequence: "Control C" }
-        ListElement { name: "Amend"; sequence: "Control A" }
-        ListElement { name: "Continue rebase"; sequence: "Control R" }
-        ListElement { name: "Abort rebase"; sequence: "Control T" }
+        ListElement { name: qsTr("Stage all"); sequence: "Control Shift +" }
+        ListElement { name: qsTr("Unstage all"); sequence: "Control Shift -" }
+        ListElement { name: qsTr("Toggle staged"); sequence: "Space" }
+        ListElement { name: qsTr("Stage selection"); sequence: "Control +" }
+        ListElement { name: qsTr("Unstage selection"); sequence: "Control -" }
+        ListElement { name: qsTr("Revert selection"); sequence: "Control Z" }
+        ListElement { name: qsTr("Commit"); sequence: "Control C" }
+        ListElement { name: qsTr("Amend"); sequence: "Control A" }
+        ListElement { name: qsTr("Continue rebase"); sequence: "Control R" }
+        ListElement { name: qsTr("Abort rebase"); sequence: "Control T" }
         ListElement { name: ""; sequence: "" }
-        ListElement { name: "Fetch"; sequence: "Control F" }
-        ListElement { name: "Pull"; sequence: "Control L" }
-        ListElement { name: "Push"; sequence: "Control P" }
+        ListElement { name: qsTr("Fetch"); sequence: "Control F" }
+        ListElement { name: qsTr("Pull"); sequence: "Control L" }
+        ListElement { name: qsTr("Push"); sequence: "Control P" }
         ListElement { name: ""; sequence: "" }
-        ListElement { name: "Activate file view"; sequence: "Alt Shift F" }
+        ListElement { name: qsTr("Activate file view"); sequence: "Alt Shift F" }
+        ListElement { name: qsTr("Activate graph view"); sequence: "Alt Shift G" }
+        ListElement { name: qsTr("Activate branch log view"); sequence: "Alt Shift L" }
+        ListElement { name: qsTr("Activate diff view"); sequence: "Alt Shift D" }
+        ListElement { name: ""; sequence: "" }
+        ListElement { name: qsTr("In log view"); sequence: "" }
+        ListElement { name: qsTr("Diff with previous commit"); sequence: "Space" }
     }
 }

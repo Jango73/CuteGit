@@ -13,6 +13,7 @@ ExtendablePane {
     property variant repository: null
 
     signal requestMenu(var commitId, var message)
+    signal requestCommitDiffPrevious(var commitId)
 
     TabBar {
         id: tabBar
@@ -59,6 +60,10 @@ ExtendablePane {
 
                 onItemRightClicked: {
                     root.requestMenu(commitId, message)
+                }
+
+                onRequestCommitDiffPrevious: {
+                    root.requestCommitDiffPrevious(commitId)
                 }
             }
         }

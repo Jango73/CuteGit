@@ -109,6 +109,7 @@ public:
     enum EProcessCommand
     {
         eNothing,
+        eIssuedCommand,
         eNotification,
         eCloneRepository,
         eCloneRepositoryFinished,

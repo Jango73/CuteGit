@@ -130,7 +130,7 @@ MenuBar {
 
         Action {
             text: qsTr("Stage a&ll")
-            shortcut: "Ctrl+shift++"
+            shortcut: "Ctrl+Shift++"
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
                      : false
@@ -139,7 +139,7 @@ MenuBar {
 
         Action {
             text: qsTr("Usta&ge all")
-            shortcut: "Ctrl+shift+-"
+            shortcut: "Ctrl+Shift+-"
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
                      : false

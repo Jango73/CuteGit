@@ -8,11 +8,11 @@ TitlePane {
     //! This is the item to which the pane is parented when extended
     property Item extensionParent: null
 
-    Button {
+    StandardButton {
         anchors.top: parent.top
         anchors.right: parent.right
         width: Const.elementHeight * 1.2
-        height: Const.elementHeight * 1.2
+        height: Const.elementHeight * 1.8
         padding: 0
         flat: true
         text: root.state === "" ? "^" : "v"

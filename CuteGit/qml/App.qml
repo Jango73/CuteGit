@@ -203,7 +203,7 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.bottomMargin: Const.mainPadding * 2
-            anchors.rightMargin: Const.mainPadding * 2
+            anchors.rightMargin: Const.mainPadding * 4
             text: currentText
             icon.source: currentIconSource
 
@@ -329,7 +329,7 @@ ApplicationWindow {
     // Shortcuts
 
     Shortcut {
-        sequence: "ALT+SHIFT+F"
+        sequence: "Alt+Shift+F"
         onActivated: {
             if (currentRepositoryView)
                 currentRepositoryView.activateFlatFileView()
@@ -337,7 +337,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequence: "ALT+SHIFT+G"
+        sequence: "Alt+Shift+G"
         onActivated: {
             if (currentRepositoryView)
                 currentRepositoryView.activateGraphView()
@@ -345,7 +345,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequence: "ALT+SHIFT+L"
+        sequence: "Alt+Shift+L"
         onActivated: {
             if (currentRepositoryView)
                 currentRepositoryView.activateBranchLogView()
@@ -353,7 +353,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequence: "ALT+SHIFT+D"
+        sequence: "Alt+Shift+D"
         onActivated: {
             if (currentRepositoryView)
                 currentRepositoryView.activateFileDiffView()

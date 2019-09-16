@@ -262,7 +262,7 @@ protected slots:
     void onCurrentFileFullName(QString sFileFullName);
 
     //!
-    void onNewOutput(QString sOutput);
+    void onNewOutput(QString sOutput, bool bSeparation);
 
     //!
     void onNewOutputString(CEnums::EProcessCommand eCommand, QString sValue);

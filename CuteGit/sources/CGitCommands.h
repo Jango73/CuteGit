@@ -259,6 +259,7 @@ protected:
     static const QString sStatusBranchRegExp;
     static const QString sStatusRegExp;
     static const QString sPickCommitRegExp;
+    static const QString sDiffLineRegExp;
 
     // Other strings
 

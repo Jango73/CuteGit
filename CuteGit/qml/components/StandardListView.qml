@@ -17,6 +17,7 @@ ListView {
     ScrollBar.vertical: ScrollBar {
         width: scrollBarWidth
         active: true;
+        minimumSize: (Const.mainPadding * 2) / height
 
         onActiveChanged: {
             if (!active)
