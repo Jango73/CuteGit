@@ -42,7 +42,7 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); //HiDPI pixmaps
         QCoreApplication::installTranslator(m_pTranslator);
 
-         setLanguage("fr");
+//         setLanguage("fr");
 
 //        qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "0");
 //        qputenv("QT_SCALE_FACTOR", "1.5");
@@ -90,5 +90,5 @@ CuteGit::~CuteGit()
 
 void CuteGit::setLanguage(const QString& sLang)
 {
-    m_pTranslator->load(QString(":/CuteGit_%1").arg(sLang));
+    m_pTranslator->load(QString(":/i18n/CuteGit_%1").arg(sLang));
 }
