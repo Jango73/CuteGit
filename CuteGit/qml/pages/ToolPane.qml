@@ -11,6 +11,9 @@ ExtendablePane {
     property variant repository: null
 
     signal requestMenu(var commitId, var message)
+    signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitDiffFrom(var commitId)
+    signal requestCommitDiffTo(var commitId)
 
     content: [
         TabBar {
@@ -48,9 +51,10 @@ ExtendablePane {
                 id: fileLogPane
                 repository: root.repository
 
-                onRequestMenu: {
-                    root.requestMenu(commitId, message)
-                }
+                onRequestMenu: root.requestMenu(commitId, message)
+                onRequestCommitDiffPrevious: root.requestCommitDiffPrevious(commitId)
+                onRequestCommitDiffFrom: root.requestCommitDiffFrom(commitId)
+                onRequestCommitDiffTo: root.requestCommitDiffTo(commitId)
             }
         }
     ]

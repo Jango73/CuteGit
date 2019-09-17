@@ -51,10 +51,11 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pStagedFileModelProxy(new CStagedFileModelProxy(pController, this))
     , m_pBranchModel(new CBranchModel(this))
     , m_pTagModel(new CBranchModel(this))
-    , m_pLogModel(new CLogModel(this, this))
-    , m_pFileDiffModel(new CDiffModel(this))
+    , m_pBranchLogModel(new CLogModel(this, this))
+    , m_pBranchLogModelProxy(new CLogModelProxy(this, this))
     , m_pFileLogModel(new CLogModel(this, this))
     , m_pGraphModel(new CGraphModel(this, this))
+    , m_pFileDiffModel(new CDiffModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_iCommitCountAhead(0)
     , m_iCommitCountBehind(0)
@@ -83,13 +84,14 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(m_pCommands, &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
     connect(m_pCommands, &CCommands::newOutputListOfCGraphLine, this, &CRepository::onNewOutputListOfCGraphLine);
 
-    connect(m_pLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestBranchLogData);
+    connect(m_pBranchLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestBranchLogData);
     connect(m_pFileLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestFileLogData);
 
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
     m_pFlatFileModelProxy->setSourceModel(m_pFlatFileModel);
     m_pStagedFileModelProxy->setSourceModel(m_pFlatFileModel);
+    m_pBranchLogModelProxy->setSourceModel(m_pBranchLogModel);
 
     connect(this, &CRepository::diffToCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
     connect(this, &CRepository::diffFromCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
@@ -480,6 +482,14 @@ void CRepository::setFileFilter(const QString& sText)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::setBranchLogFilter(const QString& sText)
+{
+    m_pBranchLogModelProxy->setTextFilter(sText);
+    m_pBranchLogModelProxy->filterChanged();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& sPath)
 {
     if (QDir(QString("%1/.git").arg(sPath)).exists())
@@ -617,8 +627,8 @@ void CRepository::getBranchLog(QString sPath)
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
-    m_pLogModel->clear();
-    m_pLogModel->invalidate();
+    m_pBranchLogModel->clear();
+    m_pBranchLogModel->invalidate();
 
     m_pCommands->branchLog(sPath);
 }
@@ -784,7 +794,7 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
     case CEnums::eBranchHeadCommit:
     {
         m_pBranchModel->setBranchHeadCommit(sKey, sValue);
-        m_pLogModel->commitChanged(sValue);
+        m_pBranchLogModel->commitChanged(sValue);
         m_pGraphModel->commitChanged(sValue);
         break;
     }
@@ -792,7 +802,7 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
     case CEnums::eTagCommit:
     {
         m_pTagModel->setBranchHeadCommit(sKey, sValue);
-        m_pLogModel->commitChanged(sValue);
+        m_pBranchLogModel->commitChanged(sValue);
         m_pGraphModel->commitChanged(sValue);
         break;
     }
@@ -819,7 +829,7 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
 
     case CEnums::eCommitMessage:
     {
-        m_pLogModel->setCommitMessage(sKey, sValue);
+        m_pBranchLogModel->setCommitMessage(sKey, sValue);
         m_pGraphModel->setCommitMessage(sKey, sValue);
         m_pFileLogModel->setCommitMessage(sKey, sValue);
         break;
@@ -968,7 +978,7 @@ void CRepository::onNewOutputCLogLineCollection(CEnums::EProcessCommand eCommand
 
     case CEnums::eBranchLog:
     {
-        m_pLogModel->setLines(lNewLines);
+        m_pBranchLogModel->setLines(lNewLines);
         break;
     }
 
@@ -1044,8 +1054,8 @@ void CRepository::onDiffCommitIdChanged()
         setDiffToCommitId("");
     }
 
-    m_pLogModel->commitChanged(sDiffFromCommitId);
-    m_pLogModel->commitChanged(sDiffToCommitId);
+    m_pBranchLogModel->commitChanged(sDiffFromCommitId);
+    m_pBranchLogModel->commitChanged(sDiffToCommitId);
     m_pGraphModel->commitChanged(sDiffFromCommitId);
     m_pGraphModel->commitChanged(sDiffToCommitId);
 }

@@ -8,12 +8,22 @@ import "../components"
 StandardListView {
     id: root
 
+    /*! If true, a graph symbol from the model is shown before the text */
     property bool hasSymbol: false
 
+    /*! The currently selected commit */
     property string currentCommitId: ""
+
+    /*! The id of the diff 'from' commit */
+    property string diffFromCommitId: ""
+
+    /*! The id of the diff 'to' commit */
+    property string diffToCommitId: ""
 
     signal itemRightClicked(var commitId, var message)
     signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitDiffFrom(var commitId)
+    signal requestCommitDiffTo(var commitId)
 
     delegate: StandardListViewItem {
         id: delegateItem
@@ -27,12 +37,13 @@ StandardListView {
         selectionShown: index === root.currentIndex
         focusShown: root.activeFocus && index === root.currentIndex
 
+        property string commitId: model.commitId
         property variant labels: model.labels
         property string fullText: (
                                       model.markedAsDiffFrom
-                                      ? "[F] "
+                                      ? Const.logLabelFrom
                                       : model.markedAsDiffTo
-                                        ? "[T] "
+                                        ? Const.logLabelTo
                                         : ""
                                       ) + model.message
 
@@ -63,7 +74,6 @@ StandardListView {
         ]
 
         onClicked: {
-            root.currentCommitId = model.commitId
             root.currentIndex = index
             root.forceActiveFocus()
 
@@ -73,8 +83,22 @@ StandardListView {
         }
     }
 
+    onCurrentIndexChanged: {
+        if (root.currentItem)
+            root.currentCommitId = root.currentItem.commitId
+        else
+            root.currentCommitId = ""
+    }
 
     onSpacePressed: {
         root.requestCommitDiffPrevious(root.currentCommitId)
+    }
+
+    onEnterPressed: {
+        if (root.diffFromCommitId === "") {
+            root.requestCommitDiffFrom(root.currentCommitId)
+        } else {
+            root.requestCommitDiffTo(root.currentCommitId)
+        }
     }
 }

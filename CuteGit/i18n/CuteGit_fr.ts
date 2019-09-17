@@ -9,15 +9,15 @@
     </message>
     <message>
         <source>Push</source>
-        <translation>Pousser</translation>
+        <translation>Envoyer validations</translation>
     </message>
     <message>
         <source>Pull</source>
-        <translation>Tirer</translation>
+        <translation>Récupérer validations</translation>
     </message>
     <message>
         <source>Fetch</source>
-        <translation>Chercher</translation>
+        <translation>Récupérer les infos de validation</translation>
     </message>
 </context>
 <context>
@@ -72,11 +72,11 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Pushing...</source>
-        <translation>Envoi des transactions...</translation>
+        <translation>Envoi des validations...</translation>
     </message>
     <message>
         <source>Pulling...</source>
-        <translation>Récupération des transactions...</translation>
+        <translation>Récupération des validations...</translation>
     </message>
     <message>
         <source>Fetching...</source>
@@ -200,16 +200,12 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
         <translation>Dist&amp;ant</translation>
     </message>
     <message>
-        <source>&amp;Fetch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Pull</source>
-        <translation>&amp;Tirer</translation>
+        <translation>Synchro &amp;entrante</translation>
     </message>
     <message>
         <source>Pus&amp;h</source>
-        <translation>&amp;Pousser</translation>
+        <translation>Synchro &amp;sortante</translation>
     </message>
     <message>
         <source>OK</source>
@@ -384,10 +380,6 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
         <translation>Changer le message de validation</translation>
     </message>
     <message>
-        <source>Staged files for commit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Interactive rebase in progress...</source>
         <translation>Rebasage interactif en cours...</translation>
     </message>
@@ -401,35 +393,6 @@ Please open or clone a repository to fill this view.</source>
 
 Are you sure you want to do this? It cannot be undone.</source>
         <translation>Vous êtes sur le point de supprimer une branche. Etes-vous sûr(e) de vouloir faire cela? Cette action ne peut être annulée.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this file?
-
-{0}</source>
-        <translation type="obsolete">Etes-vous sûr de vouloir effacer ce fichier?
-
-{0}</translation>
-    </message>
-    <message>
-        <source>File view
-
-Staged files are shown in green, unstaged ones in red.
-The symbols next to file names are:
-*	The file is modified
-+	The file is being added
--	The file is being removed
-=	The file is being renamed
-?	The file is untracked
-!	The file is ignored
-???	The file is missing
-
-Diff views
-...
-
-Log views
-...
-</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open a repository</source>
@@ -481,11 +444,11 @@ Log views
     </message>
     <message>
         <source>Pull</source>
-        <translation>Tirer</translation>
+        <translation>Synchro entrante</translation>
     </message>
     <message>
         <source>Push</source>
-        <translation>Pousser</translation>
+        <translation>Synchro sortante</translation>
     </message>
     <message>
         <source>Activate file view</source>
@@ -565,129 +528,9 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
         <source>Unsta&amp;ge all</source>
         <translation>R&amp;ejeter tout</translation>
     </message>
-</context>
-<context>
-    <name>FileMenu</name>
     <message>
-        <source>&amp;Delete</source>
-        <translation>&amp;Effacer</translation>
-    </message>
-</context>
-<context>
-    <name>FilePane</name>
-    <message>
-        <source>File filter</source>
-        <translation>Filtre des fichiers</translation>
-    </message>
-</context>
-<context>
-    <name>LogMenu</name>
-    <message>
-        <source>&amp;Copy commit Id</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create ta&amp;g here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Branch from here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset &amp;to here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Rebase here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Squash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change &amp;message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;View diff with previous commit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark as diff from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark as diff to</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MainMenu</name>
-    <message>
-        <source>&amp;Local</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Stage selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Unstage selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Revert selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Abor&amp;t rebase</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;View</source>
-        <translation>&amp;Vue</translation>
-    </message>
-    <message>
-        <source>&amp;Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;clean</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;added</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;modified</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;renamed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show mi&amp;ssing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;untracked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;ignored</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Fetch</source>
+        <translation>&amp;Récupérer informations</translation>
     </message>
     <message>
         <source>&amp;Theme</source>
@@ -703,11 +546,184 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aide</translation>
     </message>
     <message>
         <source>&amp;About and shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;A propos et raccourcis</translation>
+    </message>
+    <message>
+        <source>&amp;Language</source>
+        <translation>&amp;Langue</translation>
+    </message>
+    <message>
+        <source>Log filter</source>
+        <translation>Filtre du journal</translation>
+    </message>
+    <message>
+        <source>File filter</source>
+        <translation>Filtre des fichiers</translation>
+    </message>
+    <message>
+        <source>Staged files for commit</source>
+        <translation>Fichiers acceptés pour validation</translation>
+    </message>
+    <message>
+        <source>File view
+
+Staged files are shown in green, unstaged ones in red.
+The symbols next to file names are:
+*	The file is modified
++	The file is being added
+-	The file is being removed
+=	The file is being renamed
+?	The file is untracked
+!	The file is ignored
+???	The file is missing
+
+Diff views
+...
+
+Log views
+...
+</source>
+        <translation>Vues de fichiers
+
+Les fichiers acceptés sont affichés en vert, les autres en rouge.
+Les symboles à côté des noms de fichier sont:
+*	Le fichier est modifié
++	Le fichier est ajouté
+-	Le fichier est supprimé
+=	Le fichier est renommé
+?	Le fichier n&apos;est pas suivi
+!	Le fichier est ignoré
+???	Le fichier est manquant
+
+Vues de différences
+...
+
+Vues de journaux
+...
+</translation>
+    </message>
+    <message>
+        <source>[=&gt;] </source>
+        <translation>[=&gt;] </translation>
+    </message>
+    <message>
+        <source>[&lt;=] </source>
+        <translation>[&lt;=] </translation>
+    </message>
+    <message>
+        <source>&amp;Local</source>
+        <translation>&amp;Local</translation>
+    </message>
+    <message>
+        <source>&amp;Stage selection</source>
+        <translation>&amp;Accepter la sélection</translation>
+    </message>
+    <message>
+        <source>&amp;Unstage selection</source>
+        <translation>&amp;Rejeter la sélection</translation>
+    </message>
+    <message>
+        <source>&amp;Revert selection</source>
+        <translation>R&amp;evenue en arrière sur la sélection</translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation>&amp;Vue</translation>
+    </message>
+    <message>
+        <source>&amp;Refresh</source>
+        <translation>&amp;Rafraichir</translation>
+    </message>
+    <message>
+        <source>Show a&amp;ll</source>
+        <translation>Montrer &amp;tout</translation>
+    </message>
+    <message>
+        <source>Show &amp;clean</source>
+        <translation>&amp;Propres</translation>
+    </message>
+    <message>
+        <source>Show &amp;added</source>
+        <translation>&amp;Ajoutés</translation>
+    </message>
+    <message>
+        <source>Show &amp;modified</source>
+        <translation>&amp;Modifiés</translation>
+    </message>
+    <message>
+        <source>Show &amp;renamed</source>
+        <translation>Re&amp;nommés</translation>
+    </message>
+    <message>
+        <source>Show &amp;deleted</source>
+        <translation>&amp;Effacés</translation>
+    </message>
+    <message>
+        <source>Show mi&amp;ssing</source>
+        <translation>Man&amp;quants</translation>
+    </message>
+    <message>
+        <source>Show &amp;untracked</source>
+        <translation>Non &amp;suivis</translation>
+    </message>
+    <message>
+        <source>Show &amp;ignored</source>
+        <translation>&amp;Ignorés</translation>
+    </message>
+    <message>
+        <source>Abor&amp;t rebase</source>
+        <translation>Abando&amp;nner le rebasage</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation>&amp;Effacer</translation>
+    </message>
+</context>
+<context>
+    <name>LogMenu</name>
+    <message>
+        <source>&amp;Copy commit Id</source>
+        <translation>&amp;Copier l&apos;id de la validation</translation>
+    </message>
+    <message>
+        <source>Create ta&amp;g here</source>
+        <translation>Créer une &amp;étiquette ici</translation>
+    </message>
+    <message>
+        <source>&amp;Branch from here</source>
+        <translation>Créer une &amp;branche depuis ici</translation>
+    </message>
+    <message>
+        <source>Reset &amp;to here</source>
+        <translation>Remise à &amp;zéro ici</translation>
+    </message>
+    <message>
+        <source>&amp;Rebase here</source>
+        <translation>&amp;Rebaser ici</translation>
+    </message>
+    <message>
+        <source>&amp;Squash</source>
+        <translation>&amp;Comprimer</translation>
+    </message>
+    <message>
+        <source>Change &amp;message</source>
+        <translation>Changer le &amp;message</translation>
+    </message>
+    <message>
+        <source>&amp;View diff with previous commit</source>
+        <translation>&amp;Voir différences avec la validation précédente</translation>
+    </message>
+    <message>
+        <source>Mark as diff from</source>
+        <translation>Marquer comme début pour la différence</translation>
+    </message>
+    <message>
+        <source>Mark as diff to</source>
+        <translation>Marquer comme fin pour la différence</translation>
     </message>
 </context>
 <context>
@@ -725,7 +741,7 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     <name>StandardListViewItem</name>
     <message>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement...</translation>
     </message>
 </context>
 <context>
@@ -736,11 +752,11 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Message</translation>
     </message>
 </context>
 </TS>

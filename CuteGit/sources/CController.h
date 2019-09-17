@@ -7,6 +7,7 @@
 #include <QFileInfo>
 #include <QStringListModel>
 #include <QSharedMemory>
+#include <QTranslator>
 
 // qt-plus
 #include "Macros.h"
@@ -28,13 +29,26 @@ class CController : public QObject
 {
     Q_OBJECT
 
+    // Application version
     Q_FAST_PROPERTY(QString, s, version, Version)
+
+    // History of the status text
     Q_FAST_PROPERTY(QStringListModel*, p, statusTextHistory, StatusTextHistory)
+
+    // Models for repositories
     Q_FAST_PROPERTY(QStringListModel*, p, knownRepositoryModel, KnownRepositoryModel)
     Q_FAST_PROPERTY(CRepositoryModel*, p, openRepositoryModel, OpenRepositoryModel)
     Q_FAST_PROPERTY(CRepository*, p, currentRepository, CurrentRepository)
+
+    // Models for languages
+    Q_FAST_PROPERTY(QStringListModel*, p, langModel, LangModel)
+    Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, language, Language)
+
+    // Repository history
     Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryURL, LastBrowsedRepositoryURL)
     Q_FAST_PROPERTY(QString, s, lastBrowsedRepositoryPath, LastBrowsedRepositoryPath)
+
+    // Various information
     Q_FAST_PROPERTY(QString, s, statusText, StatusText)
     Q_FAST_PROPERTY(QString, s, theme, Theme)
 
@@ -158,6 +172,8 @@ protected:
     QTimer                  m_tSharedTimer;
     QString                 m_sCloneCommandsRepositoryPath;
     CCommands*              m_pCloneCommands;
+    QTranslator*            m_pTranslator;
+
     QString                 m_sCurrentRepositoryPath;       // This is temporary, used for tab index
 
     static const QString    m_sSharedKey;

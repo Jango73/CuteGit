@@ -126,7 +126,7 @@ MenuBar {
     }
 
     Menu {
-        title: qsTr("&Local")
+        title: Const.localMenuText
 
         Action {
             text: Const.stageAllMenuText
@@ -148,7 +148,7 @@ MenuBar {
 
         Action {
             id: stageSelection
-            text: qsTr("&Stage selection")
+            text: Const.stageSelectionMenuText
             shortcut: "Ctrl++"
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
@@ -157,7 +157,7 @@ MenuBar {
         }
 
         Action {
-            text: qsTr("&Unstage selection")
+            text: Const.unstageSelectionMenuText
             shortcut: "Ctrl+-"
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
@@ -169,7 +169,7 @@ MenuBar {
 
         Action {
             id: revertSelection
-            text: qsTr("&Revert selection")
+            text: Const.revertSelectionMenuText
             shortcut: "Ctrl+Z"
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
@@ -227,7 +227,7 @@ MenuBar {
         }
 
         Action {
-            text: qsTr("Abor&t rebase")
+            text: Const.abortRebaseMenuText
             shortcut: "Ctrl+T"
             enabled: root.repository ? root.rebaseInProgress && root.repository.can(CEnums.AbortRebase) : false
             onTriggered: repositoryView.requestAbortRebase()
@@ -235,10 +235,10 @@ MenuBar {
     }
 
     Menu {
-        title: qsTr("&View")
+        title: Const.viewMenuText
 
         Action {
-            text: qsTr("&Refresh")
+            text: Const.refreshMenuText
             shortcut: "F5"
             onTriggered: repositoryView.requestRefresh()
         }
@@ -246,7 +246,7 @@ MenuBar {
         MenuSeparator { }
 
         MenuItem {
-            text: qsTr("Show all")
+            text: Const.showAllMenuText
 
             onClicked: {
                 root.controller.showClean = true
@@ -263,56 +263,56 @@ MenuBar {
         MenuSeparator { }
 
         MenuItem {
-            text: qsTr("Show &clean")
+            text: Const.showCleanMenuText
             checkable: true
             checked: root.controller.showClean
             onClicked: root.controller.showClean = !root.controller.showClean
         }
 
         MenuItem {
-            text: qsTr("Show &added")
+            text: Const.showAddedMenuText
             checkable: true
             checked: root.controller.showAdded
             onClicked: root.controller.showAdded = !root.controller.showAdded
         }
 
         MenuItem {
-            text: qsTr("Show &modified")
+            text: Const.showModifiedMenuText
             checkable: true
             checked: root.controller.showModified
             onClicked: root.controller.showModified = !root.controller.showModified
         }
 
         MenuItem {
-            text: qsTr("Show &renamed")
+            text: Const.showRenamedMenuText
             checkable: true
             checked: root.controller.showRenamed
             onClicked: root.controller.showRenamed = !root.controller.showRenamed
         }
 
         MenuItem {
-            text: qsTr("Show &deleted")
+            text: Const.showDeletedMenuText
             checkable: true
             checked: root.controller.showDeleted
             onClicked: root.controller.showDeleted = !root.controller.showDeleted
         }
 
         MenuItem {
-            text: qsTr("Show mi&ssing")
+            text: Const.showMissingMenuText
             checkable: true
             checked: root.controller.showMissing
             onClicked: root.controller.showMissing = !root.controller.showMissing
         }
 
         MenuItem {
-            text: qsTr("Show &untracked")
+            text: Const.showUntrackedMenuText
             checkable: true
             checked: root.controller.showUntracked
             onClicked: root.controller.showUntracked = !root.controller.showUntracked
         }
 
         MenuItem {
-            text: qsTr("Show &ignored")
+            text: Const.showIgnoredMenuText
             checkable: true
             checked: root.controller.showIgnored
             onClicked: root.controller.showIgnored = !root.controller.showIgnored
@@ -320,17 +320,17 @@ MenuBar {
     }
 
     Menu {
-        title: qsTr("&Theme")
+        title: Const.themeMenuText
 
         MenuItem {
-            text: qsTr("Dark")
+            text: Const.darkThemeMenuText
             checkable: true
             checked: root.materialTheme === Material.Dark
             onClicked: root.requestDarkTheme()
         }
 
         MenuItem {
-            text: qsTr("Light")
+            text: Const.lightThemeMenuText
             checkable: true
             checked: root.materialTheme === Material.Light
             onClicked: root.requestLightTheme()
@@ -338,11 +338,31 @@ MenuBar {
     }
 
     Menu {
-        title: qsTr("&Help")
+        title: Const.helpMenuText
 
         Action {
-            text: qsTr("&About and shortcuts")
+            text: Const.aboutMenuText
             onTriggered: root.requestHelp()
+        }
+
+        Menu {
+            id: language
+            title: Const.languageMenuText
+
+            Instantiator {
+                model: root.controller.langModel
+
+                MenuItem {
+                    text: model.display
+
+                    onClicked: {
+                        root.controller.language = model.display
+                    }
+                }
+
+                onObjectAdded: language.insertItem(index, object)
+                onObjectRemoved: language.removeItem(object)
+            }
         }
     }
 }

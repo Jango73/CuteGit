@@ -13,7 +13,7 @@ Menu {
     signal requestDelete(var name)
 
     Action {
-        text: qsTr("&Delete")
+        text: Const.fileDeleteMenuText
 
         onTriggered: {
             if (root.name !== "") {

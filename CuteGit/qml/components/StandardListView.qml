@@ -8,10 +8,17 @@ ListView {
     activeFocusOnTab: true
     contentWidth: width - scrollBarWidth
 
+    /*! If true, the items can be selected */
+    property bool itemsSelectable: true
+
+    /*! If true, the list will automatically scroll to end when items are added */
     property bool autoScrollToEnd: false
+
+    /*! The size of the scroll bar */
     property int scrollBarWidth: Const.mainPadding * 2
 
     signal spacePressed()
+    signal enterPressed()
     signal deletePressed()
 
     ScrollBar.vertical: ScrollBar {
@@ -29,7 +36,7 @@ ListView {
         id: positionTimer
         interval: 100
         repeat: false
-        onTriggered: root.positionViewAtIndex(root.count - 1, ListView.Visible)
+        onTriggered: root.positionViewAtIndex(root.count - 1, ListView.Beginning)
     }
 
     onCountChanged: {
@@ -38,6 +45,11 @@ ListView {
 
         if (count > 0 && currentIndex == -1)
             currentIndex = 0
+    }
+
+    onCurrentIndexChanged: {
+        if (!root.itemsSelectable)
+            root.positionViewAtIndex(root.currentIndex, ListView.Beginning)
     }
 
     Keys.onPressed: {
@@ -55,6 +67,9 @@ ListView {
         }
         else if (event.key === Qt.Key_Space) {
             root.spacePressed()
+        }
+        else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+            root.enterPressed()
         }
         else if (event.key === Qt.Key_Delete) {
             root.deletePressed()

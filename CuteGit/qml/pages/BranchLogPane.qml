@@ -10,10 +10,14 @@ import "../popups"
 ExtendablePane {
     id: root
 
+    /*! The repository for this view */
     property variant repository: null
 
     signal requestMenu(var commitId, var message)
     signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitDiffFrom(var commitId)
+    signal requestCommitDiffTo(var commitId)
+    signal requestTextFilter(var text)
 
     TabBar {
         id: tabBar
@@ -44,8 +48,20 @@ ExtendablePane {
         currentIndex: tabBar.currentIndex
 
         Item {
+            StandardTextFilter {
+                id: filter
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: Const.logFilterText
+
+                onFilterTextChanged: {
+                    root.requestTextFilter(text)
+                }
+            }
+
             StandardLabel {
-                anchors.fill: parent
+                anchors.fill: logView
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: Const.listEmptyText
@@ -54,17 +70,19 @@ ExtendablePane {
 
             LogView {
                 id: logView
-                anchors.fill: parent
+                anchors.top: filter.bottom
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
 
-                model: root.repository !== null ? root.repository.logModel : undefined
+                model: root.repository ? root.repository.branchLogModelProxy : undefined
+                diffFromCommitId: root.repository ? root.repository.diffFromCommitId : ""
+                diffToCommitId: root.repository ? root.repository.diffToCommitId : ""
 
-                onItemRightClicked: {
-                    root.requestMenu(commitId, message)
-                }
-
-                onRequestCommitDiffPrevious: {
-                    root.requestCommitDiffPrevious(commitId)
-                }
+                onItemRightClicked: root.requestMenu(commitId, message)
+                onRequestCommitDiffPrevious: root.requestCommitDiffPrevious(commitId)
+                onRequestCommitDiffFrom: root.requestCommitDiffFrom(commitId)
+                onRequestCommitDiffTo: root.requestCommitDiffTo(commitId)
             }
         }
 

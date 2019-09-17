@@ -18,6 +18,7 @@
 #include "CStagedFileModelProxy.h"
 #include "CRepoFile.h"
 #include "CLogModel.h"
+#include "CLogModelProxy.h"
 #include "CDiffModel.h"
 #include "CGraphModel.h"
 #include "CCommands.h"
@@ -39,29 +40,55 @@ public:
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
+    // Informations on the repo
     Q_FAST_PROPERTY_NO_SET_IMPL(CEnums::ERepositoryType, e, repositoryType, RepositoryType)
     Q_FAST_PROPERTY(CEnums::ERepositoryStatus, e, repositoryStatus, RepositoryStatus)
     Q_FAST_PROPERTY(QString, s, repositoryPath, RepositoryPath)
     Q_FAST_PROPERTY(QString, s, repositoryName, RepositoryName)
+
+    // From and to commit Ids
     Q_FAST_PROPERTY(QString, s, diffFromCommitId, DiffFromCommitId)
     Q_FAST_PROPERTY(QString, s, diffToCommitId, DiffToCommitId)
+
+    // Main controller
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
+
+    // Versioning system interface
 	Q_FAST_PROPERTY(CCommands*, p, commands, Commands)
+
+    // Models for files
     Q_FAST_PROPERTY(CFlatFileModel*, p, flatFileModel, FlatFileModel)
     Q_FAST_PROPERTY(CFlatFileModelProxy*, p, flatFileModelProxy, FlatFileModelProxy)
     Q_FAST_PROPERTY(CStagedFileModelProxy*, p, stagedFileModelProxy, StagedFileModelProxy)
+
+    // Models for branchs and tags
     Q_FAST_PROPERTY(CBranchModel*, p, branchModel, BranchModel)
     Q_FAST_PROPERTY(CBranchModel*, p, tagModel, TagModel)
-    Q_FAST_PROPERTY(CLogModel*, p, logModel, LogModel)
-    Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
+
+    // Models for various logs
+    Q_FAST_PROPERTY(CLogModel*, p, branchLogModel, BranchLogModel)
+    Q_FAST_PROPERTY(CLogModelProxy*, p, branchLogModelProxy, BranchLogModelProxy)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
     Q_FAST_PROPERTY(CGraphModel*, p, graphModel, GraphModel)
+
+    // Model for the diff view
+    Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
+
+    // Output of commands
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
+
+    // Name of the current branch
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
+
+    // List of files in the repo
     Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
     Q_FAST_PROPERTY(CHashOfRepoFile, h, hashRepoFiles, HashRepoFiles)
+
+    // Number of commits ahead and behind
     Q_FAST_PROPERTY(int, i, commitCountAhead, CommitCountAhead)
     Q_FAST_PROPERTY(int, i, commitCountBehind, CommitCountBehind)
+
+    // Values that drive visibility of actions
     Q_FAST_PROPERTY(bool, b, hasModifiedFiles, HasModifiedFiles)
     Q_FAST_PROPERTY(bool, b, hasCommitableFiles, HasCommitableFiles)
     Q_FAST_PROPERTY(bool, b, hasPushableCommits, HasPushableCommits)
@@ -202,7 +229,10 @@ public:
     Q_INVOKABLE void commitDiffPrevious(const QString& sCommitId);
 
     //! Sets the file filter
-    Q_INVOKABLE void setFileFilter(const QString& sCommitId);
+    Q_INVOKABLE void setFileFilter(const QString& sText);
+
+    //! Sets the branch log filter
+    Q_INVOKABLE void setBranchLogFilter(const QString& sText);
 
     //-------------------------------------------------------------------------------------------------
     // Static control methods

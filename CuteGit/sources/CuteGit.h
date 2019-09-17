@@ -5,7 +5,6 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QTranslator>
 
 // Application
 #include "CController.h"
@@ -32,9 +31,6 @@ public:
     // Control methods
     //-------------------------------------------------------------------------------------------------
 
-    //!
-    void setLanguage(const QString& sLang);
-
     //-------------------------------------------------------------------------------------------------
     // Properties
     //-------------------------------------------------------------------------------------------------
@@ -46,7 +42,4 @@ protected:
 
     //! View
     QQmlApplicationEngine* m_pEngine;
-
-    //!
-    QTranslator* m_pTranslator;
 };

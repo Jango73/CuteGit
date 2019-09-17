@@ -60,15 +60,40 @@ Item {
     property string pullMenuText: qsTr("&Pull")
     property string pushMenuText: qsTr("Pus&h")
 
+    property string localMenuText: qsTr("&Local")
     property string stageAllMenuText: qsTr("Stage a&ll")
     property string unstageAllMenuText: qsTr("Unsta&ge all")
-
+    property string stageSelectionMenuText: qsTr("&Stage selection")
+    property string unstageSelectionMenuText: qsTr("&Unstage selection")
+    property string revertSelectionMenuText: qsTr("&Revert selection")
     property string saveStashMenuText: qsTr("Save stash")
     property string popStashMenuText: qsTr("Pop stash")
-
     property string commitMenuText: qsTr("&Commit")
     property string amendMenuText: qsTr("&Amend")
     property string continueRebaseMenuText: qsTr("C&ontinue rebase")
+    property string abortRebaseMenuText: qsTr("Abor&t rebase")
+
+    property string viewMenuText: qsTr("&View")
+    property string refreshMenuText: qsTr("&Refresh")
+    property string showAllMenuText: qsTr("Show a&ll")
+    property string showCleanMenuText: qsTr("Show &clean")
+    property string showAddedMenuText: qsTr("Show &added")
+    property string showModifiedMenuText: qsTr("Show &modified")
+    property string showRenamedMenuText: qsTr("Show &renamed")
+    property string showDeletedMenuText: qsTr("Show &deleted")
+    property string showMissingMenuText: qsTr("Show mi&ssing")
+    property string showUntrackedMenuText: qsTr("Show &untracked")
+    property string showIgnoredMenuText: qsTr("Show &ignored")
+
+    property string themeMenuText: qsTr("&Theme")
+    property string darkThemeMenuText: qsTr("Dark")
+    property string lightThemeMenuText: qsTr("Light")
+
+    property string helpMenuText: qsTr("&Help")
+    property string aboutMenuText: qsTr("&About and shortcuts")
+    property string languageMenuText: qsTr("&Language")
+
+    property string fileDeleteMenuText: qsTr("&Delete")
 
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
@@ -92,11 +117,13 @@ Item {
     property string branchesText: qsTr("Branches")
     property string switchToText: qsTr("Switch to")
     property string amendingText: qsTr("Amending...")
+    property string logFilterText: qsTr("Log filter")
     property string shortcutsText: qsTr("Shortcuts")
     property string branchLogText: qsTr("Branch log")
     property string helpTitleText: qsTr("Help")
     property string listEmptyText: qsTr("List empty")
     property string expandAllText: qsTr("Expand all")
+    property string fileFilterText: qsTr("File filter")
     property string deleteFileText: qsTr("Delete file")
     property string branchFromText: qsTr("Branch from")
     property string collapseAllText: qsTr("Collapse all")
@@ -161,6 +188,9 @@ Item {
                                          "Log views\n" +
                                          "...\n"
                                          )
+
+    property string logLabelFrom: qsTr("[=>] ")
+    property string logLabelTo: qsTr("[<=] ")
 
     //
     property string staged: "X"

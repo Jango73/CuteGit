@@ -20,6 +20,7 @@ HEADERS += \
     sources/CLabel.h \
     sources/CLabelModel.h \
     sources/CLogModel.h \
+    sources/CLogModelProxy.h \
     sources/CLogLine.h \
     sources/CLogLineCollection.h \
     sources/CGraphModel.h \
@@ -49,6 +50,7 @@ SOURCES += \
     sources/CRepoFile.cpp \
     sources/CLabelModel.cpp \
     sources/CLogModel.cpp \
+    sources/CLogModelProxy.cpp \
     sources/CLogLineCollection.cpp \
     sources/CGraphModel.cpp \
     sources/CDiffModel.cpp \

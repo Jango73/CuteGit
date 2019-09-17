@@ -124,6 +124,10 @@ Pane {
                 logMenu.commitMessage = message
                 logMenu.popup()
             }
+
+            onRequestCommitDiffPrevious: root.requestCommitDiffPrevious(commitId)
+            onRequestCommitDiffFrom: root.requestCommitDiffFrom(commitId)
+            onRequestCommitDiffTo: root.requestCommitDiffTo(commitId)
         }
     }
 
@@ -198,8 +202,12 @@ Pane {
                 logMenu.popup()
             }
 
-            onRequestCommitDiffPrevious: {
-                root.commitDiffPrevious(commitId)
+            onRequestCommitDiffPrevious: root.requestCommitDiffPrevious(commitId)
+            onRequestCommitDiffFrom: root.requestCommitDiffFrom(commitId)
+            onRequestCommitDiffTo: root.requestCommitDiffTo(commitId)
+
+            onRequestTextFilter: {
+                root.repository.setBranchLogFilter(text)
             }
         }
 
@@ -225,10 +233,6 @@ Pane {
 
         onRequestCopy: {
             root.repository.copy(commitId)
-        }
-
-        onRequestCommitDiffPrevious: {
-            root.commitDiffPrevious(commitId)
         }
 
         onRequestCommitTagOn: {
@@ -262,14 +266,16 @@ Pane {
             commit.open()
         }
 
+        onRequestCommitDiffPrevious: {
+            root.requestCommitDiffPrevious(commitId)
+        }
+
         onRequestCommitDiffFrom: {
-            root.repository.diffFromCommitId = commitId
-            root.activateFileDiffView()
+            root.requestCommitDiffFrom(commitId)
         }
 
         onRequestCommitDiffTo: {
-            root.repository.diffToCommitId = commitId
-            root.activateFileDiffView()
+            root.requestCommitDiffTo(commitId)
         }
     }
 
@@ -397,8 +403,17 @@ Pane {
         root.repository.abortRebase()
     }
 
-    function commitDiffPrevious(commitId) {
+    function requestCommitDiffPrevious(commitId) {
         root.repository.commitDiffPrevious(commitId)
+        root.activateFileDiffView()
+    }
+
+    function requestCommitDiffFrom(commitId) {
+        root.repository.diffFromCommitId = commitId
+    }
+
+    function requestCommitDiffTo(commitId) {
+        root.repository.diffToCommitId = commitId
         root.activateFileDiffView()
     }
 

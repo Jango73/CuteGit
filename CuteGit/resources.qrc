@@ -27,6 +27,7 @@
         <file>qml/components/StandardText.qml</file>
         <file>qml/components/StandardTextEdit.qml</file>
         <file>qml/components/StandardTextField.qml</file>
+        <file>qml/components/StandardTextFilter.qml</file>
         <file>qml/components/StandardToolBar.qml</file>
         <file>qml/components/StandardToolButton.qml</file>
         <file>qml/components/TextOverSelection.qml</file>

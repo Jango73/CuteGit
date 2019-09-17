@@ -7,8 +7,13 @@ Menu {
     id: root
     title: ""
 
+    /*! The repository for this view */
     property variant repository: null
+
+    /*! The currently selected commit */
     property string commitId: ""
+
+    /*! The currently selected commit's message */
     property string commitMessage: ""
 
     signal requestCopy(var commitId)

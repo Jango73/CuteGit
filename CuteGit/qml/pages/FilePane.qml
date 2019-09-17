@@ -19,30 +19,15 @@ ExtendablePane {
     signal requestFileFilter(var text)
 
     content: [
-        Item {
+        StandardTextFilter {
             id: filter
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            height: filterText.height
+            text: Const.fileFilterText
 
-            StandardLabel {
-                id: filterLabel
-                height: filterText.height
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                text: qsTr("File filter")
-            }
-
-            StandardTextField {
-                id: filterText
-                anchors.left: filterLabel.right
-                anchors.right: parent.right
-                anchors.leftMargin: Const.mainPadding
-
-                onTextChanged: {
-                    root.requestFileFilter(text)
-                }
+            onFilterTextChanged: {
+                root.requestFileFilter(text)
             }
         },
 

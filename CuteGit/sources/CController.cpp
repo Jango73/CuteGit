@@ -61,6 +61,7 @@ const QString sParamName = "Name";
 const QString sParamHistory = "History";
 const QString sParamLastBrowsedRepositoryURL = "LastBrowsedRepositoryURL";
 const QString sParamLastBrowsedRepositoryPath = "LastBrowsedRepositoryPath";
+const QString sParamLanguage = "Language";
 const QString sParamTheme = "Theme";
 
 const QString CController::m_sSharedKey = "CuteGitSharedMemory";
@@ -74,6 +75,8 @@ CController::CController(QObject* parent)
     , m_pKnownRepositoryModel(new QStringListModel(this))
     , m_pOpenRepositoryModel(new CRepositoryModel(this))
     , m_pCurrentRepository(nullptr)
+    , m_pLangModel(new QStringListModel(this))
+    , m_sLanguage("en")
     , m_iCurrentRepositoryIndex(-1)
     , m_bShowClean(false)
     , m_bShowAdded(true)
@@ -86,7 +89,16 @@ CController::CController(QObject* parent)
     , m_bMasterMode(true)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
+    , m_pTranslator(new QTranslator(this))
 {
+    QCoreApplication::installTranslator(m_pTranslator);
+
+    QStringList lLang;
+    lLang << "en";
+    lLang << "fr";
+    lLang << "de";
+    m_pLangModel->setStringList(lLang);
+
     loadConfiguration();
 
     if (m_tShared.create(SHARED_MEMORY_MAX))
@@ -105,7 +117,7 @@ CController::CController(QObject* parent)
         }
         else
         {
-            qWarning() << "Could not create shared memory segment";
+            qWarning() << "Could not create or attach to shared memory segment";
             qWarning() << m_tShared.errorString();
         }
     }
@@ -156,6 +168,32 @@ CController::~CController()
     if (not m_tShared.detach())
     {
         qWarning() << "Could not detach from shared memory segment";
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CController::setLanguage(QString sLang)
+{
+    if (m_sLanguage != sLang)
+    {
+        if (sLang == "en")
+        {
+            m_sLanguage = sLang;
+            emit languageChanged();
+        }
+        else
+        {
+            if (m_pTranslator->load(QString(":/i18n/CuteGit_%1").arg(sLang)))
+            {
+                m_sLanguage = sLang;
+                emit languageChanged();
+            }
+            else
+            {
+                qWarning() << QString("Could not set language to %1").arg(sLang);
+            }
+        }
     }
 }
 
@@ -383,6 +421,11 @@ void CController::saveConfiguration()
         xConfig << xCurrentRepository;
     }
 
+    // Save language
+    CXMLNode xLanguage(sParamLanguage);
+    xLanguage.attributes()[sParamName] = m_sLanguage;
+    xConfig << xLanguage;
+
     // Save theme
     CXMLNode xTheme(sParamTheme);
     xTheme.attributes()[sParamName] = m_sTheme;
@@ -425,6 +468,10 @@ void CController::loadConfiguration()
     // Load current repository
     CXMLNode xCurrentRepository = xConfig.getNodeByTagName(sParamCurrentRepository);
     m_sCurrentRepositoryPath = xCurrentRepository.attributes()[sParamPath];
+
+    // Load language
+    CXMLNode xLanguage = xConfig.getNodeByTagName(sParamLanguage);
+    setLanguage(xLanguage.attributes()[sParamName]);
 
     // Load theme
     CXMLNode xTheme = xConfig.getNodeByTagName(sParamTheme);

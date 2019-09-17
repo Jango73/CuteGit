@@ -20,6 +20,7 @@ Item {
     StandardListView {
         id: list
         anchors.fill: parent
+        itemsSelectable: false
         model: root.repository !== null ? root.repository.fileDiffModel : undefined
 
         delegate: StandardListViewItem {

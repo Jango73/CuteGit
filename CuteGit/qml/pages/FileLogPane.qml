@@ -10,6 +10,9 @@ Item {
     property variant repository: null
 
     signal requestMenu(var commitId, var message)
+    signal requestCommitDiffPrevious(var commitId)
+    signal requestCommitDiffFrom(var commitId)
+    signal requestCommitDiffTo(var commitId)
 
     StandardLabel {
         anchors.fill: parent
@@ -23,10 +26,13 @@ Item {
         id: logView
         anchors.fill: parent
 
-        model: root.repository !== null ? root.repository.fileLogModel : undefined
+        model: root.repository ? root.repository.fileLogModel : undefined
+        diffFromCommitId: root.repository ? root.repository.diffFromCommitId : ""
+        diffToCommitId: root.repository ? root.repository.diffToCommitId : ""
 
-        onItemRightClicked: {
-            root.requestMenu(commitId, message)
-        }
+        onItemRightClicked: root.requestMenu(commitId, message)
+        onRequestCommitDiffPrevious: root.requestCommitDiffPrevious(commitId)
+        onRequestCommitDiffFrom: root.requestCommitDiffFrom(commitId)
+        onRequestCommitDiffTo: root.requestCommitDiffTo(commitId)
     }
 }
