@@ -389,7 +389,7 @@ Please select a folder containing a repository.</source>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="92"/>
-        <source>&amp;Help</source>
+        <source>&amp;Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

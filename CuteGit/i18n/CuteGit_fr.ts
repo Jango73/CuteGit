@@ -546,7 +546,7 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>&amp;Aide</translation>
+        <translation type="vanished">&amp;Aide</translation>
     </message>
     <message>
         <source>&amp;About and shortcuts</source>
@@ -681,6 +681,10 @@ Vues de journaux
     <message>
         <source>&amp;Delete</source>
         <translation>&amp;Effacer</translation>
+    </message>
+    <message>
+        <source>&amp;Options</source>
+        <translation>&amp;Options</translation>
     </message>
 </context>
 <context>

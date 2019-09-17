@@ -320,29 +320,29 @@ MenuBar {
     }
 
     Menu {
-        title: Const.themeMenuText
-
-        MenuItem {
-            text: Const.darkThemeMenuText
-            checkable: true
-            checked: root.materialTheme === Material.Dark
-            onClicked: root.requestDarkTheme()
-        }
-
-        MenuItem {
-            text: Const.lightThemeMenuText
-            checkable: true
-            checked: root.materialTheme === Material.Light
-            onClicked: root.requestLightTheme()
-        }
-    }
-
-    Menu {
-        title: Const.helpMenuText
+        title: Const.optionsMenuText
 
         Action {
             text: Const.aboutMenuText
             onTriggered: root.requestHelp()
+        }
+
+        Menu {
+            title: Const.themeMenuText
+
+            MenuItem {
+                text: Const.darkThemeMenuText
+                checkable: true
+                checked: root.materialTheme === Material.Dark
+                onClicked: root.requestDarkTheme()
+            }
+
+            MenuItem {
+                text: Const.lightThemeMenuText
+                checkable: true
+                checked: root.materialTheme === Material.Light
+                onClicked: root.requestLightTheme()
+            }
         }
 
         Menu {

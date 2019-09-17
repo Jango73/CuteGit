@@ -89,7 +89,7 @@ Item {
     property string darkThemeMenuText: qsTr("Dark")
     property string lightThemeMenuText: qsTr("Light")
 
-    property string helpMenuText: qsTr("&Help")
+    property string optionsMenuText: qsTr("&Options")
     property string aboutMenuText: qsTr("&About and shortcuts")
     property string languageMenuText: qsTr("&Language")
 
