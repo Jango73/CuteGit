@@ -69,7 +69,8 @@ const QString sStatusOriginOfAdd = " ";
 
 //-------------------------------------------------------------------------------------------------
 
-CHgCommands::CHgCommands()
+CHgCommands::CHgCommands(CController* pController)
+    : CCommands(pController)
 {
     connect(this, &CCommands::execFinished, this, &CHgCommands::onExecFinished);
 }
@@ -104,7 +105,22 @@ bool CHgCommands::can(CEnums::ECapability eWhat) const
 
 void CHgCommands::allFileStatus(const QString& sPath)
 {
-    exec(new CProcessCommand(CEnums::eAllFileStatus, sPath, sCommandStatus));
+    CCleanFileLister* pLister = new CCleanFileLister();
+
+    pLister->m_eCommand = CEnums::eAllFileStatus;
+    pLister->m_sRootPath = sPath;
+    pLister->setAutoDelete(true);
+
+    connect(pLister, &CCleanFileLister::newOutputListOfCRepoFile, this, &CHgCommands::onNewOutputListOfCRepoFile);
+
+    m_tPool.start(pLister);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CHgCommands::changedFileStatus(const QString& sPath)
+{
+    exec(new CProcessCommand(CEnums::eChangedFileStatus, sPath, sCommandStatus));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -270,6 +286,7 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
     }
 
     case CEnums::eAllFileStatus:
+    case CEnums::eChangedFileStatus:
     {
         // Create CRepoFiles with the returned string of the process
 
@@ -323,4 +340,11 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
     }
 
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CHgCommands::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
+{
+    emit newOutputListOfCRepoFile(eCommand, lNewRepoFiles);
 }

@@ -133,7 +133,7 @@ public:
     Q_INVOKABLE void clearOutput();
 
 	//! Copies a string to clipboard
-	Q_INVOKABLE void copy(const QString& sText);
+    Q_INVOKABLE void copyText(const QString& sText);
 
     //! Opens a file for edit
     Q_INVOKABLE void openFile(const QString& sFullName);
@@ -245,7 +245,7 @@ public:
     static CEnums::ERepositoryType getRepositoryTypeFromURL(const QString& sRepositoryURL);
 
     //! Returns a command interface for a given repository type
-    static CCommands* getCommandsForRepositoryType(CEnums::ERepositoryType eType);
+    static CCommands* getCommandsForRepositoryType(CController* pController, CEnums::ERepositoryType eType);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods

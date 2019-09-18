@@ -31,10 +31,17 @@
 
 //-------------------------------------------------------------------------------------------------
 
-CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
+CuteGit::CuteGit(bool bMasterMode, const QString& sStubFileName, const QString& sSequenceFileName)
     : m_pController(nullptr)
     , m_pEngine(nullptr)
 {
+    QString sFinalStubFileName = sStubFileName;
+
+    if (sFinalStubFileName.isEmpty())
+    {
+        sFinalStubFileName = QCoreApplication::applicationFilePath();
+    }
+
     if (bMasterMode)
     {
         QApplication::setAttribute(Qt::AA_EnableHighDpiScaling); // DPI support
@@ -57,7 +64,7 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
         qmlRegisterUncreatableType<CEnums>("CuteGit", 1, 0, "CEnums", "Cannot create a CEnums instance.");
 
         // Create controller and QML engine
-        m_pController = new CController(this);
+        m_pController = new CController(sStubFileName, this);
         m_pEngine = new QQmlApplicationEngine(this);
 
         // Set context properties
@@ -70,7 +77,7 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sSequenceFileName)
     }
     else
     {
-        m_pController = new CController(sSequenceFileName, this);
+        m_pController = new CController(sStubFileName, sSequenceFileName, this);
     }
 }
 

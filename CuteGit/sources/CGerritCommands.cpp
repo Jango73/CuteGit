@@ -27,6 +27,13 @@ const QString CGerritCommands::sCommandPushGerrit       = "git push origin \"HEA
 
 //-------------------------------------------------------------------------------------------------
 
+CGerritCommands::CGerritCommands(CController* pController)
+    : CGitCommands(pController)
+{
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGerritCommands::push(const QString& sPath)
 {
     emit newOutputString(CEnums::eNotification, tr("Pushing to gerrit..."));

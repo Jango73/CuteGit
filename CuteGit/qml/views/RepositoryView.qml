@@ -48,17 +48,23 @@ Pane {
                      : Material.background
             : "black"
 
+            property string infoText: root.repository
+                                      ? root.repository.repositoryTypeString
+                                        + qsTr(" - ( Ahead ")
+                                        + root.repository.commitCountAhead
+                                        + qsTr(" : behind ")
+                                        + root.repository.commitCountBehind
+                                        + " ) - "
+                                      : ""
+
             text: root.repository
-                  ?
-                      root.repository.repositoryStatus === CEnums.InteractiveRebase
-                      ? Const.interactiveRebaseProgressText
-                      : root.repository.repositoryStatus === CEnums.Rebase
-                        ? Const.rebaseProgressText
-                        : root.repository.repositoryStatus === CEnums.Merge
-                          ? Const.mergeProgressText
-                          : ""
-                      + " - " + root.repository.repositoryTypeString
-                      + qsTr(" - ( Ahead ") + root.repository.commitCountAhead + qsTr(" : behind ") + root.repository.commitCountBehind + " )"
+                  ? root.repository.repositoryStatus === CEnums.InteractiveRebase
+                    ? infoText + Const.interactiveRebaseProgressText
+                    : root.repository.repositoryStatus === CEnums.Rebase
+                      ? infoText + Const.rebaseProgressText
+                      : root.repository.repositoryStatus === CEnums.Merge
+                        ? infoText + Const.mergeProgressText
+                        : infoText
             : ""
         }
     }
@@ -231,8 +237,8 @@ Pane {
         id: logMenu
         repository: root.repository
 
-        onRequestCopy: {
-            root.repository.copy(commitId)
+        onRequestCopyText: {
+            root.repository.copyText(text)
         }
 
         onRequestCommitTagOn: {

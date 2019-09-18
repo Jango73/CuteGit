@@ -29,7 +29,8 @@
 
 //-------------------------------------------------------------------------------------------------
 
-CCommands::CCommands()
+CCommands::CCommands(CController* pController)
+    : m_pController(pController)
 {
 }
 

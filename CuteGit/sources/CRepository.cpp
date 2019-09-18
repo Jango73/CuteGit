@@ -122,7 +122,7 @@ void CRepository::setRepositoryType(CEnums::ERepositoryType eType)
             delete m_pCommands;
 
         // Create the command interface
-        m_pCommands = getCommandsForRepositoryType(m_eRepositoryType);
+        m_pCommands = getCommandsForRepositoryType(m_pController, m_eRepositoryType);
 
         emit repositoryTypeChanged();
         emit repositoryTypeStringChanged();
@@ -201,7 +201,7 @@ void CRepository::clearOutput()
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::copy(const QString& sText)
+void CRepository::copyText(const QString& sText)
 {
     QClipboard* pClipboard = QGuiApplication::clipboard();
     pClipboard->setText(sText);
@@ -537,25 +537,25 @@ CEnums::ERepositoryType CRepository::getRepositoryTypeFromURL(const QString& sRe
 
 //-------------------------------------------------------------------------------------------------
 
-CCommands* CRepository::getCommandsForRepositoryType(CEnums::ERepositoryType eType)
+CCommands* CRepository::getCommandsForRepositoryType(CController* pController, CEnums::ERepositoryType eType)
 {
     switch (eType)
     {
 
     case CEnums::Git:
-        return new CGitCommands();
+        return new CGitCommands(pController);
 
     case CEnums::Gerrit:
-        return new CGerritCommands();
+        return new CGerritCommands(pController);
 
     case CEnums::SVN:
-        return new CSvnCommands();
+        return new CSvnCommands(pController);
 
     case CEnums::HG:
-        return new CHgCommands();
+        return new CHgCommands(pController);
 
     default:
-        return new CCommands();
+        return new CCommands(pController);
 
     }
 }
@@ -919,6 +919,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
                 {
                     CRepoFile* pExistingFile = m_hHashRepoFiles[sNewKey];
                     m_lRepoFiles.removeAll(pExistingFile);
+                    m_hHashRepoFiles.remove(sNewKey);
                     delete pExistingFile;
                 }
 
@@ -956,6 +957,12 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
             // Update the models
             m_pFlatFileModel->handleRepoFilesChanged();
             m_pFlatFileModelProxy->filterChanged();
+
+            // Check if file log must be reset
+            if (m_lRepoFiles.count() == 0)
+            {
+                onCurrentFileFullName("");
+            }
         }
 
         break;

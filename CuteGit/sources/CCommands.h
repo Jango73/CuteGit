@@ -8,6 +8,11 @@
 #include "CExecution.h"
 
 //-------------------------------------------------------------------------------------------------
+// Forward declarations
+
+class CController;
+
+//-------------------------------------------------------------------------------------------------
 
 class CCommands : public CExecution
 {
@@ -20,7 +25,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CCommands();
+    CCommands(CController* pController);
 
     //! Destructor
     virtual ~CCommands() override;
@@ -44,7 +49,7 @@ public:
     //! Creates a list of CRepoFile from the repo at sPath
     virtual void allFileStatus(const QString& sPath);
 
-    //!
+    //! Creates a list of CRepoFile from the repo at sPath
     virtual void changedFileStatus(const QString& sPath);
 
     //! Creates a list of CRepoFile from the repo at sPath
@@ -152,4 +157,12 @@ public:
 
     //!
     virtual void editSequenceFile(const QString& sFileName);
+
+    //-------------------------------------------------------------------------------------------------
+    // Properties
+    //-------------------------------------------------------------------------------------------------
+
+protected:
+
+    CController*    m_pController;
 };

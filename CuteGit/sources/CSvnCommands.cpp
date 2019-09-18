@@ -19,7 +19,8 @@
 
 //-------------------------------------------------------------------------------------------------
 
-CSvnCommands::CSvnCommands()
+CSvnCommands::CSvnCommands(CController* pController)
+    : CCommands(pController)
 {
     connect(this, &CCommands::execFinished, this, &CSvnCommands::onExecFinished);
 }
@@ -61,6 +62,13 @@ void CSvnCommands::repositoryStatus(const QString& sPath)
 //-------------------------------------------------------------------------------------------------
 
 void CSvnCommands::allFileStatus(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CSvnCommands::changedFileStatus(const QString& sPath)
 {
     Q_UNUSED(sPath);
 }

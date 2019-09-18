@@ -68,7 +68,7 @@ const QString CController::m_sSharedKey = "CuteGitSharedMemory";
 
 //-------------------------------------------------------------------------------------------------
 
-CController::CController(QObject* parent)
+CController::CController(QString sStubFileName, QObject* parent)
     : QObject(parent)
     , m_sVersion(VERSION_STRING)
     , m_pStatusTextHistory(new QStringListModel(this))
@@ -77,6 +77,7 @@ CController::CController(QObject* parent)
     , m_pCurrentRepository(nullptr)
     , m_pLangModel(new QStringListModel(this))
     , m_sLanguage("en")
+    , m_sStubFileName(sStubFileName)
     , m_iCurrentRepositoryIndex(-1)
     , m_bShowClean(false)
     , m_bShowAdded(true)
@@ -125,13 +126,14 @@ CController::CController(QObject* parent)
 
 //-------------------------------------------------------------------------------------------------
 
-CController::CController(QString sSequenceFileName, QObject* parent)
+CController::CController(QString sStubFileName, QString sSequenceFileName, QObject* parent)
     : QObject(parent)
     , m_sVersion(VERSION_STRING)
     , m_pStatusTextHistory(nullptr)
     , m_pKnownRepositoryModel(nullptr)
     , m_pOpenRepositoryModel(nullptr)
     , m_pCurrentRepository(nullptr)
+    , m_sStubFileName(sStubFileName)
     , m_iCurrentRepositoryIndex(-1)
     , m_bShowClean(false)
     , m_bShowAdded(true)
@@ -141,6 +143,7 @@ CController::CController(QString sSequenceFileName, QObject* parent)
     , m_bMasterMode(false)
     , m_tShared(m_sSharedKey, this)
     , m_tSharedTimer(this)
+    , m_pTranslator(new QTranslator(this))
 {
     Q_UNUSED(sSequenceFileName);
 
@@ -175,7 +178,7 @@ CController::~CController()
 
 void CController::setLanguage(QString sLang)
 {
-    if (m_sLanguage != sLang)
+    if (not sLang.isEmpty() && m_sLanguage != sLang)
     {
         if (sLang == "en")
         {
@@ -191,7 +194,7 @@ void CController::setLanguage(QString sLang)
             }
             else
             {
-                qWarning() << QString("Could not set language to %1").arg(sLang);
+                qWarning() << QString("Could not set language to [%1]").arg(sLang);
             }
         }
     }
@@ -515,7 +518,7 @@ void CController::cloneRepository(QString sRepositoryURL, QString sRepositoryPat
         QString sRepositoryName = url.fileName().split(".").first();
 
         m_sCloneCommandsRepositoryPath = sRepositoryPath + "/" + sRepositoryName;
-        m_pCloneCommands = CRepository::getCommandsForRepositoryType(eType);
+        m_pCloneCommands = CRepository::getCommandsForRepositoryType(this, eType);
 
         connect(m_pCloneCommands, &CCommands::newOutputString, this, &CController::onNewCloneOutput);
 

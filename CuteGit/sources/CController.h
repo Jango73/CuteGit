@@ -51,6 +51,7 @@ class CController : public QObject
     // Various information
     Q_FAST_PROPERTY(QString, s, statusText, StatusText)
     Q_FAST_PROPERTY(QString, s, theme, Theme)
+    Q_FAST_PROPERTY(QString, s, stubFileName, StubFileName)
 
     Q_FAST_PROPERTY_NO_SET_IMPL(int, i, currentRepositoryIndex, CurrentRepositoryIndex)
     Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, showClean, ShowClean)
@@ -86,10 +87,10 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Master constructor
-    CController(QObject* parent = nullptr);
+    CController(QString sStubFileName, QObject* parent = nullptr);
 
     //! Slave constructor
-    CController(QString sSequenceFileName, QObject* parent = nullptr);
+    CController(QString sStubFileName, QString sSequenceFileName, QObject* parent = nullptr);
 
     //! Destructor
     virtual ~CController();

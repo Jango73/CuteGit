@@ -22,7 +22,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CuteGit(bool bMasterMode = true, const QString& sSequenceFileName = "");
+    CuteGit(bool bMasterMode = true, const QString& sStubFileName = "", const QString& sSequenceFileName = "");
 
     //! Destructor
     virtual ~CuteGit();

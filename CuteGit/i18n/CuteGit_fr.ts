@@ -9,15 +9,15 @@
     </message>
     <message>
         <source>Push</source>
-        <translation>Envoyer validations</translation>
+        <translation>Synchro sortante</translation>
     </message>
     <message>
         <source>Pull</source>
-        <translation>Récupérer validations</translation>
+        <translation>Synchro entrante</translation>
     </message>
     <message>
         <source>Fetch</source>
-        <translation>Récupérer les infos de validation</translation>
+        <translation>Récupérer infos de synchro</translation>
     </message>
 </context>
 <context>
@@ -72,15 +72,15 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Pushing...</source>
-        <translation>Envoi des validations...</translation>
+        <translation>Synchro sortante...</translation>
     </message>
     <message>
         <source>Pulling...</source>
-        <translation>Récupération des validations...</translation>
+        <translation>Synchro entrante...</translation>
     </message>
     <message>
         <source>Fetching...</source>
-        <translation>Récupération des infos de transaction...</translation>
+        <translation>Récupération des infos de synchro...</translation>
     </message>
     <message>
         <source>Saving stash...</source>
@@ -116,7 +116,7 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Aborting rebase...</source>
-        <translation>Annulation du rebasage...</translation>
+        <translation>Abandon du rebasage...</translation>
     </message>
     <message>
         <source>Creating branch %1...</source>
@@ -147,11 +147,11 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Pushing...</source>
-        <translation>Envoi des transactions...</translation>
+        <translation>Synchro sortante...</translation>
     </message>
     <message>
         <source>Pulling...</source>
-        <translation>Récupération des transactions...</translation>
+        <translation>Synchro entrante...</translation>
     </message>
 </context>
 <context>
@@ -373,7 +373,7 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Enter branch name here...</source>
-        <translation>Entrer le nom de la branche ici...</translation>
+        <translation>Tapez le nom de la branche ici...</translation>
     </message>
     <message>
         <source>Change commit message</source>
@@ -386,13 +386,16 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     <message>
         <source>There is no open repository at the moment.
 Please open or clone a repository to fill this view.</source>
-        <translation>Il n&apos;y a aucun dépôt ouvert pour l&apos;instant. Veuillez ouvrir ou cloner un dépôt pour remplir cette vue.</translation>
+        <translation>Il n&apos;y a aucun dépôt ouvert pour l&apos;instant.
+Veuillez ouvrir ou cloner un dépôt pour remplir cette vue.</translation>
     </message>
     <message>
         <source>You are about to delete a branch.
 
 Are you sure you want to do this? It cannot be undone.</source>
-        <translation>Vous êtes sur le point de supprimer une branche. Etes-vous sûr(e) de vouloir faire cela? Cette action ne peut être annulée.</translation>
+        <translation>Vous êtes sur le point de supprimer une branche.
+
+Etes-vous sûr(e) de vouloir faire cela? Cette action ne peut être annulée.</translation>
     </message>
     <message>
         <source>Open a repository</source>
@@ -530,7 +533,7 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     </message>
     <message>
         <source>&amp;Fetch</source>
-        <translation>&amp;Récupérer informations</translation>
+        <translation>&amp;Récupérer infos de synchro</translation>
     </message>
     <message>
         <source>&amp;Theme</source>
@@ -543,10 +546,6 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     <message>
         <source>Light</source>
         <translation>Lumineux</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation type="vanished">&amp;Aide</translation>
     </message>
     <message>
         <source>&amp;About and shortcuts</source>
@@ -628,7 +627,7 @@ Vues de journaux
     </message>
     <message>
         <source>&amp;Revert selection</source>
-        <translation>R&amp;evenue en arrière sur la sélection</translation>
+        <translation>R&amp;etour en arrière sur la sélection</translation>
     </message>
     <message>
         <source>&amp;View</source>
@@ -686,12 +685,13 @@ Vues de journaux
         <source>&amp;Options</source>
         <translation>&amp;Options</translation>
     </message>
-</context>
-<context>
-    <name>LogMenu</name>
     <message>
-        <source>&amp;Copy commit Id</source>
+        <source>&amp;Copy commit ID</source>
         <translation>&amp;Copier l&apos;id de la validation</translation>
+    </message>
+    <message>
+        <source>Copy commit m&amp;essage</source>
+        <translation>Copier le m&amp;essage de la validation</translation>
     </message>
     <message>
         <source>Create ta&amp;g here</source>
@@ -699,7 +699,7 @@ Vues de journaux
     </message>
     <message>
         <source>&amp;Branch from here</source>
-        <translation>Créer une &amp;branche depuis ici</translation>
+        <translation>Créer une &amp;branche</translation>
     </message>
     <message>
         <source>Reset &amp;to here</source>

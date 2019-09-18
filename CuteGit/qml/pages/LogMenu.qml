@@ -16,7 +16,7 @@ Menu {
     /*! The currently selected commit's message */
     property string commitMessage: ""
 
-    signal requestCopy(var commitId)
+    signal requestCopyText(var text)
     signal requestCommitDiffPrevious(var commitId)
     signal requestCommitTagOn(var commitId)
     signal requestCommitBranchFrom(var commitId)
@@ -28,11 +28,21 @@ Menu {
     signal requestCommitDiffTo(var commitId)
 
     Action {
-        text: qsTr("&Copy commit Id")
+        text: Const.logCopyCommitIdMenuText
 
         onTriggered: {
             if (root.commitId !== "") {
-                root.requestCopy(root.commitId)
+                root.requestCopyText(root.commitId)
+            }
+        }
+    }
+
+    Action {
+        text: Const.logCopyCommitMessageMenuText
+
+        onTriggered: {
+            if (root.commitMessage !== "") {
+                root.requestCopyText(root.commitMessage)
             }
         }
     }
@@ -40,7 +50,7 @@ Menu {
     MenuSeparator { }
 
     Action {
-        text: qsTr("Create ta&g here")
+        text: Const.logCreateTagMenuText
         enabled: root.repository ? root.repository.can(CEnums.TagOnCommit) : false
 
         onTriggered: {
@@ -51,7 +61,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("&Branch from here")
+        text: Const.logCreateBranchMenuText
         enabled: root.repository ? root.repository.can(CEnums.BranchFromCommit) : false
 
         onTriggered: {
@@ -62,7 +72,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("Reset &to here")
+        text: Const.logResetMenuText
         enabled: root.repository ? root.repository.can(CEnums.ResetToCommit) : false
 
         onTriggered: {
@@ -73,7 +83,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("&Rebase here")
+        text: Const.logRebaseMenuText
         enabled: root.repository ? root.repository.can(CEnums.RebaseOnCommit) : false
 
         onTriggered: {
@@ -86,7 +96,7 @@ Menu {
     MenuSeparator { }
 
     Action {
-        text: qsTr("&Squash")
+        text: Const.logSquashMenuText
         enabled: root.repository ? root.repository.can(CEnums.SquashCommit) : false
 
         onTriggered: {
@@ -97,7 +107,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("Change &message")
+        text: Const.logChangeMessageMenuText
         enabled: root.repository ? root.repository.can(CEnums.ChangeCommitMessage) : false
 
         onTriggered: {
@@ -110,7 +120,7 @@ Menu {
     MenuSeparator { }
 
     Action {
-        text: qsTr("&View diff with previous commit")
+        text: Const.logDiffPreviousCommitMenuText
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -120,7 +130,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("Mark as diff from")
+        text: Const.logMarkDiffFrom
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -130,7 +140,7 @@ Menu {
     }
 
     Action {
-        text: qsTr("Mark as diff to")
+        text: Const.logMarkDiffTo
 
         onTriggered: {
             if (root.commitId !== "") {

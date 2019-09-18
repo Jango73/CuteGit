@@ -95,6 +95,18 @@ Item {
 
     property string fileDeleteMenuText: qsTr("&Delete")
 
+    property string logCopyCommitIdMenuText: qsTr("&Copy commit ID")
+    property string logCopyCommitMessageMenuText: qsTr("Copy commit m&essage")
+    property string logCreateTagMenuText: qsTr("Create ta&g here")
+    property string logCreateBranchMenuText: qsTr("&Branch from here")
+    property string logResetMenuText: qsTr("Reset &to here")
+    property string logRebaseMenuText: qsTr("&Rebase here")
+    property string logSquashMenuText: qsTr("&Squash")
+    property string logChangeMessageMenuText: qsTr("Change &message")
+    property string logDiffPreviousCommitMenuText: qsTr("&View diff with previous commit")
+    property string logMarkDiffFrom: qsTr("Mark as diff from")
+    property string logMarkDiffTo: qsTr("Mark as diff to")
+
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
     property string tagsText: qsTr("Tags")

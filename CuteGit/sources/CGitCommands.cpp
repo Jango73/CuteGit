@@ -8,6 +8,7 @@
 // Application
 #include "CUtils.h"
 #include "CGitCommands.h"
+#include "CController.h"
 
 /*!
     \class CGitCommands
@@ -102,8 +103,9 @@ const QString CGitCommands::sStatusIgnored              = "!";
 
 //-------------------------------------------------------------------------------------------------
 
-CGitCommands::CGitCommands()
-    : m_eRebaseType(eRTReword)
+CGitCommands::CGitCommands(CController* pController)
+    : CCommands(pController)
+    , m_eRebaseType(eRTReword)
     , m_eRebaseStep(eRSChangeCommitEditSequence)
 {
     connect(this, &CCommands::execFinished, this, &CGitCommands::onExecFinished);
@@ -441,7 +443,8 @@ void CGitCommands::commitRebase(const QString& sPath, const QString& sCommitId)
     m_sCommitMessage.clear();
 
     QMap<QString, QString> mEnvironment;
-    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
+    mEnvironment[sSequenceEditorToken] = m_pController->stubFileName();
+    mEnvironment[sTextEditorToken] = m_pController->stubFileName();
 
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 
@@ -460,8 +463,8 @@ void CGitCommands::commitSquash(const QString& sPath, const QString& sCommitId)
     m_sCommitMessage.clear();
 
     QMap<QString, QString> mEnvironment;
-    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
-    mEnvironment[sTextEditorToken] = QCoreApplication::applicationFilePath();
+    mEnvironment[sSequenceEditorToken] = m_pController->stubFileName();
+    mEnvironment[sTextEditorToken] = m_pController->stubFileName();
 
     QString sCommand = QString(sCommandSquashCommit).arg(sCommitId);
 
@@ -480,8 +483,8 @@ void CGitCommands::changeCommitMessage(const QString& sPath, const QString& sCom
     m_sCommitMessage = sMessage;
 
     QMap<QString, QString> mEnvironment;
-    mEnvironment[sSequenceEditorToken] = QCoreApplication::applicationFilePath();
-    mEnvironment[sTextEditorToken] = QCoreApplication::applicationFilePath();
+    mEnvironment[sSequenceEditorToken] = m_pController->stubFileName();
+    mEnvironment[sTextEditorToken] = m_pController->stubFileName();
 
     QString sCommand = QString(sCommandRebaseOnCommit).arg(sCommitId);
 

@@ -211,7 +211,7 @@ void CCleanFileLister::run()
 void CCleanFileLister::getAllFiles(QList<CRepoFile*>& lFileList, const QString& sRootPath, const QString& sCurrentPath)
 {
     QStringList slNameFilter;
-    slNameFilter << "*.*";
+    slNameFilter << "*";
 
     QDir dRoot(sRootPath);
     QDir dDirectory(sCurrentPath);

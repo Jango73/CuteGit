@@ -39,7 +39,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CGitCommands();
+    CGitCommands(CController* pController);
 
     //! Destructor
     virtual ~CGitCommands() override;
@@ -192,7 +192,6 @@ protected slots:
     //!
     void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
 
-    //!
     //!
     void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 

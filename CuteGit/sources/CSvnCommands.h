@@ -20,7 +20,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CSvnCommands();
+    CSvnCommands(CController* pController);
 
     //! Destructor
     virtual ~CSvnCommands() override;
@@ -40,6 +40,9 @@ public:
 
     //!
     virtual void allFileStatus(const QString& sPath) override;
+
+    //!
+    virtual void changedFileStatus(const QString& sPath) override;
 
     //!
     virtual void branches(const QString& sPath) override;

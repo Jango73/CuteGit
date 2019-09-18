@@ -212,7 +212,12 @@ MenuBar {
             text: Const.amendMenuText
             shortcut: "Ctrl+A"
             enabled: root.repository
-                     ? root.repository.can(CEnums.Amend) && root.repository.hasCommitableFiles && root.repository.commitCountAhead > 0
+                     ? root.repository.can(CEnums.Amend) &&
+                       (
+                           (root.repository.repositoryStatus !== CEnums.NoMerge)
+                           ||
+                           (root.repository.repositoryStatus === CEnums.NoMerge && root.repository.hasCommitableFiles && root.repository.commitCountAhead > 0)
+                           )
                      : false
             onTriggered: repositoryView.requestAmend()
         }
@@ -354,10 +359,9 @@ MenuBar {
 
                 MenuItem {
                     text: model.display
-
-                    onClicked: {
-                        root.controller.language = model.display
-                    }
+                    checkable: true
+                    checked: root.language === model.display
+                    onClicked: root.controller.language = model.display
                 }
 
                 onObjectAdded: language.insertItem(index, object)

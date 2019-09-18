@@ -24,7 +24,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CHgCommands();
+    CHgCommands(CController* pController);
 
     //! Destructor
     virtual ~CHgCommands() override;
@@ -41,6 +41,9 @@ public:
 
     //!
     virtual void allFileStatus(const QString& sPath) override;
+
+    //!
+    virtual void changedFileStatus(const QString& sPath) override;
 
     //!
     virtual void branchLog(const QString& sPath, int iFrom = 0, int iCount = LOG_COUNT_DEFAULT) override;
@@ -83,4 +86,7 @@ protected slots:
 
     //!
     void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
+
+    //!
+    void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
 };
