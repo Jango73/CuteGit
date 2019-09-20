@@ -160,20 +160,20 @@ It is however not meant to compete with paywares, just provide minimal versionin
 As of 2019-09-02:
 
 ```
-     126 text files.
-     126 unique files.                                          
-      28 files ignored.
+     135 text files.
+     135 unique files.                                          
+      22 files ignored.
 
-http://cloc.sourceforge.net v 1.64  T=0.32 s (308.8 files/s, 37276.7 lines/s)
+http://cloc.sourceforge.net v 1.64  T=0.32 s (352.5 files/s, 47022.5 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C++                             21           1196            558           3567
-QML                             49            655             93           3196
-C/C++ Header                    26            724            758           1054
+C++                             26           1339            616           3978
+QML                             52            746            108           3608
+TypeScript                       2             18              0           1633
+C/C++ Header                    32            869            908           1227
 Qt Project                       1              7              4             13
-Prolog                           1              1              0              5
 -------------------------------------------------------------------------------
-SUM:                            98           2583           1413           7835
+SUM:                           113           2979           1636          10459
 -------------------------------------------------------------------------------
 ```
