@@ -7,7 +7,6 @@ import QtQml.Models 2.2
 import Qt.labs.platform 1.1 as QLP
 import Qt.labs.folderlistmodel 2.1
 import CuteGit 1.0
-import "../generalUtils.js" as Utils
 import "../components"
 import "../pages"
 import "../popups"
@@ -26,46 +25,62 @@ Pane {
         anchors.left: parent.left
         anchors.right: rightPart.left
         anchors.top: parent.top
-        height: Const.elementHeight * 1.5
+        height: (Const.elementHeight * 1.5) * 2
 
-        Rectangle {
-            anchors.fill: parent
+        Item {
+            id: repositoryStatusTop
+            width: parent.width
+            height: parent.height * 0.5
 
-            color: root.repository
-                   ? root.repository.repositoryStatus === CEnums.NoMerge
-                     ? Const.transparent
-                     : Material.accent
-            : "black"
+            Rectangle {
+                anchors.fill: parent
+
+                color: if (root.repository) {
+                           root.repository.repositoryStatus === CEnums.NoMerge
+                                   ? Const.transparent
+                                   : Material.accent
+                       }
+                       else Const.transparent
+            }
+
+            StandardText {
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+
+                color: root.repository
+                       ? root.repository.repositoryStatus === CEnums.NoMerge
+                         ? Material.foreground
+                         : Material.background
+                : "black"
+
+                property string infoText: if (root.repository) {
+                                              root.repository.repositoryTypeString
+                                                      + qsTr(" - ( Ahead ")
+                                                      + root.repository.commitCountAhead
+                                                      + qsTr(" : behind ")
+                                                      + root.repository.commitCountBehind
+                                                      + " ) - "
+                                          } else ""
+
+                text: if (root.repository) {
+                          if (root.repository.repositoryStatus === CEnums.InteractiveRebase)
+                              infoText + Const.interactiveRebaseProgressText
+                          else if (root.repository.repositoryStatus === CEnums.Rebase)
+                              infoText + Const.rebaseProgressText
+                          else if (root.repository.repositoryStatus === CEnums.Merge)
+                              infoText + Const.mergeProgressText
+                          else infoText
+                      } else ""
+            }
         }
 
         StandardText {
-            anchors.fill: parent
+            id: repositoryStatusBottom
+            width: parent.width
+            anchors.top: repositoryStatusTop.bottom
+            anchors.bottom: parent.bottom
             verticalAlignment: Text.AlignVCenter
-
-            color: root.repository
-                   ? root.repository.repositoryStatus === CEnums.NoMerge
-                     ? Material.foreground
-                     : Material.background
-            : "black"
-
-            property string infoText: root.repository
-                                      ? root.repository.repositoryTypeString
-                                        + qsTr(" - ( Ahead ")
-                                        + root.repository.commitCountAhead
-                                        + qsTr(" : behind ")
-                                        + root.repository.commitCountBehind
-                                        + " ) - "
-                                      : ""
-
-            text: root.repository
-                  ? root.repository.repositoryStatus === CEnums.InteractiveRebase
-                    ? infoText + Const.interactiveRebaseProgressText
-                    : root.repository.repositoryStatus === CEnums.Rebase
-                      ? infoText + Const.rebaseProgressText
-                      : root.repository.repositoryStatus === CEnums.Merge
-                        ? infoText + Const.mergeProgressText
-                        : infoText
-            : ""
+            text: root.repository ? root.repository.repositoryPath : ""
         }
     }
 
@@ -110,7 +125,7 @@ Pane {
             }
 
             onRequestFileFilter: {
-                root.repository.setFileFilter(text)
+                root.repository.setFileNameFilter(text)
             }
         }
 
@@ -323,10 +338,36 @@ Pane {
         repository: root.repository
     }
 
+    FileDialog {
+        id: fileDialog
+
+        property Action actionOnAccept: null
+        property Action actionOnReject: null
+
+        onAccepted: {
+            if (actionOnAccept)
+            {
+                actionOnAccept.fileName = fileUrl
+                actionOnAccept.trigger()
+            }
+        }
+
+        onRejected: {
+            if (actionOnReject !== null)
+                actionOnReject.trigger()
+        }
+    }
+
     Action {
         id: deleteFileAction
         property string fileName: ""
         onTriggered: root.repository.deleteFile(fileName)
+    }
+
+    Action {
+        id: applyPatchAction
+        property string fileName: ""
+        onTriggered: root.repository.patchApply(fileName)
     }
 
     //--------------------------------------------------------------------------------
@@ -421,6 +462,12 @@ Pane {
     function requestCommitDiffTo(commitId) {
         root.repository.diffToCommitId = commitId
         root.activateFileDiffView()
+    }
+
+    function requestPatchApply() {
+        fileDialog.title = Const.selectPatchToApplyText
+        fileDialog.actionOnAccept = applyPatchAction
+        fileDialog.open()
     }
 
     function activateFlatFileView() {

@@ -53,7 +53,7 @@ ExtendablePane {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
-                text: Const.logFilterText
+                text: Const.filterText
 
                 onFilterTextChanged: {
                     root.requestTextFilter(text)

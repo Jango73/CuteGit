@@ -55,6 +55,8 @@ public:
         DeleteBranch,
         ContinueRebase,
         AbortRebase,
+        CreatePatch,
+        ApplyPatch
     };
 
     // Type of versioning system
@@ -149,7 +151,9 @@ public:
         eDeleteBranch,
         eCreateTagOnCommit,
         eContinueRebase,
-        eAbortRebase
+        eAbortRebase,
+        ePatchCreate,
+        ePatchApply
     };
 
     // Status of a file in repository

@@ -45,6 +45,8 @@ ExtendablePane {
             DiffView {
                 id: diffView
                 repository: root.repository
+
+                onRequestTextFilter: root.repository.setFileDiffFilter(text)
             }
 
             FileLogPane {

@@ -58,6 +58,7 @@ const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-p
 const QString CGitCommands::sCommandGraph               = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\" --max-count=50";
 const QString CGitCommands::sCommandHeadCommit          = "git rev-parse --short \"%1\"";
 const QString CGitCommands::sCommandMergeBranch         = "git merge \"%1\"";
+const QString CGitCommands::sCommandPatchApply          = "git apply \"%1\"";
 const QString CGitCommands::sCommandPull                = "git pull";
 const QString CGitCommands::sCommandPush                = "git push";
 const QString CGitCommands::sCommandRebaseOnCommit      = "git rebase --interactive %1~1";
@@ -384,6 +385,15 @@ void CGitCommands::stashPop(const QString& sPath)
 {
     emit newOutputString(CEnums::eNotification, tr("Restoring stash..."));
     exec(new CProcessCommand(CEnums::eStashPop, sPath, sCommandStashPop, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::patchApply(const QString& sPath, const QString& sFullName)
+{
+    emit newOutputString(CEnums::eNotification, tr("Applying patch..."));
+    QString sCommand = QString(sCommandPatchApply).arg(sFullName);
+    exec(new CProcessCommand(CEnums::ePatchApply, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -791,6 +801,8 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:
+    case CEnums::ePatchCreate:
+    case CEnums::ePatchApply:
     {
         // Throw the returned string of the process
         emit newOutputString(eCommand, sValue);

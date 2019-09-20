@@ -47,7 +47,7 @@ Menu {
         }
     }
 
-    MenuSeparator { }
+    MenuSeparator {}
 
     Action {
         text: Const.logCreateTagMenuText
@@ -93,7 +93,7 @@ Menu {
         }
     }
 
-    MenuSeparator { }
+    MenuSeparator {}
 
     Action {
         text: Const.logSquashMenuText
@@ -117,7 +117,7 @@ Menu {
         }
     }
 
-    MenuSeparator { }
+    MenuSeparator {}
 
     Action {
         text: Const.logDiffPreviousCommitMenuText

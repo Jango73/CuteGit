@@ -127,6 +127,9 @@ public:
     virtual void stashPop(const QString& sPath) override;
 
     //!
+    virtual void patchApply(const QString& sPath, const QString& sFullName) override;
+
+    //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
 
     //!
@@ -234,6 +237,7 @@ protected:
     static const QString sCommandGraph;
     static const QString sCommandHeadCommit;
     static const QString sCommandMergeBranch;
+    static const QString sCommandPatchApply;
     static const QString sCommandPull;
     static const QString sCommandPush;
     static const QString sCommandRebaseOnCommit;

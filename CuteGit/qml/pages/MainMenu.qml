@@ -180,24 +180,6 @@ MenuBar {
         MenuSeparator { }
 
         Action {
-            id: saveStash
-            text: Const.saveStashMenuText
-            enabled: root.repository
-                     ? root.repository.can(CEnums.Stash) && root.repository.hasModifiedFiles
-                     : false
-            onTriggered: repositoryView.requestStashSave()
-        }
-
-        Action {
-            id: popStash
-            text: Const.popStashMenuText
-            enabled: root.repository ? root.repository.can(CEnums.Stash) : false
-            onTriggered: repositoryView.requestStashPop()
-        }
-
-        MenuSeparator { }
-
-        Action {
             id: commit
             text: Const.commitMenuText
             shortcut: "Ctrl+C"
@@ -236,6 +218,37 @@ MenuBar {
             shortcut: "Ctrl+T"
             enabled: root.repository ? root.rebaseInProgress && root.repository.can(CEnums.AbortRebase) : false
             onTriggered: repositoryView.requestAbortRebase()
+        }
+    }
+
+    Menu {
+        title: Const.stashAndPatchMenuText
+
+        Action {
+            id: saveStash
+            text: Const.saveStashMenuText
+            enabled: root.repository
+                     ? root.repository.can(CEnums.Stash) && root.repository.hasModifiedFiles
+                     : false
+            onTriggered: repositoryView.requestStashSave()
+        }
+
+        Action {
+            id: popStash
+            text: Const.popStashMenuText
+            enabled: root.repository ? root.repository.can(CEnums.Stash) : false
+            onTriggered: repositoryView.requestStashPop()
+        }
+
+        MenuSeparator { }
+
+        Action {
+            id: applyPatch
+            text: Const.applyPatchMenuText
+            enabled: root.repository
+                     ? root.repository.can(CEnums.ApplyPatch)
+                     : false
+            onTriggered: repositoryView.requestPatchApply()
         }
     }
 

@@ -57,7 +57,7 @@ public:
     virtual QVariant data(const QModelIndex& qIndex, int iRole) const;
 
     //!
-    void setBranchList(QList<CBranch*> lNewList);
+    void setBranchList(QList<CBranch*> lNewList, CEnums::ELabelType eType);
 
     //!
     void setBranchHeadCommit(const QString& sBranch, const QString& sCommitId);

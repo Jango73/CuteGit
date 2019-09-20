@@ -49,13 +49,15 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pFlatFileModel(new CFlatFileModel(this, this))
     , m_pFlatFileModelProxy(new CFlatFileModelProxy(pController, this))
     , m_pStagedFileModelProxy(new CStagedFileModelProxy(pController, this))
-    , m_pBranchModel(new CBranchModel(this))
+    , m_pRemoteBranchModel(new CBranchModel(this))
+    , m_pLocalBranchModel(new CBranchModel(this))
     , m_pTagModel(new CBranchModel(this))
     , m_pBranchLogModel(new CLogModel(this, this))
     , m_pBranchLogModelProxy(new CLogModelProxy(this, this))
     , m_pFileLogModel(new CLogModel(this, this))
     , m_pGraphModel(new CGraphModel(this, this))
     , m_pFileDiffModel(new CDiffModel(this))
+    , m_pFileDiffModelProxy(new CDiffModelProxy(this))
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_iCommitCountAhead(0)
     , m_iCommitCountBehind(0)
@@ -74,7 +76,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
 
     m_sRepositoryName = sPath.split(PATH_SEP).last();
 
-    // Command return values
+    // Connect versioning system command signals
     connect(m_pCommands, &CCommands::newOutputString, this, &CRepository::onNewOutputString);
     connect(m_pCommands, &CCommands::newOutputKeyValue, this, &CRepository::onNewOutputKeyValue);
     connect(m_pCommands, &CCommands::newOutputStringList, this, &CRepository::onNewOutputStringList);
@@ -84,18 +86,21 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     connect(m_pCommands, &CCommands::newOutputListOfCDiffLine, this, &CRepository::onNewOutputListOfCDiffLine);
     connect(m_pCommands, &CCommands::newOutputListOfCGraphLine, this, &CRepository::onNewOutputListOfCGraphLine);
 
+    // Connect model signals
     connect(m_pBranchLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestBranchLogData);
     connect(m_pFileLogModel, &CLogModel::requestLogData, this, &CRepository::onRequestFileLogData);
-
     connect(m_pFlatFileModel, &CFlatFileModel::currentFileFullName, this, &CRepository::onCurrentFileFullName);
 
+    // Connect proxies with their models
     m_pFlatFileModelProxy->setSourceModel(m_pFlatFileModel);
     m_pStagedFileModelProxy->setSourceModel(m_pFlatFileModel);
     m_pBranchLogModelProxy->setSourceModel(m_pBranchLogModel);
+    m_pFileDiffModelProxy->setSourceModel(m_pFileDiffModel);
 
     connect(this, &CRepository::diffToCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
     connect(this, &CRepository::diffFromCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
 
+    // Fill-up model data
     checkAllFileStatus();
     refresh();
 }
@@ -169,7 +174,8 @@ QList<CLabel*> CRepository::labelsForCommit(const QString& sCommitId) const
 {
     QList<CLabel*> lReturnValue;
 
-    lReturnValue << m_pBranchModel->labelsForCommit(sCommitId);
+    lReturnValue << m_pRemoteBranchModel->labelsForCommit(sCommitId);
+    lReturnValue << m_pLocalBranchModel->labelsForCommit(sCommitId);
     lReturnValue << m_pTagModel->labelsForCommit(sCommitId);
 
     return lReturnValue;
@@ -411,6 +417,18 @@ void CRepository::stashPop()
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::patchApply(const QString& sFullName)
+{
+    QString sFile = sFullName;
+
+    if (sFile.startsWith("file:"))
+        sFile = QUrl(sFile).toLocalFile();
+
+    m_pCommands->patchApply(m_sRepositoryPath, sFile);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::commitReset(const QString& sCommitId)
 {
     m_pCommands->commitReset(m_sRepositoryPath, sCommitId);
@@ -474,10 +492,18 @@ void CRepository::commitDiffPrevious(const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::setFileFilter(const QString& sText)
+void CRepository::setFileNameFilter(const QString& sText)
 {
     m_pFlatFileModelProxy->setNameFilter(sText);
     m_pFlatFileModelProxy->filterChanged();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::setFileDiffFilter(const QString& sText)
+{
+    m_pFileDiffModelProxy->setTextFilter(sText);
+    m_pFileDiffModelProxy->filterChanged();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -577,7 +603,8 @@ void CRepository::getBranchHeadCommits(QString sPath)
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
-    m_pCommands->branchHeadCommits(sPath, m_pBranchModel->branchNames());
+    m_pCommands->branchHeadCommits(sPath, m_pRemoteBranchModel->branchNames());
+    m_pCommands->branchHeadCommits(sPath, m_pLocalBranchModel->branchNames());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -587,7 +614,8 @@ void CRepository::getBranchesCommitCountAheadBehind(QString sPath)
     if (sPath.isEmpty())
         sPath = m_sRepositoryPath;
 
-    m_pCommands->branchCommitCountAheadBehind(sPath, m_pBranchModel->branchNames());
+    m_pCommands->branchCommitCountAheadBehind(sPath, m_pRemoteBranchModel->branchNames());
+    m_pCommands->branchCommitCountAheadBehind(sPath, m_pLocalBranchModel->branchNames());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -672,9 +700,6 @@ void CRepository::onNewOutput(QString sOutput, bool bSeparation)
 
     if (bHasNewLine)
     {
-//        if (bSeparation)
-//            lData << "----------------------------------------------------------------------------------------------------";
-
         while (lData.count() > 50)
             lData.removeFirst();
 
@@ -725,6 +750,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
 
     case CEnums::eStashSave:
     case CEnums::eStashPop:
+    case CEnums::ePatchApply:
     {
         onNewOutput(sOutput, false);
 
@@ -793,7 +819,8 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
 
     case CEnums::eBranchHeadCommit:
     {
-        m_pBranchModel->setBranchHeadCommit(sKey, sValue);
+        m_pRemoteBranchModel->setBranchHeadCommit(sKey, sValue);
+        m_pLocalBranchModel->setBranchHeadCommit(sKey, sValue);
         m_pBranchLogModel->commitChanged(sValue);
         m_pGraphModel->commitChanged(sValue);
         break;
@@ -860,7 +887,8 @@ void CRepository::onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QLi
 
     case CEnums::eBranches:
     {
-        m_pBranchModel->setBranchList(lNewBranches);
+        m_pRemoteBranchModel->setBranchList(lNewBranches, CEnums::RemoteBranchLabel);
+        m_pLocalBranchModel->setBranchList(lNewBranches, CEnums::LocalBranchLabel);
         getBranchHeadCommits();
         getBranchesCommitCountAheadBehind();
         break;
@@ -868,7 +896,7 @@ void CRepository::onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QLi
 
     case CEnums::eTags:
     {
-        m_pTagModel->setBranchList(lNewBranches);
+        m_pTagModel->setBranchList(lNewBranches, CEnums::TagLabel);
         getTagCommits();
         break;
     }

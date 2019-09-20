@@ -24,7 +24,7 @@ ExtendablePane {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            text: Const.fileFilterText
+            text: Const.filterText
 
             onFilterTextChanged: {
                 root.requestFileFilter(text)

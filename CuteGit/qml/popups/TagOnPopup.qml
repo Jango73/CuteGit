@@ -30,14 +30,14 @@ StandardPopup {
                 width: parent.width
                 height: Const.elementHeight * 2
                 horizontalAlignment: Text.AlignHCenter
-                text: qsTr("Tag")
+                text: Const.tagText
             }
 
             TitleTextField {
                 id: name
                 width: parent.width
                 height: implicitHeight
-                title: qsTr("Name")
+                title: Const.nameText
                 focus: true
             }
 
@@ -45,7 +45,7 @@ StandardPopup {
                 id: message
                 width: parent.width
                 height: implicitHeight
-                title: qsTr("Message")
+                title: Const.messageText
                 focus: true
             }
 

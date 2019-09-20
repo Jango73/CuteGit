@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
-    <name>App</name>
-    <message>
-        <source>Commit</source>
-        <translation>Validation</translation>
-    </message>
-    <message>
-        <source>Push</source>
-        <translation>Synchro sortante</translation>
-    </message>
-    <message>
-        <source>Pull</source>
-        <translation>Synchro entrante</translation>
-    </message>
-    <message>
-        <source>Fetch</source>
-        <translation>Récupérer infos de synchro</translation>
-    </message>
-</context>
-<context>
     <name>CController</name>
     <message>
         <source>%1 opened.</source>
@@ -41,7 +22,7 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     <name>CGerritCommands</name>
     <message>
         <source>Pushing to gerrit...</source>
-        <translation>Envoi vers gerrit...</translation>
+        <translation>Synchro sortante vers gerrit...</translation>
     </message>
     <message>
         <source>Unable to get current branch name...</source>
@@ -68,7 +49,7 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Amending...</source>
-        <translation>Amendement en cours...</translation>
+        <translation>Modification en cours...</translation>
     </message>
     <message>
         <source>Pushing...</source>
@@ -84,11 +65,11 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     </message>
     <message>
         <source>Saving stash...</source>
-        <translation>Mise de côté du code...</translation>
+        <translation>Sauvegarde du brouillon...</translation>
     </message>
     <message>
         <source>Restoring stash...</source>
-        <translation>Récupération du code mis de côté...</translation>
+        <translation>Restauration du brouillon...</translation>
     </message>
     <message>
         <source>Switching to %1...</source>
@@ -133,6 +114,10 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     <message>
         <source>Creating tag %1...</source>
         <translation>Création de l&apos;étiquette %1...</translation>
+    </message>
+    <message>
+        <source>Applying patch...</source>
+        <translation>Application rustine...</translation>
     </message>
 </context>
 <context>
@@ -443,7 +428,7 @@ Etes-vous sûr(e) de vouloir faire cela? Cette action ne peut être annulée.</t
     </message>
     <message>
         <source>Fetch</source>
-        <translation>Chercher</translation>
+        <translation>Pré-synchro</translation>
     </message>
     <message>
         <source>Pull</source>
@@ -508,14 +493,6 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
         <translation>Accepter &amp;tout</translation>
     </message>
     <message>
-        <source>Save stash</source>
-        <translation>Mettre de côté</translation>
-    </message>
-    <message>
-        <source>Pop stash</source>
-        <translation>Récupérer le travail mis de côté</translation>
-    </message>
-    <message>
         <source>&amp;Commit</source>
         <translation>&amp;Valider</translation>
     </message>
@@ -533,7 +510,7 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     </message>
     <message>
         <source>&amp;Fetch</source>
-        <translation>&amp;Récupérer infos de synchro</translation>
+        <translation>&amp;Pré-synchro</translation>
     </message>
     <message>
         <source>&amp;Theme</source>
@@ -554,14 +531,6 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     <message>
         <source>&amp;Language</source>
         <translation>&amp;Langue</translation>
-    </message>
-    <message>
-        <source>Log filter</source>
-        <translation>Filtre du journal</translation>
-    </message>
-    <message>
-        <source>File filter</source>
-        <translation>Filtre des fichiers</translation>
     </message>
     <message>
         <source>Staged files for commit</source>
@@ -729,27 +698,14 @@ Vues de journaux
         <source>Mark as diff to</source>
         <translation>Marquer comme fin pour la différence</translation>
     </message>
-</context>
-<context>
-    <name>RepositoryView</name>
     <message>
-        <source> - ( Ahead </source>
-        <translation> - ( En avant </translation>
+        <source>Filter</source>
+        <translation>Filtre</translation>
     </message>
-    <message>
-        <source> : behind </source>
-        <translation> : en arrière </translation>
-    </message>
-</context>
-<context>
-    <name>StandardListViewItem</name>
     <message>
         <source>Loading...</source>
         <translation>Chargement...</translation>
     </message>
-</context>
-<context>
-    <name>TagOnPopup</name>
     <message>
         <source>Tag</source>
         <translation>Etiquette</translation>
@@ -761,6 +717,37 @@ Vues de journaux
     <message>
         <source>Message</source>
         <translation>Message</translation>
+    </message>
+    <message>
+        <source>Stash &amp;&amp; patch</source>
+        <translation>Brouillons &amp;&amp; rustines</translation>
+    </message>
+    <message>
+        <source>&amp;Save stash</source>
+        <translation>&amp;Sauvegarder brouillon</translation>
+    </message>
+    <message>
+        <source>&amp;Pop stash</source>
+        <translation>&amp;Restaurer brouillon</translation>
+    </message>
+    <message>
+        <source>&amp;Apply patch</source>
+        <translation>&amp;Appliquer rustine</translation>
+    </message>
+    <message>
+        <source>Select patch to apply</source>
+        <translation>Sélectionner rustine à appliquer</translation>
+    </message>
+</context>
+<context>
+    <name>RepositoryView</name>
+    <message>
+        <source> - ( Ahead </source>
+        <translation> - ( En avant </translation>
+    </message>
+    <message>
+        <source> : behind </source>
+        <translation> : en arrière </translation>
     </message>
 </context>
 </TS>

@@ -34,7 +34,7 @@ StandardListView {
 
         property string fullName: model.fullName
         property bool mustShowRelativeName: model.fileName !== model.relativeName
-        property bool selected: root.selection && root.modelIndices[index]
+        property bool selected: root.selection
                                 ? root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
                                 : false
 
@@ -73,7 +73,7 @@ StandardListView {
     }
 
     onCurrentIndexChanged: {
-        if (root.selection && root.currentIndex !== -1 && typeof root.modelIndices[currentIndex] !== "undefined")
+        if (root.selection && root.currentIndex !== -1 && root.modelIndices[currentIndex])
             root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
     }
 

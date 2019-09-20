@@ -8,7 +8,7 @@
 #include "CLogLineCollection.h"
 
 // Application
-#include "CLabelModel.h"
+#include "CDiffModel.h"
 
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
@@ -17,7 +17,7 @@ class CRepository;
 
 //-------------------------------------------------------------------------------------------------
 
-class CLogModelProxy : public QSortFilterProxyModel
+class CDiffModelProxy : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -35,7 +35,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Default constructor
-    CLogModelProxy(CRepository* pRepository, QObject *parent = nullptr);
+    CDiffModelProxy(CRepository* pRepository, QObject *parent = nullptr);
 
     //-------------------------------------------------------------------------------------------------
     // Getters

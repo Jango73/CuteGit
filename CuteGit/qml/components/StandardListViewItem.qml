@@ -94,7 +94,7 @@ Item {
 
         Item {
             id: symbolZone
-            width: (symbolText.text === "" ||symbolText.text === Const.statusClean ) ? 0 : symbolText.width + Const.mainPadding
+            width: (symbolText.text === "" || symbolText.text === Const.statusClean ) ? 0 : symbolText.width + Const.mainPadding
             height: primaryZone.height
 
             TextOverSelection {
@@ -124,7 +124,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 selection: selection
                 elide: Text.ElideRight
-                text: qsTr("Loading...")
+                text: Const.loadingText
             }
 
             TextOverSelection {

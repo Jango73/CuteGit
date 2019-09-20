@@ -40,45 +40,74 @@ StandardPane {
         clip: true
         currentIndex: tabBar.currentIndex
 
-        StandardListView {
-            id: branchList
-            visible: count > 0
-
-            model: root.repository ? root.repository.branchModel : undefined
-
-            delegate: StandardListViewItem {
+        Item {
+            StandardListView {
+                id: remoteBranchList
                 width: parent.width
-                listView: branchList
-                selectionShown: model.name === root.repository.currentBranch
-                primaryText: model.name
+                height: parent.height * 0.5
+                visible: count > 0
 
-                onClicked: {
-                    if (mouse.button === Qt.RightButton) {
-                        root.branchName = model.name
-                        branchMenu.canMerge = (model.name !== root.repository.currentBranch)
-                        branchMenu.popup()
+                model: root.repository ? root.repository.remoteBranchModel : undefined
+
+                delegate: StandardListViewItem {
+                    width: parent.width
+                    listView: remoteBranchList
+                    selectionShown: model.name === root.repository.currentBranch
+                    primaryText: model.name
+
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) {
+                            root.branchName = model.name
+                            branchMenu.canMerge = (model.name !== root.repository.currentBranch)
+                            branchMenu.popup()
+                        }
                     }
-                }
 
-                onDoubleClicked: {
-                    root.repository.currentBranch = model.name
+                    onDoubleClicked: root.repository.currentBranch = model.name
+                }
+            }
+
+            Rectangle {
+                id: separator
+                width: parent.width
+                height: 2
+                anchors.top: remoteBranchList.bottom
+                color: Material.accent
+            }
+
+            StandardListView {
+                id: localBranchList
+                width: parent.width
+                anchors.top: separator.bottom
+                anchors.bottom: parent.bottom
+                visible: count > 0
+
+                model: root.repository ? root.repository.localBranchModel : undefined
+
+                delegate: StandardListViewItem {
+                    width: parent.width
+                    listView: localBranchList
+                    selectionShown: model.name === root.repository.currentBranch
+                    primaryText: model.name
+
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) {
+                            root.branchName = model.name
+                            branchMenu.canMerge = (model.name !== root.repository.currentBranch)
+                            branchMenu.popup()
+                        }
+                    }
+
+                    onDoubleClicked: root.repository.currentBranch = model.name
                 }
             }
 
             BranchMenu {
                 id: branchMenu
 
-                onRequestSwitchToBranch: {
-                    root.repository.currentBranch = root.branchName
-                }
-
-                onRequestMergeBranch: {
-                    root.requestMergeBranch(root.branchName)
-                }
-
-                onRequestDeleteBranch: {
-                    root.requestDeleteBranch(root.branchName)
-                }
+                onRequestSwitchToBranch: root.repository.currentBranch = root.branchName
+                onRequestMergeBranch: root.requestMergeBranch(root.branchName)
+                onRequestDeleteBranch: root.requestDeleteBranch(root.branchName)
             }
         }
 

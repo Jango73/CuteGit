@@ -9,8 +9,22 @@ Item {
 
     property variant repository: null
 
+    signal requestTextFilter(var text)
+
+    StandardTextFilter {
+        id: filter
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Const.filterText
+
+        onFilterTextChanged: {
+            root.requestTextFilter(text)
+        }
+    }
+
     StandardLabel {
-        anchors.fill: parent
+        anchors.fill: list
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         text: Const.listEmptyText
@@ -19,9 +33,12 @@ Item {
 
     StandardListView {
         id: list
-        anchors.fill: parent
+        anchors.top: filter.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
         itemsSelectable: false
-        model: root.repository !== null ? root.repository.fileDiffModel : undefined
+        model: root.repository !== null ? root.repository.fileDiffModelProxy : undefined
 
         delegate: StandardListViewItem {
             width: parent.width

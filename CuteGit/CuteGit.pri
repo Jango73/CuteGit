@@ -26,6 +26,7 @@ HEADERS += \
     sources/CGraphModel.h \
     sources/CGraphLine.h \
     sources/CDiffModel.h \
+    sources/CDiffModelProxy.h \
     sources/CDiffLine.h \
     sources/CRepository.h \
     sources/CRepositoryModel.h \
@@ -54,6 +55,7 @@ SOURCES += \
     sources/CLogLineCollection.cpp \
     sources/CGraphModel.cpp \
     sources/CDiffModel.cpp \
+    sources/CDiffModelProxy.cpp \
     sources/CRepository.cpp \
     sources/CRepositoryModel.cpp \
     sources/CController.cpp \

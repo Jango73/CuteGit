@@ -4,7 +4,6 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import Qt.labs.platform 1.1 as QLP
 import CuteGit 1.0
-import "generalUtils.js" as Utils
 import "components"
 import "pages"
 import "views"
@@ -243,19 +242,19 @@ ApplicationWindow {
                 visible = true
 
                 if (mayCommit) {
-                    currentText = qsTr("Commit")
+                    currentText = Const.commitText
                     currentIconSource = Const.commitIcon
                     currentAction = menu.commitAction
                 } else if (mayPush) {
-                    currentText = qsTr("Push")
+                    currentText = Const.pushText
                     currentIconSource = Const.pushIcon
                     currentAction = menu.pushAction
                 } else if (mayPull) {
-                    currentText = qsTr("Pull")
+                    currentText = Const.pullText
                     currentIconSource = Const.pullIcon
                     currentAction = menu.pullAction
                 } else  if (mayFetch) {
-                    currentText = qsTr("Fetch")
+                    currentText = Const.fetchText
                     currentIconSource = Const.fetchIcon
                     currentAction = menu.fetchAction
                 } else {

@@ -234,6 +234,14 @@ void CCommands::stashPop(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::patchApply(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::unstagedFileDiff(const QString& sPath, const QString& sFullName)
 {
     Q_UNUSED(sPath);

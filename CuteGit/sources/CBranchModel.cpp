@@ -86,7 +86,7 @@ QVariant CBranchModel::data(const QModelIndex& qIndex, int iRole) const
 
 //-------------------------------------------------------------------------------------------------
 
-void CBranchModel::setBranchList(QList<CBranch*> lNewList)
+void CBranchModel::setBranchList(QList<CBranch*> lNewList, CEnums::ELabelType eType)
 {
     beginResetModel();
 
@@ -94,7 +94,10 @@ void CBranchModel::setBranchList(QList<CBranch*> lNewList)
     m_lBranches.clear();
 
     for (CBranch* pBranch : lNewList)
-        m_lBranches << pBranch;
+    {
+        if (pBranch->type() == eType)
+            m_lBranches << pBranch;
+    }
 
     endResetModel();
 }

@@ -114,6 +114,9 @@ public:
     virtual void stashPop(const QString& sPath);
 
     //!
+    virtual void patchApply(const QString& sPath, const QString& sFullName);
+
+    //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);
 
     //!

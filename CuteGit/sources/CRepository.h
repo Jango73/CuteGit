@@ -20,6 +20,7 @@
 #include "CLogModel.h"
 #include "CLogModelProxy.h"
 #include "CDiffModel.h"
+#include "CDiffModelProxy.h"
 #include "CGraphModel.h"
 #include "CCommands.h"
 
@@ -62,7 +63,8 @@ public:
     Q_FAST_PROPERTY(CStagedFileModelProxy*, p, stagedFileModelProxy, StagedFileModelProxy)
 
     // Models for branchs and tags
-    Q_FAST_PROPERTY(CBranchModel*, p, branchModel, BranchModel)
+    Q_FAST_PROPERTY(CBranchModel*, p, remoteBranchModel, RemoteBranchModel)
+    Q_FAST_PROPERTY(CBranchModel*, p, localBranchModel, LocalBranchModel)
     Q_FAST_PROPERTY(CBranchModel*, p, tagModel, TagModel)
 
     // Models for various logs
@@ -73,6 +75,7 @@ public:
 
     // Model for the diff view
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
+    Q_FAST_PROPERTY(CDiffModelProxy*, p, fileDiffModelProxy, FileDiffModelProxy)
 
     // Output of commands
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
@@ -201,6 +204,9 @@ public:
     //! Pops stash
     Q_INVOKABLE void stashPop();
 
+    //! Applies a patch
+    Q_INVOKABLE void patchApply(const QString& sFullName);
+
     //! Resets current branch to a commit
     Q_INVOKABLE void commitReset(const QString& sCommitId);
 
@@ -229,7 +235,10 @@ public:
     Q_INVOKABLE void commitDiffPrevious(const QString& sCommitId);
 
     //! Sets the file filter
-    Q_INVOKABLE void setFileFilter(const QString& sText);
+    Q_INVOKABLE void setFileNameFilter(const QString& sText);
+
+    //! Sets the diff filter
+    Q_INVOKABLE void setFileDiffFilter(const QString& sText);
 
     //! Sets the branch log filter
     Q_INVOKABLE void setBranchLogFilter(const QString& sText);
