@@ -75,8 +75,7 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 * Inherits QFileSystemModel
 * Shows changed files as a tree
-* Provides access to
-  * the repository files
+* Provides access to the repository files
 
 ### CTreeFileModelProxy
 
@@ -90,8 +89,7 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 * Inherits QAbstractListModel
 * Shows changed files as a list
-* Provides access to
-  * the repository files
+* Provides access to the repository files
 
 ### CFlatFileModelProxy
 
