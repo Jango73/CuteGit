@@ -26,7 +26,8 @@ It is however not meant to compete with paywares, just provide minimal versionin
 * Change current branch
 * Mark files as staged / unstaged
 * Revert files
-* Commit / amend (auto on interactive rebase)
+* Commit
+* Amend (on interactive rebase, commit is always amend)
 * Basic fetch, pull and push
 * Refresh view
 * Modify a commit message
@@ -65,9 +66,9 @@ It is however not meant to compete with paywares, just provide minimal versionin
   * the name of the current branch
   * the repository status (normal, rebasing, merging, ...)
   * the list of branches
-  * the current branch log
-  * the diff of the selected folder / file
-  * the log of the selected folder / file
+  * the log of the current branch
+  * the diff of the selected file
+  * the log of the selected file
 * Exposes to QML / JS the versioning methods: stage, unstage, commit, push, ...
 
 ### CTreeFileModel
@@ -81,7 +82,9 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 * Inherits QSortFilterProxyModel
 * Encapsulates CTreeFileModel
-* Enables showing/hiding the files using their GIT status property
+* Enables filtering files on
+  * file name
+  * GIT status property
 
 ### CFlatFileModel
 
@@ -94,6 +97,9 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 * Inherits QSortFilterProxyModel
 * Encapsulates CFlatFileModel
+* Enables filtering files on
+  * file name
+  * GIT status property
 
 ### CRepoFile
 
@@ -125,6 +131,14 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 * A collection of log lines
 
+### CLogModelProxy
+
+* Inherits QSortFilterProxyModel
+* Encapsulates CLogModel
+* Enables filtering a log on
+  * commit author
+  * commit message
+
 ### CLogLine
 
 * A line of log : commit id, date, author, message
@@ -132,6 +146,12 @@ It is however not meant to compete with paywares, just provide minimal versionin
 ### CDiffModel
 
 * A collection of CDiffLine
+
+### CDiffModelProxy
+
+* Inherits QSortFilterProxyModel
+* Encapsulates CDiffModel
+* Enables filtering a diff
 
 ### CDiffLine
 
