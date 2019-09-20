@@ -157,7 +157,7 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 ## Code summary
 
-As of 2019-09-02:
+As of 2019-09-20:
 
 ```
      135 text files.
