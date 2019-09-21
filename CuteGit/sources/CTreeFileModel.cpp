@@ -50,19 +50,6 @@ QModelIndex CTreeFileModel::rootPathIndex() const
 
 //-------------------------------------------------------------------------------------------------
 
-CRepoFile* CTreeFileModel::fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const
-{
-    for (CRepoFile* pFile : vFiles)
-    {
-        if (pFile->fullName() == sFullName)
-            return pFile;
-    }
-
-    return nullptr;
-}
-
-//-------------------------------------------------------------------------------------------------
-
 QHash<int, QByteArray> CTreeFileModel::roleNames() const
 {
     QHash<int, QByteArray> hRoleNames = QFileSystemModel::roleNames();

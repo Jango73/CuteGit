@@ -975,7 +975,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     {
         // Create CRepoFiles with the returned string of the process
 
-        QList<CRepoFile*> lReturnValue;
+        CRepoFileList lReturnValue;
         QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
@@ -983,7 +983,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
             CRepoFile* pFile = repoFileForLine(sPath, sLine);
 
             if (pFile != nullptr)
-                lReturnValue << pFile;
+                lReturnValue.addItem(pFile->fullName(), pFile);
         }
 
         emit newOutputListOfCRepoFile(eCommand, lReturnValue);
@@ -994,6 +994,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eBranchLog:
     {
         // Create CLogLines with the returned string of the process
+
         CLogLineCollection lReturnValue;
         QStringList lStrings = sValue.split(NEW_LINE);
 
@@ -1075,7 +1076,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
+void CGitCommands::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles)
 {
     emit newOutputListOfCRepoFile(eCommand, lNewRepoFiles);
 }

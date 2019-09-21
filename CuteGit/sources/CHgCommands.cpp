@@ -290,7 +290,7 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
     {
         // Create CRepoFiles with the returned string of the process
 
-        QList<CRepoFile*> lReturnValue;
+        CRepoFileList lReturnValue;
         QStringList lStrings = sValue.split(NEW_LINE);
 
         for (QString sLine : lStrings)
@@ -298,7 +298,7 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
             CRepoFile* pFile = repoFileForLine(sPath, sLine);
 
             if (pFile != nullptr)
-                lReturnValue << pFile;
+                lReturnValue.addItem(pFile->fullName(), pFile);
         }
 
         emit newOutputListOfCRepoFile(eCommand, lReturnValue);
@@ -344,7 +344,7 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
 
 //-------------------------------------------------------------------------------------------------
 
-void CHgCommands::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles)
+void CHgCommands::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles)
 {
     emit newOutputListOfCRepoFile(eCommand, lNewRepoFiles);
 }

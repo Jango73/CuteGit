@@ -126,7 +126,7 @@ signals:
     void newOutputListOfCBranch(CEnums::EProcessCommand eCommand, QList<CBranch*> lNewBranches);
 
     //!
-    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles);
 
     //!
     void newOutputCLogLineCollection(CEnums::EProcessCommand eCommand, CLogLineCollection lNewLines);
@@ -169,7 +169,7 @@ protected:
     virtual void run() override;
 
     //!
-    void getAllFiles(QList<CRepoFile*>& lFileList, const QString& sRootPath, const QString& sCurrentPath);
+    void getAllFiles(CRepoFileList& lFileList, const QString& sRootPath, const QString& sCurrentPath);
 
     //-------------------------------------------------------------------------------------------------
     // Signals
@@ -178,7 +178,7 @@ protected:
 signals:
 
     //!
-    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+    void newOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles);
 
     //-------------------------------------------------------------------------------------------------
     // Properties

@@ -108,17 +108,16 @@ bool CFlatFileModel::setData(const QModelIndex& qIndex, const QVariant& vValue, 
 
 void CFlatFileModel::handleRepoFilesChanged()
 {
-    QList<CRepoFile*> lNewFiles = m_pRepository->repoFiles();
-    CHashOfRepoFile hNewFiles = m_pRepository->hashRepoFiles();
+    CRepoFileList lNewFiles = m_pRepository->repoFiles();
 
     for (int iNewFileIndex = 0; iNewFileIndex < lNewFiles.count(); iNewFileIndex++)
     {
         CRepoFile* pNewFile = lNewFiles[iNewFileIndex];
         QString sNewKey = pNewFile->fullName();
 
-        if (m_hHashRepoFiles.contains(sNewKey))
+        if (m_lRepoFiles.containsKey(sNewKey))
         {
-            CRepoFile* pExistingFile = m_hHashRepoFiles[sNewKey];
+            CRepoFile* pExistingFile = m_lRepoFiles.itemByKey(sNewKey);
 
             if (pExistingFile->staged() != pNewFile->staged() || pExistingFile->status() != pNewFile->status())
             {
@@ -135,8 +134,7 @@ void CFlatFileModel::handleRepoFilesChanged()
             beginInsertRows(QModelIndex(), iNewFileIndex, iNewFileIndex);
 
             CRepoFile* pNewFileForThis = new CRepoFile(*pNewFile, this);
-            m_lRepoFiles.insert(iNewFileIndex, pNewFileForThis);
-            m_hHashRepoFiles[sNewKey] = pNewFileForThis;
+            m_lRepoFiles.addItem(sNewKey, pNewFileForThis, iNewFileIndex);
 
             endInsertRows();
         }
@@ -147,13 +145,12 @@ void CFlatFileModel::handleRepoFilesChanged()
         CRepoFile* pExistingFile = m_lRepoFiles[iExistingFileIndex];
         QString sExistingKey = pExistingFile->fullName();
 
-        if (not hNewFiles.contains(sExistingKey))
+        if (not lNewFiles.containsKey(sExistingKey))
         {
             beginRemoveRows(QModelIndex(), iExistingFileIndex, iExistingFileIndex);
 
+            m_lRepoFiles.removeItem(sExistingKey);
             delete m_lRepoFiles[iExistingFileIndex];
-            m_lRepoFiles.removeAt(iExistingFileIndex);
-            m_hHashRepoFiles.remove(sExistingKey);
 
             endRemoveRows();
 

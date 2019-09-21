@@ -200,7 +200,7 @@ QString CExecution::execNowLiveFeed(CEnums::EProcessCommand eCommand, QString sW
 
 void CCleanFileLister::run()
 {
-    QList<CRepoFile*> lFileList;
+    CRepoFileList lFileList;
     getAllFiles(lFileList, m_sRootPath, m_sRootPath);
 
     emit newOutputListOfCRepoFile(m_eCommand, lFileList);
@@ -208,7 +208,7 @@ void CCleanFileLister::run()
 
 //-------------------------------------------------------------------------------------------------
 
-void CCleanFileLister::getAllFiles(QList<CRepoFile*>& lFileList, const QString& sRootPath, const QString& sCurrentPath)
+void CCleanFileLister::getAllFiles(CRepoFileList& lFileList, const QString& sRootPath, const QString& sCurrentPath)
 {
     QStringList slNameFilter;
     slNameFilter << "*";
@@ -231,7 +231,7 @@ void CCleanFileLister::getAllFiles(QList<CRepoFile*>& lFileList, const QString& 
         pNewFile->setRelativeName(dRoot.relativeFilePath(sFullName));
         pNewFile->setFileName(info.fileName());
 
-        lFileList << pNewFile;
+        lFileList.addItem(pNewFile->fullName(), pNewFile);
     }
 
     dDirectory.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);

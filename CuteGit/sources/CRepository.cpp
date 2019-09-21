@@ -158,18 +158,6 @@ CRepoFile* CRepository::fileByFullName(const QString& sFullName) const
 
 //-------------------------------------------------------------------------------------------------
 
-CRepoFile* CRepository::fileByFullName(QList<CRepoFile*> lRepoFiles, const QString& sFullName) const
-{
-    auto itr = std::find_if(lRepoFiles.begin(), lRepoFiles.end(), [sFullName](CRepoFile* pFile) { return pFile->fullName() == sFullName; });
-
-    if (itr != lRepoFiles.end())
-        return *itr;
-
-    return nullptr;
-}
-
-//-------------------------------------------------------------------------------------------------
-
 QList<CLabel*> CRepository::labelsForCommit(const QString& sCommitId) const
 {
     QList<CLabel*> lReturnValue;
@@ -911,7 +899,7 @@ void CRepository::onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QLi
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewFiles)
+void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewFiles)
 {
     switch (eCommand)
     {
@@ -921,13 +909,6 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
     {
         if (not lNewFiles.isEmpty())
         {
-            QHash<QString, CRepoFile*> hNewFiles;
-
-            for (CRepoFile* pFile : lNewFiles)
-            {
-                hNewFiles[pFile->fullName()] = pFile;
-            }
-
             bool bHasModifiedFiles = false;
             bool bHasCommitableFiles = false;
 
@@ -943,23 +924,22 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, Q
                         bHasCommitableFiles = true;
                 }
 
-                if (m_hHashRepoFiles.contains(sNewKey))
+                if (m_lRepoFiles.containsKey(sNewKey))
                 {
-                    CRepoFile* pExistingFile = m_hHashRepoFiles[sNewKey];
-                    m_lRepoFiles.removeAll(pExistingFile);
-                    m_hHashRepoFiles.remove(sNewKey);
+                    CRepoFile* pExistingFile = m_lRepoFiles.itemByKey(sNewKey);
+                    m_lRepoFiles.removeItem(sNewKey);
                     delete pExistingFile;
                 }
 
-                m_lRepoFiles << pNewFile;
-                m_hHashRepoFiles[sNewKey] = pNewFile;
+                m_lRepoFiles.addItem(sNewKey, pNewFile);
             }
 
+            // For every file not existing in lNewFiles, mark 'not staged' and 'clean' if required
             for (CRepoFile* pExistingFile : m_lRepoFiles)
             {
                 QString sExistingKey = pExistingFile->fullName();
 
-                if (not hNewFiles.contains(sExistingKey))
+                if (not lNewFiles.containsKey(sExistingKey))
                 {
                     pExistingFile->setStaged(false);
 

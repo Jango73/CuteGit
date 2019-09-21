@@ -84,8 +84,7 @@ public:
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
 
     // List of files in the repo
-    Q_FAST_PROPERTY(QList<CRepoFile*>, l, repoFiles, RepoFiles)
-    Q_FAST_PROPERTY(CHashOfRepoFile, h, hashRepoFiles, HashRepoFiles)
+    Q_FAST_PROPERTY(CRepoFileList, l, repoFiles, RepoFiles)
 
     // Number of commits ahead and behind
     Q_FAST_PROPERTY(int, i, commitCountAhead, CommitCountAhead)
@@ -118,9 +117,6 @@ public:
 
     //!
     CRepoFile* fileByFullName(const QString& sFullName) const;
-
-    //!
-    CRepoFile* fileByFullName(QList<CRepoFile*> lRepoFiles, const QString& sFullName) const;
 
     //!
     QList<CLabel*> labelsForCommit(const QString& sCommitId) const;
@@ -316,7 +312,7 @@ protected slots:
     void onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QList<CBranch*> lNewBranches);
 
     //!
-    void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+    void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles);
 
     //!
     void onNewOutputCLogLineCollection(CEnums::EProcessCommand eCommand, CLogLineCollection lNewLines);

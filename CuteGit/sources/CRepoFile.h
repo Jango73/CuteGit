@@ -6,6 +6,7 @@
 
 // qt-plus
 #include "Macros.h"
+#include "CFastList.h"
 
 // Application
 #include "CEnums.h"
@@ -81,4 +82,5 @@ public:
     static const QString sRepositoryStatusInteractiveRebase;
 };
 
-typedef QHash<QString, CRepoFile*> CHashOfRepoFile;
+typedef CFastList<QString, CRepoFile*> CRepoFileList;
+Q_DECLARE_METATYPE(CRepoFileList)

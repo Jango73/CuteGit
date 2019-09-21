@@ -69,9 +69,6 @@ public:
     //!
     QModelIndex rootPathIndex() const;
 
-    //!
-    CRepoFile* fileByFullName(const QList<CRepoFile*>& vFiles, const QString& sFullName) const;
-
     //-------------------------------------------------------------------------------------------------
     // Control methods
     //-------------------------------------------------------------------------------------------------

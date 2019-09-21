@@ -196,7 +196,7 @@ protected slots:
     void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
 
     //!
-    void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, QList<CRepoFile*> lNewRepoFiles);
+    void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles);
 
     //-------------------------------------------------------------------------------------------------
     // Protected constants
