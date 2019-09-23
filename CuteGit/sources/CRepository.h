@@ -233,6 +233,9 @@ public:
     //! Sets the file filter
     Q_INVOKABLE void setFileNameFilter(const QString& sText);
 
+    //! Sets the file sort field
+    Q_INVOKABLE void setFileSortField(CEnums::ESortField eField);
+
     //! Sets the diff filter
     Q_INVOKABLE void setFileDiffFilter(const QString& sText);
 

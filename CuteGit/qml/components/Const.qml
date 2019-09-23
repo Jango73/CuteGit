@@ -35,6 +35,8 @@ Item {
     property int paneElevation: 2
     property int popupElevation: 8
     property int elementHeight: mainFontSize * 1.5
+    property int microButtonWidth: elementHeight * 1.2
+    property int microButtonHeight: elementHeight * 1.8
     property int listViewItemHeight: elementHeight + smallPadding
     property int buttonHeight: mainFontSize * 2.5
 
@@ -113,6 +115,7 @@ Item {
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
     property string tagText: qsTr("Tag")
+    property string sortText: qsTr("Sort")
     property string nameText: qsTr("Name")
     property string tagsText: qsTr("Tags")
     property string flatText: qsTr("Flat")

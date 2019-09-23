@@ -120,13 +120,9 @@ Pane {
                 fileMenu.popup()
             }
 
-            onRequestDeleteFile: {
-                root.requestDeleteFile(name)
-            }
-
-            onRequestFileFilter: {
-                root.repository.setFileNameFilter(text)
-            }
+            onRequestDeleteFile: root.requestDeleteFile(name)
+            onRequestFileFilter: root.repository.setFileNameFilter(text)
+            onRequestFileSortField: root.repository.setFileSortField(field)
         }
 
         ToolPane {

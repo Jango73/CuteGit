@@ -12,28 +12,9 @@
 CFlatFileModelProxy::CFlatFileModelProxy(CController* pController, QObject *parent)
     : QSortFilterProxyModel(parent)
     , m_pController(pController)
+    , m_bSortOrder(false)
+    , m_eSortField(CEnums::SortFullName)
 {
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool CFlatFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
-{
-    QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-
-    CFlatFileModel* pModel = dynamic_cast<CFlatFileModel*>(sourceModel());
-
-    if (pModel != nullptr)
-    {
-        bool bShow = statusShown(pModel->data(index, CFlatFileModel::eStatusRole).toString());
-
-        if (bShow)
-            bShow = nameShown(pModel->data(index, CFlatFileModel::eFullNameRole).toString());
-
-        return bShow;
-    }
-
-    return false;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -41,6 +22,7 @@ bool CFlatFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 void CFlatFileModelProxy::filterChanged()
 {
     invalidateFilter();
+    invalidate();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -66,6 +48,49 @@ QStringList CFlatFileModelProxy::selectionToFullNameList(QModelIndexList lIndice
         return pModel->selectionToFullNameList(indexListToSource(lIndices));
 
     return lFullNames;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool CFlatFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+
+    CFlatFileModel* pModel = dynamic_cast<CFlatFileModel*>(sourceModel());
+
+    if (pModel != nullptr)
+    {
+        bool bShow = statusShown(pModel->data(index, CFlatFileModel::eStatusRole).toString());
+
+        if (bShow)
+            bShow = nameShown(pModel->data(index, CFlatFileModel::eFullNameRole).toString());
+
+        return bShow;
+    }
+
+    return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool CFlatFileModelProxy::lessThan(const QModelIndex& left, const QModelIndex& right) const
+{
+    switch (m_eSortField) {
+    case CEnums::SortFileName:
+    {
+        QString leftName = sourceModel()->data(left, CFlatFileModel::eFileNameRole).toString();
+        QString rightName = sourceModel()->data(right, CFlatFileModel::eFileNameRole).toString();
+        return leftName < rightName;
+    }
+    case CEnums::SortFullName:
+    {
+        QString leftName = sourceModel()->data(left, CFlatFileModel::eFullNameRole).toString();
+        QString rightName = sourceModel()->data(right, CFlatFileModel::eFullNameRole).toString();
+        return leftName < rightName;
+    }
+    }
+
+    return false;
 }
 
 //-------------------------------------------------------------------------------------------------

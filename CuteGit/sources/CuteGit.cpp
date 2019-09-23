@@ -60,6 +60,7 @@ CuteGit::CuteGit(bool bMasterMode, const QString& sStubFileName, const QString& 
         qRegisterMetaType<CEnums::ERepositoryType>("CEnums::ERepositoryType");
         qRegisterMetaType<CEnums::ERepositoryStatus>("CEnums::ERepositoryStatus");
         qRegisterMetaType<CEnums::EDiffOperation>("CEnums::EDiffOperation");
+        qRegisterMetaType<CEnums::ESortField>("CEnums::ESortField");
 
         qmlRegisterUncreatableType<CEnums>("CuteGit", 1, 0, "CEnums", "Cannot create a CEnums instance.");
 

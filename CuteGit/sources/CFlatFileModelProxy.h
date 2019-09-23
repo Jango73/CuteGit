@@ -8,6 +8,7 @@
 #include "Macros.h"
 
 // Application
+#include "CEnums.h"
 #include "CRepoFile.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -27,6 +28,8 @@ class CFlatFileModelProxy : public QSortFilterProxyModel
 
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
     Q_FAST_PROPERTY(QString, s, nameFilter, NameFilter)
+    Q_FAST_PROPERTY(bool, b, sortOrder, SortOrder)
+    Q_FAST_PROPERTY(CEnums::ESortField, e, sortField, SortField)
 
 public:
 
@@ -35,13 +38,6 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     CFlatFileModelProxy(CController* pController, QObject* parent = nullptr);
-
-    //-------------------------------------------------------------------------------------------------
-    // Getters
-    //-------------------------------------------------------------------------------------------------
-
-    //!
-    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
 
     //-------------------------------------------------------------------------------------------------
     // Control methods
@@ -71,6 +67,12 @@ signals:
     //-------------------------------------------------------------------------------------------------
 
 protected:
+
+    //!
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
+
+    //!
+    bool lessThan(const QModelIndex& left, const QModelIndex& right) const override;
 
     //!
     QModelIndexList indexListToSource(QModelIndexList lIndices) const;

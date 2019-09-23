@@ -46,6 +46,12 @@ public:
     virtual void changedFileStatus(const QString& sPath) override;
 
     //!
+    virtual void branches(const QString& sPath) override;
+
+    //!
+    virtual void branchHeadCommits(const QString& sPath, QStringList lBranches) override;
+
+    //!
     virtual void branchLog(const QString& sPath, int iFrom = 0, int iCount = LOG_COUNT_DEFAULT) override;
 
     //!
@@ -68,6 +74,9 @@ public:
 
     //!
     virtual void pull(const QString& sPath) override;
+
+    //!
+    virtual void createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName);
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods

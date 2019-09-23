@@ -16,6 +16,13 @@ CDiffModelProxy::CDiffModelProxy(CRepository *pRepository, QObject* parent)
 
 //-------------------------------------------------------------------------------------------------
 
+void CDiffModelProxy::filterChanged()
+{
+    invalidateFilter();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 bool CDiffModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     if (m_sTextFilter.isEmpty())
@@ -35,11 +42,4 @@ bool CDiffModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceP
     }
 
     return false;
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void CDiffModelProxy::filterChanged()
-{
-    invalidateFilter();
 }

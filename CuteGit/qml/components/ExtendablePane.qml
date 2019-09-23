@@ -11,8 +11,8 @@ TitlePane {
     StandardButton {
         anchors.top: parent.top
         anchors.right: parent.right
-        width: Const.elementHeight * 1.2
-        height: Const.elementHeight * 1.8
+        width: Const.microButtonWidth
+        height: Const.microButtonHeight
         padding: 0
         flat: true
         text: root.state === "" ? "^" : "v"

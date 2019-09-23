@@ -35,15 +35,19 @@ static int iLogFormatValueCount = 4;
 
 static const char* sCommandAdd                = "hg add \"%1\"";
 static const char* sCommandAmend              = "hg commit --amend --date now";
-static const char* sCommandBranchLog          = "hg log --template '{node} &&& {desc} &&& {author} &&& {date}\\n'";
+static const char* sCommandBranches           = "hg branches --template \"{branch} &&& {node}\\n\"";
+static const char* sCommandBranchLog          = "hg log -f --template \"{node} &&& {desc} &&& {author} &&& {date}\\n\"";
 static const char* sCommandCommit             = "hg commit -m \"%1\"";
-static const char* sCommandFileLog            = "hg log --template '{node} &&& {desc} &&& {author} &&& {date}\\n' \"%1\"";
+static const char* sCommandCreateBranch       = "hg branch \"%1\"";
+static const char* sCommandCurrentBranch      = "hg identify -b";
+static const char* sCommandFileLog            = "hg log -f --template \"{node} &&& {desc} &&& {author} &&& {date}\\n\" \"%1\"";
 // static const char* sCommandGraph  = "hg log -G";
 static const char* sCommandPull               = "hg pull";
-static const char* sCommandPush               = "hg push";
+static const char* sCommandPush               = "hg push --new-branch";
 static const char* sCommandRevert             = "hg revert \"%1\"";
 static const char* sCommandStatus             = "hg status";
 static const char* sCommandStatusForFile      = "hg status \"%1\"";
+static const char* sCommandResetOnCommit      = "hg update \"%1\"";
 
 //-------------------------------------------------------------------------------------------------
 // Regular expressions
@@ -92,7 +96,9 @@ bool CHgCommands::can(CEnums::ECapability eWhat) const
     case CEnums::ShowBranchLog:
     case CEnums::ShowFileLog:
     case CEnums::Commit:
+    case CEnums::Amend:
     case CEnums::Pull:
+    case CEnums::Push:
     case CEnums::BranchFromCommit:
         return true;
 
@@ -125,24 +131,39 @@ void CHgCommands::changedFileStatus(const QString& sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CHgCommands::branches(const QString& sPath)
+{
+    exec(new CProcessCommand(CEnums::eBranches, sPath, sCommandBranches));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CHgCommands::branchHeadCommits(const QString& sPath, QStringList lBranches)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(lBranches);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CHgCommands::branchLog(const QString& sPath, int iFrom, int iCount)
 {
-    Q_UNUSED(iFrom);
     Q_UNUSED(iCount);
-
+    int iPotentialCount = 0;
     QString sCommand = QString(sCommandBranchLog);
-    exec(new CProcessCommand(CEnums::eBranchLog, sPath, sCommand));
+    QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
+    exec(new CProcessCommand(CEnums::eBranchLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CHgCommands::fileLog(const QString& sPath, const QString& sFullName, int iFrom, int iCount)
 {
-    Q_UNUSED(iFrom);
     Q_UNUSED(iCount);
-
+    int iPotentialCount = 0;
     QString sCommand = QString(sCommandFileLog).arg(sFullName);
-    exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand));
+    QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
+    exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -203,6 +224,18 @@ void CHgCommands::pull(const QString& sPath)
     emit newOutputString(CEnums::eNotification, tr("Pulling..."));
     QString sCommand = QString(sCommandPull);
     exec(new CProcessCommand(CEnums::ePull, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CHgCommands::createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName)
+{
+    emit newOutputString(CEnums::eNotification, QString(tr("Creating branch %1...")).arg(sBranchName));
+    QString sCommand, sOutput;
+    sCommand = QString(sCommandResetOnCommit).arg(sCommitId);
+    sOutput = execNow(sPath, sCommand);
+    sCommand = QString(sCommandCreateBranch).arg(sBranchName);
+    exec(new CProcessCommand(CEnums::eCreateBranchOnCommit, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -279,9 +312,42 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
     case CEnums::eAmend:
     case CEnums::ePush:
     case CEnums::ePull:
+    case CEnums::eCreateBranchOnCommit:
     {
         // Throw the returned string of the process
         emit newOutputString(eCommand, sValue);
+        break;
+    }
+
+    case CEnums::eBranches:
+    {
+        // Create CBranchs with the returned string of the process
+
+        QList<CBranch*> lReturnValue;
+        QStringList lLines = sValue.split(NEW_LINE);
+
+        for (QString sLine : lLines)
+        {
+            QStringList sValues = sLine.split(sLogFormatSplitter);
+
+            if (sValues.count() == 2)
+            {
+                QString sName = sValues[0];
+                QString sCommitId = sValues[1];
+
+                CBranch* pNewBranch = new CBranch();
+                pNewBranch->setName(sName);
+                pNewBranch->setType(CEnums::RemoteBranchLabel);
+                pNewBranch->setCommitId(sCommitId);
+
+                lReturnValue << pNewBranch;
+            }
+        }
+
+        QString sName = execNow(sPath, sCommandCurrentBranch).trimmed();
+        emit newOutputString(CEnums::eCurrentBranch, sName);
+
+        emit newOutputListOfCBranch(eCommand, lReturnValue);
         break;
     }
 
@@ -308,7 +374,7 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
     case CEnums::eFileLog:
     case CEnums::eBranchLog:
     {
-        // Create CLogLines with the returned string of the process
+        // Create a CLogLineCollection with the returned string of the process
 
         CLogLineCollection lReturnValue;
         QStringList lStrings = sValue.split(NEW_LINE);
@@ -321,14 +387,27 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
             {
                 CLogLine* pLine = new CLogLine();
 
+                qint64 iData = qint64(sValues[3].trimmed().toDouble());
+
                 pLine->setCommitId(sValues[0].trimmed());
                 pLine->setMessage(sValues[1].trimmed());
                 pLine->setAuthor(sValues[2].trimmed());
-                pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
+                pLine->setDate(QDateTime::fromSecsSinceEpoch(iData));
+                pLine->setMessageIsComplete(true);
 
                 lReturnValue.add(pLine);
             }
         }
+
+        QStringList lUserValues = sUserData.split(",");
+        int iPotentialCount = lUserValues[0].toInt();
+        int iStartIndex = lUserValues[1].toInt();
+
+        if (iPotentialCount == 0)
+            iPotentialCount = lReturnValue.lines().count();
+
+        lReturnValue.setPotentialCount(iPotentialCount);
+        lReturnValue.setStartIndex(iStartIndex);
 
         emit newOutputCLogLineCollection(eCommand, lReturnValue);
         break;

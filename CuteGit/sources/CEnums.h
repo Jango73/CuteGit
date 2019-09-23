@@ -97,11 +97,19 @@ public:
         DiffDelete
     };
 
+    // Sort field
+    enum ESortField
+    {
+        SortFileName,
+        SortFullName
+    };
+
     Q_ENUMS(ECapability)
     Q_ENUMS(ERepositoryType)
     Q_ENUMS(ERepositoryStatus)
     Q_ENUMS(ELabelType)
     Q_ENUMS(EDiffOperation)
+    Q_ENUMS(ESortField)
 
     //-------------------------------------------------------------------------------------------------
     // Internal enumerators

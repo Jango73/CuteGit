@@ -488,6 +488,15 @@ void CRepository::setFileNameFilter(const QString& sText)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::setFileSortField(CEnums::ESortField eField)
+{
+    m_pFlatFileModelProxy->setSortField(eField);
+    m_pFlatFileModelProxy->sort(0);
+    m_pFlatFileModelProxy->filterChanged();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::setFileDiffFilter(const QString& sText)
 {
     m_pFileDiffModelProxy->setTextFilter(sText);

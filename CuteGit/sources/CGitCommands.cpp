@@ -993,7 +993,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eFileLog:
     case CEnums::eBranchLog:
     {
-        // Create CLogLines with the returned string of the process
+        // Create a CLogLineCollection with the returned string of the process
 
         CLogLineCollection lReturnValue;
         QStringList lStrings = sValue.split(NEW_LINE);
