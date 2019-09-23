@@ -14,30 +14,41 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 ## Things it does
 
-* Open one or more git repositories
-* Show repository status (clean, merge, rebase, ...)
-* Show repository files as a tree, colored according to status
-* Show the branches and tags of the repository
-* Show the branch log
-* Show the graph as output by Git (might be graphical some day)
-* Show the selected file's log
-* Show the unstaged diffs in the selected item (folder or file)
-* Show the output of the executed commands
-* Change current branch
-* Mark files as staged / unstaged
-* Revert files
-* Commit
-* Amend (on interactive rebase, commit is always amend)
-* Basic fetch, pull and push
+* Open one or more repositories
 * Refresh view
-* Modify a commit message
-* Begin rebase on a commit, continue and abort rebase
-* Reset on a commit
-* Save and pop stash (no selectable stash yet)
-* Branch from a commit
-* Tag a commit
-* View diff with previous commit
-* View diff between any two commits
+* For repositories of type Git and Gerrit:
+  * Show repository status (clean, merge, rebase, ...)
+  * Show repository files as a flat list, colored according to status
+  * Show the branches and tags
+  * Show the branch log
+  * Show the graph as output by Git (might be graphical some day)
+  * Show the selected file's log
+  * Show the unstaged diffs in the selected item (folder or file)
+  * Show the output of the executed commands
+  * Change current branch
+  * Mark files as staged / unstaged
+  * Revert files
+  * Commit
+  * Amend (on interactive rebase, commit is always amend)
+  * Fetch, pull and push
+  * Modify a commit message
+  * Begin rebase on a commit, continue and abort rebase
+  * Reset on a commit
+  * Save and pop stash (no selectable stash yet)
+  * Branch from a commit
+  * Tag a commit
+  * View diff with previous commit
+  * View diff between any two commits
+* For repositories of type Mercurial:
+  * Show the branches
+  * Show repository files as a flat list, colored according to status
+  * Mark files as staged / unstaged
+  * Show the branch log
+  * Show the selected file's log
+  * Commit
+  * Branch from a commit
+* For repositories of type SVN:
+  * Nothing yet
 
 ## Classes
 
@@ -123,7 +134,7 @@ It is however not meant to compete with paywares, just provide minimal versionin
 ### CHGCommands
 
 * Inherits CCommands
-* Will implement Mercurial versioning commands
+* Partially implements Mercurial versioning commands
 
 ### CLogModel
 
