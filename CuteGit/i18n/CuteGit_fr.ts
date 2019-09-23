@@ -138,6 +138,10 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
         <source>Pulling...</source>
         <translation>Synchro entrante...</translation>
     </message>
+    <message>
+        <source>Creating branch %1...</source>
+        <translation>Création de la branche %1...</translation>
+    </message>
 </context>
 <context>
     <name>Calendar</name>
@@ -737,6 +741,21 @@ Vues de journaux
     <message>
         <source>Select patch to apply</source>
         <translation>Sélectionner rustine à appliquer</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <translation>Tri</translation>
+    </message>
+</context>
+<context>
+    <name>FilePane</name>
+    <message>
+        <source>Full name</source>
+        <translation>Nom complet</translation>
+    </message>
+    <message>
+        <source>File name</source>
+        <translation>Nom de fichier</translation>
     </message>
 </context>
 <context>
