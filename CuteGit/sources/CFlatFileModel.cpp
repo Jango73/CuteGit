@@ -149,8 +149,8 @@ void CFlatFileModel::handleRepoFilesChanged()
         {
             beginRemoveRows(QModelIndex(), iExistingFileIndex, iExistingFileIndex);
 
-            m_lRepoFiles.removeItem(sExistingKey);
             delete m_lRepoFiles[iExistingFileIndex];
+            m_lRepoFiles.removeItem(sExistingKey);
 
             endRemoveRows();
 

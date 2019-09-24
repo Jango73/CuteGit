@@ -63,17 +63,9 @@ Item {
                 }
             }
 
-            onPressed: {
-                root.pressed(mouse)
-            }
-
-            onEntered: {
-                root.entered(mouse)
-            }
-
-            onExited: {
-                root.exited(mouse)
-            }
+            onPressed: root.pressed(mouse)
+            onEntered: root.entered(mouse)
+            onExited: root.exited(mouse)
         }
 
         Item {
