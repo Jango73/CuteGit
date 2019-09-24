@@ -24,8 +24,9 @@ public:
     // QML properties
     //-------------------------------------------------------------------------------------------------
 
-    Q_FAST_PROPERTY(QString, s, text, Text)
     Q_FAST_PROPERTY(CEnums::EDiffOperation, e, operation, Operation)
+    Q_FAST_PROPERTY(QString, s, text, Text)
+    Q_FAST_PROPERTY(QString, s, commitId, CommitId)
 
 public:
 

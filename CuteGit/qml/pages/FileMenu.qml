@@ -11,6 +11,7 @@ Menu {
     property string name: ""
 
     signal requestDelete(var name)
+    signal requestBlame(var name)
 
     Action {
         text: Const.fileDeleteMenuText
@@ -18,6 +19,16 @@ Menu {
         onTriggered: {
             if (root.name !== "") {
                 root.requestDelete(root.name)
+            }
+        }
+    }
+
+    Action {
+        text: Const.fileBlameMenuText
+
+        onTriggered: {
+            if (root.name !== "") {
+                root.requestBlame(root.name)
             }
         }
     }

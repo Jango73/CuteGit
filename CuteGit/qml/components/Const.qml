@@ -99,6 +99,7 @@ Item {
     property string languageMenuText: qsTr("&Language")
 
     property string fileDeleteMenuText: qsTr("&Delete")
+    property string fileBlameMenuText: qsTr("&Blame")
 
     property string logCopyCommitIdMenuText: qsTr("&Copy commit ID")
     property string logCopyCommitMessageMenuText: qsTr("Copy commit m&essage")
@@ -130,6 +131,7 @@ Item {
     property string graphText: qsTr("Graph")
     property string amendText: qsTr("Amend")
     property string fetchText: qsTr("Fetch")
+    property string blameText: qsTr("Blame")
     property string filterText: qsTr("Filter")
     property string revertText: qsTr("Revert")
     property string cancelText: qsTr("Cancel")

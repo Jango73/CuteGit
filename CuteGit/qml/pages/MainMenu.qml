@@ -373,7 +373,7 @@ MenuBar {
                 MenuItem {
                     text: model.display
                     checkable: true
-                    checked: root.language === model.display
+                    checked: root.controller.language === model.display
                     onClicked: root.controller.language = model.display
                 }
 

@@ -58,6 +58,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pGraphModel(new CGraphModel(this, this))
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileDiffModelProxy(new CDiffModelProxy(this))
+    , m_pFileBlameModel(new CDiffModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_iCommitCountAhead(0)
     , m_iCommitCountBehind(0)
@@ -480,7 +481,14 @@ void CRepository::commitDiffPrevious(const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::setFileNameFilter(const QString& sText)
+void CRepository::blame(QString sFullName)
+{
+    m_pCommands->blame(m_sRepositoryPath, sFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::setFileFilter(const QString& sText)
 {
     m_pFlatFileModelProxy->setNameFilter(sText);
     m_pFlatFileModelProxy->filterChanged();
@@ -491,6 +499,15 @@ void CRepository::setFileNameFilter(const QString& sText)
 void CRepository::setFileSortField(CEnums::ESortField eField)
 {
     m_pFlatFileModelProxy->setSortField(eField);
+    m_pFlatFileModelProxy->sort(0);
+    m_pFlatFileModelProxy->filterChanged();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::setFileSortDirection(bool bDirection)
+{
+    m_pFlatFileModelProxy->setSortDirection(bDirection);
     m_pFlatFileModelProxy->sort(0);
     m_pFlatFileModelProxy->filterChanged();
 }
@@ -515,6 +532,7 @@ void CRepository::setBranchLogFilter(const QString& sText)
 
 CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& sPath)
 {
+    // Check for Git and Gerrit repository
     if (QDir(QString("%1/.git").arg(sPath)).exists())
     {
         QString sCommitMsgFile = QString("%1/.git/hooks/commit-msg").arg(sPath);
@@ -526,16 +544,22 @@ CEnums::ERepositoryType CRepository::getRepositoryTypeFromFolder(const QString& 
         return CEnums::Git;
     }
 
+    // Check for SVN repository
     if (QDir(QString("%1/.svn").arg(sPath)).exists())
     {
         return CEnums::SVN;
     }
 
+    // Check for Mercurial repository
     if (QDir(QString("%1/.hg").arg(sPath)).exists())
     {
         return CEnums::HG;
     }
 
+    // Check for CVS repository
+    // TODO
+
+    // Don't know about this repository
     return CEnums::UnknownRepositoryType;
 }
 
@@ -921,6 +945,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, C
             bool bHasModifiedFiles = false;
             bool bHasCommitableFiles = false;
 
+            // Browse every file in lNewFiles and add/update
             for (CRepoFile* pNewFile : lNewFiles)
             {
                 QString sNewKey = pNewFile->fullName();
@@ -933,6 +958,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, C
                         bHasCommitableFiles = true;
                 }
 
+                // Delete any existing item using sNewKey
                 if (m_lRepoFiles.containsKey(sNewKey))
                 {
                     CRepoFile* pExistingFile = m_lRepoFiles.itemByKey(sNewKey);
@@ -940,6 +966,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, C
                     delete pExistingFile;
                 }
 
+                // Add new item
                 m_lRepoFiles.addItem(sNewKey, pNewFile);
             }
 
@@ -1031,6 +1058,12 @@ void CRepository::onNewOutputListOfCDiffLine(CEnums::EProcessCommand eCommand, Q
     case CEnums::eTwoCommitDiff:
     {
         m_pFileDiffModel->setLines(lNewLines);
+        break;
+    }
+
+    case CEnums::eBlame:
+    {
+        m_pFileBlameModel->setLines(lNewLines);
         break;
     }
 

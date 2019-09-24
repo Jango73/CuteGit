@@ -133,6 +133,9 @@ public:
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName) override;
 
     //!
+    virtual void blame(const QString& sPath, const QString& sFullName) override;
+
+    //!
     virtual void commitDiffPrevious(const QString& sPath, const QString& sCommitId) override;
 
     //!
@@ -214,6 +217,7 @@ protected:
     static const QString sCommandAbortMerge;
     static const QString sCommandAbortRebase;
     static const QString sCommandAmend;
+    static const QString sCommandBlame;
     static const QString sCommandBranchAhead;
     static const QString sCommandBranches;
     static const QString sCommandBranchFromCommit;

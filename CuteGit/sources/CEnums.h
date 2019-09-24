@@ -56,7 +56,8 @@ public:
         ContinueRebase,
         AbortRebase,
         CreatePatch,
-        ApplyPatch
+        ApplyPatch,
+        Blame
     };
 
     // Type of versioning system
@@ -161,7 +162,8 @@ public:
         eContinueRebase,
         eAbortRebase,
         ePatchCreate,
-        ePatchApply
+        ePatchApply,
+        eBlame
     };
 
     // Status of a file in repository

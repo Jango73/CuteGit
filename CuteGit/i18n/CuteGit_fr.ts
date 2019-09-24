@@ -746,6 +746,14 @@ Vues de journaux
         <source>Sort</source>
         <translation>Tri</translation>
     </message>
+    <message>
+        <source>&amp;Blame</source>
+        <translation>&amp;Blâmer</translation>
+    </message>
+    <message>
+        <source>Blame</source>
+        <translation>Blâmer</translation>
+    </message>
 </context>
 <context>
     <name>FilePane</name>

@@ -29,6 +29,11 @@ ExtendablePane {
                 width: implicitWidth
                 text: Const.logText
             }
+
+            TabButton {
+                width: implicitWidth
+                text: Const.blameText
+            }
         },
 
         SwipeView {
@@ -58,11 +63,23 @@ ExtendablePane {
                 onRequestCommitDiffFrom: root.requestCommitDiffFrom(commitId)
                 onRequestCommitDiffTo: root.requestCommitDiffTo(commitId)
             }
+
+            BlameView {
+                id: blameView
+                repository: root.repository
+
+//                onRequestTextFilter: root.repository.setFileDiffFilter(text)
+            }
         }
     ]
 
     function activateFileDiffView() {
         tabBar.currentIndex = 0
         diffView.forceActiveFocus()
+    }
+
+    function activateFileBlameView() {
+        tabBar.currentIndex = 2
+        blameView.forceActiveFocus()
     }
 }

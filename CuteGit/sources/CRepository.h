@@ -77,6 +77,9 @@ public:
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
     Q_FAST_PROPERTY(CDiffModelProxy*, p, fileDiffModelProxy, FileDiffModelProxy)
 
+    // Model for the blame view
+    Q_FAST_PROPERTY(CDiffModel*, p, fileBlameModel, FileBlameModel)
+
     // Output of commands
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
 
@@ -230,11 +233,17 @@ public:
     //! View diff with previous commit
     Q_INVOKABLE void commitDiffPrevious(const QString& sCommitId);
 
+    //! Squashes a commit
+    Q_INVOKABLE void blame(QString sFullName);
+
     //! Sets the file filter
-    Q_INVOKABLE void setFileNameFilter(const QString& sText);
+    Q_INVOKABLE void setFileFilter(const QString& sText);
 
     //! Sets the file sort field
     Q_INVOKABLE void setFileSortField(CEnums::ESortField eField);
+
+    //! Sets the file sort direction
+    Q_INVOKABLE void setFileSortDirection(bool bDirection);
 
     //! Sets the diff filter
     Q_INVOKABLE void setFileDiffFilter(const QString& sText);

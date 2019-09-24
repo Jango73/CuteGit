@@ -35,6 +35,7 @@ const int CGitCommands::iGraphFormatValueCount          = 5;
 const QString CGitCommands::sCommandAbortMerge          = "git merge --abort";
 const QString CGitCommands::sCommandAbortRebase         = "git rebase --abort";
 const QString CGitCommands::sCommandAmend               = "git commit --amend --reset-author --no-edit";
+const QString CGitCommands::sCommandBlame               = "git annotate \"%1\"";
 const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count \"%1\"...\"origin/%1\"";
 const QString CGitCommands::sCommandBranches            = "git branch -a";
 const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\" \"%2\"";
@@ -402,6 +403,14 @@ void CGitCommands::unstagedFileDiff(const QString& sPath, const QString& sFullNa
 {
     QString sCommand = QString(sCommandUnstagedDiff).arg(sFullName);
     exec(new CProcessCommand(CEnums::eUnstagedFileDiff, sPath, sCommand));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::blame(const QString& sPath, const QString& sFullName)
+{
+    QString sCommand = QString(sCommandBlame).arg(sFullName);
+    exec(new CProcessCommand(CEnums::eBlame, sPath, sCommand));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -896,6 +905,36 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
                     lReturnValue << pDiffLine;
                 }
+            }
+        }
+
+        if (not bAtLeastOneLineOK)
+        {
+            qDeleteAll(lReturnValue);
+            lReturnValue.clear();
+        }
+
+        emit newOutputListOfCDiffLine(eCommand, lReturnValue);
+        break;
+    }
+
+    case CEnums::eBlame:
+    {
+        QList<CDiffLine*> lReturnValue;
+        QStringList lLines = sValue.split(NEW_LINE);
+        bool bAtLeastOneLineOK = false;
+
+        for (QString sLine : lLines)
+        {
+            QString sTrimmedLine = sLine.trimmed();
+
+            if (not sTrimmedLine.isEmpty())
+            {
+                bAtLeastOneLineOK = true;
+
+                CDiffLine* pDiffLine = new CDiffLine();
+                pDiffLine->setText(sLine);
+                lReturnValue << pDiffLine;
             }
         }
 

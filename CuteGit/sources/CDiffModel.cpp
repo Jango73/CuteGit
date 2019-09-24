@@ -36,8 +36,9 @@ void CDiffModel::setLines(QList<CDiffLine*> lNewLines)
 QHash<int, QByteArray> CDiffModel::roleNames() const
 {
     QHash<int, QByteArray> hRoleNames;
-    hRoleNames[eTextRole] = "text";
     hRoleNames[eOperationRole] = "operation";
+    hRoleNames[eTextRole] = "text";
+    hRoleNames[eCommitIdRole] = "commitId";
     return hRoleNames;
 }
 
@@ -64,11 +65,14 @@ QVariant CDiffModel::data(const QModelIndex& index, int role) const
 
     switch (role)
     {
+    case eOperationRole:
+        return m_lLines[row]->operation();
+
     case eTextRole:
         return m_lLines[row]->text();
 
-    case eOperationRole:
-        return m_lLines[row]->operation();
+    case eCommitIdRole:
+        return m_lLines[row]->commitId();
     }
 
     return QVariant();

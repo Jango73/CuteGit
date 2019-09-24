@@ -24,6 +24,7 @@
         <file>qml/components/StandardPane.qml</file>
         <file>qml/components/StandardPopup.qml</file>
         <file>qml/components/StandardStringListView.qml</file>
+        <file>qml/components/StandardSortFilter.qml</file>
         <file>qml/components/StandardText.qml</file>
         <file>qml/components/StandardTextEdit.qml</file>
         <file>qml/components/StandardTextField.qml</file>
@@ -48,6 +49,7 @@
         <file>qml/pages/ToolPane.qml</file>
 
         <file>qml/views/DiffView.qml</file>
+        <file>qml/views/BlameView.qml</file>
         <file>qml/views/FlatFileView.qml</file>
         <file>qml/views/GraphView.qml</file>
         <file>qml/views/LogView.qml</file>

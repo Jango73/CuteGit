@@ -12,8 +12,8 @@
 CFlatFileModelProxy::CFlatFileModelProxy(CController* pController, QObject *parent)
     : QSortFilterProxyModel(parent)
     , m_pController(pController)
-    , m_bSortOrder(false)
     , m_eSortField(CEnums::SortFullName)
+    , m_bSortDirection(false)
 {
 }
 
@@ -22,7 +22,6 @@ CFlatFileModelProxy::CFlatFileModelProxy(CController* pController, QObject *pare
 void CFlatFileModelProxy::filterChanged()
 {
     invalidateFilter();
-    invalidate();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -80,13 +79,13 @@ bool CFlatFileModelProxy::lessThan(const QModelIndex& left, const QModelIndex& r
     {
         QString leftName = sourceModel()->data(left, CFlatFileModel::eFileNameRole).toString();
         QString rightName = sourceModel()->data(right, CFlatFileModel::eFileNameRole).toString();
-        return leftName < rightName;
+        return m_bSortDirection ? leftName > rightName : leftName < rightName;
     }
     case CEnums::SortFullName:
     {
         QString leftName = sourceModel()->data(left, CFlatFileModel::eFullNameRole).toString();
         QString rightName = sourceModel()->data(right, CFlatFileModel::eFullNameRole).toString();
-        return leftName < rightName;
+        return m_bSortDirection ? leftName > rightName : leftName < rightName;
     }
     }
 

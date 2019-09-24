@@ -5,6 +5,7 @@
 #include <QObject>
 
 // Application
+#include "CEnums.h"
 #include "CExecution.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -118,6 +119,9 @@ public:
 
     //!
     virtual void unstagedFileDiff(const QString& sPath, const QString& sFullName);
+
+    //!
+    virtual void blame(const QString& sPath, const QString& sFullName);
 
     //!
     virtual void commitDiffPrevious(const QString& sPath, const QString& sCommitId);

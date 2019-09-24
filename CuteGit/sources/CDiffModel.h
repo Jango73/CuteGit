@@ -17,8 +17,9 @@ public:
 
     enum ERoles
     {
-        eTextRole = Qt::UserRole + 1,
-        eOperationRole,
+        eOperationRole = Qt::UserRole + 1,
+        eTextRole,
+        eCommitIdRole
     };
 
     //-------------------------------------------------------------------------------------------------

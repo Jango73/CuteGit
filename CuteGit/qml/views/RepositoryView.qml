@@ -121,8 +121,9 @@ Pane {
             }
 
             onRequestDeleteFile: root.requestDeleteFile(name)
-            onRequestFileFilter: root.repository.setFileNameFilter(text)
+            onRequestFileFilter: root.repository.setFileFilter(text)
             onRequestFileSortField: root.repository.setFileSortField(field)
+            onRequestFileSortDirection: root.repository.setFileSortDirection(direction)
         }
 
         ToolPane {
@@ -300,9 +301,8 @@ Pane {
         id: fileMenu
         repository: root.repository
 
-        onRequestDelete: {
-            root.requestDeleteFile(name)
-        }
+        onRequestDelete: root.requestDeleteFile(name)
+        onRequestBlame: root.requestBlameFile(name)
     }
 
     //--------------------------------------------------------------------------------
@@ -376,6 +376,11 @@ Pane {
         confirm.actionOnAccept = deleteFileAction
         confirm.actionOnReject = null
         confirm.open()
+    }
+
+    function requestBlameFile(name) {
+        root.repository.blame(name)
+        root.activateFileBlameView()
     }
 
     function requestRefresh() {
@@ -480,5 +485,9 @@ Pane {
 
     function activateFileDiffView() {
         toolPane.activateFileDiffView()
+    }
+
+    function activateFileBlameView() {
+        toolPane.activateFileBlameView()
     }
 }
