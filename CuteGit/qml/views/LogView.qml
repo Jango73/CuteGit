@@ -25,7 +25,7 @@ StandardListView {
     signal requestCommitDiffTo(var commitId)
 
     function isValidDate(d) {
-      return d instanceof Date && !isNaN(d);
+        return d instanceof Date && !isNaN(d);
     }
 
     delegate: StandardListViewItem {

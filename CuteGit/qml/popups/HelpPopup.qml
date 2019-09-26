@@ -33,11 +33,10 @@ StandardPopup {
             }
         },
 
-        SwipeView {
+        StandardTabView {
             id: swipeView
             width: parent.width
             height: Const.elementHeight * 20
-            interactive: false
             clip: true
             currentIndex: tabBar.currentIndex
 

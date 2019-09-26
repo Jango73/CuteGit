@@ -15,16 +15,29 @@ Item {
     signal requestCommitDiffTo(var commitId)
 
     StandardLabel {
-        anchors.fill: parent
+        anchors.fill: logView
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         text: Const.listEmptyText
         visible: root.repository === null | logView.count === 0
     }
 
+    StandardLabel {
+        id: logSource
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        text: root.repository ? root.repository.fileLogModel.relativeSourceName : undefined
+    }
+
     LogView {
         id: logView
-        anchors.fill: parent
+        anchors.top: logSource.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         model: root.repository ? root.repository.fileLogModel : undefined
         diffFromCommitId: root.repository ? root.repository.diffFromCommitId : ""

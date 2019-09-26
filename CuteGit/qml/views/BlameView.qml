@@ -11,10 +11,28 @@ Item {
 
     signal requestTextFilter(var text)
 
+    StandardLabel {
+        anchors.fill: list
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        text: Const.listEmptyText
+        visible: root.repository === null | list.count === 0
+    }
+
+    StandardLabel {
+        id: source
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        text: root.repository ? root.repository.fileBlameModel.relativeSourceName : undefined
+    }
+
     StandardTextFilter {
         id: filter
         objectName: "filter"
-        anchors.top: parent.top
+        anchors.top: source.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         text: Const.filterText
@@ -23,14 +41,6 @@ Item {
         onFilterTextChanged: {
             root.requestTextFilter(text)
         }
-    }
-
-    StandardLabel {
-        anchors.fill: list
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        text: Const.listEmptyText
-        visible: root.repository === null | list.count === 0
     }
 
     StandardListView {

@@ -36,18 +36,17 @@ ExtendablePane {
             }
         },
 
-        SwipeView {
+        StandardTabView {
             id: swipeView
             anchors.top: tabBar.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: Const.smallPadding
-            interactive: false
             currentIndex: tabBar.currentIndex
             clip: true
 
-            DiffView {
+            FileDiffPane{
                 id: diffView
                 repository: root.repository
 

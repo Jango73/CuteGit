@@ -90,12 +90,11 @@ Item {
     property string showUntrackedMenuText: qsTr("Show &untracked")
     property string showIgnoredMenuText: qsTr("Show &ignored")
 
+    property string optionsMenuText: qsTr("&Options")
+    property string helpMenuText: qsTr("&Help")
     property string themeMenuText: qsTr("&Theme")
     property string darkThemeMenuText: qsTr("Dark")
     property string lightThemeMenuText: qsTr("Light")
-
-    property string optionsMenuText: qsTr("&Options")
-    property string aboutMenuText: qsTr("&About and shortcuts")
     property string languageMenuText: qsTr("&Language")
 
     property string fileDeleteMenuText: qsTr("&Delete")

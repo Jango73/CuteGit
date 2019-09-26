@@ -4,57 +4,24 @@ import QtQuick.Controls.Material 2.12
 import CuteGit 1.0
 import "../components"
 
-Item {
+StandardListView {
     id: root
+    itemsSelectable: false
 
-    property variant repository: null
+    delegate: StandardListViewItem {
+        width: parent.width
+        listView: parent
+        primaryText: model.text
+        primaryTextColor: model.operation === CEnums.DiffFileName ? Material.background : Material.foreground
+        selectionShown: false
+        focusShown: false
 
-    signal requestTextFilter(var text)
-
-    StandardTextFilter {
-        id: filter
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        text: Const.filterText
-
-        onFilterTextChanged: {
-            root.requestTextFilter(text)
-        }
-    }
-
-    StandardLabel {
-        anchors.fill: list
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        text: Const.listEmptyText
-        visible: root.repository === null | list.count === 0
-    }
-
-    StandardListView {
-        id: list
-        anchors.top: filter.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        itemsSelectable: false
-        model: root.repository !== null ? root.repository.fileDiffModelProxy : undefined
-
-        delegate: StandardListViewItem {
-            width: parent.width
-            listView: parent
-            primaryText: model.text
-            primaryTextColor: model.operation === CEnums.DiffFileName ? Material.background : Material.foreground
-            selectionShown: false
-            focusShown: false
-
-            background: Rectangle {
-                anchors.fill: parent
-                color: if (model.operation === CEnums.DiffAdd) Const.fileStagedColor
-                       else if (model.operation === CEnums.DiffDelete) Const.fileModifiedColor
-                       else if (model.operation === CEnums.DiffFileName) Material.accent
-                       else Const.transparent
-            }
+        background: Rectangle {
+            anchors.fill: parent
+            color: if (model.operation === CEnums.DiffAdd) Const.fileStagedColor
+                   else if (model.operation === CEnums.DiffDelete) Const.fileModifiedColor
+                   else if (model.operation === CEnums.DiffFileName) Material.accent
+                   else Const.transparent
         }
     }
 }

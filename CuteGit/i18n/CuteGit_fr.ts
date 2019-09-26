@@ -525,10 +525,6 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
         <translation>Lumineux</translation>
     </message>
     <message>
-        <source>&amp;About and shortcuts</source>
-        <translation>&amp;A propos et raccourcis</translation>
-    </message>
-    <message>
         <source>&amp;Language</source>
         <translation>&amp;Langue</translation>
     </message>
@@ -773,6 +769,10 @@ Vues de journaux
     <message>
         <source>Amending. The changes will be appended to the last commit...</source>
         <translation>Amendement. Les changements seront ajoutés à la dernière validation...</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Aide</translation>
     </message>
 </context>
 <context>

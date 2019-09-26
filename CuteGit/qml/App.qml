@@ -173,14 +173,13 @@ ApplicationWindow {
             }
         }
 
-        SwipeView {
+        StandardTabView {
             id: mainSwipeView
             anchors.top: mainTabBar.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: Const.smallPadding
-            interactive: false
             currentIndex: mainTabBar.currentIndex
 
             Repeater {
@@ -292,7 +291,6 @@ ApplicationWindow {
     ClonePopup {
         id: cloneDialog
         anchors.centerIn: parent
-
         controller: root.ctrl
 
         onCloneBegins: statusTextHistory.open()
@@ -301,7 +299,6 @@ ApplicationWindow {
     HelpPopup {
         id: helpDialog
         anchors.centerIn: parent
-
         controller: root.ctrl
     }
 
@@ -309,7 +306,6 @@ ApplicationWindow {
         id: statusTextHistory
         anchors.centerIn: parent
         width: root.width * Const.popupWidthNorm
-
         title: Const.statusHistoryText
 
         controls: [

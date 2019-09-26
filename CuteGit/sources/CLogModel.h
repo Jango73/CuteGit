@@ -42,6 +42,8 @@ public:
 
     Q_FAST_PROPERTY(CRepository*, p, repository, Repository)
     Q_FAST_PROPERTY(int, i, potentialCount, PotentialCount)
+    Q_FAST_PROPERTY(QString, s, fullSourceName, FullSourceName)
+    Q_FAST_PROPERTY(QString, s, relativeSourceName, RelativeSourceName)
 
 public:
 

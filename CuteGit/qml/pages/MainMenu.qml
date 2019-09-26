@@ -341,7 +341,7 @@ MenuBar {
         title: Const.optionsMenuText
 
         Action {
-            text: Const.aboutMenuText
+            text: Const.helpMenuText
             onTriggered: root.requestHelp()
         }
 

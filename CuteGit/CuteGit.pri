@@ -68,3 +68,22 @@ RESOURCES += \
 TRANSLATIONS = \
     i18n/CuteGit_fr.ts \
     i18n/CuteGit_de.ts
+
+QT_LIB_NAMES = \
+    libicudata.so.56 \
+    libicui18n.so.56 \
+    libicuuc.so.56 \
+    libQt5Core.so.5 \
+    libQt5DBus.so.5 \
+    libQt5Gui.so.5 \
+    libQt5Network.so.5 \
+    libQt5OpenGL.so.5 \
+    libQt5Qml.so.5 \
+    libQt5Quick.so.5 \
+    libQt5QuickControls2.so.5 \
+    libQt5QuickTemplates2.so.5 \
+    libQt5QuickWidgets.so.5 \
+    libQt5Svg.so.5 \
+    libQt5Widgets.so.5 \
+    libQt5XcbQpa.so.5 \
+    libQt5Xml.so.5

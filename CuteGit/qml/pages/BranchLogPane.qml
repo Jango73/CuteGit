@@ -42,14 +42,13 @@ ExtendablePane {
         }
     }
 
-    SwipeView {
+    StandardTabView {
         id: swipeView
         anchors.top: tabBar.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.topMargin: Const.smallPadding
-        interactive: false
         clip: true
         currentIndex: tabBar.currentIndex
 

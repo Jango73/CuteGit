@@ -235,7 +235,7 @@ public:
     Q_INVOKABLE void commitDiffPrevious(const QString& sCommitId);
 
     //! Squashes a commit
-    Q_INVOKABLE void blame(QString sFullName);
+    Q_INVOKABLE void blame(QString sFileFullName);
 
     //! Sets the file filter
     Q_INVOKABLE void setFileFilter(const QString& sText);
@@ -295,6 +295,9 @@ protected:
     //!
     void getRefLog(QString sPath = "");
 
+    //!
+    QString relativeFileName(const QString& sFullName);
+
     //-------------------------------------------------------------------------------------------------
     // Signals
     //-------------------------------------------------------------------------------------------------
@@ -350,12 +353,4 @@ protected slots:
 
     //!
     void onRequestFileLogData(int iStartIndex, int iCount);
-
-    //-------------------------------------------------------------------------------------------------
-    // Properties
-    //-------------------------------------------------------------------------------------------------
-
-protected:
-
-    QString m_sCurrentFileFullName;
 };

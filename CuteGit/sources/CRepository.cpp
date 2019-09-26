@@ -483,9 +483,12 @@ void CRepository::commitDiffPrevious(const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::blame(QString sFullName)
+void CRepository::blame(QString sFileFullName)
 {
-    m_pCommands->blame(m_sRepositoryPath, sFullName);
+    m_pFileBlameModel->setFullSourceName(sFileFullName);
+    m_pFileBlameModel->setRelativeSourceName(relativeFileName(sFileFullName));
+
+    m_pCommands->blame(m_sRepositoryPath, sFileFullName);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -699,17 +702,30 @@ void CRepository::getRefLog(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+QString CRepository::relativeFileName(const QString& sFullName)
+{
+    QDir dRoot(m_sRepositoryPath);
+    return dRoot.relativeFilePath(sFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::onCurrentFileFullName(QString sFileFullName)
 {
     m_pFileLogModel->clear();
     m_pFileLogModel->invalidate();
+    m_pFileLogModel->setFullSourceName("");
+    m_pFileLogModel->setRelativeSourceName("");
 
-    m_sCurrentFileFullName = sFileFullName;
-
-    if (not m_sCurrentFileFullName.isEmpty())
+    if (not sFileFullName.isEmpty())
     {
-        m_pCommands->unstagedFileDiff(m_sRepositoryPath, m_sCurrentFileFullName);
-        m_pCommands->fileLog(m_sRepositoryPath, m_sCurrentFileFullName);
+        m_pFileLogModel->setFullSourceName(sFileFullName);
+        m_pFileLogModel->setRelativeSourceName(relativeFileName(sFileFullName));
+        m_pFileDiffModel->setFullSourceName(sFileFullName);
+        m_pFileDiffModel->setRelativeSourceName(relativeFileName(sFileFullName));
+
+        m_pCommands->unstagedFileDiff(m_sRepositoryPath, sFileFullName);
+        m_pCommands->fileLog(m_sRepositoryPath, sFileFullName);
     }
 }
 
@@ -1171,8 +1187,8 @@ void CRepository::onRequestBranchLogData(int iStartIndex, int iCount)
 
 void CRepository::onRequestFileLogData(int iStartIndex, int iCount)
 {
-    if (not m_sCurrentFileFullName.isEmpty())
+    if (not m_pFileLogModel->fullSourceName().isEmpty())
     {
-        m_pCommands->fileLog(m_sRepositoryPath, m_sCurrentFileFullName, iStartIndex, iCount);
+        m_pCommands->fileLog(m_sRepositoryPath, m_pFileLogModel->fullSourceName(), iStartIndex, iCount);
     }
 }
