@@ -11,6 +11,7 @@ import "popups"
 
 ApplicationWindow {
     id: root
+    objectName: "ApplicationWindow"
     width: 1024
     height: 768
     visible: true
@@ -132,10 +133,12 @@ ApplicationWindow {
 
     Item {
         id: clientZone
+        objectName: "clientZone"
         anchors.fill: parent
 
         TabBar {
             id: mainTabBar
+            objectName: "mainTabBar"
             anchors.top: parent.top
 
             Action {
@@ -184,6 +187,7 @@ ApplicationWindow {
                 model: root.ctrl.openRepositoryModel
 
                 RepositoryView {
+                    objectName: "repositoryView." + index
                     repository: model.repository
                 }
             }
@@ -199,6 +203,7 @@ ApplicationWindow {
 
         RoundButton {
             id: magicButton
+            objectName: "magicButton"
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.bottomMargin: Const.mainPadding * 2
@@ -269,6 +274,7 @@ ApplicationWindow {
 
     footer: Item {
         id: statusBar
+        objectName: "statusBar"
         height: Const.elementHeight * 1.5
 
         RowLayout {
@@ -359,6 +365,14 @@ ApplicationWindow {
         }
     }
 
+    Shortcut {
+        sequence: "Alt+Shift+B"
+        onActivated: {
+            if (currentRepositoryView)
+                currentRepositoryView.activateFileBlameView()
+        }
+    }
+
     //--------------------------------------------------------------------------------
     // Functions
 
@@ -369,6 +383,8 @@ ApplicationWindow {
 
     //--------------------------------------------------------------------------------
     // Debug
+
+//    onActiveFocusItemChanged: print("activeFocusItem", activeFocusItem)
 
 //    ScatteredItemView {
 //        anchors.fill: parent

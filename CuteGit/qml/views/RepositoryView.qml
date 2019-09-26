@@ -22,6 +22,7 @@ Pane {
 
     StandardPane {
         id: repositoryStatus
+        objectName: "repositoryStatus"
         anchors.left: parent.left
         anchors.right: rightPart.left
         anchors.top: parent.top
@@ -29,6 +30,7 @@ Pane {
 
         Item {
             id: repositoryStatusTop
+            objectName: "repositoryStatusTop"
             width: parent.width
             height: parent.height * 0.5
 
@@ -76,11 +78,14 @@ Pane {
 
         StandardText {
             id: repositoryStatusBottom
+            objectName: "repositoryStatusBottom"
             width: parent.width
             anchors.top: repositoryStatusTop.bottom
             anchors.bottom: parent.bottom
             verticalAlignment: Text.AlignVCenter
-            text: root.repository ? root.repository.repositoryPath : ""
+            text: root.repository
+                  ? root.repository.repositoryPath + " - " + root.repository.currentBranch
+                  : ""
         }
     }
 
@@ -89,6 +94,7 @@ Pane {
 
     Item {
         id: centralPart
+        objectName: "centralPart"
         anchors.top: repositoryStatus.bottom
         anchors.bottom: bottomPart.top
         anchors.left: parent.left
@@ -96,6 +102,7 @@ Pane {
 
         ItemSelectionModel {
             id: flatFileSelection
+            objectName: "flatFileSelection"
             model: root.repository ? root.repository.flatFileModelProxy : null
 
             onCurrentIndexChanged: {
@@ -105,6 +112,7 @@ Pane {
 
         FilePane {
             id: filePane
+            objectName: "filePane"
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -128,6 +136,7 @@ Pane {
 
         ToolPane {
             id: toolPane
+            objectName: "toolPane"
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: filePane.right
@@ -151,6 +160,7 @@ Pane {
 
     Item {
         id: rightPart
+        objectName: "rightPart"
         anchors.top: parent.top
         anchors.bottom: bottomPart.top
         anchors.right: parent.right
@@ -158,6 +168,7 @@ Pane {
 
         BranchPane {
             id: branchPane
+            objectName: "branchPane"
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -199,6 +210,7 @@ Pane {
 
     Item {
         id: bottomPart
+        objectName: "bottomPart"
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -206,6 +218,7 @@ Pane {
 
         BranchLogPane {
             id: branchLogPane
+            objectName: "branchLogPane"
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -231,6 +244,7 @@ Pane {
 
         OutputPane {
             id: outputPane
+            objectName: "outputPane"
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: branchLogPane.right
@@ -247,6 +261,7 @@ Pane {
 
     LogMenu {
         id: logMenu
+        objectName: "logMenu"
         repository: root.repository
 
         onRequestCopyText: {
@@ -299,6 +314,7 @@ Pane {
 
     FileMenu {
         id: fileMenu
+        objectName: "fileMenu"
         repository: root.repository
 
         onRequestDelete: root.requestDeleteFile(name)
@@ -310,11 +326,13 @@ Pane {
 
     ConfirmPopup {
         id: confirm
+        objectName: "confirm"
         anchors.centerIn: parent
     }
 
     CommitPopup {
         id: commit
+        objectName: "commit"
         anchors.centerIn: parent
 
         repository: root.repository
@@ -322,6 +340,7 @@ Pane {
 
     TagOnPopup {
         id: tagOn
+        objectName: "tagOn"
         anchors.centerIn: parent
 
         repository: root.repository
@@ -329,6 +348,7 @@ Pane {
 
     BranchFromPopup {
         id: branchFrom
+        objectName: "branchFrom"
         anchors.centerIn: parent
 
         repository: root.repository
@@ -336,6 +356,7 @@ Pane {
 
     FileDialog {
         id: fileDialog
+        objectName: "fileDialog"
 
         property Action actionOnAccept: null
         property Action actionOnReject: null

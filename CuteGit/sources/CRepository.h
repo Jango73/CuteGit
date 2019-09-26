@@ -72,6 +72,7 @@ public:
     Q_FAST_PROPERTY(CLogModelProxy*, p, branchLogModelProxy, BranchLogModelProxy)
     Q_FAST_PROPERTY(CLogModel*, p, fileLogModel, FileLogModel)
     Q_FAST_PROPERTY(CGraphModel*, p, graphModel, GraphModel)
+    Q_FAST_PROPERTY(CLogModel*, p, refLogModel, RefLogModel)
 
     // Model for the diff view
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
@@ -290,6 +291,9 @@ protected:
 
     //!
     void getBranchLog(QString sPath = "");
+
+    //!
+    void getRefLog(QString sPath = "");
 
     //-------------------------------------------------------------------------------------------------
     // Signals

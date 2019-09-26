@@ -56,6 +56,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pBranchLogModelProxy(new CLogModelProxy(this, this))
     , m_pFileLogModel(new CLogModel(this, this))
     , m_pGraphModel(new CGraphModel(this, this))
+    , m_pRefLogModel(new CLogModel(this, this))
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileDiffModelProxy(new CDiffModelProxy(this))
     , m_pFileBlameModel(new CDiffModel(this))
@@ -264,6 +265,7 @@ void CRepository::refresh()
     getTags();
     getBranchLog();
     getGraph();
+    getRefLog();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -684,6 +686,19 @@ void CRepository::getBranchLog(QString sPath)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::getRefLog(QString sPath)
+{
+    if (sPath.isEmpty())
+        sPath = m_sRepositoryPath;
+
+    m_pRefLogModel->clear();
+    m_pRefLogModel->invalidate();
+
+    m_pCommands->refLog(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::onCurrentFileFullName(QString sFileFullName)
 {
     m_pFileLogModel->clear();
@@ -1050,6 +1065,12 @@ void CRepository::onNewOutputCLogLineCollection(CEnums::EProcessCommand eCommand
     case CEnums::eFileLog:
     {
         m_pFileLogModel->setLines(lNewLines);
+        break;
+    }
+
+    case CEnums::eRefLog:
+    {
+        m_pRefLogModel->setLines(lNewLines);
         break;
     }
 

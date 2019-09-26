@@ -80,6 +80,9 @@ public:
     //! Creates a list of CLogLine from the repo at sPath, for sFullName
     virtual void fileLog(const QString& sPath, const QString& sFullName, int iFrom = 0, int iCount = LOG_COUNT_DEFAULT);
 
+    //! Creates a list of CLogLine from the repo at sPath, for the ref log
+    virtual void refLog(const QString& sPath, int iFrom = 0, int iCount = REF_LOG_COUNT_DEFAULT);
+
     //! Toggles the 'staged' state of sFullName in the repo at sPath
     virtual void toggleStaged(const QString& sPath, const QString& sFullName);
 

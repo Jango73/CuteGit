@@ -26,6 +26,8 @@ StandardPopup {
             action: Action {
                 id: okButton
                 text: Const.okText
+                shortcut: StandardKey.Close
+
                 onTriggered: {
                     root.close()
 
@@ -39,6 +41,7 @@ StandardPopup {
             action: Action {
                 id: cancelButton
                 text: Const.cancelText
+
                 onTriggered: {
                     root.close()
 

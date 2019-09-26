@@ -36,112 +36,112 @@ Please select a folder containing a repository.</source>
 <context>
     <name>CGitCommands</name>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="316"/>
+        <location filename="../sources/CGitCommands.cpp" line="328"/>
         <source>Staging all files...</source>
         <translation>Alle Dateien bereitstellen ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="316"/>
+        <location filename="../sources/CGitCommands.cpp" line="328"/>
         <source>Unstaging all files...</source>
         <translation>Staging aller Dateien wird aufgehoben ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="325"/>
+        <location filename="../sources/CGitCommands.cpp" line="337"/>
         <source>Reverting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="334"/>
+        <location filename="../sources/CGitCommands.cpp" line="346"/>
         <source>Commiting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="343"/>
+        <location filename="../sources/CGitCommands.cpp" line="355"/>
         <source>Amending...</source>
         <translation>Änderung ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="352"/>
+        <location filename="../sources/CGitCommands.cpp" line="364"/>
         <source>Pushing...</source>
         <translation>Schieben ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="361"/>
+        <location filename="../sources/CGitCommands.cpp" line="373"/>
         <source>Pulling...</source>
         <translation>Ziehen ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="370"/>
+        <location filename="../sources/CGitCommands.cpp" line="382"/>
         <source>Fetching...</source>
         <translation>Abrufen ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="379"/>
+        <location filename="../sources/CGitCommands.cpp" line="391"/>
         <source>Saving stash...</source>
         <translation>Versteck wird gespeichert ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="387"/>
+        <location filename="../sources/CGitCommands.cpp" line="399"/>
         <source>Restoring stash...</source>
         <translation>Versteck wird wiederhergestellt ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="395"/>
+        <location filename="../sources/CGitCommands.cpp" line="407"/>
         <source>Applying patch...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="436"/>
+        <location filename="../sources/CGitCommands.cpp" line="448"/>
         <source>Switching to %1...</source>
         <translation>Wechsel zu %1 ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="447"/>
+        <location filename="../sources/CGitCommands.cpp" line="459"/>
         <source>Doing reset on %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="457"/>
+        <location filename="../sources/CGitCommands.cpp" line="469"/>
         <source>Doing rebase on %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="477"/>
+        <location filename="../sources/CGitCommands.cpp" line="489"/>
         <source>Squashing %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="497"/>
+        <location filename="../sources/CGitCommands.cpp" line="509"/>
         <source>Changing commit message...</source>
         <translation>Commit-Nachricht ändern ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="517"/>
+        <location filename="../sources/CGitCommands.cpp" line="529"/>
         <source>Continuing rebase...</source>
         <translation>Mit Rebase weitermachen ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="526"/>
+        <location filename="../sources/CGitCommands.cpp" line="538"/>
         <source>Aborting rebase...</source>
         <translation>Rebase wird abgebrochen ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="535"/>
+        <location filename="../sources/CGitCommands.cpp" line="547"/>
         <source>Creating branch %1...</source>
         <translation>%1 Branch wird erstellt ...</translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="544"/>
+        <location filename="../sources/CGitCommands.cpp" line="556"/>
         <source>Merging branch %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="553"/>
+        <location filename="../sources/CGitCommands.cpp" line="565"/>
         <source>Deleting branch %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sources/CGitCommands.cpp" line="562"/>
+        <location filename="../sources/CGitCommands.cpp" line="574"/>
         <source>Creating tag %1...</source>
         <translation>Tag %1 wird erstellt ...</translation>
     </message>
@@ -536,7 +536,7 @@ Please select a folder containing a repository.</source>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="132"/>
-        <location filename="../qml/components/Const.qml" line="263"/>
+        <location filename="../qml/components/Const.qml" line="266"/>
         <source>Amend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -547,219 +547,229 @@ Please select a folder containing a repository.</source>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="135"/>
-        <source>Filter</source>
+        <source>Local</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="136"/>
-        <source>Revert</source>
+        <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="137"/>
-        <source>Cancel</source>
+        <source>Revert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="138"/>
-        <source>Output</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="139"/>
-        <source>Browse</source>
+        <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="140"/>
-        <source>Delete</source>
+        <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="141"/>
-        <location filename="../qml/components/Const.qml" line="262"/>
-        <source>Commit</source>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="142"/>
-        <source>Message</source>
+        <location filename="../qml/components/Const.qml" line="265"/>
+        <source>Commit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="143"/>
-        <source>Loading...</source>
+        <source>Remote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="144"/>
-        <source>General</source>
+        <source>Ref log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="145"/>
-        <source>Branches</source>
+        <source>Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="146"/>
-        <source>Switch to</source>
+        <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="147"/>
-        <source>Amending...</source>
-        <translation type="unfinished">Änderung ...</translation>
+        <source>General</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="148"/>
-        <source>Shortcuts</source>
+        <source>Branches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="149"/>
-        <source>Branch log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="150"/>
-        <source>Help</source>
+        <source>Switch to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="151"/>
-        <source>List empty</source>
+        <source>Shortcuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="152"/>
-        <source>Expand all</source>
+        <source>Branch log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="153"/>
-        <source>Delete file</source>
+        <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="154"/>
-        <source>Branch from</source>
+        <source>List empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="155"/>
-        <source>Collapse all</source>
+        <source>Expand all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="156"/>
-        <source>Merge branch</source>
+        <source>Delete file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="157"/>
-        <source>Delete branch</source>
+        <source>Branch from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="158"/>
-        <source>Repositories</source>
+        <source>Collapse all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="159"/>
-        <source>Repository URL</source>
+        <source>Merge branch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="160"/>
-        <source>Status history</source>
+        <source>Delete branch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="161"/>
-        <source>Merge in progress...</source>
+        <source>Repositories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="162"/>
-        <source>All files are clean</source>
+        <source>Repository URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="163"/>
-        <source>Rebase in progress...</source>
+        <source>Status history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="164"/>
-        <source>Clone repository</source>
+        <source>Merge in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="165"/>
-        <source>Enter your message here...</source>
+        <source>All files are clean</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="166"/>
-        <source>Destination folder</source>
+        <source>Rebase in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="167"/>
-        <source>Select patch to apply</source>
+        <source>Clone repository</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="168"/>
-        <source>Enter branch name here...</source>
+        <source>Enter your message here...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="169"/>
-        <source>Change commit message</source>
+        <source>Destination folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="170"/>
-        <source>Staged files for commit</source>
+        <source>Select patch to apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="171"/>
-        <source>Interactive rebase in progress...</source>
+        <source>Enter branch name here...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="172"/>
+        <source>Change commit message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="173"/>
+        <source>Staged files for commit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="174"/>
+        <source>Interactive rebase in progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="176"/>
         <source>There is no open repository at the moment.
 Please open or clone a repository to fill this view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="178"/>
+        <location filename="../qml/components/Const.qml" line="181"/>
         <source>You are about to merge %1 on the working directory.
 
 Are you sure you want to do this?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="183"/>
+        <location filename="../qml/components/Const.qml" line="186"/>
         <source>You are about to delete a branch.
 
 Are you sure you want to do this? It cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="188"/>
+        <location filename="../qml/components/Const.qml" line="191"/>
         <source>Are you sure you want to delete this file?
 
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="193"/>
+        <location filename="../qml/components/Const.qml" line="196"/>
         <source>CuteGit - version %1
 Copyright (c) 2019 Jango73
 Some icons are copyright Freepik from www.flaticon.com
@@ -767,7 +777,7 @@ Some icons are copyright Freepik from www.flaticon.com
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="199"/>
+        <location filename="../qml/components/Const.qml" line="202"/>
         <source>File view
 
 Staged files are shown in green, unstaged ones in red.
@@ -789,115 +799,130 @@ Log views
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="219"/>
+        <location filename="../qml/components/Const.qml" line="222"/>
         <source>[=&gt;] </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="220"/>
+        <location filename="../qml/components/Const.qml" line="223"/>
         <source>[&lt;=] </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="251"/>
+        <location filename="../qml/components/Const.qml" line="254"/>
         <source>Open a repository</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="252"/>
+        <location filename="../qml/components/Const.qml" line="255"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="254"/>
+        <location filename="../qml/components/Const.qml" line="257"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="256"/>
+        <location filename="../qml/components/Const.qml" line="259"/>
         <source>Stage all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="257"/>
+        <location filename="../qml/components/Const.qml" line="260"/>
         <source>Unstage all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="258"/>
+        <location filename="../qml/components/Const.qml" line="261"/>
         <source>Toggle staged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="259"/>
+        <location filename="../qml/components/Const.qml" line="262"/>
         <source>Stage selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="260"/>
+        <location filename="../qml/components/Const.qml" line="263"/>
         <source>Unstage selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="261"/>
+        <location filename="../qml/components/Const.qml" line="264"/>
         <source>Revert selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="264"/>
+        <location filename="../qml/components/Const.qml" line="267"/>
         <source>Continue rebase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="265"/>
+        <location filename="../qml/components/Const.qml" line="268"/>
         <source>Abort rebase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/components/Const.qml" line="282"/>
+        <source>Mark file for diff</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/components/Const.qml" line="133"/>
-        <location filename="../qml/components/Const.qml" line="267"/>
+        <location filename="../qml/components/Const.qml" line="270"/>
         <source>Fetch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="125"/>
-        <location filename="../qml/components/Const.qml" line="268"/>
+        <location filename="../qml/components/Const.qml" line="271"/>
         <source>Pull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="124"/>
-        <location filename="../qml/components/Const.qml" line="269"/>
+        <location filename="../qml/components/Const.qml" line="272"/>
         <source>Push</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="271"/>
-        <source>Activate file view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="272"/>
-        <source>Activate graph view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="273"/>
-        <source>Activate branch log view</source>
+        <location filename="../qml/components/Const.qml" line="150"/>
+        <source>Amending. The changes will be appended to the last commit...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="274"/>
-        <source>Activate diff view</source>
+        <source>Activate file view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="275"/>
+        <source>Activate graph view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="276"/>
-        <source>In log view</source>
+        <source>Activate branch log view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="277"/>
+        <source>Activate diff view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="278"/>
+        <source>Activate blame view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="280"/>
+        <source>In log view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="281"/>
         <source>Diff with previous commit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -918,12 +943,12 @@ Log views
 <context>
     <name>RepositoryView</name>
     <message>
-        <location filename="../qml/views/RepositoryView.qml" line="58"/>
+        <location filename="../qml/views/RepositoryView.qml" line="60"/>
         <source> - ( Ahead </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/views/RepositoryView.qml" line="60"/>
+        <location filename="../qml/views/RepositoryView.qml" line="62"/>
         <source> : behind </source>
         <translation type="unfinished"></translation>
     </message>

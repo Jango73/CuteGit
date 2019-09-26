@@ -151,6 +151,15 @@ void CCommands::fileLog(const QString& sPath, const QString& sFullName, int iFro
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::refLog(const QString& sPath, int iFrom, int iCount)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(iFrom);
+    Q_UNUSED(iCount);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::toggleStaged(const QString& sPath, const QString& sFullName)
 {
     Q_UNUSED(sPath);

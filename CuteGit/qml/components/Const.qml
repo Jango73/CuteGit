@@ -132,6 +132,7 @@ Item {
     property string amendText: qsTr("Amend")
     property string fetchText: qsTr("Fetch")
     property string blameText: qsTr("Blame")
+    property string localText: qsTr("Local")
     property string filterText: qsTr("Filter")
     property string revertText: qsTr("Revert")
     property string cancelText: qsTr("Cancel")
@@ -139,12 +140,14 @@ Item {
     property string browseText: qsTr("Browse")
     property string deleteText: qsTr("Delete")
     property string commitText: qsTr("Commit")
+    property string remoteText: qsTr("Remote")
+    property string refLogText: qsTr("Ref log")
     property string messageText: qsTr("Message")
     property string loadingText: qsTr("Loading...")
     property string generalText: qsTr("General")
     property string branchesText: qsTr("Branches")
     property string switchToText: qsTr("Switch to")
-    property string amendingText: qsTr("Amending...")
+    property string amendingText: qsTr("Amending. The changes will be appended to the last commit...")
     property string shortcutsText: qsTr("Shortcuts")
     property string branchLogText: qsTr("Branch log")
     property string helpTitleText: qsTr("Help")
@@ -272,8 +275,10 @@ Item {
         ListElement { name: qsTr("Activate graph view"); sequence: "Alt Shift G" }
         ListElement { name: qsTr("Activate branch log view"); sequence: "Alt Shift L" }
         ListElement { name: qsTr("Activate diff view"); sequence: "Alt Shift D" }
+        ListElement { name: qsTr("Activate blame view"); sequence: "Alt Shift B" }
         ListElement { name: ""; sequence: "" }
         ListElement { name: qsTr("In log view"); sequence: "" }
         ListElement { name: qsTr("Diff with previous commit"); sequence: "Space" }
+        ListElement { name: qsTr("Mark file for diff"); sequence: "Enter" }
     }
 }

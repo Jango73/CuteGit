@@ -41,10 +41,19 @@ StandardPane {
         currentIndex: tabBar.currentIndex
 
         Item {
+            StandardLabel {
+                id: remoteBranchesLabel
+                width: parent.width
+                text: Const.remoteText
+                anchors.top: parent.top
+                anchors.topMargin: Const.mainPadding
+            }
+
             StandardListView {
                 id: remoteBranchList
+                anchors.top: remoteBranchesLabel.bottom
                 width: parent.width
-                height: parent.height * 0.5
+                height: parent.height * 0.5 - remoteBranchesLabel.height
                 visible: count > 0
 
                 model: root.repository ? root.repository.remoteBranchModel : undefined
@@ -72,13 +81,22 @@ StandardPane {
                 width: parent.width
                 height: 2
                 anchors.top: remoteBranchList.bottom
+                anchors.topMargin: Const.mainPadding
                 color: Material.accent
+            }
+
+            StandardLabel {
+                id: localBranchesLabel
+                width: parent.width
+                text: Const.localText
+                anchors.top: separator.bottom
+                anchors.topMargin: Const.mainPadding
             }
 
             StandardListView {
                 id: localBranchList
                 width: parent.width
-                anchors.top: separator.bottom
+                anchors.top: localBranchesLabel.bottom
                 anchors.bottom: parent.bottom
                 visible: count > 0
 

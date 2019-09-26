@@ -34,6 +34,12 @@ ExtendablePane {
             width: implicitWidth
             text: Const.graphText
         }
+
+        TabButton {
+            id: refLogTab
+            width: implicitWidth
+            text: Const.refLogText
+        }
     }
 
     SwipeView {
@@ -92,6 +98,15 @@ ExtendablePane {
                 anchors.fill: parent
 
                 model: root.repository !== null ? root.repository.graphModel : undefined
+            }
+        }
+
+        Item {
+            LogView {
+                id: refLogView
+                anchors.fill: parent
+
+                model: root.repository !== null ? root.repository.refLogModel : undefined
             }
         }
     }

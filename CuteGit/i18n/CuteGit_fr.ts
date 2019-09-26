@@ -281,10 +281,6 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
         <translation>Basculer vers</translation>
     </message>
     <message>
-        <source>Amending...</source>
-        <translation>Modification en cours...</translation>
-    </message>
-    <message>
         <source>Shortcuts</source>
         <translation>Raccourcis</translation>
     </message>
@@ -753,6 +749,30 @@ Vues de journaux
     <message>
         <source>Blame</source>
         <translation>Blâmer</translation>
+    </message>
+    <message>
+        <source>Local</source>
+        <translation>Local</translation>
+    </message>
+    <message>
+        <source>Remote</source>
+        <translation>Distant</translation>
+    </message>
+    <message>
+        <source>Activate blame view</source>
+        <translation>Activer la vue de blâme</translation>
+    </message>
+    <message>
+        <source>Mark file for diff</source>
+        <translation>Marquer fichier pour diff</translation>
+    </message>
+    <message>
+        <source>Ref log</source>
+        <translation>Journal des références</translation>
+    </message>
+    <message>
+        <source>Amending. The changes will be appended to the last commit...</source>
+        <translation>Amendement. Les changements seront ajoutés à la dernière validation...</translation>
     </message>
 </context>
 <context>

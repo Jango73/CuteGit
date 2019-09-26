@@ -13,6 +13,7 @@ Item {
 
     StandardTextFilter {
         id: filter
+        objectName: "filter"
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
@@ -34,6 +35,7 @@ Item {
 
     StandardListView {
         id: list
+        objectName: "list"
         anchors.top: filter.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -42,6 +44,7 @@ Item {
         model: root.repository !== null ? root.repository.fileBlameModel : undefined
 
         delegate: StandardListViewItem {
+            objectName: "list.delegate." + index
             width: parent.width
             listView: parent
             primaryText: model.text

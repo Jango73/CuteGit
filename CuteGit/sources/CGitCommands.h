@@ -94,6 +94,9 @@ public:
     virtual void fileLog(const QString& sPath, const QString& sFullName, int iFrom = 0, int iCount = LOG_COUNT_DEFAULT) override;
 
     //!
+    virtual void refLog(const QString& sPath, int iFrom = 0, int iCount = REF_LOG_COUNT_DEFAULT) override;
+
+    //!
     virtual void toggleStaged(const QString& sPath, const QString& sFullName) override;
 
     //!
@@ -211,6 +214,7 @@ protected:
 
     static const int iLogFormatValueCount;
     static const int iGraphFormatValueCount;
+    static const int iRefLogFormatValueCount;
 
     // Command strings
 
@@ -245,6 +249,7 @@ protected:
     static const QString sCommandPull;
     static const QString sCommandPush;
     static const QString sCommandRebaseOnCommit;
+    static const QString sCommandRefLog;
     static const QString sCommandResetOnCommit;
     static const QString sCommandRevert;
     static const QString sCommandSetCurrentBranch;

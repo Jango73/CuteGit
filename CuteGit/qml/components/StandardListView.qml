@@ -75,4 +75,10 @@ ListView {
             root.deletePressed()
         }
     }
+
+    FocusIndicator {
+        id: focusIndicator
+        anchors.fill: parent
+        visible: root.activeFocus && (root.itemsSelectable === false || root.count === 0)
+    }
 }

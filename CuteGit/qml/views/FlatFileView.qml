@@ -21,6 +21,7 @@ StandardListView {
            : undefined
 
     delegate: StandardListViewItem {
+        objectName: "FlatFileView.delegate." + index
         width: parent.width
         expanded: mustShowRelativeName
         selectionFillsItem: false

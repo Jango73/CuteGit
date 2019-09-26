@@ -23,7 +23,7 @@ Popup {
         color: Material.background
     }
 
-    Component.onCompleted: {
+    onOpened: {
         root.forceActiveFocus()
     }
 

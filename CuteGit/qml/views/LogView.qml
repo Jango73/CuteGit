@@ -24,6 +24,10 @@ StandardListView {
     signal requestCommitDiffFrom(var commitId)
     signal requestCommitDiffTo(var commitId)
 
+    function isValidDate(d) {
+      return d instanceof Date && !isNaN(d);
+    }
+
     delegate: StandardListViewItem {
         id: delegateItem
         width: parent.width
@@ -32,7 +36,7 @@ StandardListView {
         listView: parent
         symbolText: root.hasSymbol ? model.graphSymbol : ""
         primaryText: fullText
-        secondaryText: model.author + " - " + model.date
+        secondaryText: model.author + " - " + (isValidDate(model.date) ? model.date : "")
         selectionShown: index === root.currentIndex
         focusShown: root.activeFocus && index === root.currentIndex
 

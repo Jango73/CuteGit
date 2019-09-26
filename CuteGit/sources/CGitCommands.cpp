@@ -31,6 +31,7 @@
 
 const int CGitCommands::iLogFormatValueCount            = 4;
 const int CGitCommands::iGraphFormatValueCount          = 5;
+const int CGitCommands::iRefLogFormatValueCount         = 3;
 
 const QString CGitCommands::sCommandAbortMerge          = "git merge --abort";
 const QString CGitCommands::sCommandAbortRebase         = "git rebase --abort";
@@ -63,6 +64,7 @@ const QString CGitCommands::sCommandPatchApply          = "git apply \"%1\"";
 const QString CGitCommands::sCommandPull                = "git pull";
 const QString CGitCommands::sCommandPush                = "git push";
 const QString CGitCommands::sCommandRebaseOnCommit      = "git rebase --interactive %1~1";
+const QString CGitCommands::sCommandRefLog              = "git reflog show --pretty=format:\"%h &&& %gD &&& %gs\" --skip=%1 --max-count=%2";
 const QString CGitCommands::sCommandResetOnCommit       = "git reset %1";
 const QString CGitCommands::sCommandRevert              = "git checkout \"%1\"";
 const QString CGitCommands::sCommandSetCurrentBranch    = "git checkout \"%1\"";
@@ -283,6 +285,16 @@ void CGitCommands::fileLog(const QString& sPath, const QString& sFullName, int i
     QString sCommand = QString(sCommandFileLog).arg(iFrom).arg(iCount).arg(sFullName);
     QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
     exec(new CProcessCommand(CEnums::eFileLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::refLog(const QString& sPath, int iFrom, int iCount)
+{
+    int iPotentialCount = 0;
+    QString sCommand = QString(sCommandRefLog).arg(iFrom).arg(iCount);
+    QString sUserData = QString("%1,%2").arg(iPotentialCount).arg(iFrom);
+    exec(new CProcessCommand(CEnums::eRefLog, sPath, sCommand, false, QMap<QString, QString>(), sUserData));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -922,26 +934,14 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     {
         QList<CDiffLine*> lReturnValue;
         QStringList lLines = sValue.split(NEW_LINE);
-        bool bAtLeastOneLineOK = false;
+        int index = 0;
 
         for (QString sLine : lLines)
         {
-            QString sTrimmedLine = sLine.trimmed();
-
-            if (not sTrimmedLine.isEmpty())
-            {
-                bAtLeastOneLineOK = true;
-
-                CDiffLine* pDiffLine = new CDiffLine();
-                pDiffLine->setText(sLine);
-                lReturnValue << pDiffLine;
-            }
-        }
-
-        if (not bAtLeastOneLineOK)
-        {
-            qDeleteAll(lReturnValue);
-            lReturnValue.clear();
+            CDiffLine* pDiffLine = new CDiffLine();
+            pDiffLine->setText(QString("%1: %2").arg(index, 5, 10, QChar('0')).arg(sLine));
+            lReturnValue << pDiffLine;
+            index++;
         }
 
         emit newOutputListOfCDiffLine(eCommand, lReturnValue);
@@ -1051,6 +1051,44 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
                 pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
 
                 getFullCommitMessage(sPath, pLine->commitId());
+
+                lReturnValue.add(pLine);
+            }
+        }
+
+        QStringList lUserValues = sUserData.split(",");
+        int iPotentialCount = lUserValues[0].toInt();
+        int iStartIndex = lUserValues[1].toInt();
+
+        if (iPotentialCount == 0)
+            iPotentialCount = lReturnValue.lines().count();
+
+        lReturnValue.setPotentialCount(iPotentialCount);
+        lReturnValue.setStartIndex(iStartIndex);
+
+        emit newOutputCLogLineCollection(eCommand, lReturnValue);
+        break;
+    }
+
+    case CEnums::eRefLog:
+    {
+        // Create a CLogLineCollection with the returned string of the process
+
+        CLogLineCollection lReturnValue;
+        QStringList lStrings = sValue.split(NEW_LINE);
+
+        for (QString sLine : lStrings)
+        {
+            QStringList sValues = sLine.split(sLogFormatSplitter);
+
+            if (sValues.count() == iRefLogFormatValueCount)
+            {
+                CLogLine* pLine = new CLogLine();
+
+                pLine->setCommitId(sValues[0].trimmed());
+                pLine->setAuthor(sValues[1].trimmed());
+                pLine->setMessage(sValues[2].trimmed());
+                pLine->setMessageIsComplete(true);
 
                 lReturnValue.add(pLine);
             }

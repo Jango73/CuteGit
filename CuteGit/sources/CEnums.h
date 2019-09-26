@@ -18,7 +18,8 @@
 #define HAVE_QSTRING_BACK
 #endif
 
-#define LOG_COUNT_DEFAULT   20
+#define LOG_COUNT_DEFAULT       20
+#define REF_LOG_COUNT_DEFAULT   50
 
 //-------------------------------------------------------------------------------------------------
 
@@ -137,6 +138,7 @@ public:
         eGraph,
         eBranchLog,
         eFileLog,
+        eRefLog,
         eCommitMessage,
         eStageFile,
         eStageAll,
