@@ -536,7 +536,7 @@ Please select a folder containing a repository.</source>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="131"/>
-        <location filename="../qml/components/Const.qml" line="265"/>
+        <location filename="../qml/components/Const.qml" line="281"/>
         <source>Amend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -582,7 +582,7 @@ Please select a folder containing a repository.</source>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="141"/>
-        <location filename="../qml/components/Const.qml" line="264"/>
+        <location filename="../qml/components/Const.qml" line="280"/>
         <source>Commit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -777,8 +777,106 @@ Some icons are copyright Freepik from www.flaticon.com
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/components/Const.qml" line="237"/>
+        <source>[=&gt;] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="238"/>
+        <source>[&lt;=] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="269"/>
+        <source>Open a repository</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="270"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="272"/>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="274"/>
+        <source>Stage all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="275"/>
+        <source>Unstage all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="276"/>
+        <source>Toggle staged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="277"/>
+        <source>Stage selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="278"/>
+        <source>Unstage selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="279"/>
+        <source>Revert selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="282"/>
+        <source>Continue rebase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="283"/>
+        <source>Abort rebase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="297"/>
+        <source>Mark file for diff</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="132"/>
+        <location filename="../qml/components/Const.qml" line="285"/>
+        <source>Fetch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="124"/>
+        <location filename="../qml/components/Const.qml" line="286"/>
+        <source>Pull</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="123"/>
+        <location filename="../qml/components/Const.qml" line="287"/>
+        <source>Push</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="149"/>
+        <source>Amending. The changes will be appended to the last commit...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/components/Const.qml" line="201"/>
-        <source>File view
+        <source>Repository status
+
+The first line contains the type of repository, the number of commits ahead and behind the current HEAD.
+The secoond line contains full path of the repository and the current branch.
+
+File view
 
 Staged files are shown in green, unstaged ones in red.
 The symbols next to file names are:
@@ -791,138 +889,56 @@ The symbols next to file names are:
 ???	The file is missing
 
 Diff views
-...
+
+Green is for new lines, red for deleted lines.
 
 Log views
-...
+
+The first line of an item contains part of the commit message.
+The second line contains the author, the date and all refs that point to this commit.
+
+Graph view
+
+It contains the same information as a log view.
+
+Ref log
+
+The first line of an item contains the action done, the second line contains the index.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="221"/>
-        <source>[=&gt;] </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="222"/>
-        <source>[&lt;=] </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="253"/>
-        <source>Open a repository</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="254"/>
-        <source>Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="256"/>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="258"/>
-        <source>Stage all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="259"/>
-        <source>Unstage all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="260"/>
-        <source>Toggle staged</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="261"/>
-        <source>Stage selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="262"/>
-        <source>Unstage selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="263"/>
-        <source>Revert selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="266"/>
-        <source>Continue rebase</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="267"/>
-        <source>Abort rebase</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="281"/>
-        <source>Mark file for diff</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="132"/>
-        <location filename="../qml/components/Const.qml" line="269"/>
-        <source>Fetch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="124"/>
-        <location filename="../qml/components/Const.qml" line="270"/>
-        <source>Pull</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="123"/>
-        <location filename="../qml/components/Const.qml" line="271"/>
-        <source>Push</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="149"/>
-        <source>Amending. The changes will be appended to the last commit...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="273"/>
+        <location filename="../qml/components/Const.qml" line="289"/>
         <source>Activate file view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="274"/>
+        <location filename="../qml/components/Const.qml" line="290"/>
         <source>Activate graph view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="275"/>
+        <location filename="../qml/components/Const.qml" line="291"/>
         <source>Activate branch log view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="276"/>
+        <location filename="../qml/components/Const.qml" line="292"/>
         <source>Activate diff view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="277"/>
+        <location filename="../qml/components/Const.qml" line="293"/>
         <source>Activate blame view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="279"/>
+        <location filename="../qml/components/Const.qml" line="295"/>
         <source>In log view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="280"/>
+        <location filename="../qml/components/Const.qml" line="296"/>
         <source>Diff with previous commit</source>
         <translation type="unfinished"></translation>
     </message>

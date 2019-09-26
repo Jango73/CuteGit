@@ -199,6 +199,11 @@ Item {
                                   )
 
     property string generalHelpText: qsTr(
+                                         "Repository status\n" +
+                                         "\n" +
+                                         "The first line contains the type of repository, the number of commits ahead and behind the current HEAD.\n" +
+                                         "The secoond line contains full path of the repository and the current branch.\n" +
+                                         "\n" +
                                          "File view\n" +
                                          "\n" +
                                          "Staged files are shown in green, unstaged ones in red.\n" +
@@ -212,10 +217,21 @@ Item {
                                          "???\tThe file is missing\n" +
                                          "\n" +
                                          "Diff views\n" +
-                                         "...\n" +
+                                         "\n" +
+                                         "Green is for new lines, red for deleted lines.\n" +
                                          "\n" +
                                          "Log views\n" +
-                                         "...\n"
+                                         "\n" +
+                                         "The first line of an item contains part of the commit message.\n" +
+                                         "The second line contains the author, the date and all refs that point to this commit.\n" +
+                                         "\n" +
+                                         "Graph view\n" +
+                                         "\n" +
+                                         "It contains the same information as a log view.\n" +
+                                         "\n" +
+                                         "Ref log\n" +
+                                         "\n" +
+                                         "The first line of an item contains the action done, the second line contains the index.\n"
                                          )
 
     property string logLabelFrom: qsTr("[=>] ")

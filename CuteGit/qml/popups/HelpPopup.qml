@@ -40,9 +40,14 @@ StandardPopup {
             clip: true
             currentIndex: tabBar.currentIndex
 
-            StandardText {
-                id: generalText
-                padding: Const.mainPadding * 2
+            Flickable {
+                id: helpView
+                contentHeight: generalText.height
+
+                StandardText {
+                    id: generalText
+                    padding: Const.mainPadding * 2
+                }
             }
 
             Item {

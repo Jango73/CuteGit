@@ -533,44 +533,6 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
         <translation>Fichiers acceptés pour validation</translation>
     </message>
     <message>
-        <source>File view
-
-Staged files are shown in green, unstaged ones in red.
-The symbols next to file names are:
-*	The file is modified
-+	The file is being added
--	The file is being removed
-=	The file is being renamed
-?	The file is untracked
-!	The file is ignored
-???	The file is missing
-
-Diff views
-...
-
-Log views
-...
-</source>
-        <translation>Vues de fichiers
-
-Les fichiers acceptés sont affichés en vert, les autres en rouge.
-Les symboles à côté des noms de fichier sont:
-*	Le fichier est modifié
-+	Le fichier est ajouté
--	Le fichier est supprimé
-=	Le fichier est renommé
-?	Le fichier n&apos;est pas suivi
-!	Le fichier est ignoré
-???	Le fichier est manquant
-
-Vues de différences
-...
-
-Vues de journaux
-...
-</translation>
-    </message>
-    <message>
         <source>[=&gt;] </source>
         <translation>[=&gt;] </translation>
     </message>
@@ -773,6 +735,76 @@ Vues de journaux
     <message>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
+    </message>
+    <message>
+        <source>Repository status
+
+The first line contains the type of repository, the number of commits ahead and behind the current HEAD.
+The secoond line contains full path of the repository and the current branch.
+
+File view
+
+Staged files are shown in green, unstaged ones in red.
+The symbols next to file names are:
+*	The file is modified
++	The file is being added
+-	The file is being removed
+=	The file is being renamed
+?	The file is untracked
+!	The file is ignored
+???	The file is missing
+
+Diff views
+
+Green is for new lines, red for deleted lines.
+
+Log views
+
+The first line of an item contains part of the commit message.
+The second line contains the author, the date and all refs that point to this commit.
+
+Graph view
+
+It contains the same information as a log view.
+
+Ref log
+
+The first line of an item contains the action done, the second line contains the index.
+</source>
+        <translation>Etat du dépôt
+
+La première ligne contient le type de dépôt, le nombre de validations en avant et en arrière de la HEAD courante.
+La deuxième ligne contient le chemin complet du dépôt et le nom de la branche courante.
+
+Vue de fichiers
+
+Les fichiers acceptés sont en vert, les autres en rouge.
+Les symboles précédant les noms de fichier sont:
+*	Le fichier est modifié
++	Le fichier est ajouté
+-	Le fichier est supprimé
+=	Le fichier est renommé
+?	Le fichier n&apos;est pas suivi
+!	Le fichier est ignoré
+???	Le fichier est manquant
+
+Vue sur les différences
+
+Le vert surligne les lignes ajoutées, le rouge les lignes supprimées.
+
+Vue de journal
+
+La première ligne d&apos;un élément contient le début du message de validation.
+La deuxième ligne contient l&apos;auteur, la date et toutes les références vers cette validation.
+
+Vue de graphe
+
+Il contient les mêmes informations que celles contenues dans la vue de journal.
+
+Journal des références
+
+La première ligne contient l&apos;action faite, la seconde contient l&apos;index.
+</translation>
     </message>
 </context>
 <context>
