@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>CuteGit</Name>
+    <Version>1.0.0</Version>
+    <Title>CuteGitInstaller</Title>
+    <Publisher>Jango73</Publisher>
+    <StartMenuDir>CuteGit</StartMenuDir>
+    <TargetDir>@HomeDir@/CuteGit</TargetDir>
+</Installer>

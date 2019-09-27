@@ -13,10 +13,13 @@ INCLUDEPATH += $$PWD/../qt-plus/source/cpp
 # Sources
 include(CuteGit.pri)
 
+# Functions
+include(Functions.pri)
+
 # Directories
 DESTDIR = $$OUT_PWD/bin
 
-# Target
+# Target binary name
 CONFIG(debug, debug|release) {
     unix {
         TARGET = CuteGitApp-dbg
@@ -32,22 +35,31 @@ CONFIG(debug, debug|release) {
 }
 
 # Deployment
-#TEMP_NAME = $${QMAKE_QMAKE}
-#QT_PATH = $$dirname(TEMP_NAME)
-#QT_LIB_PATH = $$absolute_path($${QT_PATH}/../lib)
+# In order to activate deployment, add "deploy=1" to qmake arguments
+QT_BASE_PATH = $$getQtPath()
+QT_BIN_PATH = $$getQtBinPath()
+QT_LIB_PATH = $$getQtLibPath()
 
-#defineTest(copyFilesToDir) {
-#    sourceDir = $$1
-#    files = $$2
-#    targetDir = $$3
-#    win32:targetDir ~= s,/,\\,g
+!isEmpty(deploy) {
+    message("Deployment files will be copied after linkage, from $${QT_BASE_PATH}.")
 
-#    for(file, files) {
-#        final = $$sourceDir/$$file
-#        win32:final ~= s,/,\\,g
+    QMAKE_POST_LINK += $$copyFilesWithPathToDir($$QT_LIB_PATH, $$QT_LIB_NAMES, $$DESTDIR)
+    QMAKE_POST_LINK += $$copyFilesWithPathToDir($$QT_BASE_PATH, $$QT_PLUGIN_NAMES, $$DESTDIR)
+    QMAKE_POST_LINK += $$copyFilesToDir($$PWD, $$DEPLOY_NAMES, $$DESTDIR)
+    QMAKE_POST_LINK += $$copyDirsToDir($$QT_BASE_PATH, $$QT_QML_NAMES, $$DESTDIR)
 
-#        INSTALLS += $$QMAKE_COPY $$shell_quote($$final) $$shell_quote($$targetDir) $$escape_expand(\\n\\t)
-#    }
-#}
+    unix {
+        QMAKE_POST_LINK += $$makeExecutable($$EXEC_NAMES, $$DESTDIR)
+    }
+}
 
-#copyFilesToDir($$QT_LIB_PATH, $$QT_LIB_NAMES, $$DESTDIR)
+# Installer
+# In order to activate installer creation, add "installer=1" to qmake arguments
+!isEmpty(deploy) {
+    !isEmpty(installer) {
+        installerBin = $$QT_BIN_PATH/binarycreator.exe
+        packageDirectory = $$DESTDIR
+        configFile = $$PWD/deploy/installer-config.xml
+        cmd = $$installerBin --offline-only -p $$packageDirectory -c $$configFile $${TARGET}Installer
+    }
+}
