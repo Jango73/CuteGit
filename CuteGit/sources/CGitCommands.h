@@ -187,7 +187,7 @@ public:
 protected:
 
     //!
-    CRepoFile* repoFileForLine(const QString& sPath, QString sLine);
+    CRepoFile* repoFileForLine(const QString& sPath, QString sLine, bool bSimple);
 
     //!
     void getFullCommitMessage(QString sPath, const QString &sCommitId);
@@ -244,6 +244,7 @@ protected:
     static const QString sCommandGetRebaseMergePath;
     static const QString sCommandGraph;
     static const QString sCommandHeadCommit;
+    static const QString sCommandListOtherFiles;
     static const QString sCommandMergeBranch;
     static const QString sCommandPatchApply;
     static const QString sCommandPull;

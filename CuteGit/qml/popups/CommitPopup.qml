@@ -45,7 +45,7 @@ StandardPopup {
 
                 delegate: StandardListViewItem {
                     width: parent.width
-                    listView: parent
+                    listView: fileList
                     symbolText: model.status
                     primaryText: model.fileName
                     selectionShown: false

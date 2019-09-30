@@ -112,6 +112,8 @@ Item {
     property string logMarkDiffFrom: qsTr("Mark as diff from")
     property string logMarkDiffTo: qsTr("Mark as diff to")
 
+    property string diffCopyLineText: qsTr("&Copy line")
+
     property string okText: qsTr("OK")
     property string logText: qsTr("Log")
     property string tagText: qsTr("Tag")

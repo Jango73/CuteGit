@@ -10,6 +10,7 @@ Item {
     property variant repository: null
 
     signal requestTextFilter(var text)
+    signal requestMenu(var operation, var text)
 
     StandardLabel {
         anchors.fill: diffView
@@ -47,5 +48,7 @@ Item {
         anchors.right: parent.right
 
         model: root.repository !== null ? root.repository.fileDiffModelProxy : undefined
+
+        onItemRightClicked: root.requestMenu(operation, text)
     }
 }

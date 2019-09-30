@@ -6,15 +6,15 @@ import "../components"
 
 StandardListView {
     id: root
-    itemsSelectable: false
+
+    signal itemRightClicked(var operation, var text)
 
     delegate: StandardListViewItem {
         width: parent.width
-        listView: parent
+        listView: root
         primaryText: model.text
         primaryTextColor: model.operation === CEnums.DiffFileName ? Material.background : Material.foreground
         selectionShown: false
-        focusShown: false
 
         background: Rectangle {
             anchors.fill: parent
@@ -22,6 +22,12 @@ StandardListView {
                    else if (model.operation === CEnums.DiffDelete) Const.fileModifiedColor
                    else if (model.operation === CEnums.DiffFileName) Material.accent
                    else Const.transparent
+        }
+
+        onClicked: {
+            if (mouse.button === Qt.RightButton) {
+                root.itemRightClicked(model.operation, model.text)
+            }
         }
     }
 }

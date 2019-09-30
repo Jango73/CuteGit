@@ -33,7 +33,7 @@ StandardListView {
         width: parent.width
         expanded: true
         dataLoading: !model.messageIsComplete
-        listView: parent
+        listView: root
         symbolText: root.hasSymbol ? model.graphSymbol : ""
         primaryText: fullText
         secondaryText: model.author + " - " + (isValidDate(model.date) ? model.date : "")
@@ -77,12 +77,13 @@ StandardListView {
         ]
 
         onClicked: {
-            root.currentIndex = index
-            root.forceActiveFocus()
-
             if (mouse.button === Qt.RightButton) {
                 root.itemRightClicked(model.commitId, model.fullMessage)
             }
+        }
+
+        onDoubleClicked: {
+            root.requestCommitDiffPrevious(root.currentCommitId)
         }
     }
 

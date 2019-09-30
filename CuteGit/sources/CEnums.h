@@ -127,6 +127,7 @@ public:
         eCloneRepositoryFinished,
         eAllFileStatus,
         eChangedFileStatus,
+        eIgnoredFileStatus,
         eRepositoryStatus,
         eBranches,
         eBranchHeadCommit,

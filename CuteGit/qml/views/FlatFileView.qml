@@ -25,7 +25,7 @@ StandardListView {
         width: parent.width
         expanded: mustShowRelativeName
         selectionFillsItem: false
-        listView: parent
+        listView: root
         mouseEnabled: root.mouseActive
         symbolText: model.status
         primaryText: model.fileName
@@ -45,9 +45,6 @@ StandardListView {
             } else {
                 root.selectOnly(index)
             }
-
-            root.currentIndex = index
-            root.forceActiveFocus()
         }
 
         onClicked: {

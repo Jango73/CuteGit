@@ -736,27 +736,23 @@ void CRepository::onNewOutput(QString sOutput, bool bSeparation)
     Q_UNUSED(bSeparation);
 
     QStringList lNewList = sOutput.split(NEW_LINE);
-    QStringList lData = m_pCommandOutputModel->stringList();
-    bool bHasNewLine = false;
 
     for (QString sLine : lNewList)
     {
         sLine = sLine.trimmed();
 
-        if (sLine.isEmpty() == false)
+        if (not sLine.isEmpty())
         {
-            bHasNewLine = true;
-            lData << sLine;
+            m_pCommandOutputModel->insertRows(m_pCommandOutputModel->rowCount(), 1);
+            QModelIndex qIndex = m_pCommandOutputModel->index(m_pCommandOutputModel->rowCount() - 1);
+            m_pCommandOutputModel->setData(qIndex, sLine);
         }
     }
 
-    if (bHasNewLine)
-    {
-        while (lData.count() > 50)
-            lData.removeFirst();
+    int iCount = m_pCommandOutputModel->rowCount();
 
-        m_pCommandOutputModel->setStringList(lData);
-    }
+    if (iCount > 50)
+        m_pCommandOutputModel->removeRows(0, iCount - 50);
 }
 
 //-------------------------------------------------------------------------------------------------

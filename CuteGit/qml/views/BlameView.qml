@@ -56,7 +56,7 @@ Item {
         delegate: StandardListViewItem {
             objectName: "list.delegate." + index
             width: parent.width
-            listView: parent
+            listView: list
             primaryText: model.text
             selectionShown: false
             focusShown: false

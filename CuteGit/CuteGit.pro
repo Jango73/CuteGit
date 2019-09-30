@@ -53,13 +53,13 @@ QT_LIB_PATH = $$getQtLibPath()
     }
 }
 
-# Installer
+# Installer - WIP
 # In order to activate installer creation, add "installer=1" to qmake arguments
-!isEmpty(deploy) {
-    !isEmpty(installer) {
-        installerBin = $$QT_BIN_PATH/binarycreator.exe
-        packageDirectory = $$DESTDIR
-        configFile = $$PWD/deploy/installer-config.xml
-        cmd = $$installerBin --offline-only -p $$packageDirectory -c $$configFile $${TARGET}Installer
-    }
-}
+#!isEmpty(deploy) {
+#    !isEmpty(installer) {
+#        installerBin = $$QT_BIN_PATH/binarycreator.exe
+#        packageDirectory = $$DESTDIR
+#        configFile = $$PWD/deploy/installer-config.xml
+#        cmd = $$installerBin --offline-only -p $$packageDirectory -c $$configFile $${TARGET}Installer
+#    }
+#}

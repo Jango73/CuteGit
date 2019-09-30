@@ -59,6 +59,7 @@ const QString CGitCommands::sCommandGetRebaseApplyPath  = "git rev-parse --git-p
 const QString CGitCommands::sCommandGetRebaseMergePath  = "git rev-parse --git-path rebase-merge";
 const QString CGitCommands::sCommandGraph               = "git log --graph --all --pretty=format:\"&&& %h &&& %s &&& %an &&& %aI\" --max-count=50";
 const QString CGitCommands::sCommandHeadCommit          = "git rev-parse --short \"%1\"";
+const QString CGitCommands::sCommandListOtherFiles      = "git ls-files --others";
 const QString CGitCommands::sCommandMergeBranch         = "git merge \"%1\"";
 const QString CGitCommands::sCommandPatchApply          = "git apply \"%1\"";
 const QString CGitCommands::sCommandPull                = "git pull";
@@ -196,6 +197,7 @@ void CGitCommands::allFileStatus(const QString& sPath)
 
 void CGitCommands::changedFileStatus(const QString& sPath)
 {
+    exec(new CProcessCommand(CEnums::eIgnoredFileStatus, sPath, sCommandListOtherFiles));
     exec(new CProcessCommand(CEnums::eChangedFileStatus, sPath, sCommandStatus));
 }
 
@@ -304,7 +306,7 @@ void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
     QString sFileStatusCommand = QString(sCommandFileStatus).arg(sFullName);
     QString sLine = execNow(sPath, sFileStatusCommand);
 
-    CRepoFile* pFile = repoFileForLine(sPath, sLine);
+    CRepoFile* pFile = repoFileForLine(sPath, sLine, false);
 
     if (pFile != nullptr)
     {
@@ -685,93 +687,108 @@ void CGitCommands::editSequenceFile(const QString& sFileName)
 
 //-------------------------------------------------------------------------------------------------
 
-CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine)
+CRepoFile* CGitCommands::repoFileForLine(const QString &sPath, QString sLine, bool bSimple)
 {
-    QRegExp tRegExp(sStatusRegExp);
-
-#ifdef HAVE_QSTRING_BACK
-    if (not sLine.isEmpty() && sLine.back() == '/')
-        sLine.chop(1);
-#endif
-
-    // TODO : Handle quoted file names
-
-    if (tRegExp.indexIn(sLine) != -1)
+    if (not bSimple)
     {
-        QString sStaged = tRegExp.cap(1).trimmed();
-        QString sUnstaged = tRegExp.cap(2).trimmed();
-        QString sRelativeName = tRegExp.cap(3).split("->").last().trimmed();
+        QRegExp tRegExp(sStatusRegExp);
+
+    #ifdef HAVE_QSTRING_BACK
+        if (not sLine.isEmpty() && sLine.back() == '/')
+            sLine.chop(1);
+    #endif
+
+        // TODO : Handle quoted file names
+
+        if (tRegExp.indexIn(sLine) != -1)
+        {
+            QString sStaged = tRegExp.cap(1).trimmed();
+            QString sUnstaged = tRegExp.cap(2).trimmed();
+            QString sRelativeName = tRegExp.cap(3).split("->").last().trimmed();
+            QString sFullName = sPath + PATH_SEP + sRelativeName;
+            QString sFileName = QFileInfo(sFullName).fileName();
+            bool bStaged = false;
+
+            CEnums::ERepoFileStatus eStatus = CEnums::eClean;
+
+            if (not sStaged.isEmpty())
+            {
+                bStaged = true;
+
+                if (sStaged == sStatusAdded)
+                    eStatus = CEnums::eAdded;
+                else if (sStaged == sStatusModified)
+                    eStatus = CEnums::eModified;
+                else if (sStaged == sStatusRenamed)
+                    eStatus = CEnums::eRenamed;
+                else if (sStaged == sStatusDeleted)
+                    eStatus = CEnums::eDeleted;
+                else if (sStaged == sStatusIgnored)
+                {
+                    bStaged = false;
+                    eStatus = CEnums::eIgnored;
+                }
+                else if (sStaged == sStatusUntracked)
+                {
+                    bStaged = false;
+                    eStatus = CEnums::eUntracked;
+                }
+            }
+
+            if (not sUnstaged.isEmpty())
+            {
+                if (sUnstaged == sStatusAdded)
+                {
+                    bStaged = false;
+                    eStatus = CEnums::eAdded;
+                }
+                else if (sUnstaged == sStatusModified)
+                {
+                    bStaged = false;
+                    eStatus = CEnums::eModified;
+                }
+                else if (sUnstaged == sStatusRenamed)
+                {
+                    bStaged = false;
+                    eStatus = CEnums::eRenamed;
+                }
+                else if (sUnstaged == sStatusDeleted)
+                {
+                    bStaged = false;
+                    eStatus = CEnums::eDeleted;
+                }
+                else if (sUnstaged == sStatusIgnored)
+                {
+                    eStatus = CEnums::eIgnored;
+                }
+                else if (sUnstaged == sStatusUntracked)
+                {
+                    bStaged = false;
+                    eStatus = CEnums::eUntracked;
+                }
+            }
+
+            CRepoFile* pFile = new CRepoFile();
+            pFile->setFullName(sFullName);
+            pFile->setFileName(sFileName);
+            pFile->setRelativeName(sRelativeName);
+            pFile->setStatus(eStatus);
+            pFile->setStaged(bStaged);
+
+            return pFile;
+        }
+    }
+    else
+    {
+        QString sRelativeName = sLine;
         QString sFullName = sPath + PATH_SEP + sRelativeName;
         QString sFileName = QFileInfo(sFullName).fileName();
-        bool bStaged = false;
-
-        CEnums::ERepoFileStatus eStatus = CEnums::eClean;
-
-        if (not sStaged.isEmpty())
-        {
-            bStaged = true;
-
-            if (sStaged == sStatusAdded)
-                eStatus = CEnums::eAdded;
-            else if (sStaged == sStatusModified)
-                eStatus = CEnums::eModified;
-            else if (sStaged == sStatusRenamed)
-                eStatus = CEnums::eRenamed;
-            else if (sStaged == sStatusDeleted)
-                eStatus = CEnums::eDeleted;
-            else if (sStaged == sStatusIgnored)
-            {
-                bStaged = false;
-                eStatus = CEnums::eIgnored;
-            }
-            else if (sStaged == sStatusUntracked)
-            {
-                bStaged = false;
-                eStatus = CEnums::eUntracked;
-            }
-        }
-
-        if (not sUnstaged.isEmpty())
-        {
-            if (sUnstaged == sStatusAdded)
-            {
-                bStaged = false;
-                eStatus = CEnums::eAdded;
-            }
-            else if (sUnstaged == sStatusModified)
-            {
-                bStaged = false;
-                eStatus = CEnums::eModified;
-            }
-            else if (sUnstaged == sStatusRenamed)
-            {
-                bStaged = false;
-                eStatus = CEnums::eRenamed;
-            }
-            else if (sUnstaged == sStatusDeleted)
-            {
-                bStaged = false;
-                eStatus = CEnums::eDeleted;
-            }
-            else if (sUnstaged == sStatusIgnored)
-            {
-                eStatus = CEnums::eIgnored;
-            }
-            else if (sUnstaged == sStatusUntracked)
-            {
-                bStaged = false;
-                eStatus = CEnums::eUntracked;
-            }
-        }
 
         CRepoFile* pFile = new CRepoFile();
         pFile->setFullName(sFullName);
         pFile->setFileName(sFileName);
         pFile->setRelativeName(sRelativeName);
-        pFile->setStatus(eStatus);
-        pFile->setStaged(bStaged);
-
-        return pFile;
+        pFile->setStatus(CEnums::eIgnored);
     }
 
     return nullptr;
@@ -1011,6 +1028,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
     case CEnums::eAllFileStatus:
     case CEnums::eChangedFileStatus:
+    case CEnums::eIgnoredFileStatus:
     {
         // Create CRepoFiles with the returned string of the process
 
@@ -1019,7 +1037,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
 
         for (QString sLine : lStrings)
         {
-            CRepoFile* pFile = repoFileForLine(sPath, sLine);
+            CRepoFile* pFile = repoFileForLine(sPath, sLine, eCommand == CEnums::eIgnoredFileStatus);
 
             if (pFile != nullptr)
                 lReturnValue.addItem(pFile->fullName(), pFile);

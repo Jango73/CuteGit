@@ -10,7 +10,8 @@ ExtendablePane {
 
     property variant repository: null
 
-    signal requestMenu(var commitId, var message)
+    signal requestDiffMenu(var operation, var text)
+    signal requestLogMenu(var commitId, var message)
     signal requestCommitDiffPrevious(var commitId)
     signal requestCommitDiffFrom(var commitId)
     signal requestCommitDiffTo(var commitId)
@@ -46,10 +47,11 @@ ExtendablePane {
             currentIndex: tabBar.currentIndex
             clip: true
 
-            FileDiffPane{
+            FileDiffPane {
                 id: diffView
                 repository: root.repository
 
+                onRequestMenu: root.requestDiffMenu(operation, text)
                 onRequestTextFilter: root.repository.setFileDiffFilter(text)
             }
 
@@ -57,7 +59,7 @@ ExtendablePane {
                 id: fileLogPane
                 repository: root.repository
 
-                onRequestMenu: root.requestMenu(commitId, message)
+                onRequestMenu: root.requestLogMenu(commitId, message)
                 onRequestCommitDiffPrevious: root.requestCommitDiffPrevious(commitId)
                 onRequestCommitDiffFrom: root.requestCommitDiffFrom(commitId)
                 onRequestCommitDiffTo: root.requestCommitDiffTo(commitId)

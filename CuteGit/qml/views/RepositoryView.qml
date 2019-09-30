@@ -146,7 +146,13 @@ Pane {
             extensionParent: root
             repository: root.repository
 
-            onRequestMenu: {
+            onRequestDiffMenu: {
+                diffMenu.operation = operation
+                diffMenu.text = text
+                diffMenu.popup()
+            }
+
+            onRequestLogMenu: {
                 logMenu.commitId = commitId
                 logMenu.commitMessage = message
                 logMenu.popup()
@@ -258,6 +264,16 @@ Pane {
 
     //--------------------------------------------------------------------------------
     // Menus
+
+    DiffMenu {
+        id: diffMenu
+        objectName: "diffMenu"
+        repository: root.repository
+
+        onRequestCopyText: {
+            root.repository.copyText(text)
+        }
+    }
 
     LogMenu {
         id: logMenu
