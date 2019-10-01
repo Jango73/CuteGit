@@ -6,7 +6,7 @@
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Jango73"
 #define MyAppExeName "CuteGit.exe"
-#define BuildDirectory "Set build directory name here"
+#define BuildDirectory "<Set build directory name here>"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -33,11 +33,11 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{#BuildDirectory}\bin\*.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "{#BuildDirectory}\bin\*.dll"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "{#BuildDirectory}\bin\*.conf"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "{#BuildDirectory}\bin\plugins\*"; DestDir: "{app}\bin\plugins"; Flags: ignoreversion recursesubdirs
-Source: "{#BuildDirectory}\bin\qml\*"; DestDir: "{app}\bin\qml"; Flags: ignoreversion recursesubdirs
+Source: "{#BuildDirectory}\CuteGit\bin\*.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "{#BuildDirectory}\CuteGit\bin\*.dll"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "{#BuildDirectory}\CuteGit\bin\*.conf"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "{#BuildDirectory}\CuteGit\bin\plugins\*"; DestDir: "{app}\bin\plugins"; Flags: ignoreversion recursesubdirs
+Source: "{#BuildDirectory}\CuteGit\bin\qml\*"; DestDir: "{app}\bin\qml"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
