@@ -5,6 +5,13 @@ unix {
     QMAKE_MKPATH = mkdir
 }
 
+defineReplace(makePath) {
+    path = $$shell_quote($$system_path($$1))
+    test = $$sprintf($$QMAKE_CHK_EXISTS, $$path)
+    retVal = $$test $$QMAKE_MKPATH $$path $$escape_expand(\\n\\t)
+    return($$retVal)
+}
+
 defineReplace(getQtPath) {
     TEMP_NAME = $${QMAKE_QMAKE}
     QT_PATH = $$dirname(TEMP_NAME)
@@ -68,7 +75,7 @@ defineReplace(copyDirsToDir) {
         finalTargetDir ~= s,$$lastItem,,g
 
         # Invoke make path command before copying the directory
-        cmd = $$QMAKE_CHK_EXISTS $$shell_quote($$system_path($$finalTargetDir)) $$QMAKE_MKPATH $$shell_quote($$system_path($$finalTargetDir)) $$escape_expand(\\n\\t)
+        cmd = $$makePath($$finalTargetDir) $$escape_expand(\\n\\t)
         returnValue += $$cmd
 
         # Invoke copy command
@@ -124,7 +131,7 @@ defineReplace(copyFilesWithPathToDir) {
         finalTargetDir ~= s,$$lastItem,,g
 
         # Invoke make path command before copying the file
-        cmd = $$QMAKE_CHK_EXISTS $$shell_quote($$system_path($$finalTargetDir)) $$QMAKE_MKPATH $$shell_quote($$system_path($$finalTargetDir)) $$escape_expand(\\n\\t)
+        cmd = $$makePath($$finalTargetDir) $$escape_expand(\\n\\t)
         returnValue += $$cmd
 
         # Invoke copy command

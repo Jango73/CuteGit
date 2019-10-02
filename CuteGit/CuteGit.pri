@@ -143,13 +143,9 @@ QT_QML_NAMES = \
     qml/QtQuick/Controls \
     qml/QtQuick/Controls.2 \
     qml/QtQuick/Dialogs \
-    qml/QtQuick/Extras \
     qml/QtQuick/Layouts \
-    qml/QtQuick/LocalStorage \
-    qml/QtQuick/Particles.2 \
     qml/QtQuick/PrivateWidgets \
     qml/QtQuick/Scene2D \
-    qml/QtQuick/Shapes \
     qml/QtQuick/Templates.2 \
     qml/QtQuick/Window.2 \
     qml/QtQuick/XmlListModel \
