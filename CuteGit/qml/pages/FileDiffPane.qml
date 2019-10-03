@@ -27,7 +27,7 @@ Item {
         anchors.right: parent.right
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        text: root.repository ? root.repository.fileDiffModel.relativeSourceName : undefined
+        text: root.repository ? root.repository.fileDiffModel.relativeSourceName : ""
     }
 
     StandardTextFilter {

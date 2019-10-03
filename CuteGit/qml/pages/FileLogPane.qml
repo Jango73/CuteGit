@@ -29,7 +29,7 @@ Item {
         anchors.right: parent.right
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        text: root.repository ? root.repository.fileLogModel.relativeSourceName : undefined
+        text: root.repository ? root.repository.fileLogModel.relativeSourceName : ""
     }
 
     LogView {
