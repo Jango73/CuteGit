@@ -14,7 +14,7 @@ INCLUDEPATH += $$PWD/../qt-plus/source/cpp
 include(CuteGit.pri)
 
 # Functions
-include(Functions.pri)
+include($$PWD/../qt-plus/functions.pri)
 
 # Directories
 DESTDIR = $$OUT_PWD/bin
