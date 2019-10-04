@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQml.Models 2.2
 import "."
 
 ListView {
@@ -12,15 +13,38 @@ ListView {
     /*! If true, the items can be selected */
     property bool itemsSelectable: true
 
+    /*! The selection model, if any */
+    property variant selection: null
+
     /*! If true, the list will automatically scroll to end when items are added */
     property bool autoScrollToEnd: false
 
     /*! The size of the scroll bar */
     property int scrollBarWidth: Const.mainPadding * 2
 
+    /*! For internal use */
+    property variant modelIndices: ({})
+
+    /*! For internal use */
+    property int previousIndex: -1
+
     signal spacePressed()
     signal enterPressed()
     signal deletePressed()
+
+    /*! This timer positions the view at end */
+    Timer {
+        id: positionTimer
+        interval: 100
+        repeat: false
+        onTriggered: root.positionViewAtIndex(root.count - 1, ListView.Beginning)
+    }
+
+    FocusIndicator {
+        id: focusIndicator
+        anchors.fill: parent
+        visible: root.activeFocus && (root.itemsSelectable === false || root.count === 0)
+    }
 
     ScrollBar.vertical: ScrollBar {
         width: scrollBarWidth
@@ -33,53 +57,160 @@ ListView {
         }
     }
 
-    Timer {
-        id: positionTimer
-        interval: 100
-        repeat: false
-        onTriggered: root.positionViewAtIndex(root.count - 1, ListView.Beginning)
-    }
-
     onCountChanged: {
         if (autoScrollToEnd)
             positionTimer.start()
 
-        if (count > 0 && currentIndex == -1)
+        if (count > 0 && currentIndex == -1) {
+            previousIndex = -1
             currentIndex = 0
+        }
     }
 
     onCurrentIndexChanged: {
-        if (!root.itemsSelectable)
-            root.positionViewAtIndex(root.currentIndex, ListView.Beginning)
+        if (selection && currentIndex !== -1 && modelIndices[currentIndex])
+            selection.setCurrentIndex(modelIndices[currentIndex], ItemSelectionModel.Current)
+
+        if (!itemsSelectable)
+            positionViewAtIndex(currentIndex, ListView.Beginning)
     }
 
     Keys.onPressed: {
-        if (event.key === Qt.Key_PageUp) {
-            root.currentIndex = root.currentIndex - 5
+        if (event.key === Qt.Key_Up) {
+            handleKeyboardMovement(event, currentIndex - 1)
+            event.accepted = true
+        }
+        else if (event.key === Qt.Key_Down) {
+            handleKeyboardMovement(event, currentIndex + 1)
+            event.accepted = true
+        }
+        else if (event.key === Qt.Key_PageUp) {
+            handleKeyboardMovement(event, currentIndex - 5)
+            event.accepted = true
         }
         else if (event.key === Qt.Key_PageDown) {
-            root.currentIndex = root.currentIndex + 5
+            handleKeyboardMovement(event, currentIndex + 5)
+            event.accepted = true
         }
         else if (event.key === Qt.Key_Home) {
-            root.currentIndex = 0
+            handleKeyboardMovement(event, 0)
+            positionViewAtIndex(currentIndex, ListView.Beginning)
+            event.accepted = true
         }
         else if (event.key === Qt.Key_End) {
-            root.currentIndex = root.count - 1
+            handleKeyboardMovement(event, count - 1)
+            positionViewAtIndex(currentIndex, ListView.End)
+            event.accepted = true
         }
         else if (event.key === Qt.Key_Space) {
-            root.spacePressed()
+            spacePressed()
+            event.accepted = true
         }
         else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-            root.enterPressed()
+            enterPressed()
+            event.accepted = true
         }
         else if (event.key === Qt.Key_Delete) {
-            root.deletePressed()
+            deletePressed()
+            event.accepted = true
         }
     }
 
-    FocusIndicator {
-        id: focusIndicator
-        anchors.fill: parent
-        visible: root.activeFocus && (root.itemsSelectable === false || root.count === 0)
+    /*! Returns \c true if the item at index is selected */
+    function indexSelected(index) {
+        return selection
+                ? selection.hasSelection && selection.isSelected(modelIndices[index])
+                : false
+    }
+
+    /*! Sets a model index for the specified integer index */
+    function updateModelIndex(index) {
+        modelIndices[index] = model.index(index, 0)
+    }
+
+    /*! Selects items based on keyboard movements */
+    function handleKeyboardMovement(event, targetIndex) {
+        if (event.modifiers & Qt.ShiftModifier) {
+            changeCurrentIndex(targetIndex, true)
+
+            if (selection) {
+                selectTo(currentIndex)
+            }
+        } else {
+            changeCurrentIndex(targetIndex, false)
+
+            if (selection) {
+                selectOnly(currentIndex)
+            }
+        }
+    }
+
+    /*! Sets the current index based on the state of the shift key */
+    function changeCurrentIndex(index, shiftModifier) {
+        if (shiftModifier) {
+            if (previousIndex === -1)
+                previousIndex = currentIndex
+        } else {
+            previousIndex = -1
+        }
+
+        currentIndex = index
+
+        if (currentIndex < 0)
+            currentIndex = 0
+        if (currentIndex > count - 1)
+            currentIndex = count - 1
+    }
+
+    function itemClicked(mouse, index, previousIndex) {
+        root.previousIndex = -1
+
+        if (mouse.modifiers & Qt.ShiftModifier) {
+            selectRange(previousIndex, index)
+        } else {
+            selectOnly(index)
+        }
+    }
+
+    function selectTo(targetIndex) {
+        if (selection) {
+            selection.clear()
+
+            if (previousIndex === -1) {
+                if (targetIndex === currentIndex) {
+                    selection.select(modelIndices[targetIndex], ItemSelectionModel.ToggleCurrent)
+                } else {
+                    selectRange(currentIndex, targetIndex)
+                }
+            } else {
+                if (targetIndex === previousIndex) {
+                    selection.select(modelIndices[targetIndex], ItemSelectionModel.ToggleCurrent)
+                } else {
+                    selectRange(previousIndex, targetIndex)
+                }
+            }
+        }
+    }
+
+    function selectOnly(targetIndex) {
+        selection.clear()
+        selection.select(modelIndices[targetIndex], ItemSelectionModel.SelectCurrent)
+    }
+
+    /*! Selects a range of items */
+    function selectRange(from, to) {
+        var selIndex
+
+        selection.clear()
+
+        if (to >= from) {
+            for (selIndex = from; selIndex <= to; selIndex++) {
+                selection.select(modelIndices[selIndex], ItemSelectionModel.Select)
+            }
+        } else {
+            for (selIndex = from; selIndex >= to; selIndex--) {
+                selection.select(modelIndices[selIndex], ItemSelectionModel.Select)
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ Rectangle {
     border.width: 2
     border.color: borderOnly ? Material.primary : Const.transparent
     opacity: 0
+    visible: opacity !== 0
     state: show ? "on" : "off"
 
     property bool show: false

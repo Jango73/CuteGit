@@ -9,9 +9,7 @@ StandardListView {
     id: root
 
     property variant repository: null
-    property variant selection: null
-    property bool mouseActive: true
-    property variant modelIndices: ({})
+    property bool mouseEnabled: true
 
     signal requestMenu(var name)
     signal requestDeleteFile(var name)
@@ -26,7 +24,7 @@ StandardListView {
         expanded: mustShowRelativeName
         selectionFillsItem: false
         listView: root
-        mouseEnabled: root.mouseActive
+        mouseEnabled: root.mouseEnabled
         symbolText: model.status
         primaryText: model.fileName
         secondaryText: mustShowRelativeName ? model.relativeName : ""
@@ -35,29 +33,21 @@ StandardListView {
 
         property string fullName: model.fullName
         property bool mustShowRelativeName: model.fileName !== model.relativeName
-        property bool selected: root.selection
-                                ? root.selection.hasSelection && root.selection.isSelected(root.modelIndices[index])
-                                : false
-
-        onPressed: {
-            if (mouse.modifiers & Qt.ShiftModifier) {
-                root.selectTo(index)
-            } else {
-                root.selectOnly(index)
-            }
-        }
+        property bool selected: indexSelected(index)
 
         onClicked: {
-            if (mouse.button === Qt.RightButton) {
+            if (mouse.button === Qt.LeftButton) {
+                root.itemClicked(mouse, index, previousIndex)
+            } else if (mouse.button === Qt.RightButton) {
                 root.requestMenu(model.fullName)
             }
         }
 
         onDoubleClicked: root.repository.openFile(model.fullName)
 
-        onFullNameChanged: root.modelIndices[index] = root.model.index(index, 0)
+        onFullNameChanged: root.updateModelIndex(index)
 
-        Component.onCompleted: root.modelIndices[index] = root.model.index(index, 0)
+        Component.onCompleted: root.updateModelIndex(index)
 
         background: Rectangle {
             anchors.fill: parent
@@ -70,36 +60,7 @@ StandardListView {
         }
     }
 
-    onCurrentIndexChanged: {
-        if (root.selection && root.currentIndex !== -1 && root.modelIndices[currentIndex])
-            root.selection.setCurrentIndex(root.modelIndices[currentIndex], ItemSelectionModel.Current)
-    }
-
     onSpacePressed: root.repository.toggleStaged(currentItem.fullName)
 
     onDeletePressed: root.requestDeleteFile(currentItem.fullName)
-
-    function selectTo(targetIndex) {
-        var selIndex
-        selection.clear()
-
-        if (targetIndex === root.currentIndex) {
-            root.selection.select(root.modelIndices[targetIndex], ItemSelectionModel.ToggleCurrent)
-        }
-        else if (targetIndex > root.currentIndex) {
-            for (selIndex = root.currentIndex; selIndex <= targetIndex; selIndex++) {
-                root.selection.select(root.modelIndices[selIndex], ItemSelectionModel.Select)
-            }
-        }
-        else {
-            for (selIndex = root.currentIndex; selIndex >= targetIndex; selIndex--) {
-                root.selection.select(root.modelIndices[selIndex], ItemSelectionModel.Select)
-            }
-        }
-    }
-
-    function selectOnly(targetIndex) {
-        selection.clear()
-        root.selection.select(root.modelIndices[targetIndex], ItemSelectionModel.SelectCurrent)
-    }
 }

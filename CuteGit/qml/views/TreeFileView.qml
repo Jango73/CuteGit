@@ -10,7 +10,6 @@ TreeView {
     enabled: visible
 
     property variant repository: null
-    property bool mouseActive: true
 
     model: root.repository !== null
            ? root.repository.treeFileModelProxy

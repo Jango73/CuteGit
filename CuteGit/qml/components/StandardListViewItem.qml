@@ -13,8 +13,13 @@ Item {
              ? "retractedPrimaryOnly"
              : "retracted"
 
+    /*! The list view owning this item */
     property Item listView: null
+
+    /*! If \c true, the item is in expanded state */
     property bool expanded: false
+
+    /*! If \c true, the selection indicator fills the item, otherwise it fills the primary text */
     property bool selectionFillsItem: true
     property bool dataLoading: false
     property variant textElide: Text.ElideRight
@@ -30,8 +35,8 @@ Item {
     property alias focusShown: focusIndicator.visible
     property alias mouseEnabled: mouse.enabled
 
-    signal clicked(var mouse)
-    signal doubleClicked(var mouse)
+    signal clicked(var mouse, var previousIndex)
+    signal doubleClicked(var mouse, var previousIndex)
     signal pressed(var mouse)
     signal entered(var mouse)
     signal exited(var mouse)
@@ -49,17 +54,19 @@ Item {
 
             onClicked: {
                 if (root.listView) {
-                    root.listView.currentIndex = index
+                    var previousIndex = root.listView.currentIndex
+                    root.listView.changeCurrentIndex(index)
                     root.listView.forceActiveFocus()
-                    root.clicked(mouse)
+                    root.clicked(mouse, previousIndex)
                 }
             }
 
             onDoubleClicked: {
                 if (root.listView) {
-                    root.listView.currentIndex = index
+                    var previousIndex = root.listView.currentIndex
+                    root.listView.changeCurrentIndex(index)
                     root.listView.forceActiveFocus()
-                    root.doubleClicked(mouse)
+                    root.doubleClicked(mouse, previousIndex)
                 }
             }
 

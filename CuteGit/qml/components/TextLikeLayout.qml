@@ -15,9 +15,6 @@ Item {
 
             for (var i = 0; i < children.length; i++)
             {
-                // console.log("item "+i);
-                // console.log(children[i].propname);
-
                 children[i].x = x
                 children[i].y = y
 
