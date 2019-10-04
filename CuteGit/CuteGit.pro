@@ -4,7 +4,7 @@ QT += core gui qml quick quickwidgets quickcontrols2 svg network xml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
-DEFINES += "VERSION_STRING=\"\\\"0.0.0.beta.1\\\"\""
+DEFINES += "VERSION_STRING=\"\\\"1.0.0\\\"\""
 DEFINES += QTPLUS_LIBRARY
 
 # Dependencies
