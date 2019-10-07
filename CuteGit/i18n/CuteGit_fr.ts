@@ -119,6 +119,10 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
         <source>Applying patch...</source>
         <translation>Application rustine...</translation>
     </message>
+    <message>
+        <source>Undeleting...</source>
+        <translation>Annulation d&apos;effacement...</translation>
+    </message>
 </context>
 <context>
     <name>CHgCommands</name>
@@ -805,6 +809,34 @@ Journal des références
 
 La première ligne contient l&apos;action faite, la seconde contient l&apos;index.
 </translation>
+    </message>
+    <message>
+        <source>Submodules</source>
+        <translation>Sous-modules</translation>
+    </message>
+    <message>
+        <source>&amp;Add...</source>
+        <translation>&amp;Ajouter...</translation>
+    </message>
+    <message>
+        <source>&amp;Update...</source>
+        <translation>&amp;Mettre à jour...</translation>
+    </message>
+    <message>
+        <source>&amp;Remove...</source>
+        <translation>&amp;Retirer...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy line</source>
+        <translation>&amp;Copier la ligne</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Information</translation>
+    </message>
+    <message>
+        <source>The language selection (%1) will be applied when the application is restarted.</source>
+        <translation>La langue sélectionnée (%1) sera prise en compte au prochain démarrage de l&apos;application.</translation>
     </message>
 </context>
 <context>

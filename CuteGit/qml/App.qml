@@ -48,6 +48,7 @@ ApplicationWindow {
         onRequestDarkTheme: root.setTheme(Material.Dark)
         onRequestLightTheme: root.setTheme(Material.Light)
         onRequestHelp: helpDialog.open()
+        onRequestLanguage: root.setLanguage(language)
     }
 
     //--------------------------------------------------------------------------------
@@ -316,6 +317,37 @@ ApplicationWindow {
                 autoScrollToEnd: true
             }
         ]
+
+        buttons: [
+            StandardToolButton {
+                action: Action {
+                    text: Const.closeText
+                    onTriggered: statusTextHistory.close()
+                }
+            }
+        ]
+    }
+
+    StandardPopup {
+        id: information
+        anchors.centerIn: parent
+        width: root.width * Const.popupWidthNorm
+        title: Const.informationText
+
+        controls: [
+            StandardText {
+                id: informationText
+            }
+        ]
+
+        buttons: [
+            StandardToolButton {
+                action: Action {
+                    text: Const.closeText
+                    onTriggered: information.close()
+                }
+            }
+        ]
     }
 
     QLP.FolderDialog {
@@ -377,13 +409,19 @@ ApplicationWindow {
         ctrl.theme = (theme === Material.Dark ? Const.themeMaterialDark : Const.themeMaterialLight)
     }
 
+    function setLanguage(language) {
+        ctrl.language = language
+        informationText.text = Const.setLanguageText.arg(language);
+        information.open()
+    }
+
     //--------------------------------------------------------------------------------
     // Debug
 
-//    onActiveFocusItemChanged: print("activeFocusItem", activeFocusItem)
+    //    onActiveFocusItemChanged: print("activeFocusItem", activeFocusItem)
 
-//    ScatteredItemView {
-//        anchors.fill: parent
-//        targetItem: parent
-//    }
+    //    ScatteredItemView {
+    //        anchors.fill: parent
+    //        targetItem: parent
+    //    }
 }

@@ -283,8 +283,10 @@ void CRepository::toggleStaged(QString sFullName)
 
 void CRepository::deleteFile(QString sFullName)
 {
-    QFile file (sFullName);
-    file.remove();
+    if (not sFullName.isEmpty())
+    {
+        m_pCommands->deleteFile(m_sRepositoryPath, sFullName);
+    }
     checkChangedFileStatus();
 }
 
@@ -338,7 +340,15 @@ void CRepository::revertSelection(QStringList lFileFullNames)
 {
     for (QString sFullName : lFileFullNames)
     {
-        m_pCommands->revertFile(m_sRepositoryPath, sFullName);
+        CRepoFile* pFile = fileByFullName(sFullName);
+
+        if (pFile != nullptr)
+        {
+            if (pFile->status() == CEnums::eDeleted)
+                m_pCommands->undeleteFile(m_sRepositoryPath, sFullName);
+            else
+                m_pCommands->revertFile(m_sRepositoryPath, sFullName);
+        }
     }
     checkChangedFileStatus();
 }
@@ -753,6 +763,8 @@ void CRepository::onNewOutput(QString sOutput, bool bSeparation)
 
     if (iCount > 50)
         m_pCommandOutputModel->removeRows(0, iCount - 50);
+
+    emit commandOutputModelChanged();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -761,12 +773,6 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
 {
     switch (eCommand)
     {
-
-    case CEnums::eCloneRepository:
-    {
-        onNewOutput(sOutput, false);
-        break;
-    }
 
     case CEnums::eRepositoryStatus:
     {
@@ -787,7 +793,10 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+    case CEnums::eCloneRepository:
     case CEnums::eNotification:
+    case CEnums::eDeleteFile:
+    case CEnums::eUndeleteFile:
     case CEnums::eStageFile:
     case CEnums::eStageAll:
     case CEnums::eRevertFile:
@@ -1022,7 +1031,7 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, C
             CRepoFile* pExistingFile = m_lRepoFiles[iExistingFileIndex];
             QString sExistingKey = pExistingFile->fullName();
 
-            if (pExistingFile->status() != CEnums::eMissing)
+            if (pExistingFile->status() != CEnums::eDeleted && pExistingFile->status() != CEnums::eMissing)
             {
                 if (not QFile(pExistingFile->fullName()).exists())
                 {

@@ -140,6 +140,8 @@ public:
         eBranchLog,
         eFileLog,
         eRefLog,
+        eDeleteFile,
+        eUndeleteFile,
         eCommitMessage,
         eStageFile,
         eStageAll,

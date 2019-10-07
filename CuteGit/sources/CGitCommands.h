@@ -97,6 +97,9 @@ public:
     virtual void refLog(const QString& sPath, int iFrom = 0, int iCount = REF_LOG_COUNT_DEFAULT) override;
 
     //!
+    virtual void deleteFile(const QString& sPath, const QString& sFullName) override;
+
+    //!
     virtual void toggleStaged(const QString& sPath, const QString& sFullName) override;
 
     //!
@@ -107,6 +110,9 @@ public:
 
     //!
     virtual void revertFile(const QString& sPath, const QString& sFullName) override;
+
+    //!
+    virtual void undeleteFile(const QString& sPath, const QString& sFullName) override;
 
     //!
     virtual void commit(const QString& sPath, const QString& sMessage) override;
@@ -236,6 +242,7 @@ protected:
     static const QString sCommandCreateTagOnCommit;
     static const QString sCommandCurrentBranch;
     static const QString sCommandDeleteBranch;
+    static const QString sCommandDeleteFile;
     static const QString sCommandFetch;
     static const QString sCommandFileLog;
     static const QString sCommandFileLogCount;

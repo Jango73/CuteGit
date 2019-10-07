@@ -160,6 +160,14 @@ void CCommands::refLog(const QString& sPath, int iFrom, int iCount)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::deleteFile(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::toggleStaged(const QString& sPath, const QString& sFullName)
 {
     Q_UNUSED(sPath);
@@ -186,6 +194,14 @@ void CCommands::stageAll(const QString& sPath, bool bStage)
 //-------------------------------------------------------------------------------------------------
 
 void CCommands::revertFile(const QString& sPath, const QString& sFullName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sFullName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CCommands::undeleteFile(const QString& sPath, const QString& sFullName)
 {
     Q_UNUSED(sPath);
     Q_UNUSED(sFullName);

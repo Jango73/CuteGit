@@ -36,12 +36,19 @@ ExtendablePane {
         }
 
         StandardStringListView {
+            id: listView
             anchors.top: buttons.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             autoScrollToEnd: true
             model: root.repository ? root.repository.commandOutputModel : undefined
+        }
+    }
+
+    onRepositoryChanged: {
+        if (repository) {
+            repository.commandOutputModelChanged.connect(listView.modelChanged)
         }
     }
 }

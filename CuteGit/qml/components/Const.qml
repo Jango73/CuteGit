@@ -78,6 +78,11 @@ Item {
     property string popStashMenuText: qsTr("&Pop stash")
     property string applyPatchMenuText: qsTr("&Apply patch")
 
+    property string submoduleMenuText: qsTr("Submodules")
+    property string addSubmoduleMenuText: qsTr("&Add...")
+    property string updateSubmoduleMenuText: qsTr("&Update...")
+    property string removeSubmoduleMenuText: qsTr("&Remove...")
+
     property string viewMenuText: qsTr("&View")
     property string refreshMenuText: qsTr("&Refresh")
     property string showAllMenuText: qsTr("Show a&ll")
@@ -158,6 +163,7 @@ Item {
     property string branchFromText: qsTr("Branch from")
     property string collapseAllText: qsTr("Collapse all")
     property string mergeBranchText: qsTr("Merge branch")
+    property string informationText: qsTr("Information")
     property string deleteBranchText: qsTr("Delete branch")
     property string repositoriesText: qsTr("Repositories")
     property string repositoryURLText: qsTr("Repository URL")
@@ -193,6 +199,10 @@ Item {
                                            "Are you sure you want to delete this file?\n\n" +
                                            "%1"
                                            )
+
+    property string setLanguageText: qsTr(
+                                         "The language selection (%1) will be applied when the application is restarted."
+                                         )
 
     property string copyrightText: qsTr(
                                   "CuteGit - version %1\n" +

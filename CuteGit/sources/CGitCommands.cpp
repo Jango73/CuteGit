@@ -51,6 +51,7 @@ const QString CGitCommands::sCommandContinueRebase      = "git rebase --continue
 const QString CGitCommands::sCommandCreateTagOnCommit   = "git tag -m \"%1\" \"%2\" \"%3\"";
 const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbrev-ref HEAD";
 const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
+const QString CGitCommands::sCommandDeleteFile          = "git rm \"%1\"";
 const QString CGitCommands::sCommandFetch               = "git fetch";
 const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --skip=%1 --max-count=%2 \"%3\"";
 const QString CGitCommands::sCommandFileLogCount        = "git rev-list --count HEAD \"%1\"";
@@ -301,6 +302,14 @@ void CGitCommands::refLog(const QString& sPath, int iFrom, int iCount)
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::deleteFile(const QString& sPath, const QString& sFullName)
+{
+    QString sCommand = QString(sCommandDeleteFile).arg(sFullName);
+    exec(new CProcessCommand(CEnums::eDeleteFile, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::toggleStaged(const QString& sPath, const QString& sFullName)
 {
     QString sFileStatusCommand = QString(sCommandFileStatus).arg(sFullName);
@@ -339,6 +348,18 @@ void CGitCommands::revertFile(const QString& sPath, const QString& sFullName)
     emit newOutputString(CEnums::eNotification, tr("Reverting..."));
     QString sCommand = QString(sCommandRevert).arg(sFullName);
     exec(new CProcessCommand(CEnums::eRevertFile, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::undeleteFile(const QString& sPath, const QString& sFullName)
+{
+    QString sCommand;
+    emit newOutputString(CEnums::eNotification, tr("Undeleting..."));
+    sCommand = QString(sCommandUnstage).arg(sFullName);
+    exec(new CProcessCommand(CEnums::eNotification, sPath, sCommand, true));
+    sCommand = QString(sCommandRevert).arg(sFullName);
+    exec(new CProcessCommand(CEnums::eUndeleteFile, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -818,6 +839,8 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eIssuedCommand:
     case CEnums::eCloneRepository:
     case CEnums::eCloneRepositoryFinished:
+    case CEnums::eDeleteFile:
+    case CEnums::eUndeleteFile:
     case CEnums::eStageFile:
     case CEnums::eStageAll:
     case CEnums::eRevertFile:

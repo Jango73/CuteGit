@@ -37,6 +37,7 @@ MenuBar {
     signal requestDarkTheme()
     signal requestLightTheme()
     signal requestHelp()
+    signal requestLanguage(var language)
 
     Menu {
         id: repositoryMenu
@@ -253,6 +254,25 @@ MenuBar {
     }
 
     Menu {
+        title: Const.submoduleMenuText
+
+        MenuItem {
+            text: Const.addSubmoduleMenuText
+            enabled: false
+        }
+
+        MenuItem {
+            text: Const.updateSubmoduleMenuText
+            enabled: false
+        }
+
+        MenuItem {
+            text: Const.removeSubmoduleMenuText
+            enabled: false
+        }
+    }
+
+    Menu {
         title: Const.viewMenuText
 
         Action {
@@ -374,7 +394,7 @@ MenuBar {
                     text: model.display
                     checkable: true
                     checked: root.controller.language === model.display
-                    onClicked: root.controller.language = model.display
+                    onClicked: root.requestLanguage(model.display)
                 }
 
                 onObjectAdded: language.insertItem(index, object)

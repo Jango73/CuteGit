@@ -83,6 +83,9 @@ public:
     //! Creates a list of CLogLine from the repo at sPath, for the ref log
     virtual void refLog(const QString& sPath, int iFrom = 0, int iCount = REF_LOG_COUNT_DEFAULT);
 
+    //! Deletes a file from the repo at sPath
+    virtual void deleteFile(const QString& sPath, const QString& sFullName);
+
     //! Toggles the 'staged' state of sFullName in the repo at sPath
     virtual void toggleStaged(const QString& sPath, const QString& sFullName);
 
@@ -95,6 +98,9 @@ public:
     //! Reverts all modifications of sFullName in the repo at sPath
     //! Use with caution
     virtual void revertFile(const QString& sPath, const QString& sFullName);
+
+    //! Reverts delete state of sFullName in the repo at sPath
+    virtual void undeleteFile(const QString& sPath, const QString& sFullName);
 
     //! Commits all staged files in the repo at sPath, using sMessage
     virtual void commit(const QString& sPath, const QString& sMessage);

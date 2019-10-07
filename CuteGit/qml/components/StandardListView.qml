@@ -28,6 +28,7 @@ ListView {
     /*! For internal use */
     property int previousIndex: -1
 
+    /*! Signals */
     signal spacePressed()
     signal enterPressed()
     signal deletePressed()
@@ -58,13 +59,7 @@ ListView {
     }
 
     onCountChanged: {
-        if (autoScrollToEnd)
-            positionTimer.start()
-
-        if (count > 0 && currentIndex == -1) {
-            previousIndex = -1
-            currentIndex = 0
-        }
+        modelChanged()
     }
 
     onCurrentIndexChanged: {
@@ -113,6 +108,16 @@ ListView {
         else if (event.key === Qt.Key_Delete) {
             deletePressed()
             event.accepted = true
+        }
+    }
+
+    function modelChanged() {
+        if (autoScrollToEnd)
+            positionTimer.start()
+
+        if (count > 0 && currentIndex == -1) {
+            previousIndex = -1
+            currentIndex = 0
         }
     }
 
