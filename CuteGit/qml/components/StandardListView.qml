@@ -109,6 +109,12 @@ ListView {
             deletePressed()
             event.accepted = true
         }
+        else if (event.key === Qt.Key_A) {
+            if (event.modifiers & Qt.ControlModifier) {
+                if (selection)
+                    selectAll()
+            }
+        }
     }
 
     function modelChanged() {
@@ -217,5 +223,9 @@ ListView {
                 selection.select(modelIndices[selIndex], ItemSelectionModel.Select)
             }
         }
+    }
+
+    function selectAll() {
+        selectRange(0, count - 1)
     }
 }

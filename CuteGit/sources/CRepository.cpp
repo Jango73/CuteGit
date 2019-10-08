@@ -275,8 +275,8 @@ void CRepository::toggleStaged(QString sFullName)
     if (not sFullName.isEmpty())
     {
         m_pCommands->toggleStaged(m_sRepositoryPath, sFullName);
+        checkChangedFileStatus();
     }
-    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -285,9 +285,20 @@ void CRepository::deleteFile(QString sFullName)
 {
     if (not sFullName.isEmpty())
     {
-        m_pCommands->deleteFile(m_sRepositoryPath, sFullName);
+        CRepoFile* pFile = fileByFullName(sFullName);
+
+        if (pFile->status() == CEnums::eUntracked)
+        {
+            QFile file(sFullName);
+            file.remove();
+        }
+        else
+        {
+            m_pCommands->deleteFile(m_sRepositoryPath, sFullName);
+        }
+
+        checkChangedFileStatus();
     }
-    checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
