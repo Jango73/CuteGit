@@ -40,7 +40,7 @@ bool CTreeFileModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 
 void CTreeFileModelProxy::filterChanged()
 {
-    invalidateFilter();
+    invalidate();
 }
 
 //-------------------------------------------------------------------------------------------------

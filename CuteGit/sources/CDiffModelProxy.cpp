@@ -18,7 +18,7 @@ CDiffModelProxy::CDiffModelProxy(CRepository *pRepository, QObject* parent)
 
 void CDiffModelProxy::filterChanged()
 {
-    invalidateFilter();
+    invalidate();
 }
 
 //-------------------------------------------------------------------------------------------------

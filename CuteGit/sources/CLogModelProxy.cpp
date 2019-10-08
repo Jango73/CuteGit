@@ -49,5 +49,5 @@ bool CLogModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePa
 
 void CLogModelProxy::filterChanged()
 {
-    invalidateFilter();
+    invalidate();
 }
