@@ -86,5 +86,6 @@
 
         <file>i18n/CuteGit_fr.qm</file>
         <file>i18n/CuteGit_de.qm</file>
+        <file>i18n/CuteGit_es.qm</file>
     </qresource>
 </RCC>

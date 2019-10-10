@@ -21,7 +21,7 @@ CFlatFileModelProxy::CFlatFileModelProxy(CController* pController, QObject *pare
 
 void CFlatFileModelProxy::filterChanged()
 {
-    invalidate();
+    invalidateFilter();
 }
 
 //-------------------------------------------------------------------------------------------------

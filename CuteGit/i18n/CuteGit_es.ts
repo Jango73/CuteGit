@@ -1,122 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de_DE">
+<TS version="2.1" language="es_ES">
 <context>
     <name>CGitCommands</name>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="339"/>
         <source>Staging all files...</source>
-        <translation>Alle Dateien bereitstellen ...</translation>
+        <translation>Preparando todos los archivos ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="339"/>
         <source>Unstaging all files...</source>
-        <translation>Staging aller Dateien wird aufgehoben ...</translation>
+        <translation>Validando todos los archivos ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="348"/>
         <source>Reverting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Revertiendo ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="358"/>
         <source>Undeleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar eliminación ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="369"/>
         <source>Commiting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Validando ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="378"/>
         <source>Amending...</source>
-        <translation>Änderung ...</translation>
+        <translation>Enmendando ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="387"/>
         <source>Pushing...</source>
-        <translation>Schieben ...</translation>
+        <translation>Sincro saliente ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="396"/>
         <source>Pulling...</source>
-        <translation>Ziehen ...</translation>
+        <translation>Sincro entrante ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="405"/>
         <source>Fetching...</source>
-        <translation>Abrufen ...</translation>
+        <translation>Recuperando info de sincronización ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="414"/>
         <source>Saving stash...</source>
-        <translation>Versteck wird gespeichert ...</translation>
+        <translation>Guardando alijo ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="422"/>
         <source>Restoring stash...</source>
-        <translation>Versteck wird wiederhergestellt ...</translation>
+        <translation>Restaurando alijo ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="430"/>
         <source>Applying patch...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicación de parche ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="471"/>
         <source>Switching to %1...</source>
-        <translation>Wechsel zu %1 ...</translation>
+        <translation>Cambiando a %1 ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="482"/>
         <source>Doing reset on %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Haciendo reinicio en %1 ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="492"/>
         <source>Doing rebase on %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Reiniciar en %1 en progreso ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="512"/>
         <source>Squashing %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobrescritura %1 ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="532"/>
         <source>Changing commit message...</source>
-        <translation>Commit-Nachricht ändern ...</translation>
+        <translation>Cambiar el mensaje de validación ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="552"/>
         <source>Continuing rebase...</source>
-        <translation>Mit Rebase weitermachen ...</translation>
+        <translation>Reanudación de rebases ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="561"/>
         <source>Aborting rebase...</source>
-        <translation>Rebase wird abgebrochen ...</translation>
+        <translation>Abandonar el revestimiento ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="570"/>
         <source>Creating branch %1...</source>
-        <translation>%1 Branch wird erstellt ...</translation>
+        <translation>Creando rama %1 ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="579"/>
         <source>Merging branch %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionar rama %1 ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="588"/>
         <source>Deleting branch %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminando la rama %1 ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="597"/>
         <source>Creating tag %1...</source>
-        <translation>Tag %1 wird erstellt ...</translation>
+        <translation>Creando la etiqueta %1 ...</translation>
     </message>
 </context>
 <context>
@@ -124,27 +124,27 @@
     <message>
         <location filename="../sources/CHgCommands.cpp" line="197"/>
         <source>Commiting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Validando ...</translation>
     </message>
     <message>
         <location filename="../sources/CHgCommands.cpp" line="206"/>
         <source>Amending...</source>
-        <translation>Änderung ...</translation>
+        <translation>Enmendando ...</translation>
     </message>
     <message>
         <location filename="../sources/CHgCommands.cpp" line="215"/>
         <source>Pushing...</source>
-        <translation>Schieben ...</translation>
+        <translation>Sincro saliente ...</translation>
     </message>
     <message>
         <location filename="../sources/CHgCommands.cpp" line="224"/>
         <source>Pulling...</source>
-        <translation>Ziehen ...</translation>
+        <translation>Sincro entrante ...</translation>
     </message>
     <message>
         <location filename="../sources/CHgCommands.cpp" line="233"/>
         <source>Creating branch %1...</source>
-        <translation type="unfinished">%1 Branch wird erstellt ...</translation>
+        <translation>Creando rama %1 ...</translation>
     </message>
 </context>
 <context>
@@ -170,37 +170,37 @@
     <message>
         <location filename="../qml/components/Const.qml" line="53"/>
         <source>&amp;Repository</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Repositorio</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="54"/>
         <source>&amp;Clone / checkout</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cerrar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="55"/>
         <source>&amp;Open</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Abrir</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="56"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Eliminar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="57"/>
         <source>&amp;Known</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;onocidos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="58"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dejar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="60"/>
         <source>Re&amp;mote</source>
-        <translation type="unfinished"></translation>
+        <translation>Re&amp;moto</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="61"/>
@@ -210,12 +210,12 @@
     <message>
         <location filename="../qml/components/Const.qml" line="62"/>
         <source>&amp;Pull</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincro &amp;entrante</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="63"/>
         <source>Pus&amp;h</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincro &amp;saliente</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="65"/>
@@ -288,6 +288,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/components/Const.qml" line="81"/>
+        <source>Submodules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="82"/>
+        <source>&amp;Add...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="83"/>
+        <source>&amp;Update...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="84"/>
+        <source>&amp;Remove...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/components/Const.qml" line="86"/>
         <source>&amp;View</source>
         <translation type="unfinished"></translation>
@@ -343,6 +363,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/components/Const.qml" line="98"/>
+        <source>&amp;Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/components/Const.qml" line="99"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
@@ -360,31 +385,6 @@
     <message>
         <location filename="../qml/components/Const.qml" line="102"/>
         <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="98"/>
-        <source>&amp;Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="81"/>
-        <source>Submodules</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="82"/>
-        <source>&amp;Add...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="83"/>
-        <source>&amp;Update...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="84"/>
-        <source>&amp;Remove...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -465,12 +465,12 @@
     <message>
         <location filename="../qml/components/Const.qml" line="122"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="123"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Diario</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="124"/>
@@ -490,52 +490,70 @@
     <message>
         <location filename="../qml/components/Const.qml" line="127"/>
         <source>Tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Etiquetas</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="128"/>
         <source>Flat</source>
-        <translation type="unfinished"></translation>
+        <translation>Plano</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="129"/>
         <source>Diff</source>
+        <translation>Diferencia</translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="130"/>
+        <location filename="../qml/components/Const.qml" line="301"/>
+        <source>Push</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="131"/>
+        <location filename="../qml/components/Const.qml" line="300"/>
+        <source>Pull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="132"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="133"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="134"/>
         <source>Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="135"/>
         <source>Stage</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="136"/>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="137"/>
         <source>Graph</source>
-        <translation type="unfinished"></translation>
+        <translation>Gráfica</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="138"/>
         <location filename="../qml/components/Const.qml" line="295"/>
         <source>Amend</source>
+        <translation>Modificar</translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="139"/>
+        <location filename="../qml/components/Const.qml" line="299"/>
+        <source>Fetch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -551,12 +569,12 @@
     <message>
         <location filename="../qml/components/Const.qml" line="142"/>
         <source>Ahead</source>
-        <translation type="unfinished"></translation>
+        <translation>Delante</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="143"/>
         <source>Behind</source>
-        <translation type="unfinished"></translation>
+        <translation>Detrás</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="144"/>
@@ -566,33 +584,33 @@
     <message>
         <location filename="../qml/components/Const.qml" line="145"/>
         <source>Revert</source>
-        <translation type="unfinished"></translation>
+        <translation>Revertir</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="146"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="147"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Salida</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="148"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Navegar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="149"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="150"/>
         <location filename="../qml/components/Const.qml" line="294"/>
         <source>Commit</source>
-        <translation type="unfinished"></translation>
+        <translation>Validación</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="151"/>
@@ -617,117 +635,122 @@
     <message>
         <location filename="../qml/components/Const.qml" line="155"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="156"/>
         <source>Branches</source>
-        <translation type="unfinished"></translation>
+        <translation>Ramas</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="157"/>
         <source>Switch to</source>
+        <translation>Cambiar a</translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="158"/>
+        <source>Amending. The changes will be appended to the last commit...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="159"/>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Atajos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="160"/>
         <source>Branch log</source>
-        <translation type="unfinished"></translation>
+        <translation>Diario de rama</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="161"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayuda</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="162"/>
         <source>List empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista vacía</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="163"/>
         <source>Expand all</source>
-        <translation type="unfinished"></translation>
+        <translation>Expandir todos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="164"/>
         <source>Delete file</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar archivo</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="165"/>
         <source>Branch from</source>
-        <translation type="unfinished"></translation>
+        <translation>Ramifica desde</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="166"/>
         <source>Collapse all</source>
-        <translation type="unfinished"></translation>
+        <translation>Colapsar todos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="167"/>
         <source>Merge branch</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionar rama</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="168"/>
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Información</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="169"/>
         <source>Delete branch</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar rama</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="170"/>
         <source>Repositories</source>
-        <translation type="unfinished"></translation>
+        <translation>Repositorios</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="171"/>
         <source>Repository URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL del repositorio</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="172"/>
         <source>Status history</source>
-        <translation type="unfinished"></translation>
+        <translation>Historial de estado</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="173"/>
         <source>Merge in progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionarse en progreso ...</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="174"/>
         <source>All files are clean</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos los archivos están limpios</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="175"/>
         <source>Rebase in progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconstrucción en progreso ...</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="176"/>
         <source>Clone repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar un repositorio</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="177"/>
         <source>Enter your message here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduzca su mensaje aquí...</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="178"/>
         <source>Destination folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Carpeta de destino</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="179"/>
@@ -784,13 +807,51 @@ Are you sure you want to do this? It cannot be undone.</source>
     <message>
         <location filename="../qml/components/Const.qml" line="205"/>
         <source>The language selection (%1) will be applied when the application is restarted.</source>
-        <translation type="unfinished"></translation>
+        <translation>La selección de idioma (%1) se aplicará cuando se reinicie la aplicación.</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="209"/>
         <source>CuteGit - version %1
 Copyright (c) 2019 Jango73
 Some icons are copyright Freepik from www.flaticon.com
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="215"/>
+        <source>Repository status
+
+The first line contains the type of repository, the number of commits ahead and behind the current HEAD.
+The secoond line contains full path of the repository and the current branch.
+
+File view
+
+Staged files are shown in green, unstaged ones in red.
+The symbols next to file names are:
+*	The file is modified
++	The file is being added
+-	The file is being removed
+=	The file is being renamed
+?	The file is untracked
+!	The file is ignored
+???	The file is missing
+
+Diff views
+
+Green is for new lines, red for deleted lines.
+
+Log views
+
+The first line of an item contains part of the commit message.
+The second line contains the author, the date and all refs that point to this commit.
+
+Graph view
+
+It contains the same information as a log view.
+
+Ref log
+
+The first line of an item contains the action done, the second line contains the index.
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -860,72 +921,6 @@ Some icons are copyright Freepik from www.flaticon.com
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="311"/>
-        <source>Mark file for diff</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="139"/>
-        <location filename="../qml/components/Const.qml" line="299"/>
-        <source>Fetch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="131"/>
-        <location filename="../qml/components/Const.qml" line="300"/>
-        <source>Pull</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="130"/>
-        <location filename="../qml/components/Const.qml" line="301"/>
-        <source>Push</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="158"/>
-        <source>Amending. The changes will be appended to the last commit...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="215"/>
-        <source>Repository status
-
-The first line contains the type of repository, the number of commits ahead and behind the current HEAD.
-The secoond line contains full path of the repository and the current branch.
-
-File view
-
-Staged files are shown in green, unstaged ones in red.
-The symbols next to file names are:
-*	The file is modified
-+	The file is being added
--	The file is being removed
-=	The file is being renamed
-?	The file is untracked
-!	The file is ignored
-???	The file is missing
-
-Diff views
-
-Green is for new lines, red for deleted lines.
-
-Log views
-
-The first line of an item contains part of the commit message.
-The second line contains the author, the date and all refs that point to this commit.
-
-Graph view
-
-It contains the same information as a log view.
-
-Ref log
-
-The first line of an item contains the action done, the second line contains the index.
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/components/Const.qml" line="303"/>
         <source>Activate file view</source>
         <translation type="unfinished"></translation>
@@ -960,18 +955,23 @@ The first line of an item contains the action done, the second line contains the
         <source>Diff with previous commit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qml/components/Const.qml" line="311"/>
+        <source>Mark file for diff</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FilePane</name>
     <message>
         <location filename="../qml/pages/FilePane.qml" line="33"/>
         <source>Absolute name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre absoluto</translation>
     </message>
     <message>
         <location filename="../qml/pages/FilePane.qml" line="37"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre del archivo</translation>
     </message>
 </context>
 <context>
@@ -979,28 +979,29 @@ The first line of an item contains the action done, the second line contains the
     <message>
         <location filename="../sources/Strings.cpp" line="7"/>
         <source>%1 opened.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 abierto.</translation>
     </message>
     <message>
         <location filename="../sources/Strings.cpp" line="8"/>
         <source>%1 is not a repository.
 Please select a folder containing a repository.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 no es un repositorio.
+Seleccione una carpeta que contenga un repositorio.</translation>
     </message>
     <message>
         <location filename="../sources/Strings.cpp" line="9"/>
         <source>%1 does not exist. Ignoring.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 no existe. Postergación.</translation>
     </message>
     <message>
         <location filename="../sources/Strings.cpp" line="11"/>
         <source>Pushing to gerrit...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincro saliente con gerrit ...</translation>
     </message>
     <message>
         <location filename="../sources/Strings.cpp" line="12"/>
         <source>Unable to get current branch name...</source>
-        <translation type="unfinished"></translation>
+        <translation>No se puede obtener el nombre de la rama actual ...</translation>
     </message>
 </context>
 </TS>

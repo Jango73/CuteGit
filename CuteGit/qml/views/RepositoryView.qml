@@ -56,12 +56,12 @@ Pane {
                 : "black"
 
                 property string infoText: if (root.repository) {
-                                              root.repository.repositoryTypeString
-                                                      + qsTr(" - ( Ahead ")
-                                                      + root.repository.commitCountAhead
-                                                      + qsTr(" : behind ")
-                                                      + root.repository.commitCountBehind
-                                                      + " ) - "
+                                              "%1 : ( %2 %3 / %4 %5 ) : "
+                                              .arg(root.repository.repositoryTypeString)
+                                              .arg(Const.aheadText)
+                                              .arg(root.repository.commitCountAhead)
+                                              .arg(Const.behindText)
+                                              .arg(root.repository.commitCountBehind)
                                           } else ""
 
                 text: if (root.repository) {
@@ -84,7 +84,7 @@ Pane {
             anchors.bottom: parent.bottom
             verticalAlignment: Text.AlignVCenter
             text: root.repository
-                  ? root.repository.repositoryPath + " - " + root.repository.currentBranch
+                  ? "%1 : %2".arg(root.repository.repositoryPath).arg(root.repository.currentBranch)
                   : ""
         }
     }

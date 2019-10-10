@@ -1,6 +1,7 @@
 
 HEADERS += \
     ../qt-plus/source/cpp/CXMLNode.h \
+    sources/Strings.h \
     sources/CEnums.h \
     sources/CUtils.h \
     sources/CBranch.h \
@@ -35,6 +36,7 @@ HEADERS += \
 
 SOURCES += \
     ../qt-plus/source/cpp/CXMLNode.cpp \
+    sources/Strings.cpp \
     sources/CUtils.cpp \
     sources/CExecution.cpp \
     sources/CCommands.cpp \
@@ -67,7 +69,8 @@ RESOURCES += \
 
 TRANSLATIONS = \
     i18n/CuteGit_fr.ts \
-    i18n/CuteGit_de.ts
+    i18n/CuteGit_de.ts \
+    i18n/CuteGit_es.ts
 
 unix {
     QT_LIB_NAMES = \

@@ -5,212 +5,214 @@ import QtQuick.Window 2.12
 
 Item {
     // Constants
-    property string themeMaterialDark: "MaterialDark"
-    property string themeMaterialLight: "MaterialLight"
+    readonly property string themeMaterialDark: "MaterialDark"
+    readonly property string themeMaterialLight: "MaterialLight"
 
     // Main font
-    property string mainFontFamily: "Calibri"
-    property int mainFontSize: Screen.pixelDensity * 3
+    readonly property string mainFontFamily: "Calibri"
+    readonly property int mainFontSize: Screen.pixelDensity * 3
 
     // Colors
-    property color transparent: "transparent"
+    readonly property color transparent: "transparent"
 
-    property color fileStagedColor: "#80008000"
-    property color fileModifiedColor: "#80800000"
-    property color fileRenamedColor: "#80804000"
-    property color fileAddedColor: "#80000080"
-    property color fileDeletedColor: "#80804000"
+    readonly property color fileStagedColor: "#80008000"
+    readonly property color fileModifiedColor: "#80800000"
+    readonly property color fileRenamedColor: "#80804000"
+    readonly property color fileAddedColor: "#80000080"
+    readonly property color fileDeletedColor: "#80804000"
 
-    property color labelLocalColor: "aquamarine"
-    property color labelRemoteColor: "lightsalmon"
-    property color labelTagColor: "deepskyblue"
+    readonly property color labelLocalColor: "aquamarine"
+    readonly property color labelRemoteColor: "lightsalmon"
+    readonly property color labelTagColor: "deepskyblue"
 
     // Margins and padding
-    property int mainPadding: mainFontSize * 0.6666
-    property int mainRadius: mainPadding * 0.5
-    property int smallPadding: mainPadding / 2
-    property int verySmallPadding: smallPadding / 2
-    property int panePadding: smallPadding
-    property int paneMargins: smallPadding
-    property int paneElevation: 2
-    property int popupElevation: 8
-    property int elementHeight: mainFontSize * 1.5
-    property int microButtonWidth: elementHeight * 1.2
-    property int microButtonHeight: elementHeight * 1.8
-    property int listViewItemHeight: elementHeight + smallPadding
-    property int buttonHeight: mainFontSize * 2.5
+    readonly property int mainPadding: mainFontSize * 0.6666
+    readonly property int mainRadius: mainPadding * 0.5
+    readonly property int smallPadding: mainPadding / 2
+    readonly property int verySmallPadding: smallPadding / 2
+    readonly property int panePadding: smallPadding
+    readonly property int paneMargins: smallPadding
+    readonly property int paneElevation: 2
+    readonly property int popupElevation: 8
+    readonly property int elementHeight: mainFontSize * 1.5
+    readonly property int microButtonWidth: elementHeight * 1.2
+    readonly property int microButtonHeight: elementHeight * 1.8
+    readonly property int listViewItemHeight: elementHeight + smallPadding
+    readonly property int buttonHeight: mainFontSize * 2.5
 
-    property real popupWidthNorm: 0.50
-    property real popupHeightNorm: 0.75
+    readonly property real popupWidthNorm: 0.50
+    readonly property real popupHeightNorm: 0.75
 
-    property real popupWidthSmall: 0.25
-    property real popupHeightSmall: 0.25
+    readonly property real popupWidthSmall: 0.25
+    readonly property real popupHeightSmall: 0.25
 
     // Durations
-    property int componentFadingDuration: 200
+    readonly property int componentFadingDuration: 200
 
     // Text
-    property string repositoryMenuText: qsTr("&Repository")
-    property string cloneMenuText: qsTr("&Clone / checkout")
-    property string openMenuText: qsTr("&Open")
-    property string removeMenuText: qsTr("&Remove")
-    property string knownMenuText: qsTr("&Known")
-    property string quitMenuText: qsTr("&Quit")
+    readonly property string repositoryMenuText: qsTr("&Repository")
+    readonly property string cloneMenuText: qsTr("&Clone / checkout")
+    readonly property string openMenuText: qsTr("&Open")
+    readonly property string removeMenuText: qsTr("&Remove")
+    readonly property string knownMenuText: qsTr("&Known")
+    readonly property string quitMenuText: qsTr("&Quit")
 
-    property string remoteMenuText: qsTr("Re&mote")
-    property string fetchMenuText: qsTr("&Fetch")
-    property string pullMenuText: qsTr("&Pull")
-    property string pushMenuText: qsTr("Pus&h")
+    readonly property string remoteMenuText: qsTr("Re&mote")
+    readonly property string fetchMenuText: qsTr("&Fetch")
+    readonly property string pullMenuText: qsTr("&Pull")
+    readonly property string pushMenuText: qsTr("Pus&h")
 
-    property string localMenuText: qsTr("&Local")
-    property string stageAllMenuText: qsTr("Stage a&ll")
-    property string unstageAllMenuText: qsTr("Unsta&ge all")
-    property string stageSelectionMenuText: qsTr("&Stage selection")
-    property string unstageSelectionMenuText: qsTr("&Unstage selection")
-    property string revertSelectionMenuText: qsTr("&Revert selection")
-    property string commitMenuText: qsTr("&Commit")
-    property string amendMenuText: qsTr("&Amend")
-    property string continueRebaseMenuText: qsTr("C&ontinue rebase")
-    property string abortRebaseMenuText: qsTr("Abor&t rebase")
+    readonly property string localMenuText: qsTr("&Local")
+    readonly property string stageAllMenuText: qsTr("Stage a&ll")
+    readonly property string unstageAllMenuText: qsTr("Unsta&ge all")
+    readonly property string stageSelectionMenuText: qsTr("&Stage selection")
+    readonly property string unstageSelectionMenuText: qsTr("&Unstage selection")
+    readonly property string revertSelectionMenuText: qsTr("&Revert selection")
+    readonly property string commitMenuText: qsTr("&Commit")
+    readonly property string amendMenuText: qsTr("&Amend")
+    readonly property string continueRebaseMenuText: qsTr("C&ontinue rebase")
+    readonly property string abortRebaseMenuText: qsTr("Abor&t rebase")
 
-    property string stashAndPatchMenuText: qsTr("Stash && patch")
-    property string saveStashMenuText: qsTr("&Save stash")
-    property string popStashMenuText: qsTr("&Pop stash")
-    property string applyPatchMenuText: qsTr("&Apply patch")
+    readonly property string stashAndPatchMenuText: qsTr("Stash && patch")
+    readonly property string saveStashMenuText: qsTr("&Save stash")
+    readonly property string popStashMenuText: qsTr("&Pop stash")
+    readonly property string applyPatchMenuText: qsTr("&Apply patch")
 
-    property string submoduleMenuText: qsTr("Submodules")
-    property string addSubmoduleMenuText: qsTr("&Add...")
-    property string updateSubmoduleMenuText: qsTr("&Update...")
-    property string removeSubmoduleMenuText: qsTr("&Remove...")
+    readonly property string submoduleMenuText: qsTr("Submodules")
+    readonly property string addSubmoduleMenuText: qsTr("&Add...")
+    readonly property string updateSubmoduleMenuText: qsTr("&Update...")
+    readonly property string removeSubmoduleMenuText: qsTr("&Remove...")
 
-    property string viewMenuText: qsTr("&View")
-    property string refreshMenuText: qsTr("&Refresh")
-    property string showAllMenuText: qsTr("Show a&ll")
-    property string showCleanMenuText: qsTr("Show &clean")
-    property string showAddedMenuText: qsTr("Show &added")
-    property string showModifiedMenuText: qsTr("Show &modified")
-    property string showRenamedMenuText: qsTr("Show &renamed")
-    property string showDeletedMenuText: qsTr("Show &deleted")
-    property string showMissingMenuText: qsTr("Show mi&ssing")
-    property string showUntrackedMenuText: qsTr("Show &untracked")
-    property string showIgnoredMenuText: qsTr("Show &ignored")
+    readonly property string viewMenuText: qsTr("&View")
+    readonly property string refreshMenuText: qsTr("&Refresh")
+    readonly property string showAllMenuText: qsTr("Show a&ll")
+    readonly property string showCleanMenuText: qsTr("Show &clean")
+    readonly property string showAddedMenuText: qsTr("Show &added")
+    readonly property string showModifiedMenuText: qsTr("Show &modified")
+    readonly property string showRenamedMenuText: qsTr("Show &renamed")
+    readonly property string showDeletedMenuText: qsTr("Show &deleted")
+    readonly property string showMissingMenuText: qsTr("Show mi&ssing")
+    readonly property string showUntrackedMenuText: qsTr("Show &untracked")
+    readonly property string showIgnoredMenuText: qsTr("Show &ignored")
 
-    property string optionsMenuText: qsTr("&Options")
-    property string helpMenuText: qsTr("&Help")
-    property string themeMenuText: qsTr("&Theme")
-    property string darkThemeMenuText: qsTr("Dark")
-    property string lightThemeMenuText: qsTr("Light")
-    property string languageMenuText: qsTr("&Language")
+    readonly property string optionsMenuText: qsTr("&Options")
+    readonly property string helpMenuText: qsTr("&Help")
+    readonly property string themeMenuText: qsTr("&Theme")
+    readonly property string darkThemeMenuText: qsTr("Dark")
+    readonly property string lightThemeMenuText: qsTr("Light")
+    readonly property string languageMenuText: qsTr("&Language")
 
-    property string fileDeleteMenuText: qsTr("&Delete")
-    property string fileBlameMenuText: qsTr("&Blame")
+    readonly property string fileDeleteMenuText: qsTr("&Delete")
+    readonly property string fileBlameMenuText: qsTr("&Blame")
 
-    property string logCopyCommitIdMenuText: qsTr("&Copy commit ID")
-    property string logCopyCommitMessageMenuText: qsTr("Copy commit m&essage")
-    property string logCreateTagMenuText: qsTr("Create ta&g here")
-    property string logCreateBranchMenuText: qsTr("&Branch from here")
-    property string logResetMenuText: qsTr("Reset &to here")
-    property string logRebaseMenuText: qsTr("&Rebase here")
-    property string logSquashMenuText: qsTr("&Squash")
-    property string logChangeMessageMenuText: qsTr("Change &message")
-    property string logDiffPreviousCommitMenuText: qsTr("&View diff with previous commit")
-    property string logMarkDiffFrom: qsTr("Mark as diff from")
-    property string logMarkDiffTo: qsTr("Mark as diff to")
+    readonly property string logCopyCommitIdMenuText: qsTr("&Copy commit ID")
+    readonly property string logCopyCommitMessageMenuText: qsTr("Copy commit m&essage")
+    readonly property string logCreateTagMenuText: qsTr("Create ta&g here")
+    readonly property string logCreateBranchMenuText: qsTr("&Branch from here")
+    readonly property string logResetMenuText: qsTr("Reset &to here")
+    readonly property string logRebaseMenuText: qsTr("&Rebase here")
+    readonly property string logSquashMenuText: qsTr("&Squash")
+    readonly property string logChangeMessageMenuText: qsTr("Change &message")
+    readonly property string logDiffPreviousCommitMenuText: qsTr("&View diff with previous commit")
+    readonly property string logMarkDiffFrom: qsTr("Mark as diff from")
+    readonly property string logMarkDiffTo: qsTr("Mark as diff to")
 
-    property string diffCopyLineText: qsTr("&Copy line")
+    readonly property string diffCopyLineText: qsTr("&Copy line")
 
-    property string okText: qsTr("OK")
-    property string logText: qsTr("Log")
-    property string tagText: qsTr("Tag")
-    property string sortText: qsTr("Sort")
-    property string nameText: qsTr("Name")
-    property string tagsText: qsTr("Tags")
-    property string flatText: qsTr("Flat")
-    property string diffText: qsTr("Diff")
-    property string pushText: qsTr("Push")
-    property string pullText: qsTr("Pull")
-    property string closeText: qsTr("Close")
-    property string clearText: qsTr("Clear")
-    property string filesText: qsTr("Files")
-    property string stageText: qsTr("Stage")
-    property string mergeText: qsTr("Merge")
-    property string graphText: qsTr("Graph")
-    property string amendText: qsTr("Amend")
-    property string fetchText: qsTr("Fetch")
-    property string blameText: qsTr("Blame")
-    property string localText: qsTr("Local")
-    property string filterText: qsTr("Filter")
-    property string revertText: qsTr("Revert")
-    property string cancelText: qsTr("Cancel")
-    property string outputText: qsTr("Output")
-    property string browseText: qsTr("Browse")
-    property string deleteText: qsTr("Delete")
-    property string commitText: qsTr("Commit")
-    property string remoteText: qsTr("Remote")
-    property string refLogText: qsTr("Ref log")
-    property string messageText: qsTr("Message")
-    property string loadingText: qsTr("Loading...")
-    property string generalText: qsTr("General")
-    property string branchesText: qsTr("Branches")
-    property string switchToText: qsTr("Switch to")
-    property string amendingText: qsTr("Amending. The changes will be appended to the last commit...")
-    property string shortcutsText: qsTr("Shortcuts")
-    property string branchLogText: qsTr("Branch log")
-    property string helpTitleText: qsTr("Help")
-    property string listEmptyText: qsTr("List empty")
-    property string expandAllText: qsTr("Expand all")
-    property string deleteFileText: qsTr("Delete file")
-    property string branchFromText: qsTr("Branch from")
-    property string collapseAllText: qsTr("Collapse all")
-    property string mergeBranchText: qsTr("Merge branch")
-    property string informationText: qsTr("Information")
-    property string deleteBranchText: qsTr("Delete branch")
-    property string repositoriesText: qsTr("Repositories")
-    property string repositoryURLText: qsTr("Repository URL")
-    property string statusHistoryText: qsTr("Status history")
-    property string mergeProgressText: qsTr("Merge in progress...")
-    property string allFilesCleanText: qsTr("All files are clean")
-    property string rebaseProgressText: qsTr("Rebase in progress...")
-    property string cloneRepositoryText: qsTr("Clone repository")
-    property string enterMessageHereText: qsTr("Enter your message here...")
-    property string destinationFolderText: qsTr("Destination folder")
-    property string selectPatchToApplyText: qsTr("Select patch to apply")
-    property string enterBranchNameHereText: qsTr("Enter branch name here...")
-    property string changeCommitMessageText: qsTr("Change commit message")
-    property string stagedFilesForCommitText: qsTr("Staged files for commit")
-    property string interactiveRebaseProgressText: qsTr("Interactive rebase in progress...")
+    readonly property string okText: qsTr("OK")
+    readonly property string logText: qsTr("Log")
+    readonly property string tagText: qsTr("Tag")
+    readonly property string sortText: qsTr("Sort")
+    readonly property string nameText: qsTr("Name")
+    readonly property string tagsText: qsTr("Tags")
+    readonly property string flatText: qsTr("Flat")
+    readonly property string diffText: qsTr("Diff")
+    readonly property string pushText: qsTr("Push")
+    readonly property string pullText: qsTr("Pull")
+    readonly property string closeText: qsTr("Close")
+    readonly property string clearText: qsTr("Clear")
+    readonly property string filesText: qsTr("Files")
+    readonly property string stageText: qsTr("Stage")
+    readonly property string mergeText: qsTr("Merge")
+    readonly property string graphText: qsTr("Graph")
+    readonly property string amendText: qsTr("Amend")
+    readonly property string fetchText: qsTr("Fetch")
+    readonly property string blameText: qsTr("Blame")
+    readonly property string localText: qsTr("Local")
+    readonly property string aheadText: qsTr("Ahead")
+    readonly property string behindText: qsTr("Behind")
+    readonly property string filterText: qsTr("Filter")
+    readonly property string revertText: qsTr("Revert")
+    readonly property string cancelText: qsTr("Cancel")
+    readonly property string outputText: qsTr("Output")
+    readonly property string browseText: qsTr("Browse")
+    readonly property string deleteText: qsTr("Delete")
+    readonly property string commitText: qsTr("Commit")
+    readonly property string remoteText: qsTr("Remote")
+    readonly property string refLogText: qsTr("Ref log")
+    readonly property string messageText: qsTr("Message")
+    readonly property string loadingText: qsTr("Loading...")
+    readonly property string generalText: qsTr("General")
+    readonly property string branchesText: qsTr("Branches")
+    readonly property string switchToText: qsTr("Switch to")
+    readonly property string amendingText: qsTr("Amending. The changes will be appended to the last commit...")
+    readonly property string shortcutsText: qsTr("Shortcuts")
+    readonly property string branchLogText: qsTr("Branch log")
+    readonly property string helpTitleText: qsTr("Help")
+    readonly property string listEmptyText: qsTr("List empty")
+    readonly property string expandAllText: qsTr("Expand all")
+    readonly property string deleteFileText: qsTr("Delete file")
+    readonly property string branchFromText: qsTr("Branch from")
+    readonly property string collapseAllText: qsTr("Collapse all")
+    readonly property string mergeBranchText: qsTr("Merge branch")
+    readonly property string informationText: qsTr("Information")
+    readonly property string deleteBranchText: qsTr("Delete branch")
+    readonly property string repositoriesText: qsTr("Repositories")
+    readonly property string repositoryURLText: qsTr("Repository URL")
+    readonly property string statusHistoryText: qsTr("Status history")
+    readonly property string mergeProgressText: qsTr("Merge in progress...")
+    readonly property string allFilesCleanText: qsTr("All files are clean")
+    readonly property string rebaseProgressText: qsTr("Rebase in progress...")
+    readonly property string cloneRepositoryText: qsTr("Clone repository")
+    readonly property string enterMessageHereText: qsTr("Enter your message here...")
+    readonly property string destinationFolderText: qsTr("Destination folder")
+    readonly property string selectPatchToApplyText: qsTr("Select patch to apply")
+    readonly property string enterBranchNameHereText: qsTr("Enter branch name here...")
+    readonly property string changeCommitMessageText: qsTr("Change commit message")
+    readonly property string stagedFilesForCommitText: qsTr("Staged files for commit")
+    readonly property string interactiveRebaseProgressText: qsTr("Interactive rebase in progress...")
 
-    property string emptyRepositoryTabText: qsTr(
+    readonly property string emptyRepositoryTabText: qsTr(
                                                 "There is no open repository at the moment.\n" +
                                                 "Please open or clone a repository to fill this view."
                                                 )
 
-    property string mergeBranchMessage: qsTr(
+    readonly property string mergeBranchMessage: qsTr(
                                             "You are about to merge %1 on the working directory.\n\n" +
                                             "Are you sure you want to do this?"
                                             )
 
-    property string deleteBranchMessage: qsTr(
+    readonly property string deleteBranchMessage: qsTr(
                                              "You are about to delete a branch.\n\n" +
                                              "Are you sure you want to do this? It cannot be undone."
                                              )
 
-    property string deleteFileMessage: qsTr(
+    readonly property string deleteFileMessage: qsTr(
                                            "Are you sure you want to delete this file?\n\n" +
                                            "%1"
                                            )
 
-    property string setLanguageText: qsTr(
+    readonly property string setLanguageText: qsTr(
                                          "The language selection (%1) will be applied when the application is restarted."
                                          )
 
-    property string copyrightText: qsTr(
+    readonly property string copyrightText: qsTr(
                                   "CuteGit - version %1\n" +
                                   "Copyright (c) 2019 Jango73\n" +
                                   "Some icons are copyright Freepik from www.flaticon.com\n"
                                   )
 
-    property string generalHelpText: qsTr(
+    readonly property string generalHelpText: qsTr(
                                          "Repository status\n" +
                                          "\n" +
                                          "The first line contains the type of repository, the number of commits ahead and behind the current HEAD.\n" +
@@ -246,38 +248,38 @@ Item {
                                          "The first line of an item contains the action done, the second line contains the index.\n"
                                          )
 
-    property string logLabelFrom: qsTr("[=>] ")
-    property string logLabelTo: qsTr("[<=] ")
+    readonly property string logLabelFrom: qsTr("[=>] ")
+    readonly property string logLabelTo: qsTr("[<=] ")
 
     //
-    property string staged: "X"
-    property string statusClean: " "
-    property string statusModified: "M"
-    property string statusAdded: "+"
-    property string statusDeleted: "-"
-    property string statusRenamed: "="
+    readonly property string staged: "X"
+    readonly property string statusClean: " "
+    readonly property string statusModified: "M"
+    readonly property string statusAdded: "+"
+    readonly property string statusDeleted: "-"
+    readonly property string statusRenamed: "="
 
     // Icons
 
     // By Freepik from www.flaticon.com
-    property string deleteIcon: "qrc:/qml/images/garbage-container.svg"
+    readonly property string deleteIcon: "qrc:/qml/images/garbage-container.svg"
 
-    property string cloneIcon: "qrc:/qml/images/copy-documents-option.svg"
-    property string openIcon: "qrc:/qml/images/open-folder-black-and-white-variant"
-    property string pushIcon: "qrc:/qml/images/up-arrow.svg"
-    property string pullIcon: "qrc:/qml/images/down.svg"
-    property string fetchIcon: "qrc:/qml/images/loop.svg"
-    property string stageIcon: "qrc:/qml/images/check.svg"
-    property string revertIcon: deleteIcon
-    property string commitIcon: "qrc:/qml/images/seal.svg"
-    property string amendIcon: "qrc:/qml/images/plus-sign.svg"
-    property string saveStashIcon: "qrc:/qml/images/clipboard.svg"
-    property string popStashIcon: "qrc:/qml/images/blank.svg"
-    property string exitIcon: "qrc:/qml/images/door-exit.svg"
+    readonly property string cloneIcon: "qrc:/qml/images/copy-documents-option.svg"
+    readonly property string openIcon: "qrc:/qml/images/open-folder-black-and-white-variant"
+    readonly property string pushIcon: "qrc:/qml/images/up-arrow.svg"
+    readonly property string pullIcon: "qrc:/qml/images/down.svg"
+    readonly property string fetchIcon: "qrc:/qml/images/loop.svg"
+    readonly property string stageIcon: "qrc:/qml/images/check.svg"
+    readonly property string revertIcon: deleteIcon
+    readonly property string commitIcon: "qrc:/qml/images/seal.svg"
+    readonly property string amendIcon: "qrc:/qml/images/plus-sign.svg"
+    readonly property string saveStashIcon: "qrc:/qml/images/clipboard.svg"
+    readonly property string popStashIcon: "qrc:/qml/images/blank.svg"
+    readonly property string exitIcon: "qrc:/qml/images/door-exit.svg"
 
     // Models
 
-    property ListModel shortcutModel: ListModel {
+    readonly property ListModel shortcutModel: ListModel {
         ListElement { name: qsTr("Open a repository"); sequence: "Control O" }
         ListElement { name: qsTr("Quit"); sequence: "Control Q" }
         ListElement { name: ""; sequence: "" }

@@ -45,3 +45,4 @@ CMakeLists.txt.user*
 # Project specific
 CuteGit/bin
 *.bak
+*.exe

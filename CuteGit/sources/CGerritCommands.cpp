@@ -7,6 +7,7 @@
 
 // Application
 #include "CGerritCommands.h"
+#include "Strings.h"
 
 /*!
     \class CGerritCommands
@@ -36,7 +37,7 @@ CGerritCommands::CGerritCommands(CController* pController)
 
 void CGerritCommands::push(const QString& sPath)
 {
-    emit newOutputString(CEnums::eNotification, tr("Pushing to gerrit..."));
+    emit newOutputString(CEnums::eNotification, Strings::s_sPushingToGerrit);
     QString sCurrentBranch = execNow(sPath, sCommandCurrentBranch).trimmed();
     if (not sCurrentBranch.isEmpty())
     {
@@ -45,6 +46,6 @@ void CGerritCommands::push(const QString& sPath)
     }
     else
     {
-        emit newOutputString(CEnums::eNotification, tr("Unable to get current branch name..."));
+        emit newOutputString(CEnums::eNotification, Strings::s_sUnableToGetBranch);
     }
 }

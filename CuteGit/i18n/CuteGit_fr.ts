@@ -2,34 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
-    <name>CController</name>
-    <message>
-        <source>%1 opened.</source>
-        <translation>%1 ouvert.</translation>
-    </message>
-    <message>
-        <source>%1 is not a repository.
-Please select a folder containing a repository.</source>
-        <translation>%1 n&apos;est pas un dépôt.
-Veuillez sélectionner un dossier contenant un dépôt.</translation>
-    </message>
-    <message>
-        <source>%1 does not exist. Ignoring.</source>
-        <translation>%1 n&apos;existe pas.</translation>
-    </message>
-</context>
-<context>
-    <name>CGerritCommands</name>
-    <message>
-        <source>Pushing to gerrit...</source>
-        <translation>Synchro sortante vers gerrit...</translation>
-    </message>
-    <message>
-        <source>Unable to get current branch name...</source>
-        <translation>Impossible de récupérer le nom de la branche courante...</translation>
-    </message>
-</context>
-<context>
     <name>CGitCommands</name>
     <message>
         <source>Staging all files...</source>
@@ -838,12 +810,20 @@ La première ligne contient l&apos;action faite, la seconde contient l&apos;inde
         <source>The language selection (%1) will be applied when the application is restarted.</source>
         <translation>La langue sélectionnée (%1) sera prise en compte au prochain démarrage de l&apos;application.</translation>
     </message>
+    <message>
+        <source>Ahead</source>
+        <translation>En avant</translation>
+    </message>
+    <message>
+        <source>Behind</source>
+        <translation>En arrière</translation>
+    </message>
 </context>
 <context>
     <name>FilePane</name>
     <message>
-        <source>Full name</source>
-        <translation>Nom complet</translation>
+        <source>Absolute name</source>
+        <translation>Nom absolu</translation>
     </message>
     <message>
         <source>File name</source>
@@ -851,14 +831,28 @@ La première ligne contient l&apos;action faite, la seconde contient l&apos;inde
     </message>
 </context>
 <context>
-    <name>RepositoryView</name>
+    <name>Strings</name>
     <message>
-        <source> - ( Ahead </source>
-        <translation> - ( En avant </translation>
+        <source>%1 opened.</source>
+        <translation>%1 ouvert.</translation>
     </message>
     <message>
-        <source> : behind </source>
-        <translation> : en arrière </translation>
+        <source>%1 is not a repository.
+Please select a folder containing a repository.</source>
+        <translation>%1 n&apos;est pas un dépôt.
+Veuillez sélectionner un dossier contenant un dépôt.</translation>
+    </message>
+    <message>
+        <source>%1 does not exist. Ignoring.</source>
+        <translation>%1 n&apos;existe pas.</translation>
+    </message>
+    <message>
+        <source>Pushing to gerrit...</source>
+        <translation>Synchro sortante vers gerrit...</translation>
+    </message>
+    <message>
+        <source>Unable to get current branch name...</source>
+        <translation>Impossible de récupérer le nom de la branche courante...</translation>
     </message>
 </context>
 </TS>

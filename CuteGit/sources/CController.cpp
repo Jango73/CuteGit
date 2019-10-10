@@ -8,6 +8,7 @@
 // Application
 #include "CController.h"
 #include "CGitCommands.h"
+#include "Strings.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -98,6 +99,7 @@ CController::CController(QString sStubFileName, QObject* parent)
     lLang << "en";
     lLang << "fr";
     lLang << "de";
+    lLang << "es";
     m_pLangModel->setStringList(lLang);
 
     loadConfiguration();
@@ -559,11 +561,11 @@ void CController::openRepository(QString sRepositoryPath)
                     lRepositoryPaths << sRepositoryPath;
                 m_pKnownRepositoryModel->setStringList(lRepositoryPaths);
 
-                setStatusText(QString(tr("%1 opened.")).arg(pRepository->repositoryName()));
+                setStatusText(QString(Strings::s_sSomeObjectNameOpened).arg(pRepository->repositoryName()));
             }
             else
             {
-                setStatusText(QString(tr("%1 is not a repository.\nPlease select a folder containing a repository.")).arg(sRepositoryPath));
+                setStatusText(QString(Strings::s_sSomeObjectNameIsNotARepository).arg(sRepositoryPath));
             }
         }
         else
@@ -573,7 +575,7 @@ void CController::openRepository(QString sRepositoryPath)
             lKnownRepositoryPaths.removeAll(sRepositoryPath);
             m_pKnownRepositoryModel->setStringList(lKnownRepositoryPaths);
 
-            setStatusText(QString(tr("%1 does not exist. Ignoring.")).arg(sRepositoryPath));
+            setStatusText(QString(Strings::s_sSomeObjectDoesNotExist).arg(sRepositoryPath));
         }
     }
 }
@@ -661,6 +663,8 @@ void CController::onSharedTimerTick()
 {
     if (m_bMasterMode)
     {
+        // This code is executed by a master instance
+
         if (sharedOperation() == eSOSlaveRequestEdit)
         {
             QString sFileName = sequenceFileName();
@@ -673,6 +677,8 @@ void CController::onSharedTimerTick()
     }
     else
     {
+        // This code is executed by a slave instance
+
         if (sharedOperation() == eSOMasterFinishedEdit)
         {
             setSharedOperation(eSONone);

@@ -30,7 +30,7 @@ ExtendablePane {
 
             fieldModel: ListModel {
                 ListElement {
-                    text: qsTr("Full name")
+                    text: qsTr("Absolute name")
                     field: CEnums.SortFullName
                 }
                 ListElement {
