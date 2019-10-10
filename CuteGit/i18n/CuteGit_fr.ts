@@ -396,11 +396,11 @@ Etes-vous sûr(e) de vouloir faire cela? Cette action ne peut être annulée.</t
     </message>
     <message>
         <source>Continue rebase</source>
-        <translation>Conitnuer le rebasage</translation>
+        <translation>Continuer le rebasage</translation>
     </message>
     <message>
         <source>Abort rebase</source>
-        <translation>Abendonner le rebasage</translation>
+        <translation>Abandonner le rebasage</translation>
     </message>
     <message>
         <source>Fetch</source>
@@ -507,14 +507,6 @@ Certains ic$ones sont copyright Freepik de www.flaticon.com
     <message>
         <source>Staged files for commit</source>
         <translation>Fichiers acceptés pour validation</translation>
-    </message>
-    <message>
-        <source>[=&gt;] </source>
-        <translation>[=&gt;] </translation>
-    </message>
-    <message>
-        <source>[&lt;=] </source>
-        <translation>[&lt;=] </translation>
     </message>
     <message>
         <source>&amp;Local</source>

@@ -82,21 +82,13 @@ StandardListView {
             }
         }
 
-        onDoubleClicked: {
-            root.requestCommitDiffPrevious(root.currentCommitId)
-        }
+        onDoubleClicked: root.requestCommitDiffPrevious(root.currentCommitId)
     }
 
-    onCurrentIndexChanged: {
-        if (root.currentItem)
-            root.currentCommitId = root.currentItem.commitId
-        else
-            root.currentCommitId = ""
-    }
+    onCountChanged: handleItemChange()
+    onCurrentIndexChanged: handleItemChange()
 
-    onSpacePressed: {
-        root.requestCommitDiffPrevious(root.currentCommitId)
-    }
+    onSpacePressed: root.requestCommitDiffPrevious(root.currentCommitId)
 
     onEnterPressed: {
         if (root.diffFromCommitId === "") {
@@ -104,5 +96,12 @@ StandardListView {
         } else {
             root.requestCommitDiffTo(root.currentCommitId)
         }
+    }
+
+    function handleItemChange() {
+        if (root.currentItem)
+            root.currentCommitId = root.currentItem.commitId
+        else
+            root.currentCommitId = ""
     }
 }

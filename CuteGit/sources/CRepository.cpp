@@ -259,6 +259,9 @@ void CRepository::checkFileStatus(const QString& sFileFullName)
 
 void CRepository::refresh()
 {
+    setDiffFromCommitId("");
+    setDiffToCommitId("");
+
     checkRepositoryStatus();
     checkChangedFileStatus();
     getBranches();

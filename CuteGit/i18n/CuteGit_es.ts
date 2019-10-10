@@ -96,7 +96,7 @@
     <message>
         <location filename="../sources/CGitCommands.cpp" line="561"/>
         <source>Aborting rebase...</source>
-        <translation>Abandonar el revestimiento ...</translation>
+        <translation>Anulando rebase ...</translation>
     </message>
     <message>
         <location filename="../sources/CGitCommands.cpp" line="570"/>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../qml/components/Calendar.qml" line="308"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancelar</translation>
     </message>
     <message>
         <location filename="../qml/components/Calendar.qml" line="317"/>
@@ -162,7 +162,7 @@
     <message>
         <location filename="../qml/components/Calendar.qml" line="338"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OK</translation>
     </message>
 </context>
 <context>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../qml/components/Const.qml" line="61"/>
         <source>&amp;Fetch</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pre-sincronización</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="62"/>
@@ -225,12 +225,12 @@
     <message>
         <location filename="../qml/components/Const.qml" line="66"/>
         <source>Stage a&amp;ll</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aceptar y todo</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="67"/>
         <source>Unsta&amp;ge all</source>
-        <translation type="unfinished"></translation>
+        <translation>Rec&amp;hazar todos los archivos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="68"/>
@@ -250,17 +250,17 @@
     <message>
         <location filename="../qml/components/Const.qml" line="71"/>
         <source>&amp;Commit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Validar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="72"/>
         <source>&amp;Amend</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Modificar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="73"/>
         <source>C&amp;ontinue rebase</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;ontinuar rebases</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="74"/>
@@ -375,22 +375,22 @@
     <message>
         <location filename="../qml/components/Const.qml" line="100"/>
         <source>&amp;Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tema</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="101"/>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscuro</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="102"/>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>Luminoso</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="103"/>
         <source>&amp;Language</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lengua</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="105"/>
@@ -470,7 +470,7 @@
     <message>
         <location filename="../qml/components/Const.qml" line="123"/>
         <source>Log</source>
-        <translation>Diario</translation>
+        <translation>Registro</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="124"/>
@@ -506,13 +506,13 @@
         <location filename="../qml/components/Const.qml" line="130"/>
         <location filename="../qml/components/Const.qml" line="301"/>
         <source>Push</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincro saliente</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="131"/>
         <location filename="../qml/components/Const.qml" line="300"/>
         <source>Pull</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincro entrante</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="132"/>
@@ -554,7 +554,7 @@
         <location filename="../qml/components/Const.qml" line="139"/>
         <location filename="../qml/components/Const.qml" line="299"/>
         <source>Fetch</source>
-        <translation type="unfinished"></translation>
+        <translation>Pre-sincronización</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="140"/>
@@ -660,7 +660,7 @@
     <message>
         <location filename="../qml/components/Const.qml" line="160"/>
         <source>Branch log</source>
-        <translation>Diario de rama</translation>
+        <translation>Registro de rama</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="161"/>
@@ -760,12 +760,12 @@
     <message>
         <location filename="../qml/components/Const.qml" line="180"/>
         <source>Enter branch name here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingrese el nombre de la sucursal aquí ...</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="181"/>
         <source>Change commit message</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar el mensaje de validación</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="182"/>
@@ -775,34 +775,41 @@
     <message>
         <location filename="../qml/components/Const.qml" line="183"/>
         <source>Interactive rebase in progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rebase interactivo en progreso ...</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="185"/>
         <source>There is no open repository at the moment.
 Please open or clone a repository to fill this view.</source>
-        <translation type="unfinished"></translation>
+        <translation>No hay un repositorio abierto en este momento.
+Abra o clone un repositorio para completar esta vista.</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="190"/>
         <source>You are about to merge %1 on the working directory.
 
 Are you sure you want to do this?</source>
-        <translation type="unfinished"></translation>
+        <translation>Está a punto de fusionar %1 en el directorio de trabajo.
+
+¿Estás seguro de que quieres hacer esto?</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="195"/>
         <source>You are about to delete a branch.
 
 Are you sure you want to do this? It cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>Estás a punto de eliminar una rama.
+
+¿Seguro que quieres hacer esto? No se puede deshacer.</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="200"/>
         <source>Are you sure you want to delete this file?
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Estás seguro de que deseas eliminar este archivo?
+
+%1</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="205"/>
@@ -815,7 +822,10 @@ Are you sure you want to do this? It cannot be undone.</source>
 Copyright (c) 2019 Jango73
 Some icons are copyright Freepik from www.flaticon.com
 </source>
-        <translation type="unfinished"></translation>
+        <translation>CuteGit - versión %1
+Copyright (c) 2019 Jango73
+Algunos iconos son copyright de Freepik de www.flaticon.com
+</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="215"/>
@@ -856,89 +866,79 @@ The first line of an item contains the action done, the second line contains the
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="251"/>
-        <source>[=&gt;] </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="252"/>
-        <source>[&lt;=] </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/components/Const.qml" line="283"/>
         <source>Open a repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir un repositorio</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="284"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Dejar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="286"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="288"/>
         <source>Stage all</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar todos los archivos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="289"/>
         <source>Unstage all</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechazar todos los archivos</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="290"/>
         <source>Toggle staged</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternar aceptación</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="291"/>
         <source>Stage selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar archivos seleccionados</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="292"/>
         <source>Unstage selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechazar archivos seleccionados</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="293"/>
         <source>Revert selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Volver a los archivos seleccionados</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="296"/>
         <source>Continue rebase</source>
-        <translation type="unfinished"></translation>
+        <translation>Continuar rebases</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="297"/>
         <source>Abort rebase</source>
-        <translation type="unfinished"></translation>
+        <translation>Abandonar rebases</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="303"/>
         <source>Activate file view</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar vista de archivo</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="304"/>
         <source>Activate graph view</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar vista gráfica</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="305"/>
         <source>Activate branch log view</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar vista de registro de rama</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="306"/>
         <source>Activate diff view</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar vista de diferencias</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="307"/>
@@ -948,12 +948,12 @@ The first line of an item contains the action done, the second line contains the
     <message>
         <location filename="../qml/components/Const.qml" line="309"/>
         <source>In log view</source>
-        <translation type="unfinished"></translation>
+        <translation>En vista de registro</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="310"/>
         <source>Diff with previous commit</source>
-        <translation type="unfinished"></translation>
+        <translation>Diferencia con validación previa</translation>
     </message>
     <message>
         <location filename="../qml/components/Const.qml" line="311"/>

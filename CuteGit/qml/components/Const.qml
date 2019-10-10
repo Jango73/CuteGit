@@ -248,8 +248,8 @@ Item {
                                          "The first line of an item contains the action done, the second line contains the index.\n"
                                          )
 
-    readonly property string logLabelFrom: qsTr("[=>] ")
-    readonly property string logLabelTo: qsTr("[<=] ")
+    readonly property string logLabelFrom: "[=>] "
+    readonly property string logLabelTo: "[<=] "
 
     //
     readonly property string staged: "X"
@@ -292,7 +292,7 @@ Item {
         ListElement { name: qsTr("Unstage selection"); sequence: "Control -" }
         ListElement { name: qsTr("Revert selection"); sequence: "Control Z" }
         ListElement { name: qsTr("Commit"); sequence: "Control C" }
-        ListElement { name: qsTr("Amend"); sequence: "Control A" }
+        ListElement { name: qsTr("Amend"); sequence: "Control M" }
         ListElement { name: qsTr("Continue rebase"); sequence: "Control R" }
         ListElement { name: qsTr("Abort rebase"); sequence: "Control T" }
         ListElement { name: ""; sequence: "" }

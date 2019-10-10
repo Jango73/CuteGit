@@ -193,7 +193,7 @@ MenuBar {
         Action {
             id: amend
             text: Const.amendMenuText
-            shortcut: "Ctrl+A"
+            shortcut: "Ctrl+M"
             enabled: root.repository
                      ? root.repository.can(CEnums.Amend) &&
                        (

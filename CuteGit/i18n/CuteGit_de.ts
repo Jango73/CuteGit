@@ -795,16 +795,6 @@ Some icons are copyright Freepik from www.flaticon.com
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/components/Const.qml" line="251"/>
-        <source>[=&gt;] </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/components/Const.qml" line="252"/>
-        <source>[&lt;=] </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/components/Const.qml" line="283"/>
         <source>Open a repository</source>
         <translation type="unfinished"></translation>
