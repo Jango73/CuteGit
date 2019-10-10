@@ -6,11 +6,20 @@ This is a simple multi-document UI for the Git executable (and other versioning 
 I decided to make my own because the only efficient Git UIs on Linux are paywares.
 It is however not meant to compete with paywares, just provide minimal versioning functionality.
 
+## Dependencies
+
+* Qt 5.13
+* QtCreator 4.9.1
+
 ## Building
 
-- Make sure to update submodules
-- Open /CuteGit.pro in QtCreator
-- Build and run
+* Make sure to update submodules
+```
+    git submodule init
+    git submodule update
+```
+* Open /CuteGit.pro in QtCreator
+* Build and run
 
 ## Things it does
 
