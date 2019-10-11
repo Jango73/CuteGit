@@ -15,7 +15,6 @@ CFlatFileModelProxy::CFlatFileModelProxy(CController* pController, QObject *pare
     , m_eSortField(CEnums::SortFullName)
     , m_bSortDirection(false)
 {
-    setDynamicSortFilter(false);
 }
 
 //-------------------------------------------------------------------------------------------------
