@@ -281,6 +281,8 @@ MenuBar {
         }
     }
 
+    /*
+      TODO:
     Menu {
         title: Const.submoduleMenuText
 
@@ -299,6 +301,7 @@ MenuBar {
             enabled: false
         }
     }
+    */
 
     Menu {
         title: Const.viewMenuText
