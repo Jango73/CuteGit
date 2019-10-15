@@ -24,7 +24,8 @@
 //-------------------------------------------------------------------------------------------------
 // Constants
 
-const QString CGerritCommands::sCommandPushGerrit       = "git push origin \"HEAD:refs/for/%1\"";
+const QString CGerritCommands::sCommandPushGerritReady  = "git push origin \"HEAD:refs/for/%1%ready\"";
+const QString CGerritCommands::sCommandPushGerritWIP    = "git push origin \"HEAD:refs/for/%1%wip\"";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -35,14 +36,40 @@ CGerritCommands::CGerritCommands(CController* pController)
 
 //-------------------------------------------------------------------------------------------------
 
+bool CGerritCommands::can(CEnums::ECapability eWhat) const
+{
+    Q_UNUSED(eWhat);
+
+    return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGerritCommands::push(const QString& sPath)
 {
     emit newOutputString(CEnums::eNotification, Strings::s_sPushingToGerrit);
     QString sCurrentBranch = execNow(sPath, sCommandCurrentBranch).trimmed();
     if (not sCurrentBranch.isEmpty())
     {
-        QString sCommand = QString(sCommandPushGerrit).arg(sCurrentBranch);
+        QString sCommand = QString(sCommandPushGerritReady).arg(sCurrentBranch);
         exec(new CProcessCommand(CEnums::ePush, sPath, sCommand, true));
+    }
+    else
+    {
+        emit newOutputString(CEnums::eNotification, Strings::s_sUnableToGetBranch);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGerritCommands::pushAsWIP(const QString& sPath)
+{
+    emit newOutputString(CEnums::eNotification, Strings::s_sPushingToGerrit);
+    QString sCurrentBranch = execNow(sPath, sCommandCurrentBranch).trimmed();
+    if (not sCurrentBranch.isEmpty())
+    {
+        QString sCommand = QString(sCommandPushGerritWIP).arg(sCurrentBranch);
+        exec(new CProcessCommand(CEnums::ePushAsWIP, sPath, sCommand, true));
     }
     else
     {

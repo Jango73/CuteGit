@@ -112,6 +112,9 @@ public:
     virtual void push(const QString& sPath);
 
     //!
+    virtual void pushAsWIP(const QString& sPath);
+
+    //!
     virtual void pull(const QString& sPath);
 
     //!

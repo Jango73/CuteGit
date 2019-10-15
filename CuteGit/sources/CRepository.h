@@ -192,6 +192,9 @@ public:
     //! Pushes local commits to remote
     Q_INVOKABLE void push();
 
+    //! Pushes local commits to remote, as work in progress
+    Q_INVOKABLE void pushAsWIP();
+
     //! Pulls remote commits
     Q_INVOKABLE void pull();
 
@@ -318,28 +321,28 @@ protected slots:
     //!
     void onNewOutput(QString sOutput, bool bSeparation);
 
-    //!
+    //! Call when an issued command throws a string
     void onNewOutputString(CEnums::EProcessCommand eCommand, QString sValue);
 
-    //!
+    //! Call when an issued command throws a key/value
     void onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString sKey, QString sValue);
 
-    //!
+    //! Call when an issued command throws a string list
     void onNewOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue);
 
-    //!
+    //! Call when an issued command throws a list of CBranch objects
     void onNewOutputListOfCBranch(CEnums::EProcessCommand eCommand, QList<CBranch*> lNewBranches);
 
-    //!
+    //! Call when an issued command throws a list of CRepoFile objects
     void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles);
 
-    //!
+    //! Call when an issued command throws a list of CLogLineCollection objects
     void onNewOutputCLogLineCollection(CEnums::EProcessCommand eCommand, CLogLineCollection lNewLines);
 
-    //!
+    //! Call when an issued command throws a list of CDiffLine objects
     void onNewOutputListOfCDiffLine(CEnums::EProcessCommand eCommand, QList<CDiffLine*> lNewLines);
 
-    //!
+    //! Call when an issued command throws a list of CGraphLine objects
     void onNewOutputListOfCGraphLine(CEnums::EProcessCommand eCommand, QList<CGraphLine*> lNewLines);
 
     //!
@@ -348,9 +351,9 @@ protected slots:
     //!
     void onShouldRefreshFileStatus();
 
-    //!
+    //! Indirectly called by models when they need more data for branch log (lazy loading)
     void onRequestBranchLogData(int iStartIndex, int iCount);
 
-    //!
+    //! Indirectly called by models when they need more data for file log (lazy loading)
     void onRequestFileLogData(int iStartIndex, int iCount);
 };

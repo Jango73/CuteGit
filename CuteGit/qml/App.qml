@@ -38,13 +38,34 @@ ApplicationWindow {
     menuBar: MainMenu {
         id: menu
 
-        repositoryView: root.currentRepositoryView
         controller: root.ctrl
         repository: root.ctrl.currentRepository
         materialTheme: root.materialTheme
 
         onRequestCloneRepository: cloneDialog.open()
         onRequestOpenRepository: openDialog.open()
+
+        onRequestFetch: root.currentRepositoryView.requestFetch()
+        onRequestPull: root.currentRepositoryView.requestPull()
+        onRequestPush: root.currentRepositoryView.requestPush()
+        onRequestPushAsWIP: root.currentRepositoryView.requestPushAsWIP()
+
+        onRequestStageAll: root.currentRepositoryView.requestStageAll()
+        onRequestUnstageAll: root.currentRepositoryView.requestUnstageAll()
+        onRequestStageSelection: root.currentRepositoryView.requestStageSelection()
+        onRequestUnstageSelection: root.currentRepositoryView.requestUnstageSelection()
+        onRequestRevertSelection: root.currentRepositoryView.requestRevertSelection()
+        onRequestCommit: root.currentRepositoryView.requestCommit()
+        onRequestAmend: root.currentRepositoryView.requestAmend()
+        onRequestContinueRebase: root.currentRepositoryView.requestContinueRebase()
+        onRequestAbortRebase: root.currentRepositoryView.requestAbortRebase()
+
+        onRequestStashSave: root.currentRepositoryView.requestStashSave()
+        onRequestStashPop: root.currentRepositoryView.requestStashPop()
+        onRequestPatchApply: root.currentRepositoryView.requestPatchApply()
+
+        onRequestRefresh: root.currentRepositoryView.requestRefresh()
+
         onRequestDarkTheme: root.setTheme(Material.Dark)
         onRequestLightTheme: root.setTheme(Material.Light)
         onRequestHelp: helpDialog.open()

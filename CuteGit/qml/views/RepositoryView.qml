@@ -436,6 +436,10 @@ Pane {
         root.repository.push()
     }
 
+    function requestPushAsWIP() {
+        root.repository.pushAsWIP()
+    }
+
     function requestStageAll() {
         root.repository.stageAll()
     }

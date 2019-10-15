@@ -90,7 +90,7 @@ const QString CGitCommands::sDiffLineRegExp             = "diff\\s+(.*)\\s+a/(.*
 
 const QString CGitCommands::sComment                    = "#";
 const QString CGitCommands::sLogFormatSplitter          = "&&&";
-const QString CGitCommands::sRemoteBranchPrefix         = "remotes/origin/";
+const QString CGitCommands::sRemoteBranchPrefix         = "origin/";
 const QString CGitCommands::sRemoteBranchUselessPrefix  = "remotes/";
 const QString CGitCommands::sSequenceEditorToken        = "GIT_SEQUENCE_EDITOR";
 const QString CGitCommands::sTextEditorToken            = "GIT_EDITOR";
@@ -127,10 +127,14 @@ CGitCommands::~CGitCommands()
 
 bool CGitCommands::can(CEnums::ECapability eWhat) const
 {
-    Q_UNUSED(eWhat);
+    switch (eWhat)
+    {
+    case CEnums::PushAsWIP:
+        return false;
 
-    // Yes Git does all this + coffee
-    return true;
+    default:
+        return true;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -468,9 +472,9 @@ void CGitCommands::twoCommitDiff(const QString& sPath, const QString& sFromCommi
 
 void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
 {
-    emit newOutputString(CEnums::eNotification, QString(tr("Switching to %1...")).arg(sBranch));
     QString sFinalName = sBranch;
     sFinalName.replace(sRemoteBranchPrefix, "");
+    emit newOutputString(CEnums::eNotification, QString(tr("Switching to %1...")).arg(sFinalName));
     QString sCommand = QString(sCommandSetCurrentBranch).arg(sFinalName);
     exec(new CProcessCommand(CEnums::eSetCurrentBranch, sPath, sCommand, true));
 }
@@ -847,6 +851,7 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eCommit:
     case CEnums::eAmend:
     case CEnums::ePush:
+    case CEnums::ePushAsWIP:
     case CEnums::ePull:
     case CEnums::eFetch:
     case CEnums::eStashSave:

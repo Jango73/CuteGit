@@ -10,11 +10,9 @@ MenuBar {
 
     Material.elevation: 4
 
-    property Item repositoryView: null
     property variant controller: null
     property variant repository: null
     property variant materialTheme: 0
-
     property bool rebaseInProgress: repository
                                     ? repository.repositoryStatus === CEnums.Rebase
                                       || repository.repositoryStatus === CEnums.InteractiveRebase
@@ -34,6 +32,28 @@ MenuBar {
 
     signal requestCloneRepository()
     signal requestOpenRepository()
+
+    signal requestFetch()
+    signal requestPull()
+    signal requestPush()
+    signal requestPushAsWIP()
+
+    signal requestStageAll()
+    signal requestUnstageAll()
+    signal requestStageSelection()
+    signal requestUnstageSelection()
+    signal requestRevertSelection()
+    signal requestCommit()
+    signal requestAmend()
+    signal requestContinueRebase()
+    signal requestAbortRebase()
+
+    signal requestStashSave()
+    signal requestStashPop()
+    signal requestPatchApply()
+
+    signal requestRefresh()
+
     signal requestDarkTheme()
     signal requestLightTheme()
     signal requestHelp()
@@ -106,7 +126,7 @@ MenuBar {
             text: Const.fetchMenuText
             shortcut: "Ctrl+F"
             enabled: root.repository ? root.repository.can(CEnums.Fetch) : false
-            onTriggered: repositoryView.requestFetch()
+            onTriggered: root.requestFetch()
         }
 
         Action {
@@ -114,7 +134,7 @@ MenuBar {
             text: Const.pullMenuText
             shortcut: "Ctrl+L"
             enabled: root.repository ? root.repository.can(CEnums.Pull) && root.repository.hasPullableCommits : false
-            onTriggered: repositoryView.requestPull()
+            onTriggered: root.requestPull()
         }
 
         Action {
@@ -122,7 +142,15 @@ MenuBar {
             text: Const.pushMenuText
             shortcut: "Ctrl+P"
             enabled: root.repository ? root.repository.can(CEnums.Push) && root.repository.hasPushableCommits : false
-            onTriggered: repositoryView.requestPush()
+            onTriggered: root.requestPush()
+        }
+
+        Action {
+            id: pushAsWIP
+            text: Const.pushAsWIPMenuText
+            shortcut: "Ctrl+W"
+            enabled: root.repository ? root.repository.can(CEnums.PushasWIP) && root.repository.hasPushableCommits : false
+            onTriggered: root.requestPushAsWIP()
         }
     }
 
@@ -135,7 +163,7 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
                      : false
-            onTriggered: repositoryView.requestStageAll()
+            onTriggered: root.requestStageAll()
         }
 
         Action {
@@ -144,7 +172,7 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
                      : false
-            onTriggered: repositoryView.requestUnstageAll()
+            onTriggered: root.requestUnstageAll()
         }
 
         Action {
@@ -154,7 +182,7 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
                      : false
-            onTriggered: repositoryView.requestStageSelection()
+            onTriggered: root.requestStageSelection()
         }
 
         Action {
@@ -163,7 +191,7 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
                      : false
-            onTriggered: repositoryView.requestUnstageSelection()
+            onTriggered: root.requestUnstageSelection()
         }
 
         MenuSeparator { }
@@ -175,7 +203,7 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.hasModifiedFiles
                      : false
-            onTriggered: repositoryView.requestRevertSelection()
+            onTriggered: root.requestRevertSelection()
         }
 
         MenuSeparator { }
@@ -187,7 +215,7 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.can(CEnums.Commit) && root.repository.hasCommitableFiles
                      : false
-            onTriggered: repositoryView.requestCommit()
+            onTriggered: root.requestCommit()
         }
 
         Action {
@@ -202,7 +230,7 @@ MenuBar {
                            (root.repository.repositoryStatus === CEnums.NoMerge && root.repository.hasCommitableFiles && root.repository.commitCountAhead > 0)
                            )
                      : false
-            onTriggered: repositoryView.requestAmend()
+            onTriggered: root.requestAmend()
         }
 
         MenuSeparator { }
@@ -211,14 +239,14 @@ MenuBar {
             text: Const.continueRebaseMenuText
             shortcut: "Ctrl+R"
             enabled: root.repository ? root.rebaseInProgress && root.repository.can(CEnums.ContinueRebase) : false
-            onTriggered: repositoryView.requestContinueRebase()
+            onTriggered: root.requestContinueRebase()
         }
 
         Action {
             text: Const.abortRebaseMenuText
             shortcut: "Ctrl+T"
             enabled: root.repository ? root.rebaseInProgress && root.repository.can(CEnums.AbortRebase) : false
-            onTriggered: repositoryView.requestAbortRebase()
+            onTriggered: root.requestAbortRebase()
         }
     }
 
@@ -231,14 +259,14 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.can(CEnums.Stash) && root.repository.hasModifiedFiles
                      : false
-            onTriggered: repositoryView.requestStashSave()
+            onTriggered: root.requestStashSave()
         }
 
         Action {
             id: popStash
             text: Const.popStashMenuText
             enabled: root.repository ? root.repository.can(CEnums.Stash) : false
-            onTriggered: repositoryView.requestStashPop()
+            onTriggered: root.requestStashPop()
         }
 
         MenuSeparator { }
@@ -249,7 +277,7 @@ MenuBar {
             enabled: root.repository
                      ? root.repository.can(CEnums.ApplyPatch)
                      : false
-            onTriggered: repositoryView.requestPatchApply()
+            onTriggered: root.requestPatchApply()
         }
     }
 
@@ -278,7 +306,7 @@ MenuBar {
         Action {
             text: Const.refreshMenuText
             shortcut: "F5"
-            onTriggered: repositoryView.requestRefresh()
+            onTriggered: root.requestRefresh()
         }
 
         MenuSeparator { }

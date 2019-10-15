@@ -61,6 +61,7 @@ Item {
     readonly property string fetchMenuText: qsTr("&Fetch")
     readonly property string pullMenuText: qsTr("&Pull")
     readonly property string pushMenuText: qsTr("Pus&h")
+    readonly property string pushAsWIPMenuText: qsTr("Push as &WIP")
 
     readonly property string localMenuText: qsTr("&Local")
     readonly property string stageAllMenuText: qsTr("Stage a&ll")

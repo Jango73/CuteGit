@@ -404,6 +404,13 @@ void CRepository::push()
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::pushAsWIP()
+{
+    m_pCommands->pushAsWIP(m_sRepositoryPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::pull()
 {
     m_pCommands->pull(m_sRepositoryPath);
@@ -801,12 +808,8 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+        // Following commands need only output
     case CEnums::eIssuedCommand:
-    {
-        onNewOutput(sOutput, true);
-        break;
-    }
-
     case CEnums::eCloneRepository:
     case CEnums::eNotification:
     case CEnums::eDeleteFile:
@@ -819,6 +822,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+        // Following commands need output and file status check
     case CEnums::eStashSave:
     case CEnums::eStashPop:
     case CEnums::ePatchApply:
@@ -829,6 +833,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+        // Following commands need output and tag refresh
     case CEnums::eCreateTagOnCommit:
     {
         onNewOutput(sOutput, false);
@@ -837,18 +842,13 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
         break;
     }
 
+        // Following commands need output and general refresh
     case CEnums::eCommit:
     case CEnums::eAmend:
     case CEnums::ePush:
+    case CEnums::ePushAsWIP:
     case CEnums::ePull:
     case CEnums::eFetch:
-    {
-        onNewOutput(sOutput, false);
-
-        refresh();
-        break;
-    }
-
     case CEnums::eSetCurrentBranch:
     case CEnums::eResetToCommit:
     case CEnums::eRebaseOnCommit:
@@ -947,6 +947,8 @@ void CRepository::onNewOutputStringList(CEnums::EProcessCommand eCommand, QStrin
 {
     Q_UNUSED(eCommand);
     Q_UNUSED(lValue);
+
+    // This may be reused some day
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1056,9 +1058,11 @@ void CRepository::onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, C
             }
         }
 
+        // Update some flags
         setHasModifiedFiles(bHasModifiedFiles);
         setHasCommitableFiles(bHasCommitableFiles);
 
+        // Sort the files
         std::sort(m_lRepoFiles.begin(), m_lRepoFiles.end(), [] (CRepoFile* left, CRepoFile* right) {
             return left->fullName() < right->fullName();
         });
