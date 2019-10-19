@@ -61,6 +61,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pFileDiffModelProxy(new CDiffModelProxy(this))
     , m_pFileBlameModel(new CDiffModel(this))
     , m_pCommandOutputModel(new QStringListModel(this))
+    , m_iMaxCommandOutputLines(100)
     , m_iCommitCountAhead(0)
     , m_iCommitCountBehind(0)
     , m_bHasModifiedFiles(false)
@@ -527,7 +528,6 @@ void CRepository::blame(QString sFileFullName)
 void CRepository::setFileFilter(const QString& sText)
 {
     m_pFlatFileModelProxy->setNameFilter(sText);
-    m_pFlatFileModelProxy->filterChanged();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -535,8 +535,6 @@ void CRepository::setFileFilter(const QString& sText)
 void CRepository::setFileSortField(CEnums::ESortField eField)
 {
     m_pFlatFileModelProxy->setSortField(eField);
-    m_pFlatFileModelProxy->sort(0);
-    m_pFlatFileModelProxy->filterChanged();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -544,8 +542,6 @@ void CRepository::setFileSortField(CEnums::ESortField eField)
 void CRepository::setFileSortDirection(bool bDirection)
 {
     m_pFlatFileModelProxy->setSortDirection(bDirection);
-    m_pFlatFileModelProxy->sort(0);
-    m_pFlatFileModelProxy->filterChanged();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -782,8 +778,8 @@ void CRepository::onNewOutput(QString sOutput, bool bSeparation)
 
     int iCount = m_pCommandOutputModel->rowCount();
 
-    if (iCount > 50)
-        m_pCommandOutputModel->removeRows(0, iCount - 50);
+    if (iCount > m_iMaxCommandOutputLines)
+        m_pCommandOutputModel->removeRows(0, iCount - m_iMaxCommandOutputLines);
 
     emit commandOutputModelChanged();
 }

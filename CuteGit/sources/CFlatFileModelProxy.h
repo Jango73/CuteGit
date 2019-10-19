@@ -27,9 +27,9 @@ class CFlatFileModelProxy : public QSortFilterProxyModel
     //-------------------------------------------------------------------------------------------------
 
     Q_FAST_PROPERTY(CController*, p, controller, Controller)
-    Q_FAST_PROPERTY(QString, s, nameFilter, NameFilter)
-    Q_FAST_PROPERTY(CEnums::ESortField, e, sortField, SortField)
-    Q_FAST_PROPERTY(bool, b, sortDirection, SortDirection)
+    Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, nameFilter, NameFilter)
+    Q_FAST_PROPERTY_NO_SET_IMPL(CEnums::ESortField, e, sortField, SortField)
+    Q_FAST_PROPERTY_NO_SET_IMPL(bool, b, sortDirection, SortDirection)
 
 public:
 

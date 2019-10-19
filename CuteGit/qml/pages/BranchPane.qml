@@ -128,17 +128,20 @@ StandardPane {
             }
         }
 
-        StandardListView {
-            id: tagList
-            visible: count > 0
+        Item {
+            StandardListView {
+                id: tagList
+                anchors.fill: parent
+                visible: count > 0
 
-            model: root.repository ? root.repository.tagModel : undefined
+                model: root.repository ? root.repository.tagModel : undefined
 
-            delegate: StandardListViewItem {
-                width: parent.width
-                listView: tagList
-                selectionShown: false
-                primaryText: model.name
+                delegate: StandardListViewItem {
+                    width: parent.width
+                    listView: tagList
+                    selectionShown: false
+                    primaryText: model.name
+                }
             }
         }
     }

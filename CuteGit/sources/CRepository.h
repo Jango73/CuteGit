@@ -83,6 +83,7 @@ public:
 
     // Output of commands
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
+    Q_FAST_PROPERTY(int, i, maxCommandOutputLines, MaxCommandOutputLines)
 
     // Name of the current branch
     Q_FAST_PROPERTY_NO_SET_IMPL(QString, s, currentBranch, CurrentBranch)
