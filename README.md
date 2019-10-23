@@ -10,6 +10,8 @@ It is however not meant to compete with paywares, just provide minimal versionin
 
 * Qt 5.13
 * QtCreator 4.9.1
+* qt-plus - Copyright myself
+  * https://github.com/Jango73/qt-plus
 
 ## Building
 
@@ -36,6 +38,7 @@ It is however not meant to compete with paywares, just provide minimal versionin
   * Show the output of the executed commands
   * Change current branch
   * Mark files as staged / unstaged
+  * Remove files form tracking
   * Revert files
   * Commit
   * Amend (on interactive rebase, commit is always amend)
@@ -180,20 +183,22 @@ It is however not meant to compete with paywares, just provide minimal versionin
 As of 2019-09-20:
 
 ```
-     135 text files.
-     135 unique files.                                          
-      22 files ignored.
+     151 text files.
+     150 unique files.                                          
+      27 files ignored.
 
-http://cloc.sourceforge.net v 1.64  T=0.32 s (352.5 files/s, 47022.5 lines/s)
+http://cloc.sourceforge.net v 1.64  T=0.33 s (370.7 files/s, 52317.1 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C++                             26           1339            616           3978
-QML                             52            746            108           3608
-TypeScript                       2             18              0           1633
-C/C++ Header                    32            869            908           1227
-Qt Project                       1              7              4             13
+C++                             27           1422            661           4270
+QML                             57            839            142           4094
+TypeScript                       3             59              0           2794
+C/C++ Header                    33            898            930           1293
+Qt Project                       1             13             17             35
+XML                              2              0              0             23
+Bourne Shell                     1              0              6              6
 -------------------------------------------------------------------------------
-SUM:                           113           2979           1636          10459
+SUM:                           124           3231           1756          12515
 -------------------------------------------------------------------------------
 ```
