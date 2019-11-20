@@ -14,8 +14,8 @@ ExtendablePane {
     property variant repository: null
     property variant flatSelection: null
 
-    signal requestMenu(var name)
-    signal requestDeleteFile(var name)
+    signal requestMenu(var fileNames)
+    signal requestDeleteFiles(var fileNames)
     signal requestFileFilter(var text)
     signal requestFileSortField(var field)
     signal requestFileSortDirection(var direction)
@@ -62,13 +62,13 @@ ExtendablePane {
             repository: root.repository
             selection: root.flatSelection
 
-            onRequestMenu: root.requestMenu(name)
-            onRequestDeleteFile: root.requestDeleteFile(name)
+            onRequestMenu: root.requestMenu(fileNames)
+            onRequestDeleteFiles: root.requestDeleteFiles(fileNames)
         }
     ]
 
     function getSelectedFiles() {
-        return flatFileView.model.selectionToFullNameList(flatSelection.selectedIndexes)
+        return flatFileView.getSelectedFiles()
     }
 
     function activateFlatFileView() {

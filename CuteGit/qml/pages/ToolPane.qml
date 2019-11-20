@@ -69,7 +69,7 @@ ExtendablePane {
                 id: blameView
                 repository: root.repository
 
-//                onRequestTextFilter: root.repository.setFileDiffFilter(text)
+                onRequestTextFilter: root.repository.setFileBlameFilter(text)
             }
         }
     ]

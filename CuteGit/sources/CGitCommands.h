@@ -198,6 +198,33 @@ protected:
     //!
     void getFullCommitMessage(QString sPath, const QString &sCommitId);
 
+    //!
+    void handleCommitCountOutput(const CProcessResult& tResult);
+
+    //!
+    void handleDiffOutput(const CProcessResult& tResult);
+
+    //!
+    void handleBlameOutput(const CProcessResult& tResult);
+
+    //!
+    void handleBranchOutput(const CProcessResult& tResult);
+
+    //!
+    void handleTagOutput(const CProcessResult& tResult);
+
+    //!
+    void handleFileStatusOutput(const CProcessResult& tResult);
+
+    //!
+    void handleLogOutput(const CProcessResult& tResult);
+
+    //!
+    void handleRefLogOutput(const CProcessResult& tResult);
+
+    //!
+    void handleGraphOutput(const CProcessResult& tResult);
+
     //-------------------------------------------------------------------------------------------------
     // Protected slots
     //-------------------------------------------------------------------------------------------------
@@ -205,7 +232,7 @@ protected:
 protected slots:
 
     //!
-    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
+    void onExecFinished(const CProcessResult& tResult);
 
     //!
     void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles);
@@ -280,6 +307,7 @@ protected:
     static const QString sStatusRegExp;
     static const QString sPickCommitRegExp;
     static const QString sDiffLineRegExp;
+    static const QString sBlameLineRegExp;
 
     // Other strings
 

@@ -174,6 +174,12 @@ ListView {
     }
 
     function itemClicked(mouse, index, previousIndex) {
+        if (mouse.button === Qt.RightButton) {
+            if (indexSelected(index)) {
+                return
+            }
+        }
+
         root.previousIndex = -1
 
         if (mouse.modifiers & Qt.ShiftModifier) {

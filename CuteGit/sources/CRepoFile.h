@@ -28,6 +28,7 @@ public:
     Q_FAST_PROPERTY(QString, s, relativeName, RelativeName)
     Q_FAST_PROPERTY(CEnums::ERepoFileStatus, e, status, Status)
     Q_FAST_PROPERTY(bool, b, staged, Staged)
+    Q_FAST_PROPERTY(bool, b, changing, Changing)
 
 public:
 
@@ -54,10 +55,14 @@ public:
     //!
     QString stagedToString() const;
 
+    //!
+    bool isNotClean() const;
+
     //-------------------------------------------------------------------------------------------------
     // Operators
     //-------------------------------------------------------------------------------------------------
 
+    //!
     bool operator < (const CRepoFile& target);
 
     //-------------------------------------------------------------------------------------------------

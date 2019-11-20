@@ -28,7 +28,8 @@ Item {
     property alias symbolText: symbolText.text
     property alias primaryText: primaryText.text
     property alias secondaryText: secondaryText.text
-    property alias primaryTextColor: primaryText.color
+    property alias primaryColor: primaryText.color
+    property alias primaryFont: primaryText.font
     property alias primaryZone: primaryZoneContent.children
     property alias secondaryZone: secondaryZoneContent.children
     property alias selectionShown: selection.show

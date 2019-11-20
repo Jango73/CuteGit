@@ -87,6 +87,7 @@ const QString CGitCommands::sStatusBranchRegExp         = "";
 const QString CGitCommands::sStatusRegExp               = "([a-zA-Z?!\\s])([a-zA-Z?!\\s])\\s(.*)";
 const QString CGitCommands::sPickCommitRegExp           = "(pick)\\s+([a-zA-Z0-9]+)\\s+(.*)";
 const QString CGitCommands::sDiffLineRegExp             = "diff\\s+(.*)\\s+a/(.*)\\s+b/(.*)";
+const QString CGitCommands::sBlameLineRegExp            = "([0-9a-fA-F]+)\\s+\\(\\s+([a-zA-Z0-9_-]+)\\s+([0-9:+-]+\\s+[0-9:+-]+\\s+[0-9:+-]+)\\s+([0-9]+)\\)(.*)";
 
 const QString CGitCommands::sComment                    = "#";
 const QString CGitCommands::sLogFormatSplitter          = "&&&";
@@ -829,9 +830,326 @@ void CGitCommands::getFullCommitMessage(QString sPath, const QString& sCommitId)
 
 //-------------------------------------------------------------------------------------------------
 
-void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData)
+void CGitCommands::handleCommitCountOutput(const CProcessResult& tResult)
 {
-    switch (eCommand)
+    QStringList sAheadOutputLines = tResult.m_sValue.split("\t");
+    QString sAheadCount = sAheadOutputLines.count() > 0 ? sAheadOutputLines[0].trimmed() : "0";
+    QString sBehindCount = sAheadOutputLines.count() > 1 ? sAheadOutputLines[1].trimmed() : "0";
+
+    emit newOutputKeyValue(CEnums::eBranchCommitCountAhead, tResult.m_sUserData, sAheadCount);
+    emit newOutputKeyValue(CEnums::eBranchCommitCountBehind, tResult.m_sUserData, sBehindCount);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleDiffOutput(const CProcessResult& tResult)
+{
+    // Create CDiffLines with the returned string of the process
+
+    QList<CDiffLine*> lReturnValue;
+    QStringList lLines = tResult.m_sValue.split(NEW_LINE);
+    bool bAtLeastOneLineOK = false;
+
+    for (QString sLine : lLines)
+    {
+        QString sTrimmedLine = sLine.trimmed();
+
+        if (not sTrimmedLine.isEmpty())
+        {
+            bAtLeastOneLineOK = true;
+
+            CDiffLine* pDiffLine = new CDiffLine();
+            pDiffLine->setText(sLine);
+
+            if (sLine.startsWith("index") || sLine.startsWith("+++") || sLine.startsWith("---"))
+            {
+                delete pDiffLine;
+            }
+            else
+            {
+                if (sLine.startsWith("diff"))
+                {
+                    QString sNewText = pDiffLine->text(); // .split(PATH_SEP).last();
+
+                    QRegExp tRegExp(sDiffLineRegExp);
+
+                    if (tRegExp.indexIn(sLine) != -1)
+                    {
+                        QString sFileA = tRegExp.cap(2).trimmed();
+                        QString sFileB = tRegExp.cap(3).trimmed();
+
+                        sNewText = sFileB;
+                    }
+
+                    pDiffLine->setOperation(CEnums::DiffFileName);
+                    pDiffLine->setText(sNewText);
+                }
+                else if (not (sLine.startsWith("@@")))
+                {
+                    if (sLine.startsWith("+"))
+                        pDiffLine->setOperation(CEnums::DiffAdd);
+                    if (sLine.startsWith("-"))
+                        pDiffLine->setOperation(CEnums::DiffDelete);
+                }
+
+                lReturnValue << pDiffLine;
+            }
+        }
+    }
+
+    if (not bAtLeastOneLineOK)
+    {
+        qDeleteAll(lReturnValue);
+        lReturnValue.clear();
+    }
+
+    emit newOutputListOfCDiffLine(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleBlameOutput(const CProcessResult& tResult)
+{
+    QList<CDiffLine*> lReturnValue;
+    QStringList lLines = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lLines)
+    {
+        CDiffLine* pDiffLine = new CDiffLine();
+
+        QRegExp tRegExp(sBlameLineRegExp);
+
+        if (tRegExp.indexIn(sLine) != -1)
+        {
+            QString sCommitID = tRegExp.cap(1).trimmed();
+            QString sAuthor = tRegExp.cap(2).trimmed();
+            QString sDate = tRegExp.cap(3).trimmed();
+            QString sLine = tRegExp.cap(4).trimmed();
+            QString sText = tRegExp.cap(5);
+
+            QString sFinalText = QString("%1: %2: %3")
+                               .arg(sLine.toInt(), 5, 10, QChar('0'))
+                               .arg(sAuthor, -20)
+                               .arg(sText);
+
+            pDiffLine->setText(sFinalText);
+
+            lReturnValue << pDiffLine;
+        }
+    }
+
+    emit newOutputListOfCDiffLine(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleBranchOutput(const CProcessResult& tResult)
+{
+    // Create CBranchs with the returned string of the process
+
+    QList<CBranch*> lReturnValue;
+    QStringList lLines = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lLines)
+    {
+        sLine = sLine.split("->").first();
+
+        if (not sLine.isEmpty())
+        {
+            CBranch* pNewBranch = new CBranch();
+            bool bIsCurrent = false;
+
+            if (sLine.startsWith("*"))
+                bIsCurrent = true;
+
+            pNewBranch->setType(sLine.contains(sRemoteBranchUselessPrefix) ? CEnums::RemoteBranchLabel : CEnums::LocalBranchLabel);
+
+            sLine.remove(0, 2);
+            sLine.replace(sRemoteBranchUselessPrefix, "");
+            pNewBranch->setName(sLine);
+
+            if (bIsCurrent)
+            {
+                // Tell the world about the current branch
+                emit newOutputString(CEnums::eCurrentBranch, sLine);
+            }
+
+            lReturnValue << pNewBranch;
+        }
+    }
+
+    emit newOutputListOfCBranch(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleTagOutput(const CProcessResult& tResult)
+{
+    QList<CBranch*> lReturnValue;
+    QStringList lLines = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lLines)
+    {
+        sLine = sLine.trimmed();
+
+        if (not sLine.isEmpty())
+        {
+            CBranch* pNewBranch = new CBranch();
+            pNewBranch->setType(CEnums::TagLabel);
+            pNewBranch->setName(sLine);
+            lReturnValue << pNewBranch;
+        }
+    }
+
+    emit newOutputListOfCBranch(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleFileStatusOutput(const CProcessResult& tResult)
+{
+    // Create CRepoFiles with the returned string of the process
+
+    CRepoFileList lReturnValue;
+    QStringList lStrings = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lStrings)
+    {
+        CRepoFile* pFile = repoFileForLine(tResult.m_sPath, sLine, tResult.m_eCommand == CEnums::eIgnoredFileStatus);
+
+        if (pFile != nullptr)
+            lReturnValue.addItem(pFile->fullName(), pFile);
+    }
+
+    emit newOutputListOfCRepoFile(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleLogOutput(const CProcessResult& tResult)
+{
+    // Create a CLogLineCollection with the returned string of the process
+
+    CLogLineCollection lReturnValue;
+    QStringList lStrings = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lStrings)
+    {
+        QStringList sValues = sLine.split(sLogFormatSplitter);
+
+        if (sValues.count() == iLogFormatValueCount)
+        {
+            CLogLine* pLine = new CLogLine();
+
+            pLine->setCommitId(sValues[0].trimmed());
+            pLine->setMessage(sValues[1].trimmed());
+            pLine->setAuthor(sValues[2].trimmed());
+            pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
+
+            getFullCommitMessage(tResult.m_sPath, pLine->commitId());
+
+            lReturnValue.add(pLine);
+        }
+    }
+
+    QStringList lUserValues = tResult.m_sUserData.split(",");
+    int iPotentialCount = lUserValues[0].toInt();
+    int iStartIndex = lUserValues[1].toInt();
+
+    if (iPotentialCount == 0)
+        iPotentialCount = lReturnValue.lines().count();
+
+    lReturnValue.setPotentialCount(iPotentialCount);
+    lReturnValue.setStartIndex(iStartIndex);
+
+    emit newOutputCLogLineCollection(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleRefLogOutput(const CProcessResult& tResult)
+{
+    // Create a CLogLineCollection with the returned string of the process
+
+    CLogLineCollection lReturnValue;
+    QStringList lStrings = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lStrings)
+    {
+        QStringList sValues = sLine.split(sLogFormatSplitter);
+
+        if (sValues.count() == iRefLogFormatValueCount)
+        {
+            CLogLine* pLine = new CLogLine();
+
+            pLine->setCommitId(sValues[0].trimmed());
+            pLine->setAuthor(sValues[1].trimmed());
+            pLine->setMessage(sValues[2].trimmed());
+            pLine->setMessageIsComplete(true);
+
+            lReturnValue.add(pLine);
+        }
+    }
+
+    QStringList lUserValues = tResult.m_sUserData.split(",");
+    int iPotentialCount = lUserValues[0].toInt();
+    int iStartIndex = lUserValues[1].toInt();
+
+    if (iPotentialCount == 0)
+        iPotentialCount = lReturnValue.lines().count();
+
+    lReturnValue.setPotentialCount(iPotentialCount);
+    lReturnValue.setStartIndex(iStartIndex);
+
+    emit newOutputCLogLineCollection(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::handleGraphOutput(const CProcessResult& tResult)
+{
+    // Create CGraphLines with the returned string of the process
+
+    QList<CGraphLine*> lReturnValue;
+    QStringList lStrings = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lStrings)
+    {
+        QStringList sValues = sLine.split(sLogFormatSplitter);
+
+        if (sValues.count() == iGraphFormatValueCount)
+        {
+            CGraphLine* pLine = new CGraphLine();
+
+            pLine->setGraphSymbol(sValues[0].trimmed());
+            pLine->setCommitId(sValues[1].trimmed());
+            pLine->setMessage(sValues[2].trimmed());
+            pLine->setAuthor(sValues[3].trimmed());
+            pLine->setDate(QDateTime::fromString(sValues[4].trimmed(), Qt::ISODate));
+
+            getFullCommitMessage(tResult.m_sPath, pLine->commitId());
+
+            lReturnValue << pLine;
+        }
+        else if (sValues.count() == 1)
+        {
+            CGraphLine* pLine = new CGraphLine();
+
+            pLine->setGraphSymbol(sValues[0].trimmed());
+            pLine->setMessageIsComplete(true);
+
+            lReturnValue << pLine;
+        }
+    }
+
+    emit newOutputListOfCGraphLine(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::onExecFinished(const CProcessResult& tResult)
+{
+    switch (tResult.m_eCommand)
     {
 
     case CEnums::eNothing:
@@ -871,186 +1189,59 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::ePatchApply:
     {
         // Throw the returned string of the process
-        emit newOutputString(eCommand, sValue);
+        emit newOutputString(tResult.m_eCommand, tResult.m_sValue);
         break;
     }
 
     case CEnums::eBranchHeadCommit:
     {
         // Throw the returned string of the process
-        emit newOutputKeyValue(eCommand, sUserData, sValue.trimmed());
+        emit newOutputKeyValue(tResult.m_eCommand, tResult.m_sUserData, tResult.m_sValue.trimmed());
         break;
     }
 
     case CEnums::eTagCommit:
     {
         // Throw the returned string of the process
-        emit newOutputKeyValue(eCommand, sUserData, sValue.trimmed());
+        emit newOutputKeyValue(tResult.m_eCommand, tResult.m_sUserData, tResult.m_sValue.trimmed());
         break;
     }
 
     case CEnums::eCommitMessage:
     {
-        emit newOutputKeyValue(eCommand, sUserData, sValue);
-
+        emit newOutputKeyValue(tResult.m_eCommand, tResult.m_sUserData, tResult.m_sValue);
         break;
     }
 
     case CEnums::eBranchCommitCountAhead:
     case CEnums::eBranchCommitCountBehind:
     {
-        QStringList sAheadOutputLines = sValue.split("\t");
-        QString sAheadCount = sAheadOutputLines.count() > 0 ? sAheadOutputLines[0].trimmed() : "0";
-        QString sBehindCount = sAheadOutputLines.count() > 1 ? sAheadOutputLines[1].trimmed() : "0";
-
-        emit newOutputKeyValue(CEnums::eBranchCommitCountAhead, sUserData, sAheadCount);
-        emit newOutputKeyValue(CEnums::eBranchCommitCountBehind, sUserData, sBehindCount);
-
+        handleCommitCountOutput(tResult);
         break;
     }
 
     case CEnums::eUnstagedFileDiff:
     case CEnums::eTwoCommitDiff:
     {
-        // Create CDiffLines with the returned string of the process
-
-        QList<CDiffLine*> lReturnValue;
-        QStringList lLines = sValue.split(NEW_LINE);
-        bool bAtLeastOneLineOK = false;
-
-        for (QString sLine : lLines)
-        {
-            QString sTrimmedLine = sLine.trimmed();
-
-            if (not sTrimmedLine.isEmpty())
-            {
-                bAtLeastOneLineOK = true;
-
-                CDiffLine* pDiffLine = new CDiffLine();
-                pDiffLine->setText(sLine);
-
-                if (sLine.startsWith("index") || sLine.startsWith("+++") || sLine.startsWith("---"))
-                {
-                    delete pDiffLine;
-                }
-                else
-                {
-                    if (sLine.startsWith("diff"))
-                    {
-                        QString sNewText = pDiffLine->text(); // .split(PATH_SEP).last();
-
-                        QRegExp tRegExp(sDiffLineRegExp);
-
-                        if (tRegExp.indexIn(sLine) != -1)
-                        {
-                            QString sFileA = tRegExp.cap(2).trimmed();
-                            QString sFileB = tRegExp.cap(3).trimmed();
-
-                            sNewText = sFileB;
-                        }
-
-                        pDiffLine->setOperation(CEnums::DiffFileName);
-                        pDiffLine->setText(sNewText);
-                    }
-                    else if (not (sLine.startsWith("@@")))
-                    {
-                        if (sLine.startsWith("+"))
-                            pDiffLine->setOperation(CEnums::DiffAdd);
-                        if (sLine.startsWith("-"))
-                            pDiffLine->setOperation(CEnums::DiffDelete);
-                    }
-
-                    lReturnValue << pDiffLine;
-                }
-            }
-        }
-
-        if (not bAtLeastOneLineOK)
-        {
-            qDeleteAll(lReturnValue);
-            lReturnValue.clear();
-        }
-
-        emit newOutputListOfCDiffLine(eCommand, lReturnValue);
+        handleDiffOutput(tResult);
         break;
     }
 
     case CEnums::eBlame:
     {
-        QList<CDiffLine*> lReturnValue;
-        QStringList lLines = sValue.split(NEW_LINE);
-        int index = 0;
-
-        for (QString sLine : lLines)
-        {
-            CDiffLine* pDiffLine = new CDiffLine();
-            pDiffLine->setText(QString("%1: %2").arg(index, 5, 10, QChar('0')).arg(sLine));
-            lReturnValue << pDiffLine;
-            index++;
-        }
-
-        emit newOutputListOfCDiffLine(eCommand, lReturnValue);
+        handleBlameOutput(tResult);
         break;
     }
 
     case CEnums::eBranches:
     {
-        // Create CBranchs with the returned string of the process
-
-        QList<CBranch*> lReturnValue;
-        QStringList lLines = sValue.split(NEW_LINE);
-
-        for (QString sLine : lLines)
-        {
-            sLine = sLine.split("->").first();
-
-            if (not sLine.isEmpty())
-            {
-                CBranch* pNewBranch = new CBranch();
-                bool bIsCurrent = false;
-
-                if (sLine.startsWith("*"))
-                    bIsCurrent = true;
-
-                pNewBranch->setType(sLine.contains(sRemoteBranchUselessPrefix) ? CEnums::RemoteBranchLabel : CEnums::LocalBranchLabel);
-
-                sLine.remove(0, 2);
-                sLine.replace(sRemoteBranchUselessPrefix, "");
-                pNewBranch->setName(sLine);
-
-                if (bIsCurrent)
-                {
-                    // Tell the world about the current branch
-                    emit newOutputString(CEnums::eCurrentBranch, sLine);
-                }
-
-                lReturnValue << pNewBranch;
-            }
-        }
-
-        emit newOutputListOfCBranch(eCommand, lReturnValue);
+        handleBranchOutput(tResult);
         break;
     }
 
     case CEnums::eTags:
     {
-        QList<CBranch*> lReturnValue;
-        QStringList lLines = sValue.split(NEW_LINE);
-
-        for (QString sLine : lLines)
-        {
-            sLine = sLine.trimmed();
-
-            if (not sLine.isEmpty())
-            {
-                CBranch* pNewBranch = new CBranch();
-                pNewBranch->setType(CEnums::TagLabel);
-                pNewBranch->setName(sLine);
-                lReturnValue << pNewBranch;
-            }
-        }
-
-        emit newOutputListOfCBranch(eCommand, lReturnValue);
+        handleTagOutput(tResult);
         break;
     }
 
@@ -1058,139 +1249,26 @@ void CGitCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eComman
     case CEnums::eChangedFileStatus:
     case CEnums::eIgnoredFileStatus:
     {
-        // Create CRepoFiles with the returned string of the process
-
-        CRepoFileList lReturnValue;
-        QStringList lStrings = sValue.split(NEW_LINE);
-
-        for (QString sLine : lStrings)
-        {
-            CRepoFile* pFile = repoFileForLine(sPath, sLine, eCommand == CEnums::eIgnoredFileStatus);
-
-            if (pFile != nullptr)
-                lReturnValue.addItem(pFile->fullName(), pFile);
-        }
-
-        emit newOutputListOfCRepoFile(eCommand, lReturnValue);
+        handleFileStatusOutput(tResult);
         break;
     }
 
     case CEnums::eFileLog:
     case CEnums::eBranchLog:
     {
-        // Create a CLogLineCollection with the returned string of the process
-
-        CLogLineCollection lReturnValue;
-        QStringList lStrings = sValue.split(NEW_LINE);
-
-        for (QString sLine : lStrings)
-        {
-            QStringList sValues = sLine.split(sLogFormatSplitter);
-
-            if (sValues.count() == iLogFormatValueCount)
-            {
-                CLogLine* pLine = new CLogLine();
-
-                pLine->setCommitId(sValues[0].trimmed());
-                pLine->setMessage(sValues[1].trimmed());
-                pLine->setAuthor(sValues[2].trimmed());
-                pLine->setDate(QDateTime::fromString(sValues[3].trimmed(), Qt::ISODate));
-
-                getFullCommitMessage(sPath, pLine->commitId());
-
-                lReturnValue.add(pLine);
-            }
-        }
-
-        QStringList lUserValues = sUserData.split(",");
-        int iPotentialCount = lUserValues[0].toInt();
-        int iStartIndex = lUserValues[1].toInt();
-
-        if (iPotentialCount == 0)
-            iPotentialCount = lReturnValue.lines().count();
-
-        lReturnValue.setPotentialCount(iPotentialCount);
-        lReturnValue.setStartIndex(iStartIndex);
-
-        emit newOutputCLogLineCollection(eCommand, lReturnValue);
+        handleLogOutput(tResult);
         break;
     }
 
     case CEnums::eRefLog:
     {
-        // Create a CLogLineCollection with the returned string of the process
-
-        CLogLineCollection lReturnValue;
-        QStringList lStrings = sValue.split(NEW_LINE);
-
-        for (QString sLine : lStrings)
-        {
-            QStringList sValues = sLine.split(sLogFormatSplitter);
-
-            if (sValues.count() == iRefLogFormatValueCount)
-            {
-                CLogLine* pLine = new CLogLine();
-
-                pLine->setCommitId(sValues[0].trimmed());
-                pLine->setAuthor(sValues[1].trimmed());
-                pLine->setMessage(sValues[2].trimmed());
-                pLine->setMessageIsComplete(true);
-
-                lReturnValue.add(pLine);
-            }
-        }
-
-        QStringList lUserValues = sUserData.split(",");
-        int iPotentialCount = lUserValues[0].toInt();
-        int iStartIndex = lUserValues[1].toInt();
-
-        if (iPotentialCount == 0)
-            iPotentialCount = lReturnValue.lines().count();
-
-        lReturnValue.setPotentialCount(iPotentialCount);
-        lReturnValue.setStartIndex(iStartIndex);
-
-        emit newOutputCLogLineCollection(eCommand, lReturnValue);
+        handleRefLogOutput(tResult);
         break;
     }
 
     case CEnums::eGraph:
     {
-        // Create CGraphLines with the returned string of the process
-
-        QList<CGraphLine*> lReturnValue;
-        QStringList lStrings = sValue.split(NEW_LINE);
-
-        for (QString sLine : lStrings)
-        {
-            QStringList sValues = sLine.split(sLogFormatSplitter);
-
-            if (sValues.count() == iGraphFormatValueCount)
-            {
-                CGraphLine* pLine = new CGraphLine();
-
-                pLine->setGraphSymbol(sValues[0].trimmed());
-                pLine->setCommitId(sValues[1].trimmed());
-                pLine->setMessage(sValues[2].trimmed());
-                pLine->setAuthor(sValues[3].trimmed());
-                pLine->setDate(QDateTime::fromString(sValues[4].trimmed(), Qt::ISODate));
-
-                getFullCommitMessage(sPath, pLine->commitId());
-
-                lReturnValue << pLine;
-            }
-            else if (sValues.count() == 1)
-            {
-                CGraphLine* pLine = new CGraphLine();
-
-                pLine->setGraphSymbol(sValues[0].trimmed());
-                pLine->setMessageIsComplete(true);
-
-                lReturnValue << pLine;
-            }
-        }
-
-        emit newOutputListOfCGraphLine(eCommand, lReturnValue);
+        handleGraphOutput(tResult);
         break;
     }
 

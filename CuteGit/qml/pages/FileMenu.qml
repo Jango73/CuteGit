@@ -7,18 +7,17 @@ Menu {
     id: root
     title: ""
 
-    property variant repository: null
-    property string name: ""
+    property variant fileNames: null
 
-    signal requestDelete(var name)
-    signal requestBlame(var name)
+    signal requestDelete(var fileNames)
+    signal requestBlame(var fileNames)
 
     Action {
         text: Const.fileDeleteMenuText
 
         onTriggered: {
             if (root.name !== "") {
-                root.requestDelete(root.name)
+                root.requestDelete(root.fileNames)
             }
         }
     }
@@ -28,7 +27,7 @@ Menu {
 
         onTriggered: {
             if (root.name !== "") {
-                root.requestBlame(root.name)
+                root.requestBlame(root.fileNames)
             }
         }
     }

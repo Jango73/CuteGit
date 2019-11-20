@@ -584,7 +584,13 @@ void CController::openRepository(QString sRepositoryPath)
 
 void CController::removeRepository(int iRepositoryIndex)
 {
-    m_pOpenRepositoryModel->removeRepository(iRepositoryIndex);
+    if (iRepositoryIndex < m_pOpenRepositoryModel->repositories().count())
+    {
+        QString sName = m_pOpenRepositoryModel->repositories()[iRepositoryIndex]->repositoryName();
+        setStatusText(QString(Strings::s_sSomeObjectNameClosed).arg(sName));
+
+        m_pOpenRepositoryModel->removeRepository(iRepositoryIndex);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -613,6 +619,9 @@ int CController::currentRepositoryIndexToSet()
 
 QString CController::repositoryNameFromPath(const QString& sPath) const
 {
+    if (sPath.isEmpty())
+        return "";
+
     return sPath.split(PATH_SEP).last();
 }
 

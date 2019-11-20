@@ -82,13 +82,16 @@ MenuBar {
 
         Menu {
             id: knownRepos
+            width: root.width * 0.5
             title: Const.knownMenuText
 
             Instantiator {
                 model: root.controller.knownRepositoryModel
 
                 MenuItem {
-                    text: root.controller.repositoryNameFromPath(model.display)
+                    text: "%1 (%2)"
+                    .arg(root.controller.repositoryNameFromPath(model.display))
+                    .arg(model.display)
 
                     onClicked: {
                         // When calling root.controller.openRepository(model.display) from here, the menu does not close...

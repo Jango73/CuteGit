@@ -172,10 +172,7 @@ void CSvnCommands::setCurrentBranch(const QString& sPath, const QString& sBranch
 
 //-------------------------------------------------------------------------------------------------
 
-void CSvnCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData)
+void CSvnCommands::onExecFinished(const CProcessResult& tResult)
 {
-    Q_UNUSED(sPath);
-    Q_UNUSED(eCommand);
-    Q_UNUSED(sValue);
-    Q_UNUSED(sUserData);
+    Q_UNUSED(tResult);
 }

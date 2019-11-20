@@ -80,6 +80,7 @@ public:
 
     // Model for the blame view
     Q_FAST_PROPERTY(CDiffModel*, p, fileBlameModel, FileBlameModel)
+    Q_FAST_PROPERTY(CDiffModelProxy*, p, fileBlameModelProxy, FileBlameModelProxy)
 
     // Output of commands
     Q_FAST_PROPERTY(QStringListModel*, p, commandOutputModel, CommandOutputModel)
@@ -140,7 +141,7 @@ public:
     Q_INVOKABLE void copyText(const QString& sText);
 
     //! Opens a file for edit
-    Q_INVOKABLE void openFile(const QString& sFullName);
+    Q_INVOKABLE void openFiles(QStringList lFullNames);
 
     //!
     Q_INVOKABLE bool can(CEnums::ECapability eWhat);
@@ -160,17 +161,17 @@ public:
     //!
     Q_INVOKABLE void refresh();
 
-    //! Toggles the 'staged' flag of a file
-    Q_INVOKABLE void toggleStaged(QString sFullName);
+    //! Toggles the 'staged' flag of files
+    Q_INVOKABLE void toggleStaged(QStringList lFullNames);
 
-    //! Deletes a file
-    Q_INVOKABLE void deleteFile(QString sFullName);
-
-    //!
-    Q_INVOKABLE void stageSelection(QStringList lFileFullNames);
+    //! Deletes files
+    Q_INVOKABLE void deleteFiles(QStringList lFullNames);
 
     //!
-    Q_INVOKABLE void unstageSelection(QStringList lFileFullNames);
+    Q_INVOKABLE void stageSelection(QStringList lFullNames);
+
+    //!
+    Q_INVOKABLE void unstageSelection(QStringList lFullNames);
 
     //! Stages all modified files
     Q_INVOKABLE void stageAll();
@@ -179,7 +180,7 @@ public:
     Q_INVOKABLE void unstageAll();
 
     //! Does a revert on all selected files
-    Q_INVOKABLE void revertSelection(QStringList lFileFullNames);
+    Q_INVOKABLE void revertSelection(QStringList lFullNames);
 
     //! Commits (or amends) all staged files
     Q_INVOKABLE void commit(const QString& sMessage, bool bAmend);
@@ -252,6 +253,9 @@ public:
 
     //! Sets the diff filter
     Q_INVOKABLE void setFileDiffFilter(const QString& sText);
+
+    //! Sets the blame filter
+    Q_INVOKABLE void setFileBlameFilter(const QString& sText);
 
     //! Sets the branch log filter
     Q_INVOKABLE void setBranchLogFilter(const QString& sText);

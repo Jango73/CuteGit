@@ -298,11 +298,106 @@ CRepoFile* CHgCommands::repoFileForLine(const QString &sPath, QString sLine)
 
 //-------------------------------------------------------------------------------------------------
 
-void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData)
+void CHgCommands::handleBranchOutput(const CProcessResult& tResult)
 {
-    Q_UNUSED(sUserData);
+    // Create CBranchs with the returned string of the process
 
-    switch (eCommand)
+    QList<CBranch*> lReturnValue;
+    QStringList lLines = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lLines)
+    {
+        QStringList sValues = sLine.split(sLogFormatSplitter);
+
+        if (sValues.count() == 2)
+        {
+            QString sName = sValues[0];
+            QString sCommitId = sValues[1];
+
+            CBranch* pNewBranch = new CBranch();
+            pNewBranch->setName(sName);
+            pNewBranch->setType(CEnums::RemoteBranchLabel);
+            pNewBranch->setCommitId(sCommitId);
+
+            lReturnValue << pNewBranch;
+        }
+    }
+
+    QString sName = execNow(tResult.m_sPath, sCommandCurrentBranch).trimmed();
+    emit newOutputString(CEnums::eCurrentBranch, sName);
+
+    emit newOutputListOfCBranch(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CHgCommands::handleFileStatusOutput(const CProcessResult& tResult)
+{
+    // Create CRepoFiles with the returned string of the process
+
+    CRepoFileList lReturnValue;
+    QStringList lStrings = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lStrings)
+    {
+        CRepoFile* pFile = repoFileForLine(tResult.m_sPath, sLine);
+
+        if (pFile != nullptr)
+            lReturnValue.addItem(pFile->fullName(), pFile);
+    }
+
+    emit newOutputListOfCRepoFile(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CHgCommands::handleLogOutput(const CProcessResult& tResult)
+{
+    // Create a CLogLineCollection with the returned string of the process
+
+    CLogLineCollection lReturnValue;
+    QStringList lStrings = tResult.m_sValue.split(NEW_LINE);
+
+    for (QString sLine : lStrings)
+    {
+        QStringList sValues = sLine.split(sLogFormatSplitter);
+
+        if (sValues.count() == iLogFormatValueCount)
+        {
+            CLogLine* pLine = new CLogLine();
+
+            qint64 iData = qint64(sValues[3].trimmed().toDouble());
+
+            pLine->setCommitId(sValues[0].trimmed());
+            pLine->setMessage(sValues[1].trimmed());
+            pLine->setAuthor(sValues[2].trimmed());
+            pLine->setDate(QDateTime::fromSecsSinceEpoch(iData));
+            pLine->setMessageIsComplete(true);
+
+            lReturnValue.add(pLine);
+        }
+    }
+
+    QStringList lUserValues = tResult.m_sUserData.split(",");
+    int iPotentialCount = lUserValues[0].toInt();
+    int iStartIndex = lUserValues[1].toInt();
+
+    if (iPotentialCount == 0)
+        iPotentialCount = lReturnValue.lines().count();
+
+    lReturnValue.setPotentialCount(iPotentialCount);
+    lReturnValue.setStartIndex(iStartIndex);
+
+    emit newOutputCLogLineCollection(tResult.m_eCommand, lReturnValue);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CHgCommands::onExecFinished(const CProcessResult& tResult)
+{
+    Q_UNUSED(tResult.m_sUserData);
+
+    switch (tResult.m_eCommand)
     {
 
     case CEnums::eStageFile:
@@ -315,101 +410,27 @@ void CHgCommands::onExecFinished(QString sPath, CEnums::EProcessCommand eCommand
     case CEnums::eCreateBranchOnCommit:
     {
         // Throw the returned string of the process
-        emit newOutputString(eCommand, sValue);
+        emit newOutputString(tResult.m_eCommand, tResult.m_sValue);
         break;
     }
 
     case CEnums::eBranches:
     {
-        // Create CBranchs with the returned string of the process
-
-        QList<CBranch*> lReturnValue;
-        QStringList lLines = sValue.split(NEW_LINE);
-
-        for (QString sLine : lLines)
-        {
-            QStringList sValues = sLine.split(sLogFormatSplitter);
-
-            if (sValues.count() == 2)
-            {
-                QString sName = sValues[0];
-                QString sCommitId = sValues[1];
-
-                CBranch* pNewBranch = new CBranch();
-                pNewBranch->setName(sName);
-                pNewBranch->setType(CEnums::RemoteBranchLabel);
-                pNewBranch->setCommitId(sCommitId);
-
-                lReturnValue << pNewBranch;
-            }
-        }
-
-        QString sName = execNow(sPath, sCommandCurrentBranch).trimmed();
-        emit newOutputString(CEnums::eCurrentBranch, sName);
-
-        emit newOutputListOfCBranch(eCommand, lReturnValue);
+        handleBranchOutput(tResult);
         break;
     }
 
     case CEnums::eAllFileStatus:
     case CEnums::eChangedFileStatus:
     {
-        // Create CRepoFiles with the returned string of the process
-
-        CRepoFileList lReturnValue;
-        QStringList lStrings = sValue.split(NEW_LINE);
-
-        for (QString sLine : lStrings)
-        {
-            CRepoFile* pFile = repoFileForLine(sPath, sLine);
-
-            if (pFile != nullptr)
-                lReturnValue.addItem(pFile->fullName(), pFile);
-        }
-
-        emit newOutputListOfCRepoFile(eCommand, lReturnValue);
+        handleFileStatusOutput(tResult);
         break;
     }
 
     case CEnums::eFileLog:
     case CEnums::eBranchLog:
     {
-        // Create a CLogLineCollection with the returned string of the process
-
-        CLogLineCollection lReturnValue;
-        QStringList lStrings = sValue.split(NEW_LINE);
-
-        for (QString sLine : lStrings)
-        {
-            QStringList sValues = sLine.split(sLogFormatSplitter);
-
-            if (sValues.count() == iLogFormatValueCount)
-            {
-                CLogLine* pLine = new CLogLine();
-
-                qint64 iData = qint64(sValues[3].trimmed().toDouble());
-
-                pLine->setCommitId(sValues[0].trimmed());
-                pLine->setMessage(sValues[1].trimmed());
-                pLine->setAuthor(sValues[2].trimmed());
-                pLine->setDate(QDateTime::fromSecsSinceEpoch(iData));
-                pLine->setMessageIsComplete(true);
-
-                lReturnValue.add(pLine);
-            }
-        }
-
-        QStringList lUserValues = sUserData.split(",");
-        int iPotentialCount = lUserValues[0].toInt();
-        int iStartIndex = lUserValues[1].toInt();
-
-        if (iPotentialCount == 0)
-            iPotentialCount = lReturnValue.lines().count();
-
-        lReturnValue.setPotentialCount(iPotentialCount);
-        lReturnValue.setStartIndex(iStartIndex);
-
-        emit newOutputCLogLineCollection(eCommand, lReturnValue);
+        handleLogOutput(tResult);
         break;
     }
 

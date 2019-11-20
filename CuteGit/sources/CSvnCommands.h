@@ -96,5 +96,5 @@ protected:
 protected slots:
 
     //!
-    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
+    void onExecFinished(const CProcessResult& tResult);
 };

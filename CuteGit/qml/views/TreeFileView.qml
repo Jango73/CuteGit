@@ -44,6 +44,7 @@ TreeView {
 
     Component {
         id: itemDlg
+        objectName: "itemDlg"
 
         Rectangle {
             height: Const.treeElementHeight

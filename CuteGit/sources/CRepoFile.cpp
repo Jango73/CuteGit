@@ -30,6 +30,7 @@ CRepoFile::CRepoFile(QObject* parent)
     : QObject(parent)
     , m_eStatus(CEnums::eUntracked)
     , m_bStaged(false)
+    , m_bChanging(false)
 {
 }
 
@@ -42,6 +43,7 @@ CRepoFile::CRepoFile(const CRepoFile& target, QObject* parent)
     , m_sRelativeName(target.m_sRelativeName)
     , m_eStatus(target.m_eStatus)
     , m_bStaged(target.m_bStaged)
+    , m_bChanging(false)
 {
 }
 
@@ -83,6 +85,22 @@ QString CRepoFile::statusToString() const
 QString CRepoFile::stagedToString() const
 {
     return m_bStaged ? sTokenStaged : sTokenUnstaged;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool CRepoFile::isNotClean() const
+{
+    if (m_eStatus == CEnums::eAdded)
+        return true;
+    if (m_eStatus == CEnums::eModified)
+        return true;
+    if (m_eStatus == CEnums::eRenamed)
+        return true;
+    if (m_eStatus == CEnums::eDeleted)
+        return true;
+
+    return false;
 }
 
 //-------------------------------------------------------------------------------------------------

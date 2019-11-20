@@ -32,6 +32,7 @@ QHash<int, QByteArray> CFlatFileModel::roleNames() const
     hRoleNames[eSizeRole] = "size";
     hRoleNames[eStatusRole] = "status";
     hRoleNames[eStagedRole] = "staged";
+    hRoleNames[eChangingRole] = "changing";
     return hRoleNames;
 }
 
@@ -69,6 +70,9 @@ QVariant CFlatFileModel::data(const QModelIndex& qIndex, int iRole) const
 
         case eStagedRole:
             return m_lRepoFiles[qIndex.row()]->stagedToString();
+
+        case eChangingRole:
+            return m_lRepoFiles[qIndex.row()]->changing();
         }
     }
 
@@ -106,6 +110,51 @@ bool CFlatFileModel::setData(const QModelIndex& qIndex, const QVariant& vValue, 
 
 //-------------------------------------------------------------------------------------------------
 
+void CFlatFileModel::setFileChangingByFullName(const QString& sFullName, bool bChanging)
+{
+    CRepoFile* pFile = fileByFullName(sFullName);
+
+    if (pFile != nullptr)
+    {
+        if (not bChanging || pFile->isNotClean())
+        {
+            pFile->setChanging(bChanging);
+            int iIndex = m_lRepoFiles.indexOf(pFile);
+            QModelIndex qIndex = createIndex(iIndex, 0);
+            emit dataChanged(qIndex, qIndex);
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFlatFileModel::setFilesChangingByFullName(const QStringList& lFullNames, bool bChanging)
+{
+    for (QString sFullName : lFullNames)
+    {
+        setFileChangingByFullName(sFullName, bChanging);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CFlatFileModel::setAllFilesChanging(bool bChanging)
+{
+    for (int iIndex = 0; iIndex < m_lRepoFiles.count(); iIndex++)
+    {
+        CRepoFile* pFile = m_lRepoFiles[iIndex];
+
+        if (not bChanging || pFile->isNotClean())
+        {
+            pFile->setChanging(bChanging);
+            QModelIndex qIndex = createIndex(iIndex, 0);
+            emit dataChanged(qIndex, qIndex);
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CFlatFileModel::handleRepoFilesChanged()
 {
     CRepoFileList lNewFiles = m_pRepository->repoFiles();
@@ -125,6 +174,7 @@ void CFlatFileModel::handleRepoFilesChanged()
 
                 pExistingFile->setStaged(pNewFile->staged());
                 pExistingFile->setStatus(pNewFile->status());
+                pExistingFile->setChanging(false);
 
                 emit dataChanged(qIndex, qIndex);
             }
@@ -182,3 +232,22 @@ QStringList CFlatFileModel::selectionToFullNameList(QModelIndexList lIndices)
 
     return lFullNames;
 }
+
+
+//-------------------------------------------------------------------------------------------------
+
+CRepoFile* CFlatFileModel::fileByFullName(const QString& sFullName) const
+{
+    auto itr = std::find_if(
+                m_lRepoFiles.begin(),
+                m_lRepoFiles.end(),
+                [sFullName](CRepoFile* pFile) { return pFile->fullName() == sFullName; }
+            );
+
+    if (itr != m_lRepoFiles.end())
+        return *itr;
+
+    return nullptr;
+}
+
+//-------------------------------------------------------------------------------------------------

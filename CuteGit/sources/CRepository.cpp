@@ -60,6 +60,7 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     , m_pFileDiffModel(new CDiffModel(this))
     , m_pFileDiffModelProxy(new CDiffModelProxy(this))
     , m_pFileBlameModel(new CDiffModel(this))
+    , m_pFileBlameModelProxy(new CDiffModelProxy(this))
     , m_pCommandOutputModel(new QStringListModel(this))
     , m_iMaxCommandOutputLines(100)
     , m_iCommitCountAhead(0)
@@ -99,7 +100,9 @@ CRepository::CRepository(const QString& sPath, CController* pController, QObject
     m_pStagedFileModelProxy->setSourceModel(m_pFlatFileModel);
     m_pBranchLogModelProxy->setSourceModel(m_pBranchLogModel);
     m_pFileDiffModelProxy->setSourceModel(m_pFileDiffModel);
+    m_pFileBlameModelProxy->setSourceModel(m_pFileBlameModel);
 
+    // Connect signals
     connect(this, &CRepository::diffToCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
     connect(this, &CRepository::diffFromCommitIdChanged, this, &CRepository::onDiffCommitIdChanged);
 
@@ -207,9 +210,10 @@ void CRepository::copyText(const QString& sText)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::openFile(const QString& sFullName)
+void CRepository::openFiles(QStringList lFullNames)
 {
-    QDesktopServices::openUrl(QUrl(sFullName));
+    for (QString sFullName : lFullNames)
+        QDesktopServices::openUrl(QUrl(sFullName));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -274,42 +278,54 @@ void CRepository::refresh()
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::toggleStaged(QString sFullName)
+void CRepository::toggleStaged(QStringList lFullNames)
 {
-    if (not sFullName.isEmpty())
+    m_pFlatFileModel->setFilesChangingByFullName(lFullNames, true);
+
+    for (QString sFullName : lFullNames)
     {
-        m_pCommands->toggleStaged(m_sRepositoryPath, sFullName);
-        checkChangedFileStatus();
+        if (not sFullName.isEmpty())
+        {
+            m_pCommands->toggleStaged(m_sRepositoryPath, sFullName);
+            checkChangedFileStatus();
+        }
     }
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::deleteFile(QString sFullName)
+void CRepository::deleteFiles(QStringList lFullNames)
 {
-    if (not sFullName.isEmpty())
+    m_pFlatFileModel->setFilesChangingByFullName(lFullNames, true);
+
+    for (QString sFullName : lFullNames)
     {
-        CRepoFile* pFile = fileByFullName(sFullName);
-
-        if (pFile->status() == CEnums::eUntracked)
+        if (not sFullName.isEmpty())
         {
-            QFile file(sFullName);
-            file.remove();
-        }
-        else
-        {
-            m_pCommands->deleteFile(m_sRepositoryPath, sFullName);
-        }
+            CRepoFile* pFile = fileByFullName(sFullName);
 
-        checkChangedFileStatus();
+            if (pFile->status() == CEnums::eUntracked)
+            {
+                QFile file(sFullName);
+                file.remove();
+            }
+            else
+            {
+                m_pCommands->deleteFile(m_sRepositoryPath, sFullName);
+            }
+
+            checkChangedFileStatus();
+        }
     }
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::stageSelection(QStringList lFileFullNames)
+void CRepository::stageSelection(QStringList lFullNames)
 {
-    for (QString sFullName : lFileFullNames)
+    m_pFlatFileModel->setFilesChangingByFullName(lFullNames, true);
+
+    for (QString sFullName : lFullNames)
     {
         if (not sFullName.isEmpty())
         {
@@ -321,9 +337,11 @@ void CRepository::stageSelection(QStringList lFileFullNames)
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::unstageSelection(QStringList lFileFullNames)
+void CRepository::unstageSelection(QStringList lFullNames)
 {
-    for (QString sFullName : lFileFullNames)
+    m_pFlatFileModel->setFilesChangingByFullName(lFullNames, true);
+
+    for (QString sFullName : lFullNames)
     {
         if (not sFullName.isEmpty())
         {
@@ -337,6 +355,7 @@ void CRepository::unstageSelection(QStringList lFileFullNames)
 
 void CRepository::stageAll()
 {
+    m_pFlatFileModel->setAllFilesChanging(true);
     m_pCommands->stageAll(m_sRepositoryPath, true);
     checkChangedFileStatus();
 }
@@ -345,15 +364,18 @@ void CRepository::stageAll()
 
 void CRepository::unstageAll()
 {
+    m_pFlatFileModel->setAllFilesChanging(true);
     m_pCommands->stageAll(m_sRepositoryPath, false);
     checkChangedFileStatus();
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CRepository::revertSelection(QStringList lFileFullNames)
+void CRepository::revertSelection(QStringList lFullNames)
 {
-    for (QString sFullName : lFileFullNames)
+    m_pFlatFileModel->setFilesChangingByFullName(lFullNames, true);
+
+    for (QString sFullName : lFullNames)
     {
         CRepoFile* pFile = fileByFullName(sFullName);
 
@@ -550,6 +572,14 @@ void CRepository::setFileDiffFilter(const QString& sText)
 {
     m_pFileDiffModelProxy->setTextFilter(sText);
     m_pFileDiffModelProxy->filterChanged();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CRepository::setFileBlameFilter(const QString& sText)
+{
+    m_pFileBlameModelProxy->setTextFilter(sText);
+    m_pFileBlameModelProxy->filterChanged();
 }
 
 //-------------------------------------------------------------------------------------------------

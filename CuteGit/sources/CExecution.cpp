@@ -64,7 +64,8 @@ void CExecution::run()
             if (m_eLastShownCommand != pCommand->m_eCommand)
             {
                 m_eLastShownCommand = pCommand->m_eCommand;
-                emit execFinished(pCommand->m_sWorkPath, CEnums::eIssuedCommand, pCommand->m_sCommand, "");
+
+                emit execFinished(CProcessResult(pCommand->m_sWorkPath, CEnums::eIssuedCommand, pCommand->m_sCommand, ""));
             }
 
             if (pCommand->m_eEndSignal == CEnums::eNothing)
@@ -75,7 +76,7 @@ void CExecution::run()
                             pCommand->m_mEnvironment
                             );
 
-                emit execFinished(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData);
+                emit execFinished(CProcessResult(pCommand->m_sWorkPath, pCommand->m_eCommand, sOutput, pCommand->m_sUserData));
             }
             else
             {
@@ -86,7 +87,7 @@ void CExecution::run()
                             pCommand->m_mEnvironment
                             );
 
-                emit execFinished(pCommand->m_sWorkPath, pCommand->m_eEndSignal, sOutput, pCommand->m_sUserData);
+                emit execFinished(CProcessResult(pCommand->m_sWorkPath, pCommand->m_eEndSignal, sOutput, pCommand->m_sUserData));
             }
 
             delete pCommand;

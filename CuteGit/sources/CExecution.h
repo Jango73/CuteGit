@@ -56,6 +56,51 @@ public:
 
 //-------------------------------------------------------------------------------------------------
 
+class CProcessResult : public QObject
+{
+    Q_OBJECT
+
+public:
+
+    //! Default constructor
+    CProcessResult(QObject* parent = nullptr)
+        : QObject(parent)
+    {
+    }
+
+    //! Constructor with parameters
+    CProcessResult(
+            QString sPath,
+            CEnums::EProcessCommand eCommand,
+            QString sValue,
+            QString sUserData)
+        : m_sPath(sPath)
+        , m_eCommand(eCommand)
+        , m_sValue(sValue)
+        , m_sUserData(sUserData)
+    {
+    }
+
+    //! Copy constructor
+    CProcessResult(const CProcessResult& target, QObject* parent = nullptr)
+        : QObject(parent)
+        , m_sPath(target.m_sPath)
+        , m_eCommand(target.m_eCommand)
+        , m_sValue(target.m_sValue)
+        , m_sUserData(target.m_sUserData)
+    {
+    }
+
+    QString                 m_sPath;
+    CEnums::EProcessCommand m_eCommand;
+    QString                 m_sValue;
+    QString                 m_sUserData;
+};
+
+Q_DECLARE_METATYPE(CProcessResult)
+
+//-------------------------------------------------------------------------------------------------
+
 class CExecution : public QThread
 {
     Q_OBJECT
@@ -111,7 +156,7 @@ private:
 signals:
 
     //!
-    void execFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
+    void execFinished(const CProcessResult& tResult);
 
     //!
     void newOutputString(CEnums::EProcessCommand eCommand, QString sValue);

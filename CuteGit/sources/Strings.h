@@ -14,6 +14,7 @@ class Strings : public QObject
 public:
 
     static const QString s_sSomeObjectNameOpened;
+    static const QString s_sSomeObjectNameClosed;
     static const QString s_sSomeObjectNameIsNotARepository;
     static const QString s_sSomeObjectDoesNotExist;
 

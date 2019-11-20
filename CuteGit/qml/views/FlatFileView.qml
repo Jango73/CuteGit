@@ -11,8 +11,8 @@ StandardListView {
     property variant repository: null
     property bool mouseEnabled: true
 
-    signal requestMenu(var name)
-    signal requestDeleteFile(var name)
+    signal requestMenu(var fileNames)
+    signal requestDeleteFiles(var fileNames)
 
     model: root.repository
            ? root.repository.flatFileModelProxy
@@ -25,7 +25,7 @@ StandardListView {
         selectionFillsItem: false
         listView: root
         mouseEnabled: root.mouseEnabled
-        symbolText: model.status
+        symbolText: model.changing ? Const.statusChangeText : model.status
         primaryText: model.fileName
         secondaryText: mustShowRelativeName ? model.relativeName : ""
         selectionShown: selected
@@ -36,14 +36,14 @@ StandardListView {
         property bool selected: indexSelected(index)
 
         onClicked: {
-            if (mouse.button === Qt.LeftButton) {
-                root.itemClicked(mouse, index, previousIndex)
-            } else if (mouse.button === Qt.RightButton) {
-                root.requestMenu(model.fullName)
+            root.itemClicked(mouse, index, previousIndex)
+
+            if (mouse.button === Qt.RightButton) {
+                root.requestMenu(getSelectedFiles())
             }
         }
 
-        onDoubleClicked: root.repository.openFile(model.fullName)
+        onDoubleClicked: root.repository.openFiles(getSelectedFiles())
 
         onFullNameChanged: root.updateModelIndex(index)
 
@@ -60,7 +60,11 @@ StandardListView {
         }
     }
 
-    onSpacePressed: root.repository.toggleStaged(currentItem.fullName)
+    onSpacePressed: root.repository.toggleStaged(getSelectedFiles())
 
-    onDeletePressed: root.requestDeleteFile(currentItem.fullName)
+    onDeletePressed: root.requestDeleteFiles(getSelectedFiles())
+
+    function getSelectedFiles() {
+        return root.model.selectionToFullNameList(root.selection.selectedIndexes)
+    }
 }

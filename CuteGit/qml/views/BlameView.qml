@@ -36,7 +36,6 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         text: Const.filterText
-        enabled: false
 
         onFilterTextChanged: {
             root.requestTextFilter(text)
@@ -51,13 +50,16 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         itemsSelectable: false
-        model: root.repository !== null ? root.repository.fileBlameModel : undefined
+        model: root.repository !== null ? root.repository.fileBlameModelProxy : undefined
 
         delegate: StandardListViewItem {
             objectName: "list.delegate." + index
             width: parent.width
             listView: list
             primaryText: model.text
+            primaryColor: Material.foreground
+            primaryFont.family: Const.fixedWidthFontFamily
+            primaryFont.pixelSize: Const.fixedWidthFontSize
             selectionShown: false
             focusShown: false
         }

@@ -76,7 +76,7 @@ public:
     virtual void pull(const QString& sPath) override;
 
     //!
-    virtual void createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName);
+    virtual void createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName) override;
 
     //-------------------------------------------------------------------------------------------------
     // Protected control methods
@@ -87,6 +87,15 @@ protected:
     //!
     CRepoFile* repoFileForLine(const QString& sPath, QString sLine);
 
+    //!
+    void handleBranchOutput(const CProcessResult& tResult);
+
+    //!
+    void handleFileStatusOutput(const CProcessResult& tResult);
+
+    //!
+    void handleLogOutput(const CProcessResult& tResult);
+
     //-------------------------------------------------------------------------------------------------
     // Protected slots
     //-------------------------------------------------------------------------------------------------
@@ -94,7 +103,7 @@ protected:
 protected slots:
 
     //!
-    void onExecFinished(QString sPath, CEnums::EProcessCommand eCommand, QString sValue, QString sUserData);
+    void onExecFinished(const CProcessResult& tResult);
 
     //!
     void onNewOutputListOfCRepoFile(CEnums::EProcessCommand eCommand, CRepoFileList lNewRepoFiles);

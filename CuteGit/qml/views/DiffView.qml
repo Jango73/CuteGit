@@ -10,10 +10,13 @@ StandardListView {
     signal itemRightClicked(var operation, var text)
 
     delegate: StandardListViewItem {
+        objectName: "root.delegate." + index
         width: parent.width
         listView: root
         primaryText: model.text
-        primaryTextColor: model.operation === CEnums.DiffFileName ? Material.background : Material.foreground
+        primaryColor: model.operation === CEnums.DiffFileName ? Material.background : Material.foreground
+        primaryFont.family: Const.fixedWidthFontFamily
+        primaryFont.pixelSize: Const.fixedWidthFontSize
         selectionShown: false
 
         background: Rectangle {

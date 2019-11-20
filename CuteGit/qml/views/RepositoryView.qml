@@ -124,11 +124,11 @@ Pane {
             flatSelection: flatFileSelection
 
             onRequestMenu: {
-                fileMenu.name = name
+                fileMenu.fileNames = fileNames
                 fileMenu.popup()
             }
 
-            onRequestDeleteFile: root.requestDeleteFile(name)
+            onRequestDeleteFiles: root.requestDeleteFiles(fileNames)
             onRequestFileFilter: root.repository.setFileFilter(text)
             onRequestFileSortField: root.repository.setFileSortField(field)
             onRequestFileSortDirection: root.repository.setFileSortDirection(direction)
@@ -331,10 +331,9 @@ Pane {
     FileMenu {
         id: fileMenu
         objectName: "fileMenu"
-        repository: root.repository
 
-        onRequestDelete: root.requestDeleteFile(name)
-        onRequestBlame: root.requestBlameFile(name)
+        onRequestDelete: root.requestDeleteFiles(fileNames)
+        onRequestBlame: root.requestBlameFiles(fileNames)
     }
 
     //--------------------------------------------------------------------------------
@@ -393,8 +392,8 @@ Pane {
 
     Action {
         id: deleteFileAction
-        property string fileName: ""
-        onTriggered: root.repository.deleteFile(fileName)
+        property variant fileNames: ""
+        onTriggered: root.repository.deleteFiles(fileNames)
     }
 
     Action {
@@ -406,18 +405,29 @@ Pane {
     //--------------------------------------------------------------------------------
     // Functions
 
-    function requestDeleteFile(name) {
-        deleteFileAction.fileName = name
+    function stringListToString(list) {
+        var result = ""
+        for (var index = 0; index < list.length; index++) {
+            result = result + list[index] + "\n"
+        }
+        console.log(result)
+        return result
+    }
+
+    function requestDeleteFiles(fileNames) {
+        deleteFileAction.fileNames = fileNames
         confirm.title = Const.deleteFileText
-        confirm.messageText = Const.deleteFileMessage.arg(name)
+        confirm.messageText = Const.deleteFileMessage.arg(stringListToString(fileNames))
         confirm.actionOnAccept = deleteFileAction
         confirm.actionOnReject = null
         confirm.open()
     }
 
-    function requestBlameFile(name) {
-        root.repository.blame(name)
-        root.activateFileBlameView()
+    function requestBlameFiles(fileNames) {
+        if (fileNames.length > 0) {
+            root.repository.blame(fileNames[0])
+            root.activateFileBlameView()
+        }
     }
 
     function requestRefresh() {

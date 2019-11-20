@@ -7,13 +7,12 @@ ElideText {
 
     property Item selection: null
 
-    color:
-        selection
-        ? selection.show
-          ? Material.background
-          : asLabel
-            ? Material.backgroundDimColor
-            : Material.foreground
+    color: selection
+           ? selection.show
+             ? Material.background
+             : asLabel
+               ? Material.backgroundDimColor
+               : Material.foreground
     : asLabel
     ? Material.backgroundDimColor
     : Material.foreground

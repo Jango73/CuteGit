@@ -29,7 +29,8 @@ public:
         eRelativeNameRole,
         eSizeRole,
         eStatusRole,
-        eStagedRole
+        eStagedRole,
+        eChangingRole
     };
 
     //-------------------------------------------------------------------------------------------------
@@ -68,6 +69,15 @@ public:
     virtual bool setData(const QModelIndex& qIndex, const QVariant& vValue, int iRole = Qt::EditRole) override;
 
     //!
+    void setFileChangingByFullName(const QString& sFullName, bool bChanging);
+
+    //!
+    void setFilesChangingByFullName(const QStringList& lFullNames, bool bChanging);
+
+    //!
+    void setAllFilesChanging(bool bChanging);
+
+    //!
     void handleRepoFilesChanged();
 
     //-------------------------------------------------------------------------------------------------
@@ -81,6 +91,9 @@ public:
 
     //!
     Q_INVOKABLE QStringList selectionToFullNameList(QModelIndexList lIndices);
+
+    //!
+    Q_INVOKABLE CRepoFile* fileByFullName(const QString& sFullName) const;
 
     //-------------------------------------------------------------------------------------------------
     // Signals

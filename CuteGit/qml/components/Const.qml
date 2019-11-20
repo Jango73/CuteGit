@@ -12,6 +12,10 @@ Item {
     readonly property string mainFontFamily: "Calibri"
     readonly property int mainFontSize: Screen.pixelDensity * 3
 
+    // Other fonts
+    readonly property string fixedWidthFontFamily: "Courier"
+    readonly property int fixedWidthFontSize: mainFontSize
+
     // Colors
     readonly property color transparent: "transparent"
 
@@ -167,6 +171,7 @@ Item {
     readonly property string collapseAllText: qsTr("Collapse all")
     readonly property string mergeBranchText: qsTr("Merge branch")
     readonly property string informationText: qsTr("Information")
+    readonly property string statusChangeText: qsTr("...")
     readonly property string deleteBranchText: qsTr("Delete branch")
     readonly property string repositoriesText: qsTr("Repositories")
     readonly property string repositoryURLText: qsTr("Repository URL")
@@ -199,7 +204,7 @@ Item {
                                              )
 
     readonly property string deleteFileMessage: qsTr(
-                                           "Are you sure you want to delete this file?\n\n" +
+                                           "Are you sure you want to delete this(ese) file(s)?\n\n" +
                                            "%1"
                                            )
 
