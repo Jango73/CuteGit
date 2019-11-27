@@ -5,9 +5,7 @@ import QtQuick.Controls.Material 2.12
 import "."
 
 ToolBar {
-    id: root
     Material.elevation: 0
-
     background: Rectangle {
         id: back
         color: Material.background

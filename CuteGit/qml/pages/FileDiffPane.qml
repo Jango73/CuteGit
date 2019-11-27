@@ -36,6 +36,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         text: Const.filterText
+        tipText: Const.tipLineFilter
 
         onFilterTextChanged: root.requestTextFilter(text)
     }

@@ -6,6 +6,7 @@ Item {
     id: root
     height: filter.height
 
+    property alias filterTipText: filter.tipText
     property ListModel fieldModel: null
     property bool sortDirection: false
 
@@ -53,6 +54,7 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: Const.mainPadding
         text: root.sortDirection === false ? "v" : "^"
+        tipText: Const.tipSortDirectionButton
         onClicked: {
             root.sortDirection = !root.sortDirection
             root.requestSortDirection(root.sortDirection)

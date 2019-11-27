@@ -42,7 +42,7 @@ Item {
     readonly property int microButtonWidth: elementHeight * 1.2
     readonly property int microButtonHeight: elementHeight * 1.8
     readonly property int listViewItemHeight: elementHeight + smallPadding
-    readonly property int buttonHeight: mainFontSize * 2.5
+    readonly property int buttonHeight: mainFontSize * 3
 
     readonly property real popupWidthNorm: 0.50
     readonly property real popupHeightNorm: 0.75
@@ -52,6 +52,8 @@ Item {
 
     // Durations
     readonly property int componentFadingDuration: 200
+    readonly property int toolTipDelay: 1000
+    readonly property int toolTipTimeout: 5000
 
     // Text
     readonly property string repositoryMenuText: qsTr("&Repository")
@@ -253,6 +255,12 @@ Item {
                                          "\n" +
                                          "The first line of an item contains the action done, the second line contains the index.\n"
                                          )
+
+    readonly property string tipExpandButton: qsTr("Expands or shrinks the view.")
+    readonly property string tipBrowseButton: qsTr("Opens a file system browser.")
+    readonly property string tipSortDirectionButton: qsTr("Toggles ascendant and descendant.")
+    readonly property string tipFileFilter: qsTr("Show only files matching this text. When text is empty, all files are shown.")
+    readonly property string tipLineFilter: qsTr("Show only lines matching this text. When text is empty, all lines are shown.")
 
     readonly property string logLabelFrom: "[=>] "
     readonly property string logLabelTo: "[<=] "

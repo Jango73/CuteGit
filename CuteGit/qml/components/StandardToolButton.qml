@@ -4,7 +4,6 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 
 ToolButton {
-    id: root
     display: AbstractButton.TextBesideIcon
     icon.color: action.enabled ? Material.foreground : Material.backgroundDimColor
     icon.width: Const.mainFontSize * 1.5

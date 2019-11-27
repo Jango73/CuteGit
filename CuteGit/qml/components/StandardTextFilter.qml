@@ -7,6 +7,7 @@ Item {
     height: filterText.height
 
     property alias text: filterLabel.text
+    property alias tipText: filterText.tipText
 
     signal filterTextChanged(var text)
 

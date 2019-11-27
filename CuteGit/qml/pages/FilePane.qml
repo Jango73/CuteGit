@@ -27,6 +27,7 @@ ExtendablePane {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.rightMargin: Const.microButtonWidth
+            filterTipText: Const.tipFileFilter
 
             fieldModel: ListModel {
                 ListElement {

@@ -447,14 +447,6 @@ Are you sure you want to do this?</source>
 Etes-vous sûr(e) de vouloir faire cela?</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete this file?
-
-%1</source>
-        <translation>Etes-vous sûr(e) de vouloir effacer ce fichier?
-
-%1</translation>
-    </message>
-    <message>
         <source>CuteGit - version %1
 Copyright (c) 2019 Jango73
 Some icons are copyright Freepik from www.flaticon.com
@@ -810,6 +802,42 @@ La première ligne contient l&apos;action faite, la seconde contient l&apos;inde
         <source>Behind</source>
         <translation>En arrière</translation>
     </message>
+    <message>
+        <source>Push as &amp;WIP</source>
+        <translation>Synchro &amp;sortante, en mode brouillon</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this(ese) file(s)?
+
+%1</source>
+        <translation>Etes-vous sûr(e) de vouloir effacer ce(s) fichier(s)?
+
+%1</translation>
+    </message>
+    <message>
+        <source>Expands or shrinks the view.</source>
+        <translation>Agrandi ou réduit la vue.</translation>
+    </message>
+    <message>
+        <source>Opens a file system browser.</source>
+        <translation>Ouvre un naviguateur sur le système de fichiers.</translation>
+    </message>
+    <message>
+        <source>Toggles ascendant and descendant.</source>
+        <translation>Bascule entre ascendant et descendant.</translation>
+    </message>
+    <message>
+        <source>Show only files matching this text. When text is empty, all files are shown.</source>
+        <translation>Ne montrer que les fichiers correspondant à ce texte. Quand le texte est vide, tous les fichiers sont montrés.</translation>
+    </message>
+    <message>
+        <source>Show only lines matching this text. When text is empty, all lines are shown.</source>
+        <translation>Ne montrer que les lignes correspondant à ce texte. Quand le texte est vide, toutes les lignes sont montrées.</translation>
+    </message>
 </context>
 <context>
     <name>FilePane</name>
@@ -845,6 +873,10 @@ Veuillez sélectionner un dossier contenant un dépôt.</translation>
     <message>
         <source>Unable to get current branch name...</source>
         <translation>Impossible de récupérer le nom de la branche courante...</translation>
+    </message>
+    <message>
+        <source>%1 closed.</source>
+        <translation>%1 fermé.</translation>
     </message>
 </context>
 </TS>

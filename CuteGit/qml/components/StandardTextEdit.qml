@@ -4,7 +4,7 @@ import QtQuick.Controls.Material 2.12
 
 Item {
     id: root
-
+    property string tipText: ""
     property alias text: text.text
     property alias placeHolderText: placeholder.text
     property alias horizontalAlignment: text.horizontalAlignment

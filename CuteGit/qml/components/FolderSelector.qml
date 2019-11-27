@@ -36,6 +36,7 @@ Item {
             id: browseButton
             text: Const.browseText
             anchors.right: parent.right
+            tipText: Const.tipBrowseButton
 
             onClicked: {
                 pathDialog.open()

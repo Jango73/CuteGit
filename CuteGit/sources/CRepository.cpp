@@ -394,7 +394,7 @@ void CRepository::revertSelection(QStringList lFullNames)
 
 void CRepository::commit(const QString& sMessage, bool bAmend)
 {
-    if (m_eRepositoryStatus == CEnums::NoMerge && bAmend == false)
+    if (not bAmend)
     {
         m_pCommands->commit(m_sRepositoryPath, sMessage);
     }

@@ -3,6 +3,10 @@ import QtQuick.Controls 2.5
 import "."
 
 Button {
-    id: root
+    property string tipText: ""
     implicitHeight: Const.buttonHeight
+    ToolTip.delay: Const.toolTipDelay
+    ToolTip.timeout: Const.toolTipTimeout
+    ToolTip.visible: hovered
+    ToolTip.text: tipText
 }

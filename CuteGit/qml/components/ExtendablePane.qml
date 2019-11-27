@@ -16,6 +16,7 @@ TitlePane {
         padding: 0
         flat: true
         text: root.state === "" ? "^" : "v"
+        tipText: Const.tipExpandButton
 
         onClicked: {
             if (root.extensionParent !== null)
