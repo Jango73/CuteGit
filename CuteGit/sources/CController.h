@@ -109,6 +109,12 @@ public:
     // Getters
     //-------------------------------------------------------------------------------------------------
 
+    //!
+    QString appDataPath() const;
+
+    //!
+    QString configFileName() const;
+
     //! Returns the interprocess operation running
     ESharedOperation sharedOperation();
 

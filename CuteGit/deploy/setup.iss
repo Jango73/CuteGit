@@ -6,7 +6,7 @@
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "github.com/Jango73/CuteGit"
 #define MyAppExeName "CuteGit.exe"
-#define BuildDirectory "<Set build directory name here>"
+#define BuildDirectory "D:\Work\Projects\build-CuteGit-Desktop_Qt_5_12_3_MinGW_64_bit-Release"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -48,6 +48,3 @@ Name: "{commondesktop}\{#MyAppIconName}"; Filename: "{app}\bin\{#MyAppExeName}";
 
 [Run]
 Filename: "{app}\bin\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
-[UninstallDelete]
-Type: files; Name: "{app}\bin\configuration.xml"

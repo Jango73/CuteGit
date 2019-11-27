@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QUrl>
+#include <QStandardPaths>
 
 // Application
 #include "CController.h"
@@ -94,6 +95,7 @@ CController::CController(QString sStubFileName, QObject* parent)
     , m_pTranslator(new QTranslator(this))
 {
     QCoreApplication::installTranslator(m_pTranslator);
+    QDir().mkpath(appDataPath());
 
     QStringList lLang;
     lLang << "en";
@@ -147,8 +149,6 @@ CController::CController(QString sStubFileName, QString sSequenceFileName, QObje
     , m_tSharedTimer(this)
     , m_pTranslator(new QTranslator(this))
 {
-    Q_UNUSED(sSequenceFileName);
-
     if (m_tShared.attach())
     {
         connect(&m_tSharedTimer, &QTimer::timeout, this, &CController::onSharedTimerTick);
@@ -355,6 +355,20 @@ void CController::setSequenceFileName(const QString& sSequenceFileName)
 
 //-------------------------------------------------------------------------------------------------
 
+QString CController::appDataPath() const
+{
+    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+QString CController::configFileName() const
+{
+    return QString("%1/%2").arg(appDataPath()).arg(CONFIG_FILE_NAME);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 CController::ESharedOperation CController::sharedOperation()
 {
     ESharedOperation eReturnValue = eSONone;
@@ -436,14 +450,14 @@ void CController::saveConfiguration()
     xTheme.attributes()[sParamName] = m_sTheme;
     xConfig << xTheme;
 
-    xConfig.saveXMLToFile(CONFIG_FILE_NAME);
+    xConfig.saveXMLToFile(configFileName());
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void CController::loadConfiguration()
 {
-    CXMLNode xConfig = CXMLNode::load(CONFIG_FILE_NAME);
+    CXMLNode xConfig = CXMLNode::load(configFileName());
 
     // Load history items
     CXMLNode xHistory = xConfig.getNodeByTagName(sParamHistory);
@@ -629,9 +643,6 @@ QString CController::repositoryNameFromPath(const QString& sPath) const
 
 void CController::onNewCloneOutput(CEnums::EProcessCommand eCommand, QString sOutput)
 {
-    Q_UNUSED(eCommand);
-    Q_UNUSED(sOutput);
-
     switch (eCommand)
     {
     default:
