@@ -4,7 +4,7 @@
 #define MyAppNameUninstall "Uninstall CuteGit"
 #define MyAppIconName "CuteGit"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "Jango73"
+#define MyAppPublisher "https://github.com/Jango73/CuteGit"
 #define MyAppExeName "CuteGit.exe"
 #define BuildDirectory "<Set build directory name here>"
 
@@ -12,7 +12,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{E071B503-3015-4E78-806E-CFC359BCAD28}
+AppId={{7D982C11-6569-4F9A-ABA7-2ED39C427908}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
