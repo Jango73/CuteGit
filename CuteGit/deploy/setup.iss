@@ -4,7 +4,7 @@
 #define MyAppNameUninstall "Uninstall CuteGit"
 #define MyAppIconName "CuteGit"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "https://github.com/Jango73/CuteGit"
+#define MyAppPublisher "github.com/Jango73/CuteGit"
 #define MyAppExeName "CuteGit.exe"
 #define BuildDirectory "<Set build directory name here>"
 

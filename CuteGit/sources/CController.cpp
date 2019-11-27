@@ -98,8 +98,8 @@ CController::CController(QString sStubFileName, QObject* parent)
     QStringList lLang;
     lLang << "en";
     lLang << "fr";
-    lLang << "de";
-    lLang << "es";
+    // lLang << "de";
+    // lLang << "es";
     m_pLangModel->setStringList(lLang);
 
     loadConfiguration();
