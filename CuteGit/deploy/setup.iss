@@ -12,6 +12,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
+ArchitecturesInstallIn64BitMode=x64
 AppId={{7D982C11-6569-4F9A-ABA7-2ED39C427908}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
