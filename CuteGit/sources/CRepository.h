@@ -239,8 +239,11 @@ public:
     //! View diff with previous commit
     Q_INVOKABLE void commitDiffPrevious(const QString& sCommitId);
 
-    //! Squashes a commit
+    //! Shows info about last modifications in a file
     Q_INVOKABLE void blame(QString sFileFullName);
+
+    //! Cleans up local stuff
+    Q_INVOKABLE void cleanUp();
 
     //! Sets the file filter
     Q_INVOKABLE void setFileFilter(const QString& sText);

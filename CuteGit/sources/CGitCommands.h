@@ -184,6 +184,9 @@ public:
     virtual void createTagOnCommit(const QString& sPath, const QString& sCommitId, const QString& sTagName, const QString& sMessage) override;
 
     //!
+    virtual void cleanUp(const QString& sPath) override;
+
+    //!
     virtual void editSequenceFile(const QString& sFileName) override;
 
     //-------------------------------------------------------------------------------------------------
@@ -271,6 +274,7 @@ protected:
     static const QString sCommandDeleteBranch;
     static const QString sCommandDeleteFile;
     static const QString sCommandFetch;
+    static const QString sCommandFetchAndPrune;
     static const QString sCommandFileLog;
     static const QString sCommandFileLogCount;
     static const QString sCommandFileStatus;

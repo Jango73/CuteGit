@@ -547,6 +547,13 @@ void CRepository::blame(QString sFileFullName)
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::cleanUp()
+{
+    m_pCommands->cleanUp(m_sRepositoryPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::setFileFilter(const QString& sText)
 {
     m_pFlatFileModelProxy->setNameFilter(sText);
@@ -885,6 +892,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eChangeCommitMessage:
     case CEnums::eContinueRebase:
     case CEnums::eAbortRebase:
+    case CEnums::eCleanUp:
     {
         onNewOutput(sOutput, false);
 

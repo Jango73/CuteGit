@@ -450,6 +450,10 @@ Pane {
         root.repository.pushAsWIP()
     }
 
+    function requestCleanUp() {
+        root.repository.cleanUp()
+    }
+
     function requestStageAll() {
         root.repository.stageAll()
     }

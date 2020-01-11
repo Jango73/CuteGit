@@ -38,6 +38,7 @@ MenuBar {
     signal requestPush()
     signal requestPushAsWIP()
 
+    signal requestCleanUp()
     signal requestStageAll()
     signal requestUnstageAll()
     signal requestStageSelection()
@@ -159,6 +160,18 @@ MenuBar {
 
     Menu {
         title: Const.localMenuText
+
+        Action {
+            id: cleanUp
+            text: Const.cleanUpMenuText
+            shortcut: "Ctrl+N"
+            enabled: root.repository
+                     ? root.repository.can(CEnums.CleanUp)
+                     : false
+            onTriggered: root.requestCleanUp()
+        }
+
+        MenuSeparator { }
 
         Action {
             text: Const.stageAllMenuText

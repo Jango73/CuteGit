@@ -397,6 +397,13 @@ void CCommands::createTagOnCommit(const QString& sPath, const QString& sCommitId
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::cleanUp(const QString& sPath)
+{
+    Q_UNUSED(sPath);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::editSequenceFile(const QString& sFileName)
 {
     Q_UNUSED(sFileName);

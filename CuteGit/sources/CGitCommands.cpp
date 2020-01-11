@@ -53,6 +53,7 @@ const QString CGitCommands::sCommandCurrentBranch       = "git rev-parse --abbre
 const QString CGitCommands::sCommandDeleteBranch        = "git branch --delete \"%1\"";
 const QString CGitCommands::sCommandDeleteFile          = "git rm \"%1\"";
 const QString CGitCommands::sCommandFetch               = "git fetch";
+const QString CGitCommands::sCommandFetchAndPrune       = "git fetch -p";
 const QString CGitCommands::sCommandFileLog             = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --skip=%1 --max-count=%2 \"%3\"";
 const QString CGitCommands::sCommandFileLogCount        = "git rev-list --count HEAD \"%1\"";
 const QString CGitCommands::sCommandFileStatus          = "git status --porcelain --ignored --untracked-files=all \"%1\"";
@@ -606,6 +607,15 @@ void CGitCommands::createTagOnCommit(const QString& sPath, const QString& sCommi
 
 //-------------------------------------------------------------------------------------------------
 
+void CGitCommands::cleanUp(const QString& sPath)
+{
+    emit newOutputString(CEnums::eNotification, tr("Cleaning up..."));
+    QString sCommand = QString(sCommandFetchAndPrune);
+    exec(new CProcessCommand(CEnums::eCleanUp, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CGitCommands::editSequenceFile(const QString& sFileName)
 {
     // Read in the file provided by GIT
@@ -927,9 +937,10 @@ void CGitCommands::handleBlameOutput(const CProcessResult& tResult)
             QString sLine = tRegExp.cap(4).trimmed();
             QString sText = tRegExp.cap(5);
 
-            QString sFinalText = QString("%1: %2: %3")
+            QString sFinalText = QString("%1: %2 %3 | %4")
                                .arg(sLine.toInt(), 5, 10, QChar('0'))
                                .arg(sAuthor, -20)
+                               .arg(sDate)
                                .arg(sText);
 
             pDiffLine->setText(sFinalText);
@@ -1187,6 +1198,7 @@ void CGitCommands::onExecFinished(const CProcessResult& tResult)
     case CEnums::eAbortRebase:
     case CEnums::ePatchCreate:
     case CEnums::ePatchApply:
+    case CEnums::eCleanUp:
     {
         // Throw the returned string of the process
         emit newOutputString(tResult.m_eCommand, tResult.m_sValue);

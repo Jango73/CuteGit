@@ -175,6 +175,9 @@ public:
     virtual void createTagOnCommit(const QString& sPath, const QString& sCommitId, const QString& sTagName, const QString& sMessage);
 
     //!
+    virtual void cleanUp(const QString& sPath);
+
+    //!
     virtual void editSequenceFile(const QString& sFileName);
 
     //-------------------------------------------------------------------------------------------------

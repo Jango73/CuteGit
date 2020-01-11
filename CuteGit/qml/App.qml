@@ -50,6 +50,7 @@ ApplicationWindow {
         onRequestPush: root.currentRepositoryView.requestPush()
         onRequestPushAsWIP: root.currentRepositoryView.requestPushAsWIP()
 
+        onRequestCleanUp: root.currentRepositoryView.requestCleanUp()
         onRequestStageAll: root.currentRepositoryView.requestStageAll()
         onRequestUnstageAll: root.currentRepositoryView.requestUnstageAll()
         onRequestStageSelection: root.currentRepositoryView.requestStageSelection()
