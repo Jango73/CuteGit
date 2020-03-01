@@ -22,7 +22,7 @@
 #include "CDiffModel.h"
 #include "CDiffModelProxy.h"
 #include "CGraphModel.h"
-#include "CCommands.h"
+#include "commands/CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 // Forward declarations

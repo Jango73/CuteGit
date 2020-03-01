@@ -7,7 +7,7 @@
 // Application
 #include "CRepoFile.h"
 #include "CLogLine.h"
-#include "CCommands.h"
+#include "commands/CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 // Forward declarations

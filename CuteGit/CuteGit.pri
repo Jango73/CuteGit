@@ -1,67 +1,67 @@
 
 HEADERS += \
     ../qt-plus/source/cpp/CXMLNode.h \
-    sources/Strings.h \
-    sources/CEnums.h \
-    sources/CUtils.h \
     sources/CBranch.h \
-    sources/CExecution.h \
-    sources/CCommands.h \
-    sources/CGitCommands.h \
-    sources/CGerritCommands.h \
-    sources/CSvnCommands.h \
-    sources/CHgCommands.h \
     sources/CBranchModel.h \
-    sources/CTreeFileModel.h \
-    sources/CTreeFileModelProxy.h \
-    sources/CFlatFileModel.h \
-    sources/CFlatFileModelProxy.h \
-    sources/CStagedFileModelProxy.h \
-    sources/CRepoFile.h \
-    sources/CLabel.h \
-    sources/CLabelModel.h \
-    sources/CLogModel.h \
-    sources/CLogModelProxy.h \
-    sources/CLogLine.h \
-    sources/CLogLineCollection.h \
-    sources/CGraphModel.h \
-    sources/CGraphLine.h \
+    sources/CController.h \
+    sources/CDiffLine.h \
     sources/CDiffModel.h \
     sources/CDiffModelProxy.h \
-    sources/CDiffLine.h \
+    sources/CEnums.h \
+    sources/CFlatFileModel.h \
+    sources/CFlatFileModelProxy.h \
+    sources/CGraphLine.h \
+    sources/CGraphModel.h \
+    sources/CLabel.h \
+    sources/CLabelModel.h \
+    sources/CLogLine.h \
+    sources/CLogLineCollection.h \
+    sources/CLogModel.h \
+    sources/CLogModelProxy.h \
+    sources/CRepoFile.h \
     sources/CRepository.h \
     sources/CRepositoryModel.h \
-    sources/CController.h \
+    sources/CStagedFileModelProxy.h \
+    sources/CTreeFileModel.h \
+    sources/CTreeFileModelProxy.h \
+    sources/CUtils.h \
     sources/CuteGit.h \
+    sources/Strings.h \
+    sources/commands/CCommands.h \
+    sources/commands/CExecution.h \
+    sources/commands/CGerritCommands.h \
+    sources/commands/CGitCommands.h \
+    sources/commands/CHgCommands.h \
+    sources/commands/CSvnCommands.h \
 
 SOURCES += \
     ../qt-plus/source/cpp/CXMLNode.cpp \
-    sources/Strings.cpp \
-    sources/CUtils.cpp \
-    sources/CExecution.cpp \
-    sources/CCommands.cpp \
-    sources/CGitCommands.cpp \
-    sources/CGerritCommands.cpp \
-    sources/CSvnCommands.cpp \
-    sources/CHgCommands.cpp \
     sources/CBranchModel.cpp \
-    sources/CTreeFileModel.cpp \
-    sources/CTreeFileModelProxy.cpp \
-    sources/CFlatFileModel.cpp \
-    sources/CFlatFileModelProxy.cpp \
-    sources/CStagedFileModelProxy.cpp \
-    sources/CRepoFile.cpp \
-    sources/CLabelModel.cpp \
-    sources/CLogModel.cpp \
-    sources/CLogModelProxy.cpp \
-    sources/CLogLineCollection.cpp \
-    sources/CGraphModel.cpp \
+    sources/CController.cpp \
     sources/CDiffModel.cpp \
     sources/CDiffModelProxy.cpp \
+    sources/CFlatFileModel.cpp \
+    sources/CFlatFileModelProxy.cpp \
+    sources/CGraphModel.cpp \
+    sources/CLabelModel.cpp \
+    sources/CLogLineCollection.cpp \
+    sources/CLogModel.cpp \
+    sources/CLogModelProxy.cpp \
+    sources/CRepoFile.cpp \
     sources/CRepository.cpp \
     sources/CRepositoryModel.cpp \
-    sources/CController.cpp \
+    sources/CStagedFileModelProxy.cpp \
+    sources/CTreeFileModel.cpp \
+    sources/CTreeFileModelProxy.cpp \
+    sources/CUtils.cpp \
     sources/CuteGit.cpp \
+    sources/Strings.cpp \
+    sources/commands/CCommands.cpp \
+    sources/commands/CExecution.cpp \
+    sources/commands/CGerritCommands.cpp \
+    sources/commands/CGitCommands.cpp \
+    sources/commands/CHgCommands.cpp \
+    sources/commands/CSvnCommands.cpp \
     sources/main.cpp \
 
 RESOURCES += \

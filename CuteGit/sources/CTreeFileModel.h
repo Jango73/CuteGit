@@ -15,7 +15,7 @@
 #include "CRepoFile.h"
 #include "CLogModel.h"
 #include "CDiffModel.h"
-#include "CCommands.h"
+#include "commands/CCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 // Forward declarations

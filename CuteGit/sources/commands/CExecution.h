@@ -11,12 +11,12 @@
 #include <QRunnable>
 
 // Application
-#include "CEnums.h"
-#include "CBranch.h"
-#include "CRepoFile.h"
-#include "CLogLineCollection.h"
-#include "CDiffLine.h"
-#include "CGraphLine.h"
+#include "../CEnums.h"
+#include "../CBranch.h"
+#include "../CRepoFile.h"
+#include "../CLogLineCollection.h"
+#include "../CDiffLine.h"
+#include "../CGraphLine.h"
 
 //-------------------------------------------------------------------------------------------------
 

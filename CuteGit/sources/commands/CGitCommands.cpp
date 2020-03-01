@@ -6,10 +6,10 @@
 #include <QDir>
 
 // Application
-#include "CUtils.h"
 #include "CGitCommands.h"
-#include "CController.h"
-#include "Strings.h"
+#include "../CUtils.h"
+#include "../CController.h"
+#include "../Strings.h"
 
 /*!
     \class CGitCommands

@@ -8,7 +8,6 @@
 
 // Application
 #include "CController.h"
-#include "CGitCommands.h"
 #include "Strings.h"
 
 //-------------------------------------------------------------------------------------------------

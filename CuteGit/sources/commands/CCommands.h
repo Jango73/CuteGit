@@ -5,7 +5,7 @@
 #include <QObject>
 
 // Application
-#include "CEnums.h"
+#include "../CEnums.h"
 #include "CExecution.h"
 
 //-------------------------------------------------------------------------------------------------

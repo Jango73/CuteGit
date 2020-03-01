@@ -7,7 +7,7 @@
 
 // Application
 #include "CGerritCommands.h"
-#include "Strings.h"
+#include "../Strings.h"
 
 /*!
     \class CGerritCommands
@@ -38,7 +38,7 @@ CGerritCommands::CGerritCommands(CController* pController)
 
 bool CGerritCommands::can(CEnums::ECapability eWhat) const
 {
-    Q_UNUSED(eWhat);
+    Q_UNUSED(eWhat)
 
     return true;
 }

@@ -10,10 +10,10 @@
 // Application
 #include "CUtils.h"
 #include "CController.h"
-#include "CGitCommands.h"
-#include "CGerritCommands.h"
-#include "CSvnCommands.h"
-#include "CHgCommands.h"
+#include "commands/CGitCommands.h"
+#include "commands/CGerritCommands.h"
+#include "commands/CSvnCommands.h"
+#include "commands/CHgCommands.h"
 
 //-------------------------------------------------------------------------------------------------
 
