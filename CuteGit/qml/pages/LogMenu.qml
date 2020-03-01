@@ -82,9 +82,11 @@ Menu {
         }
     }
 
+    MenuSeparator {}
+
     Action {
         text: Const.logRebaseMenuText
-        enabled: root.repository ? root.repository.can(CEnums.RebaseOnCommit) : false
+        enabled: root.repository ? (root.repository.can(CEnums.RebaseOnCommit) && !root.repository.hasModifiedFiles) : false
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -93,11 +95,9 @@ Menu {
         }
     }
 
-    MenuSeparator {}
-
     Action {
         text: Const.logSquashMenuText
-        enabled: root.repository ? root.repository.can(CEnums.SquashCommit) : false
+        enabled: root.repository ? (root.repository.can(CEnums.SquashCommit) && !root.repository.hasModifiedFiles) : false
 
         onTriggered: {
             if (root.commitId !== "") {
@@ -108,7 +108,7 @@ Menu {
 
     Action {
         text: Const.logChangeMessageMenuText
-        enabled: root.repository ? root.repository.can(CEnums.ChangeCommitMessage) : false
+        enabled: root.repository ? (root.repository.can(CEnums.ChangeCommitMessage) && !root.repository.hasModifiedFiles) : false
 
         onTriggered: {
             if (root.commitId !== "") {
