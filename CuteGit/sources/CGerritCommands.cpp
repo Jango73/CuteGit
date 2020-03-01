@@ -24,8 +24,8 @@
 //-------------------------------------------------------------------------------------------------
 // Constants
 
-const QString CGerritCommands::sCommandPushGerritReady  = "git push origin \"HEAD:refs/for/%1%ready\"";
-const QString CGerritCommands::sCommandPushGerritWIP    = "git push origin \"HEAD:refs/for/%1%wip\"";
+const QString CGerritCommands::sCommandPushGerritReady  = "git push %1 \"HEAD:refs/for/%2%ready\"";
+const QString CGerritCommands::sCommandPushGerritWIP    = "git push %1 \"HEAD:refs/for/%2%wip\"";
 
 //-------------------------------------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ void CGerritCommands::push(const QString& sPath)
     QString sCurrentBranch = execNow(sPath, sCommandCurrentBranch).trimmed();
     if (not sCurrentBranch.isEmpty())
     {
-        QString sCommand = QString(sCommandPushGerritReady).arg(sCurrentBranch);
+        QString sCommand = QString(sCommandPushGerritReady).arg(sRemoteBranchPrefix).arg(sCurrentBranch);
         exec(new CProcessCommand(CEnums::ePush, sPath, sCommand, true));
     }
     else
@@ -68,7 +68,7 @@ void CGerritCommands::pushAsWIP(const QString& sPath)
     QString sCurrentBranch = execNow(sPath, sCommandCurrentBranch).trimmed();
     if (not sCurrentBranch.isEmpty())
     {
-        QString sCommand = QString(sCommandPushGerritWIP).arg(sCurrentBranch);
+        QString sCommand = QString(sCommandPushGerritWIP).arg(sRemoteBranchPrefix).arg(sCurrentBranch);
         exec(new CProcessCommand(CEnums::ePushAsWIP, sPath, sCommand, true));
     }
     else

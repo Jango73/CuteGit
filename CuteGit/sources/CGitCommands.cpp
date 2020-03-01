@@ -9,6 +9,7 @@
 #include "CUtils.h"
 #include "CGitCommands.h"
 #include "CController.h"
+#include "Strings.h"
 
 /*!
     \class CGitCommands
@@ -37,7 +38,7 @@ const QString CGitCommands::sCommandAbortMerge          = "git merge --abort";
 const QString CGitCommands::sCommandAbortRebase         = "git rebase --abort";
 const QString CGitCommands::sCommandAmend               = "git commit --amend --reset-author --no-edit";
 const QString CGitCommands::sCommandBlame               = "git annotate \"%1\"";
-const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count \"%1\"...\"origin/%1\"";
+const QString CGitCommands::sCommandBranchAhead         = "git rev-list --left-right --count \"%2\"...\"%1/%2\"";
 const QString CGitCommands::sCommandBranches            = "git branch -a";
 const QString CGitCommands::sCommandBranchFromCommit    = "git checkout -b \"%1\" \"%2\"";
 const QString CGitCommands::sCommandBranchLog           = "git log --pretty=format:\"%h &&& %s &&& %an &&& %aI\" --skip=%1 --max-count=%2";
@@ -65,7 +66,7 @@ const QString CGitCommands::sCommandListOtherFiles      = "git ls-files --others
 const QString CGitCommands::sCommandMergeBranch         = "git merge \"%1\"";
 const QString CGitCommands::sCommandPatchApply          = "git apply \"%1\"";
 const QString CGitCommands::sCommandPull                = "git pull";
-const QString CGitCommands::sCommandPush                = "git push";
+const QString CGitCommands::sCommandPush                = "git push %1 %2";
 const QString CGitCommands::sCommandRebaseOnCommit      = "git rebase --interactive %1~1";
 const QString CGitCommands::sCommandRefLog              = "git reflog show --pretty=format:\"%h &&& %gD &&& %gs\" --skip=%1 --max-count=%2";
 const QString CGitCommands::sCommandResetOnCommit       = "git reset %1";
@@ -92,7 +93,7 @@ const QString CGitCommands::sBlameLineRegExp            = "([0-9a-fA-F]+)\\s+\\(
 
 const QString CGitCommands::sComment                    = "#";
 const QString CGitCommands::sLogFormatSplitter          = "&&&";
-const QString CGitCommands::sRemoteBranchPrefix         = "origin/";
+const QString CGitCommands::sRemoteBranchPrefix         = "origin";
 const QString CGitCommands::sRemoteBranchUselessPrefix  = "remotes/";
 const QString CGitCommands::sSequenceEditorToken        = "GIT_SEQUENCE_EDITOR";
 const QString CGitCommands::sTextEditorToken            = "GIT_EDITOR";
@@ -238,11 +239,12 @@ void CGitCommands::branchHeadCommits(const QString& sPath, QStringList lBranches
 
 void CGitCommands::branchCommitCountAheadBehind(const QString& sPath, QStringList lBranches)
 {
+    QString sPrefix = QString("%1/").arg(sRemoteBranchPrefix);
     for (QString sBranch: lBranches)
     {
-        if (not sBranch.startsWith(sRemoteBranchPrefix))
+        if (not sBranch.startsWith(sPrefix))
         {
-            QString sCommand = QString(sCommandBranchAhead).arg(sBranch);
+            QString sCommand = QString(sCommandBranchAhead).arg(sRemoteBranchPrefix).arg(sBranch);
             exec(new CProcessCommand(CEnums::eBranchCommitCountAhead, sPath, sCommand, true, QMap<QString, QString>(), sBranch));
         }
     }
@@ -391,8 +393,16 @@ void CGitCommands::amend(const QString& sPath)
 void CGitCommands::push(const QString& sPath)
 {
     emit newOutputString(CEnums::eNotification, tr("Pushing..."));
-    QString sCommand = QString(sCommandPush);
-    exec(new CProcessCommand(CEnums::ePush, sPath, sCommand, true));
+    QString sCurrentBranch = execNow(sPath, sCommandCurrentBranch).trimmed();
+    if (not sCurrentBranch.isEmpty())
+    {
+        QString sCommand = QString(sCommandPush).arg(sRemoteBranchPrefix).arg(sCurrentBranch);
+        exec(new CProcessCommand(CEnums::ePush, sPath, sCommand, true));
+    }
+    else
+    {
+        emit newOutputString(CEnums::eNotification, Strings::s_sUnableToGetBranch);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -475,7 +485,7 @@ void CGitCommands::twoCommitDiff(const QString& sPath, const QString& sFromCommi
 void CGitCommands::setCurrentBranch(const QString& sPath, const QString& sBranch)
 {
     QString sFinalName = sBranch;
-    sFinalName.replace(sRemoteBranchPrefix, "");
+    sFinalName.replace(QString("%1/").arg(sRemoteBranchPrefix), "");
     emit newOutputString(CEnums::eNotification, QString(tr("Switching to %1...")).arg(sFinalName));
     QString sCommand = QString(sCommandSetCurrentBranch).arg(sFinalName);
     exec(new CProcessCommand(CEnums::eSetCurrentBranch, sPath, sCommand, true));
