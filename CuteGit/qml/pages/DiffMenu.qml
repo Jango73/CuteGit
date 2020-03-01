@@ -16,6 +16,7 @@ Menu {
     /*! The currently selected text */
     property string text: ""
 
+    /*! Requests a copy action */
     signal requestCopyText(var text)
 
     Action {

@@ -77,6 +77,7 @@ public:
     // Model for the diff view
     Q_FAST_PROPERTY(CDiffModel*, p, fileDiffModel, FileDiffModel)
     Q_FAST_PROPERTY(CDiffModelProxy*, p, fileDiffModelProxy, FileDiffModelProxy)
+    Q_FAST_PROPERTY(QString, s, fileDiffString, FileDiffString)
 
     // Model for the blame view
     Q_FAST_PROPERTY(CDiffModel*, p, fileBlameModel, FileBlameModel)
@@ -208,6 +209,9 @@ public:
 
     //! Pops stash
     Q_INVOKABLE void stashPop();
+
+    //! Saves the file diff as a patch
+    Q_INVOKABLE void saveFileDiffAsPatch(const QString& sFullName);
 
     //! Applies a patch
     Q_INVOKABLE void patchApply(const QString& sFullName);

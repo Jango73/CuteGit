@@ -86,7 +86,7 @@ QHash<int, QByteArray> CLogModel::roleNames() const
 
 int CLogModel::rowCount(const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
+    Q_UNUSED(parent)
 
     return m_lLines.count();
 }
@@ -154,7 +154,7 @@ QVariant CLogModel::data(const QModelIndex& index, int role) const
 
 bool CLogModel::canFetchMore(const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
+    Q_UNUSED(parent)
 
     return m_lLines.count() < m_iPotentialCount;
 }
@@ -163,7 +163,7 @@ bool CLogModel::canFetchMore(const QModelIndex& parent) const
 
 void CLogModel::fetchMore(const QModelIndex& parent)
 {
-    Q_UNUSED(parent);
+    Q_UNUSED(parent)
 
     int iCurrentCount = m_lLines.count();
     int iNewCount = LOG_COUNT_DEFAULT;

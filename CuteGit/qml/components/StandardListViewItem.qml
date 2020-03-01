@@ -107,6 +107,7 @@ Item {
             }
         }
 
+        /*! The primary zone contains the upper part of data */
         Item {
             id: primaryZone
             anchors.left: symbolZone.right
@@ -144,6 +145,7 @@ Item {
             }
         }
 
+        /*! The secondary zone contains the lower part of data */
         Item {
             id: secondaryZone
             anchors.top: primaryZone.bottom

@@ -3,6 +3,9 @@ import QtQuick.Controls 2.5
 import QtQml.Models 2.2
 import "."
 
+// This item is complex because it implements desktop behavior
+// i.e. navigating with the keyboard
+
 ListView {
     id: root
     clip: true
@@ -21,6 +24,9 @@ ListView {
 
     /*! The size of the scroll bar */
     property int scrollBarWidth: Const.mainPadding * 2
+
+    /*! If true, list is empty */
+    readonly property bool empty: count === 0
 
     /*! For internal use */
     property variant modelIndices: ({})

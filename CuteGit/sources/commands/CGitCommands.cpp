@@ -864,7 +864,7 @@ void CGitCommands::handleCommitCountOutput(const CProcessResult& tResult)
 
 void CGitCommands::handleDiffOutput(const CProcessResult& tResult)
 {
-    // Create CDiffLines with the returned string of the process
+    // Create CDiffLine objects with the returned string of the process
 
     QList<CDiffLine*> lReturnValue;
     QStringList lLines = tResult.m_sValue.split(NEW_LINE);
@@ -908,6 +908,7 @@ void CGitCommands::handleDiffOutput(const CProcessResult& tResult)
                 {
                     if (sLine.startsWith("+"))
                         pDiffLine->setOperation(CEnums::DiffAdd);
+
                     if (sLine.startsWith("-"))
                         pDiffLine->setOperation(CEnums::DiffDelete);
                 }
@@ -923,6 +924,7 @@ void CGitCommands::handleDiffOutput(const CProcessResult& tResult)
         lReturnValue.clear();
     }
 
+    emit newOutputString(tResult.m_eCommand, tResult.m_sValue);
     emit newOutputListOfCDiffLine(tResult.m_eCommand, lReturnValue);
 }
 

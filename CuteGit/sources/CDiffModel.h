@@ -59,6 +59,6 @@ public:
 
 private:
 
-    //! Chat object
+    //! Diff lines
     QList<CDiffLine*>   m_lLines;
 };

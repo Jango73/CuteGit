@@ -23,3 +23,19 @@ QString CUtils::getTextFileContents(const QString& sFileName)
 
     return sInputText;
 }
+
+//-------------------------------------------------------------------------------------------------
+
+void CUtils::setTextFileContents(const QString& sFileName, const QString& sText)
+{
+    QFile file(sFileName);
+
+    if (file.open(QIODevice::WriteOnly))
+    {
+        QTextStream stream(&file);
+        stream << sText;
+        file.close();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------

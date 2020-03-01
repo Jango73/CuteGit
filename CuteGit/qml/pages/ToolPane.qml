@@ -11,6 +11,7 @@ ExtendablePane {
     property variant repository: null
 
     signal requestDiffMenu(var operation, var text)
+    signal requestSaveFileDiffAsPatch()
     signal requestLogMenu(var commitId, var message)
     signal requestCommitDiffPrevious(var commitId)
     signal requestCommitDiffFrom(var commitId)
@@ -53,6 +54,7 @@ ExtendablePane {
 
                 onRequestMenu: root.requestDiffMenu(operation, text)
                 onRequestTextFilter: root.repository.setFileDiffFilter(text)
+                onRequestSaveAsPatch: root.requestSaveFileDiffAsPatch()
             }
 
             FileLogPane {

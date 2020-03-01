@@ -152,6 +152,10 @@ Pane {
                 diffMenu.popup()
             }
 
+            onRequestSaveFileDiffAsPatch: {
+                root.requestPatchSave()
+            }
+
             onRequestLogMenu: {
                 logMenu.commitId = commitId
                 logMenu.commitMessage = message
@@ -397,6 +401,12 @@ Pane {
     }
 
     Action {
+        id: savePatchAction
+        property string fileName: ""
+        onTriggered: root.repository.saveFileDiffAsPatch(fileName)
+    }
+
+    Action {
         id: applyPatchAction
         property string fileName: ""
         onTriggered: root.repository.patchApply(fileName)
@@ -520,9 +530,19 @@ Pane {
         root.activateFileDiffView()
     }
 
+    function requestPatchSave() {
+        fileDialog.title = Const.selectPatchToSaveText
+        fileDialog.selectExisting = false
+        fileDialog.actionOnAccept = savePatchAction
+        fileDialog.nameFilters = [ "Patch files (*.patch)", "All files (*)" ]
+        fileDialog.open()
+    }
+
     function requestPatchApply() {
         fileDialog.title = Const.selectPatchToApplyText
+        fileDialog.selectExisting = true
         fileDialog.actionOnAccept = applyPatchAction
+        fileDialog.nameFilters = ["All files (*)" ]
         fileDialog.open()
     }
 

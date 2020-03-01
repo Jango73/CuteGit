@@ -46,7 +46,7 @@ QHash<int, QByteArray> CDiffModel::roleNames() const
 
 int CDiffModel::rowCount(const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
+    Q_UNUSED(parent)
 
     return m_lLines.count();
 }

@@ -462,6 +462,20 @@ void CRepository::stashPop()
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::saveFileDiffAsPatch(const QString& sFullName)
+{
+    QString sFile = sFullName;
+
+    if (sFile.startsWith("file:"))
+        sFile = QUrl(sFile).toLocalFile();
+
+    CUtils::setTextFileContents(sFile, m_sFileDiffString);
+
+    qDebug() << "saveFileDiffAsPatch:" << sFile;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::patchApply(const QString& sFullName)
 {
     QString sFile = sFullName;
@@ -797,7 +811,7 @@ void CRepository::onCurrentFileFullName(QString sFileFullName)
 
 void CRepository::onNewOutput(QString sOutput, bool bSeparation)
 {
-    Q_UNUSED(bSeparation);
+    Q_UNUSED(bSeparation)
 
     QStringList lNewList = sOutput.split(NEW_LINE);
 
@@ -838,6 +852,13 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
             setRepositoryStatus(CEnums::Rebase);
         else if (sOutput == CRepoFile::sRepositoryStatusInteractiveRebase)
             setRepositoryStatus(CEnums::InteractiveRebase);
+        break;
+    }
+
+    case CEnums::eUnstagedFileDiff:
+    case CEnums::eTwoCommitDiff:
+    {
+        setFileDiffString(sOutput);
         break;
     }
 
@@ -979,8 +1000,8 @@ void CRepository::onNewOutputKeyValue(CEnums::EProcessCommand eCommand, QString 
 
 void CRepository::onNewOutputStringList(CEnums::EProcessCommand eCommand, QStringList lValue)
 {
-    Q_UNUSED(eCommand);
-    Q_UNUSED(lValue);
+    Q_UNUSED(eCommand)
+    Q_UNUSED(lValue)
 
     // This may be reused some day
 }
