@@ -466,7 +466,7 @@ void CController::loadConfiguration()
 
     // Load known repository list
     CXMLNode xKnownRepositories = xConfig.getNodeByTagName(sParamKnownRepositories);
-    QVector<CXMLNode> xKnownRepositoryList = xKnownRepositories.getNodesByTagName(sParamRepository);
+    CXMLNodeList xKnownRepositoryList = xKnownRepositories.getNodesByTagName(sParamRepository);
 
     QStringList lKnownRepositoryPaths;
     for (CXMLNode xRepository : xKnownRepositoryList)
@@ -477,7 +477,7 @@ void CController::loadConfiguration()
 
     // Load open repositories
     CXMLNode xOpenRepositories = xConfig.getNodeByTagName(sParamOpenRepositories);
-    QVector<CXMLNode> xOpenRepositoryList = xOpenRepositories.getNodesByTagName(sParamRepository);
+    CXMLNodeList xOpenRepositoryList = xOpenRepositories.getNodesByTagName(sParamRepository);
     for (CXMLNode xOpenRepository : xOpenRepositoryList)
     {
         QString sPath = xOpenRepository.attributes()[sParamPath];
