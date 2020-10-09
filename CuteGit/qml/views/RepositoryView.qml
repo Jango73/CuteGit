@@ -186,6 +186,15 @@ Pane {
 
             repository: root.repository
 
+            onRequestRebaseOnBranch: {
+                rebaseOnBranchAction.branchName = name
+                confirm.title = Const.rebaseOnBranchText + " " + name
+                confirm.messageText = Const.rebaseOnBranchMessage.arg(name)
+                confirm.actionOnAccept = rebaseOnBranchAction
+                confirm.actionOnReject = null
+                confirm.open()
+            }
+
             onRequestMergeBranch: {
                 mergeBranchAction.branchName = name
                 confirm.title = Const.mergeBranchText + " " + name
@@ -202,6 +211,12 @@ Pane {
                 confirm.actionOnAccept = deleteBranchAction
                 confirm.actionOnReject = null
                 confirm.open()
+            }
+
+            Action {
+                id: rebaseOnBranchAction
+                property string branchName: ""
+                onTriggered: root.repository.rebaseOnBranch(branchName)
             }
 
             Action {

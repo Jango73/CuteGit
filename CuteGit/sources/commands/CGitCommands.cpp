@@ -67,6 +67,7 @@ const QString CGitCommands::sCommandMergeBranch         = "git merge \"%1\"";
 const QString CGitCommands::sCommandPatchApply          = "git apply \"%1\"";
 const QString CGitCommands::sCommandPull                = "git pull";
 const QString CGitCommands::sCommandPush                = "git push %1 %2";
+const QString CGitCommands::sCommandRebaseOnBranch      = "git rebase \"%1\"";
 const QString CGitCommands::sCommandRebaseOnCommit      = "git rebase --interactive %1~1";
 const QString CGitCommands::sCommandRefLog              = "git reflog show --pretty=format:\"%h &&& %gD &&& %gs\" --skip=%1 --max-count=%2";
 const QString CGitCommands::sCommandResetOnCommit       = "git reset %1";
@@ -586,6 +587,15 @@ void CGitCommands::createBranchOnCommit(const QString& sPath, const QString& sCo
     emit newOutputString(CEnums::eNotification, QString(tr("Creating branch %1...")).arg(sBranchName));
     QString sCommand = QString(sCommandBranchFromCommit).arg(sBranchName).arg(sCommitId);
     exec(new CProcessCommand(CEnums::eCreateBranchOnCommit, sPath, sCommand, true));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CGitCommands::rebaseOnBranch(const QString& sPath, const QString& sBranchName)
+{
+    emit newOutputString(CEnums::eNotification, QString(tr("Rebasing on branch %1...")).arg(sBranchName));
+    QString sCommand = QString(sCommandRebaseOnBranch).arg(sBranchName);
+    exec(new CProcessCommand(CEnums::eRebaseOnBranch, sPath, sCommand, true));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1202,6 +1212,7 @@ void CGitCommands::onExecFinished(const CProcessResult& tResult)
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
     case CEnums::eCreateBranchOnCommit:
+    case CEnums::eRebaseOnBranch:
     case CEnums::eMergeBranch:
     case CEnums::eDeleteBranch:
     case CEnums::eCreateTagOnCommit:

@@ -166,6 +166,9 @@ public:
     virtual void createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName);
 
     //!
+    virtual void rebaseOnBranch(const QString& sPath, const QString& sBranchName);
+
+    //!
     virtual void mergeBranch(const QString& sPath, const QString& sBranchName);
 
     //!

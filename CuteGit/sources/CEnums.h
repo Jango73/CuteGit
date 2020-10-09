@@ -164,6 +164,7 @@ public:
         eSquashCommit,
         eChangeCommitMessage,
         eCreateBranchOnCommit,
+        eRebaseOnBranch,
         eMergeBranch,
         eDeleteBranch,
         eCreateTagOnCommit,

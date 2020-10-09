@@ -175,6 +175,9 @@ public:
     virtual void createBranchOnCommit(const QString& sPath, const QString& sCommitId, const QString& sBranchName) override;
 
     //!
+    virtual void rebaseOnBranch(const QString& sPath, const QString& sBranchName) override;
+
+    //!
     virtual void mergeBranch(const QString& sPath, const QString& sBranchName) override;
 
     //!
@@ -287,6 +290,7 @@ protected:
     static const QString sCommandPatchApply;
     static const QString sCommandPull;
     static const QString sCommandPush;
+    static const QString sCommandRebaseOnBranch;
     static const QString sCommandRebaseOnCommit;
     static const QString sCommandRefLog;
     static const QString sCommandResetOnCommit;

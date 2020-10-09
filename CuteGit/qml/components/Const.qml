@@ -10,7 +10,7 @@ Item {
 
     // Main font
     readonly property string mainFontFamily: "Calibri"
-    readonly property int mainFontSize: Screen.pixelDensity * 3
+    readonly property int mainFontSize: 12 // (Screen.pixelDensity * 3)
 
     // Other fonts
     readonly property string fixedWidthFontFamily: "Courier"
@@ -163,6 +163,7 @@ Item {
     readonly property string generalText: qsTr("General")
     readonly property string branchesText: qsTr("Branches")
     readonly property string switchToText: qsTr("Switch to")
+    readonly property string rebaseOnText: qsTr("Rebase on")
     readonly property string amendingText: qsTr("Amending. The changes will be appended to the last commit...")
     readonly property string shortcutsText: qsTr("Shortcuts")
     readonly property string branchLogText: qsTr("Branch log")
@@ -182,6 +183,7 @@ Item {
     readonly property string statusHistoryText: qsTr("Status history")
     readonly property string mergeProgressText: qsTr("Merge in progress...")
     readonly property string allFilesCleanText: qsTr("All files are clean")
+    readonly property string rebaseOnBranchText: qsTr("Rebase on branch")
     readonly property string rebaseProgressText: qsTr("Rebase in progress...")
     readonly property string cloneRepositoryText: qsTr("Clone repository")
     readonly property string enterMessageHereText: qsTr("Enter your message here...")
@@ -197,6 +199,11 @@ Item {
                                                 "There is no open repository at the moment.\n" +
                                                 "Please open or clone a repository to fill this view."
                                                 )
+
+    readonly property string rebaseOnBranchMessage: qsTr(
+                                            "You are about to rebase on %1.\n\n" +
+                                            "Are you sure you want to do this?"
+                                            )
 
     readonly property string mergeBranchMessage: qsTr(
                                             "You are about to merge %1 on the working directory.\n\n" +

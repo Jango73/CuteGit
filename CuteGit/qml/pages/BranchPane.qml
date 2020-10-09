@@ -11,6 +11,7 @@ StandardPane {
     property variant repository: null
     property string branchName: ""
 
+    signal requestRebaseOnBranch(var name)
     signal requestMergeBranch(var name)
     signal requestDeleteBranch(var name)
 
@@ -65,9 +66,7 @@ StandardPane {
 
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
-                            root.branchName = model.name
-                            branchMenu.canMerge = (model.name !== root.repository.currentBranch)
-                            branchMenu.popup()
+                            rightClickBranch(model.name)
                         }
                     }
 
@@ -109,9 +108,7 @@ StandardPane {
 
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
-                            root.branchName = model.name
-                            branchMenu.canMerge = (model.name !== root.repository.currentBranch)
-                            branchMenu.popup()
+                            rightClickBranch(model.name)
                         }
                     }
 
@@ -123,6 +120,7 @@ StandardPane {
                 id: branchMenu
 
                 onRequestSwitchToBranch: root.repository.currentBranch = root.branchName
+                onRequestRebaseOnBranch: root.requestRebaseOnBranch(root.branchName)
                 onRequestMergeBranch: root.requestMergeBranch(root.branchName)
                 onRequestDeleteBranch: root.requestDeleteBranch(root.branchName)
             }
@@ -144,5 +142,13 @@ StandardPane {
                 }
             }
         }
+    }
+
+    function rightClickBranch(name) {
+        root.branchName = name
+
+        branchMenu.canRebaseOn = (name !== root.repository.currentBranch)
+        branchMenu.canMerge = (name !== root.repository.currentBranch)
+        branchMenu.popup()
     }
 }

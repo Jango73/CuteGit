@@ -371,6 +371,14 @@ void CCommands::createBranchOnCommit(const QString& sPath, const QString& sCommi
 
 //-------------------------------------------------------------------------------------------------
 
+void CCommands::rebaseOnBranch(const QString& sPath, const QString& sBranchName)
+{
+    Q_UNUSED(sPath);
+    Q_UNUSED(sBranchName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCommands::mergeBranch(const QString& sPath, const QString& sBranchName)
 {
     Q_UNUSED(sPath);

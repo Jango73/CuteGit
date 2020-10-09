@@ -523,6 +523,13 @@ void CRepository::changeCommitMessage(const QString& sCommitId, const QString& s
 
 //-------------------------------------------------------------------------------------------------
 
+void CRepository::rebaseOnBranch(const QString& sName)
+{
+    m_pCommands->rebaseOnBranch(m_sRepositoryPath, sName);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CRepository::mergeBranch(const QString& sName)
 {
     m_pCommands->mergeBranch(m_sRepositoryPath, sName);
@@ -908,6 +915,7 @@ void CRepository::onNewOutputString(CEnums::EProcessCommand eCommand, QString sO
     case CEnums::eRebaseOnCommit:
     case CEnums::eSquashCommit:
     case CEnums::eCreateBranchOnCommit:
+    case CEnums::eRebaseOnBranch:
     case CEnums::eMergeBranch:
     case CEnums::eDeleteBranch:
     case CEnums::eChangeCommitMessage:

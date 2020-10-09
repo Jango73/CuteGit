@@ -231,6 +231,9 @@ public:
     //! Changes the message of a commit
     Q_INVOKABLE void changeCommitMessage(const QString& sCommitId, const QString& sMessage);
 
+    //! Rebases on a branch
+    Q_INVOKABLE void rebaseOnBranch(const QString& sName);
+
     //! Merges a branch
     Q_INVOKABLE void mergeBranch(const QString& sName);
 

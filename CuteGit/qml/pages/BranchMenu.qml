@@ -7,10 +7,11 @@ Menu {
     id: root
     title: ""
 
-    property variant controller: null
-    property bool canMerge: false
+    property bool canRebaseOn: false    // Set by owner of this component
+    property bool canMerge: false       // Set by owner of this component
 
     signal requestSwitchToBranch()
+    signal requestRebaseOnBranch()
     signal requestMergeBranch()
     signal requestDeleteBranch()
 
@@ -19,6 +20,15 @@ Menu {
 
         onTriggered: {
             root.requestSwitchToBranch()
+        }
+    }
+
+    Action {
+        enabled: root.canRebaseOn
+        text: Const.rebaseOnText
+
+        onTriggered: {
+            root.requestRebaseOnBranch()
         }
     }
 
