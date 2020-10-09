@@ -1,5 +1,5 @@
 
-QT += core gui qml quick quickwidgets quickcontrols2 svg network xml
+QT += core gui qml quick quickwidgets quickcontrols2 network xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
