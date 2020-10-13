@@ -3,8 +3,7 @@
 ![alt text](https://github.com/Jango73/CuteGit/blob/master/Media/Screenshot01.jpg)
 
 This is a simple multi-document UI for the Git executable (and other versioning systems in a near future).
-I decided to make my own because the only efficient Git UIs on Linux are paywares.
-It is however not meant to compete with paywares, just provide minimal versioning functionality.
+It is not meant to compete with paywares, just provide minimal versioning functionality.
 
 ## Dependencies
 
