@@ -43,6 +43,8 @@ It is not meant to compete with paywares, just provide minimal versioning functi
   * Amend (on interactive rebase, commit is always amend)
   * Fetch, pull and push
   * Modify a commit message
+  * Rebase current branch on another one
+  * Merge current branch with another one
   * Begin rebase on a commit, continue and abort rebase
   * Reset on a commit
   * Save and pop stash (no selectable stash yet)
