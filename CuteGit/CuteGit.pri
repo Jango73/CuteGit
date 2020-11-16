@@ -69,9 +69,10 @@ RESOURCES += \
 
 TRANSLATIONS = \
     i18n/CuteGit_fr.ts \
-
-    # i18n/CuteGit_de.ts \
-    # i18n/CuteGit_es.ts
+    i18n/CuteGit_de.ts \
+    i18n/CuteGit_es.ts \
+    i18n/CuteGit_ja.ts \
+    i18n/CuteGit_zh.ts \
 
 unix {
     QT_LIB_NAMES = \

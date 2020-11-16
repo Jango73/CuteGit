@@ -224,6 +224,10 @@ Item {
                                          "The language selection (%1) will be applied when the application is restarted."
                                          )
 
+    readonly property string cannotSetLanguageText: qsTr(
+                                         "The language selection (%1) could not be set."
+                                         )
+
     readonly property string copyrightText: qsTr(
                                   "CuteGit - version %1\n" +
                                   "Copyright (c) 2019 Jango73\n" +

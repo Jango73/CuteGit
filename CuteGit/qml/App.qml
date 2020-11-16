@@ -433,7 +433,11 @@ ApplicationWindow {
 
     function setLanguage(language) {
         ctrl.language = language
-        informationText.text = Const.setLanguageText.arg(language);
+        if (ctrl.language === language) {
+            informationText.text = Const.setLanguageText.arg(language);
+        } else {
+            informationText.text = Const.cannotSetLanguageText.arg(language);
+        }
         information.open()
     }
 

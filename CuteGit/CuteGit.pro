@@ -1,10 +1,14 @@
 
 QT += core gui qml quick quickwidgets quickcontrols2 network xml
 
+CONFIG += lrelease
+CONFIG += lrelease embed_translations
+PRE_TARGETDEPS += compiler_lrelease_make_all
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
-DEFINES += "VERSION_STRING=\"\\\"1.0.0\\\"\""
+DEFINES += "VERSION_STRING=\"\\\"1.0.1\\\"\""
 DEFINES += QTPLUS_LIBRARY
 
 # Dependencies
@@ -34,11 +38,12 @@ CONFIG(debug, debug|release) {
     }
 }
 
-# Deployment
-# In order to activate deployment, add "deploy=1" to qmake arguments
 QT_BASE_PATH = $$getQtPath()
 QT_BIN_PATH = $$getQtBinPath()
 QT_LIB_PATH = $$getQtLibPath()
+
+# Deployment
+# In order to activate deployment, add "deploy=1" to qmake arguments
 
 !isEmpty(deploy) {
     message("Deployment files will be copied after linkage, from $${QT_BASE_PATH}.")

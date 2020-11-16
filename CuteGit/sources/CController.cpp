@@ -97,10 +97,12 @@ CController::CController(QString sStubFileName, QObject* parent)
     QDir().mkpath(appDataPath());
 
     QStringList lLang;
-    lLang << "en";
-    lLang << "fr";
-    // lLang << "de";
-    // lLang << "es";
+    lLang << "en (English)";
+    lLang << "fr (Français)";
+    lLang << "de (Deutsch)";
+    lLang << "es (Español)";
+    lLang << "ja (日本語)";
+    lLang << "zh (中文)";
     m_pLangModel->setStringList(lLang);
 
     loadConfiguration();
