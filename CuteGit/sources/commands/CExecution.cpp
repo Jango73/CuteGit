@@ -5,6 +5,8 @@
 #include <QProcess>
 #include <QMutexLocker>
 #include <QDir>
+#include <QDirIterator>
+#include <QThread>
 
 // Application
 #include "CExecution.h"
@@ -202,28 +204,31 @@ QString CExecution::execNowLiveFeed(CEnums::EProcessCommand eCommand, QString sW
 void CCleanFileLister::run()
 {
     CRepoFileList lFileList;
-    getAllFiles(lFileList, m_sRootPath, m_sRootPath);
+    getAllFiles(lFileList, m_sRootPath);
 
     emit newOutputListOfCRepoFile(m_eCommand, lFileList);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void CCleanFileLister::getAllFiles(CRepoFileList& lFileList, const QString& sRootPath, const QString& sCurrentPath)
+void CCleanFileLister::getAllFiles(CRepoFileList& lFileList, const QString& sRootPath)
 {
-    QStringList slNameFilter;
-    slNameFilter << "*";
-
     QDir dRoot(sRootPath);
-    QDir dDirectory(sCurrentPath);
+    QDirIterator it(
+                sRootPath,
+                QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Files | QDir::AllDirs,
+                QDirIterator::Subdirectories);
 
-    dDirectory.setFilter(QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Files);
-    QStringList lFiles = dDirectory.entryList(slNameFilter);
-
-    for (QString sFile : lFiles)
+    while (it.hasNext())
     {
-        QString sFullName = QString("%1/%2").arg(sCurrentPath).arg(sFile);
-        QFileInfo info(sFullName);
+        if (QThread::currentThread()->isInterruptionRequested())
+            return;
+
+        const QString sFullName = it.next();
+        QFileInfo info(it.fileInfo());
+
+        if (!info.isFile())
+            continue;
 
         CRepoFile* pNewFile = new CRepoFile();
 
@@ -233,15 +238,7 @@ void CCleanFileLister::getAllFiles(CRepoFileList& lFileList, const QString& sRoo
         pNewFile->setFileName(info.fileName());
 
         lFileList.addItem(pNewFile->fullName(), pNewFile);
-    }
 
-    dDirectory.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
-    QStringList lDirectories = dDirectory.entryList();
-
-    for (QString sNewDirectory : lDirectories)
-    {
-        QString sFullName = QString("%1/%2").arg(sCurrentPath).arg(sNewDirectory);
-
-        getAllFiles(lFileList, sRootPath, sFullName);
+        QCoreApplication::processEvents();
     }
 }

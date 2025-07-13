@@ -214,7 +214,7 @@ protected:
     virtual void run() override;
 
     //!
-    void getAllFiles(CRepoFileList& lFileList, const QString& sRootPath, const QString& sCurrentPath);
+    void getAllFiles(CRepoFileList& lFileList, const QString& sRootPath);
 
     //-------------------------------------------------------------------------------------------------
     // Signals
