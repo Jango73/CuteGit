@@ -7,8 +7,6 @@
 #include <QMap>
 #include <QThread>
 #include <QMutex>
-#include <QThreadPool>
-#include <QRunnable>
 
 // Application
 #include "../CEnums.h"
@@ -186,10 +184,6 @@ signals:
     // Properties
     //-------------------------------------------------------------------------------------------------
 
-protected:
-
-    QThreadPool                 m_tPool;
-
 private:
 
     bool                        m_bStop;
@@ -200,7 +194,7 @@ private:
 
 //-------------------------------------------------------------------------------------------------
 
-class CCleanFileLister : public QObject, public QRunnable
+class CCleanFileLister : public QThread
 {
     Q_OBJECT
 

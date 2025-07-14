@@ -21,8 +21,7 @@
 //-------------------------------------------------------------------------------------------------
 
 CExecution::CExecution()
-    : m_tPool(this)
-    , m_bStop(false)
+    : m_bStop(false)
     , m_mMutex(QMutex::Recursive)
     , m_eLastShownCommand(CEnums::eNothing)
 {

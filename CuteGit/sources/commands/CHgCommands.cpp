@@ -115,11 +115,11 @@ void CHgCommands::allFileStatus(const QString& sPath)
 
     pLister->m_eCommand = CEnums::eAllFileStatus;
     pLister->m_sRootPath = sPath;
-    pLister->setAutoDelete(true);
 
     connect(pLister, &CCleanFileLister::newOutputListOfCRepoFile, this, &CHgCommands::onNewOutputListOfCRepoFile);
+    connect(pLister, &QThread::finished, pLister, &QObject::deleteLater);
 
-    m_tPool.start(pLister);
+    pLister->start();
 }
 
 //-------------------------------------------------------------------------------------------------
